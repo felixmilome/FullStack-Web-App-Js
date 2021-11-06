@@ -1,0 +1,15 @@
+
+function SidebarRow({Icon, title}) {
+    return (
+        <div>
+        <div className="flex items-center space-x-2 mb-6 p-4 text-gray-500 hover:bg-gray-200 rounded-full cursor-pointer">
+           {Icon && <Icon className="h-5 w-5 text-blue-500"/>}
+           <p className= "hidden sm:inline-flex font-medium">
+               {title}</p> 
+        </div>
+        </div>
+       
+    )
+}
+
+export default SidebarRow; 

@@ -1,0 +1,30 @@
+import SidebarRow from './SidebarRow';
+import {    SearchIcon,
+    UsersIcon, 
+    RssIcon,
+    VideoCameraIcon, 
+    MusicNoteIcon, 
+    BookOpenIcon, 
+    ShoppingBagIcon } from '@heroicons/react/outline'
+
+function Sidebar(){
+return (
+    <div className="invisible sm:visible p-2 m-3 w-1/4 m-x-4 bg-transparent border-r-2 border-gray-300 z-40 fixed h-screen  overflow-y-auto overflow-x-hidden">
+        <div className="overflow-scroll">
+    <SidebarRow Icon = {UsersIcon} title ="Socializing"/>
+    <SidebarRow Icon = {RssIcon} title="Blogging"/>
+    <SidebarRow Icon = {VideoCameraIcon}title="Watching"/> 
+    <SidebarRow Icon = {MusicNoteIcon}title="Listening"/>
+    <SidebarRow Icon = {BookOpenIcon} title="Reading"/> 
+    <SidebarRow Icon = {ShoppingBagIcon} title="Shopping"/> 
+    <SidebarRow Icon = {UsersIcon} title ="Socializing"/>
+    <SidebarRow Icon = {RssIcon} title="Blogging"/>
+    <SidebarRow Icon = {VideoCameraIcon}title="Watching"/> 
+    <SidebarRow Icon = {MusicNoteIcon}title="Listening"/>
+    <SidebarRow Icon = {BookOpenIcon} title="Reading"/> 
+    <SidebarRow Icon = {ShoppingBagIcon} title="Shopping"/> 
+    </div>
+</div>
+);
+}
+export default Sidebar;
