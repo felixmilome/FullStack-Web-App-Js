@@ -1,33 +1,64 @@
 import { CameraIcon} from "@heroicons/react/solid";
+import axios from "axios";
+
+
 import{useState} from 'react';
-import FileBase from 'react-file-base64';
 
 
-
-
-import axios from 'axios';
-
-
-import {useDispatch} from 'react-redux'; 
-import { postDiariesAction } from "../Midwares/rdx/actions/diariesAction";
-
+//import {useDispatch} from 'react-redux'; 
+//import { postDiariesAction } from "../Midwares/rdx/actions/diariesAction";
 
 
 function CreatediaryModal() {
     const [diariesData, setdiariesData] = useState({
         title:'', caption:'', file: '', publicity:'',
     }); 
-    const dispatch = useDispatch();
+    //const dispatch = useDispatch();
 
-    const handleSubmit =(e)=>{
-        e.preventDefault();
-  
-       
-        //dispatch(postDiariesAction (diariesData)); 
-    }
+    // const handleFile = (e) =>{
+    //     const file= e.target.files[0];
+    //     setdiariesData({...diariesData, file :file})
+    // }
+
+    let formData = new FormData();
+    formData.append("title",diariesData.title);
+    formData.append("caption",diariesData.caption);
+    formData.append("file",diariesData.file);
+    formData.append("publicity",diariesData.publicity);
+
+    const config ={
+        headers: {
+            Accept: 'application/json',
+            'Content-type' : 'multipart/form-data'
+        }
+    } 
+
+    const handleSubmit = async(e)=>{
+
+        axios.post('http://localhost:5000/diaries')
+         e.preventDefault();
+        
+      
+
+    // const handleFile = (e)=>{
+        
+    //     const { files } = e.target;
+    //     const fileUrl =  window.URL.createObjectURL(files[0]);
+    //     setdiariesData({...diariesData, file: fileUrl});
+    //     console.log(fileUrl);
+    //     console.log(diariesData.file);
+    //     console.log(diariesData);
+    //     setdiariesData({...diariesData, file: fileUrl});
+    // }
+
+    // const handleSubmit =(e)=>{
+    //     e.preventDefault();
+
+    //     dispatch(postDiariesAction (diariesData)); 
+    // }
 
     return (
-        <div className="space-y-5 w-4/5 xl:w-1/3 bg-gray-200 bg-opacity-100 max-h-screen shadow-xl items-center  rounded-xl z-40 fixed top-24 m-4">
+        <div className="space-y-5 w-4/5 xl:w-1/3 bg-gray-300 bg-opacity-90 max-h-screen shadow-xl items-center  rounded-xl z-40 fixed top-24 m-4">
          
 
             {/* Cyan Heading */}
@@ -43,7 +74,8 @@ function CreatediaryModal() {
             <select 
              name= "publicity"
             value= {diariesData.publicity}
-            onChange={(e)=> setdiariesData({...diariesData, publicity: e.target.value})}
+            onChange={(e)=>   
+                setdiariesData({...diariesData, publicity: e.target.value})}
             
             className="m-2 flex justify-center items-center font-semibold text-xs text-gray-500 outline-none bg-gray-100 rounded-md p-1 border-none">
                 <option value="public"> Public/ Everyone </option>
@@ -58,11 +90,12 @@ function CreatediaryModal() {
    
                         <div className= "items-center bg-gray-100 rounded-full p-3 text-gray-300 mx-auto w-20 h-20">
                        
-                        <FileBase
-                             
+                        <input
+                            name= "file" 
                             type="file"
-                            multiple={false}
-                            onDone={({base64})=> setdiariesData ({...diariesData, file:base64})}
+                            
+                    onChange={(e)=> setdiariesData({...diariesData, file: e.target.files[0]})}
+                    //    onChange={handleFile}
                             
                         />
                             <CameraIcon className="m-auto h-10 w-10"/>

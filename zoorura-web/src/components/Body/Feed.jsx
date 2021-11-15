@@ -1,5 +1,6 @@
 import { PlusIcon } from "@heroicons/react/outline";
 
+
 import Posts from "./Posts.jsx";
 import CreatediaryModal from "../Modals/CreatediaryModal.jsx";
 import { useState } from 'react';
@@ -28,11 +29,30 @@ function Feed() {
                                 {popCreatediary && <CreatediaryModal diaryId ={diaryId} setDiaryId ={setDiaryId}/>}
                             </div>
                     </OutsideClickHandler>
-               
+
+                   
+                    
+
                 </div>
 
                
-                
+                 {/* EMBEDS */}
+                {/* <div className= "flex justify-center bg-transparent m-3">
+                        <div className="mx-auto space-y-3 bg-transparent">
+                            <div className="flex bg-transparent justify-center">
+                                <iframe src="https://www.tiktok.com/embed/7029346062158662913"
+                                width="300" height="600" frameborder="0"
+                                scrolling="no" 
+                                allowtransparency="true"></iframe>
+                            </div>
+                            <div className="m-auto">
+                                <iframe src="https://www.instagram.com/reel/CWLrjRQIEnu/embed"
+                                width="400" height="600" frameborder="0" 
+                                scrolling="no" allowtransparency="true">
+                                </iframe>
+                            </div>
+                        </div>
+                </div> */}
         
        <Posts diaryId={diaryId}/>
       

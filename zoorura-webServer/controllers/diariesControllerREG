@@ -1,4 +1,5 @@
-import  mongoose  from "mongoose"; 
+import  mongoose  from "mongoose";
+import  cloudinary  from "../utils/cloudinary.cjs"; 
 import DiariesModel from "../models/diariesModel.js";
 
 
@@ -12,8 +13,8 @@ export const getDiaries = async  (req, res) => {
 }
 
 export const postDiaries =  async (req, res)=> {
-        
-        const newDiary = new DiariesModel(req.body);
+
+    const newDiary = new DiariesModel (req.body);
        
     try{
         await newDiary.save();

@@ -8,9 +8,9 @@ function App() {
 
   const dispatch = useDispatch();
   
-  useEffect(() => {
-    dispatch(getDiariesAction());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getDiariesAction());
+  // }, [dispatch]);
 
 
   return <Home/>

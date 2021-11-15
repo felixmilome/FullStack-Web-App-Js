@@ -1,6 +1,6 @@
 import PostOptionsRow from "./PostOptionsRow.jsx";
 import { BookmarkIcon, ExclamationIcon, TagIcon, TrashIcon } from '@heroicons/react/outline';
-import EditDiaryModal from "./EditDiaryModal.jsx"
+//import EditDiaryModal from "./EditDiaryModal.jsx"
 import {useDispatch} from 'react-redux';
 import { deleteDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
 

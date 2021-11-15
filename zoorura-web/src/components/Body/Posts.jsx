@@ -3,6 +3,8 @@ import PostBox from "./PostBox";
 import {BeatLoader} from "react-spinners";
 import {useSelector} from 'react-redux';
 
+import IGbox from './IGbox.jsx'
+
 
 function Posts(setDiaryId) { 
 
@@ -12,7 +14,9 @@ console.log(diaries);
 
     return ( 
        <div>
-           { !diaries.length ? 
+
+           <IGbox/>
+           {/* { !diaries.length ? 
 
             <div className="p-3 flex">   
                 <div className="text-center text-sm text-gray-400 p-3 m-auto bg-transparent rounded-xl">
@@ -26,8 +30,6 @@ console.log(diaries);
             : (
                 <div>
 
-
-
                     {
                    
                     diaries.map((diary) =>(
@@ -36,7 +38,7 @@ console.log(diaries);
                     }
                 </div>
             )
-           }
+           } */}
 
            </div>
 
