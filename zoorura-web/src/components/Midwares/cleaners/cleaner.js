@@ -36,8 +36,8 @@ export const urYt = (urInput) => {
 }
 //FB
 export const urFb = (urInput) => {
-
-    let repl = urInput.replace(/https:\/\//gi, "");
+    let trim = urInput.trim();
+    let repl = trim.replace(/https:\/\//gi, "");
     let htp = repl.replace(/\//gi, "%2F");
     let trim = htp.trim();
     let str1 = "https://www.facebook.com/plugins/post.php?height=200&href=https%3A%2F%2F";
@@ -49,9 +49,9 @@ export const urFb = (urInput) => {
     return finalResult;
 }
 //REDDIT
-export const urFb = (urInput) => {
-
-    let stru = urInput.replace(/reddit/gi, "redditmedia");
+export const urRd = (urInput) => {
+    let trim = urInput.trim();
+    let stru = trim.replace(/reddit/gi, "redditmedia");
     let str2 = stru.replace(/\?utm_source=share&utm_medium=web2x&context=3/gi, ""); 
     let str3 = str2.concat('?');   
     let utm = "utm_source=share&utm_medium=web2x&context=3"; 
@@ -59,6 +59,41 @@ export const urFb = (urInput) => {
 
     return finalResult;
 }
+
+//TWITTER - REQUIRES NONE BUT TEMPLATE
+
+//PINTEREST
+export const urPn = (urInput) => {
+
+    let trim = urInput.trim();
+    let thenum = trim.replace( /^\D+/gi, '');
+    let thenum2 = thenum.replace(/\//gi, '');
+    let finalResult = ("https://assets.pinterest.com/ext/embed.html?id=").concat(thenum2);
+    
+    return finalResult;
+}
+
+//SOUNDCLOUD
+export const urPn = (urInput) => {
+
+    let trim = urInput.trim();
+    let finalResult = trim.replace(/https:/gi, '');
+    
+    return finalResult;
+}
+
+//TWITCH
+export const urPn = (urInput) => {
+    
+    let trim = urInput.trim();
+    let finalResult = trim.replace(/https:\/\/www.twitch.tv\//gi, 'https://player.twitch.tv/?channel=');
+    
+    return finalResult;
+
+}
+
+
+
 
 
   // if(urInput.includes('video')){
