@@ -71,10 +71,10 @@ function IGbox({diary, setDiaryId}) {
 
 
         {/* Post Mid Invisible Parent */}
-        <div className="bg-gray-100">
+        <div className="bg-gray-100 rounded-b-xl">
 
         {/* Post Caption Invisible Parent */}
-        <div className="flex justify-center  my-0.5">
+        <div className="flex justify-center bg-gray-100  my-0.5">
             {/* Post Mid Frame*/}
             <div className="w-full lg:w-2/3 text-center items-center p-2 rounded-t-xl"> 
                                 {/* <p className="leading-5 text-base font-bold my-1 text-gray-400">IG POST</p> */}
@@ -82,25 +82,34 @@ function IGbox({diary, setDiaryId}) {
             </div>  
         </div>
 
-        <div className="flex justify-center bg-gray-100">
+        <div className="flex justify-center bg-gray-100 rounded-b-xl ">
             {/* Post Mid Frame*/}
-            <div className="rounded-xl max-h-screen transition delay-50 flex p-1 mx-3 items-center cursor-pointer bg-gray-100 font-bold hover:bg-gray-300">
+            <div className="max-h-screen w-full transition delay-50 flex justify-center p-0.5 shadow-md m-3 items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
             {/* <iframe width="550" height="400" data-tweet-url="https://twitter.com/Donsarigo/status/1459761373202857989" src="data:text/html;charset=utf-8,%3Cblockquote%20class%3D%22twitter-tweet%22%3E%3Cp%20lang%3D%22en%22%20dir%3D%22ltr%22%3EThis%20is%20ethnic%20profiling.%20We%20cannot%20sink%20this%20low.%20%3Cbr%3E%3Cbr%3E%20%3Ca%20href%3D%22https%3A//t.co/asInZmdLDE%22%3Epic.twitter.com/asInZmdLDE%3C/a%3E%3C/p%3E%26mdash%3B%20Dennis%20Onsarigo%20%28@Donsarigo%29%20%3Ca%20href%3D%22https%3A//twitter.com/Donsarigo/status/1459761373202857989%3Fref_src%3Dtwsrc%255Etfw%22%3ENovember%2014%2C%202021%3C/a%3E%3C/blockquote%3E%0A%3Cscript%20async%20src%3D%22https%3A//platform.twitter.com/widgets.js%22%20charset%3D%22utf-8%22%3E%3C/script%3E%0A%3Cstyle%3Ehtml%7Boverflow%3Ahidden%20%21important%3B%7D%3C/style%3E"></iframe> */}
             
+            {/* DRIVE GOOGLE */}
+            {/* <iframe className="lg:w-full" src="https://drive.google.com/file/d/1tzuAapoVoHeKYCJoNo877mkuA06OzaZk/preview"
+             width="100%" height="400" allow="autoplay" allowfullscreen="true"></iframe> */}
+
             {/* TWITCH */}
             {/* <iframe src="https://player.twitch.tv/?channel=diegosaurs&parent=localhost:3000"
              frameborder="0" allowfullscreen="true" scrolling="no"
-              height="400" width="400"></iframe> */}
+              height="400" width="100%"></iframe> */}
 
 
             {/* INSTAGRAM ==========*/}
             {/* <iframe src="https://www.instagram.com/reel/CWLrjRQIEnu/embed"
-                                width="100%" height="440" frameborder="0" 
+            
+                                width="360" height="440" frameborder="0" 
                                 scrolling="yes" allowtransparency="true">
             </iframe> */}
 
             {/* YOUTUBE =============*/}
-            <iframe width="400" height="450"
+            {/* <div className="relative">
+                <div className="absolute bg-red-200 z-50 w-1/2 h-1/2">
+                    <p></p>
+                    </div> */}
+            {/* <iframe width="100%" height="400"
              src="https://www.youtube.com/embed/dmFwB0WEEDY"
               title="YouTube video player"
                frameborder="0"
@@ -108,27 +117,33 @@ function IGbox({diary, setDiaryId}) {
                  autoplay;  clipboard-write;
                   encrypted-media; gyroscope;
                    picture-in-picture" allowfullscreen='true'>
-                   </iframe>
+                   </iframe> */}
+                   {/* </div> */}
 
             {/* SOUNDCLOUD =======================*/}
-            {/* <iframe className="lg:w-96" width="340" height="100%" scrolling="no" frameborder="no"
+            {/* <iframe  width="100%" height="100%" scrolling="no" frameborder="no"
               src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/uiceheidd/already-dead/&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false">
             </iframe> */}
 
             {/* PINTEREST============= */}
+          
 
-            {/* <iframe src="https://assets.pinterest.com/ext/embed.html?id=601652831476506808"
+             {/* <iframe src="https://assets.pinterest.com/ext/embed.html?id=601652831476506808"
              height="500" width="300" frameborder="0" scrolling="yes" sandbox ></iframe> */}
 
             {/*   REDDIT====================== */}
 
-            {/* <iframe id="reddit-embed" src="https://www.redditmedia.com/r/WeAreTheMusicMakers/comments/qui4lo/chords_omitting_less_important_notes/?ref_source=embed&amp;ref=share&amp;embed=true"
+            
+       
+
+            {/* <iframe id="reddit-embed" src=" https://www.redditmedia.com/r/synthesizers/comments/qx4g9u/akai_reel_to_reel_serving_as_tape_echo_for_the/?ref_source=embed&amp;ref=share&amp;embed=true"
              sandbox="allow-scripts allow-same-origin allow-popups"
-               height="600" width="400" scrolling="yes"></iframe> */}
+               height="450" width="100%" scrolling="yes">
+            </iframe> */}
 
             {/* Wordpress and Others */}
             {/* <iframe src="https://themillenialnews.wordpress.com/2021/11/05/the-shivering-truth/"
-            height="400" width="390" title="Iframe Example"></iframe> */}
+            height="400" width="100%" title="Iframe Example"></iframe> */}
 
             {/* TIKTOK ==============*/}
             {/* <iframe  
@@ -141,7 +156,7 @@ function IGbox({diary, setDiaryId}) {
 
             {/* FB ============ */}
             {/* <iframe src="https://www.facebook.com/plugins/video.php?height=200&href=https%3A%2F%2Fwww.facebook.com%2FWeruTV%2Fvideos%2F612650889857740%2F&show_text=false&width=200&" width= "350" height="350" 
-                scrolling="no" frameborder="0" 
+                scrolling="yes" frameborder="0" 
                 allowfullscreen="true" 
                 allow="autoplay; clipboard-write;
                 encrypted-media; picture-in-picture;
@@ -159,7 +174,8 @@ function IGbox({diary, setDiaryId}) {
                                     src="https://twitframe.com/show?url=https://twitter.com/Donsarigo/status/1459826847647207427/photo/1">
                                 </iframe>  */}
                {/* TWITTER ===================*/}
-               {/* <iframe width="500" height="600" data-tweet- src="data:text/html;charset=utf-8,%3Cblockquote%20class%3D%22twitter-tweet%22%3E%%3Ca%20href%3D%22https://twitter.com/MigunaMiguna/status/1460247077603192834/photo/1%3Fref_src%3Dtwsrc%255Etfw%22%3E%3C/a%3E%3C/blockquote%3E%0A%3Cscript%20async%20src%3D%22https%3A//platform.twitter.com/widgets.js%22%20charset%3D%22utf-8%22%3E%3C/script%3E%0A%3Cstyle%3Ehtml%7Boverflow%3Ascroll%20%21important%3B%7D%3C/style%3E"></iframe> */}
+               {/* <iframe width="100%" height="600" data-tweet-
+                src="data:text/html;charset=utf-8,%3Cblockquote%20class%3D%22twitter-tweet%22%3E%%3Ca%20href%3D%22https://twitter.com/MigunaMiguna/status/1460247077603192834/photo/1%3Fref_src%3Dtwsrc%255Etfw%22%3E%3C/a%3E%3C/blockquote%3E%0A%3Cscript%20async%20src%3D%22https%3A//platform.twitter.com/widgets.js%22%20charset%3D%22utf-8%22%3E%3C/script%3E%0A%3Cstyle%3Ehtml%7Boverflow%3Ascroll%20%21important%3B%7D%3C/style%3E"></iframe> */}
                 {/* <img src={diary.file} alt="Not Loaded" className="object-container h-full w-full"/>   */}
             </div>     
         </div>

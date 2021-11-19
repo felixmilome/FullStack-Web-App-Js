@@ -1,12 +1,16 @@
 //IG
 export const urIg = (urInput) => {
-
+    //https://www.instagram.com/reel/CWLrjRQIEnu/embed good
+   // https://www.instagram.com/p/CWaoRfSrQez/?utm_source=ig_web_copy_link org
+   //https://www.instagram.com/embed/CWaoRfSrQez/ result
     let trim = urInput.trim();
-    let result1 =trim.replace(/\/tv\//gi, "/embed/");
-    let result2 = result1.replace(/\/reel\//gi, "/embed/");
-    let result3 = result2.replace(/\/p\//gi, "/embed/");
-    let result4 = result3.replace(/\?utm_medium=copy_link/gi, "");
-    let resultFinal = result4.replace(/\?utm_source=ig_web_copy_link/gi, "");
+    // let result1 =trim.replace(/\/tv\//gi, "/embed/");
+    // let result2 = result1.replace(/\/reel\//gi, "/embed/");
+    // let result3 = result2.replace(/\/p\//gi, "/embed/");
+    let emb= "embed";  
+    let result1 = trim.replace(/\?utm_medium=copy_link/gi, "");
+    let result2= result1.replace(/\?utm_source=ig_web_copy_link/gi, "");
+    let resultFinal = result2.concat(emb);
 
     return resultFinal;
 
@@ -36,8 +40,8 @@ export const urYt = (urInput) => {
 }
 //FB
 export const urFb = (urInput) => {
-    let trim = urInput.trim();
-    let repl = trim.replace(/https:\/\//gi, "");
+  
+    let repl = urInput.replace(/https:\/\//gi, "");
     let htp = repl.replace(/\//gi, "%2F");
     let trim = htp.trim();
     let str1 = "https://www.facebook.com/plugins/post.php?height=200&href=https%3A%2F%2F";
@@ -54,7 +58,7 @@ export const urRd = (urInput) => {
     let stru = trim.replace(/reddit/gi, "redditmedia");
     let str2 = stru.replace(/\?utm_source=share&utm_medium=web2x&context=3/gi, ""); 
     let str3 = str2.concat('?');   
-    let utm = "utm_source=share&utm_medium=web2x&context=3"; 
+    let utm = "ref_source=embed&amp;ref=share&amp;embed=true"; 
     let finalResult = str3.concat(utm);
 
     return finalResult;
@@ -74,7 +78,7 @@ export const urPn = (urInput) => {
 }
 
 //SOUNDCLOUD
-export const urPn = (urInput) => {
+export const urSn = (urInput) => {
 
     let trim = urInput.trim();
     let finalResult = trim.replace(/https:/gi, '');
@@ -83,7 +87,7 @@ export const urPn = (urInput) => {
 }
 
 //TWITCH
-export const urPn = (urInput) => {
+export const urTch = (urInput) => {
     
     let trim = urInput.trim();
     let finalResult = trim.replace(/https:\/\/www.twitch.tv\//gi, 'https://player.twitch.tv/?channel=');
@@ -92,9 +96,16 @@ export const urPn = (urInput) => {
 
 }
 
+//GOOGLE DRIVE
+export const urDr = (urInput) => {
 
+    let trim = urInput.trim();   
+    let repl = trim.replace(/\?usp=sharing/gi, "");
+    let finalResult = repl.replace(/view/gi, "preview");
 
+    return finalResult;
 
+}
 
   // if(urInput.includes('video')){
     //     let trim = urInput.trim();
