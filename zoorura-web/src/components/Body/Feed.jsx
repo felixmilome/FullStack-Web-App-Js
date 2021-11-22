@@ -1,14 +1,15 @@
 import { LinkIcon, PlusIcon } from "@heroicons/react/outline";
 
-import {BrowserRouter as Router, Routes, Route, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import Posts from "./Posts.jsx";
 import CreatediaryModal from "../Modals/CreatediaryModal.jsx";
 import { useState } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
-function Feed() {
+
+function Feed(diaryId, setDiaryId) {
 
     const[popCreatediary, setpopCreatediary] = useState(false);
-    const[diaryId, setDiaryId] = useState(null);
+    
     return (
     
     <div className="overflow-y-scroll">
@@ -37,7 +38,8 @@ function Feed() {
                                 sm:mt-4 py-2 text-sm px-5 
                                 items-center cursor-pointer 
                                 font-bold rounded-full shadow-xl"
-                                    onClick={ () => {setpopCreatediary(!popCreatediary)}}>
+                              // onClick={ () => {setpopCreatediary(!popCreatediary)}}
+                                    >
                                     <LinkIcon className="p-0.5 h-6 text-white"/>
                                     <p className="text-white">Attach Post</p>
                                 </div>
@@ -47,26 +49,9 @@ function Feed() {
 
                 </div>
 
-               
-                 {/* EMBEDS */}
-                {/* <div className= "flex justify-center bg-transparent m-3">
-                        <div className="mx-auto space-y-3 bg-transparent">
-                            <div className="flex bg-transparent justify-center">
-                                <iframe src="https://www.tiktok.com/embed/7029346062158662913"
-                                width="300" height="600" frameborder="0"
-                                scrolling="no" 
-                                allowtransparency="true"></iframe>
-                            </div>
-                            <div className="m-auto">
-                                <iframe src="https://www.instagram.com/reel/CWLrjRQIEnu/embed"
-                                width="400" height="600" frameborder="0" 
-                                scrolling="no" allowtransparency="true">
-                                </iframe>
-                            </div>
-                        </div>
-                </div> */}
+            
         
-       <Posts diaryId={diaryId}/>
+       <Posts diaryId={diaryId} setDiaryId={setDiaryId}/>
       
         
     </div>

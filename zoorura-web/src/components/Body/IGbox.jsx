@@ -1,5 +1,6 @@
 import { DotsCircleHorizontalIcon} from "@heroicons/react/outline";
 
+
 import{GiMoneyStack, GiTakeMyMoney} from "react-icons/gi";
 import { RiShareForwardBoxLine  } from "react-icons/ri";
 import { AiOutlineComment  } from "react-icons/ai";
@@ -87,6 +88,7 @@ function IGbox({diary, setDiaryId}) {
             <div className="max-h-screen w-full transition delay-50 flex justify-center p-0.5 shadow-md m-3 items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
             {/* <iframe width="550" height="400" data-tweet-url="https://twitter.com/Donsarigo/status/1459761373202857989" src="data:text/html;charset=utf-8,%3Cblockquote%20class%3D%22twitter-tweet%22%3E%3Cp%20lang%3D%22en%22%20dir%3D%22ltr%22%3EThis%20is%20ethnic%20profiling.%20We%20cannot%20sink%20this%20low.%20%3Cbr%3E%3Cbr%3E%20%3Ca%20href%3D%22https%3A//t.co/asInZmdLDE%22%3Epic.twitter.com/asInZmdLDE%3C/a%3E%3C/p%3E%26mdash%3B%20Dennis%20Onsarigo%20%28@Donsarigo%29%20%3Ca%20href%3D%22https%3A//twitter.com/Donsarigo/status/1459761373202857989%3Fref_src%3Dtwsrc%255Etfw%22%3ENovember%2014%2C%202021%3C/a%3E%3C/blockquote%3E%0A%3Cscript%20async%20src%3D%22https%3A//platform.twitter.com/widgets.js%22%20charset%3D%22utf-8%22%3E%3C/script%3E%0A%3Cstyle%3Ehtml%7Boverflow%3Ahidden%20%21important%3B%7D%3C/style%3E"></iframe> */}
             
+           
             {/* DRIVE GOOGLE */}
             {/* <iframe className="lg:w-full" src="https://drive.google.com/file/d/1tzuAapoVoHeKYCJoNo877mkuA06OzaZk/preview"
              width="100%" height="400" allow="autoplay" allowfullscreen="true"></iframe> */}
@@ -192,8 +194,8 @@ function IGbox({diary, setDiaryId}) {
                     <div className="relative flex items-center rounded-full p-1 cursor-pointer bg-gradient-to-r hover:bg-cyan-100 hover:from-blue-100 hover:to-green-100"
                         onClick={ () => {setpopTip(!popTip)}}>
                            
-                        <FaHandshake  size ={29} className="text-gray-600"/>
-                        <p className="font-light text-xs m-1 text-gray-800">10k Handshakes</p>
+                        <GiTakeMyMoney size ={29} className="text-gray-600"/>
+                        <p className="font-light text-xs m-1 text-gray-800">10k Honours</p>
                         
                     </div>   
                     </OutsideClickHandler>

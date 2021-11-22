@@ -31,7 +31,7 @@ export const urTk = (urInput) => {
 export const urYt = (urInput) => {
 
     let trim = urInput.trim();
-    let result1 = trim.replace(/youtu.be/gi, "www.youtube.com");
+    let result1 = trim.replace(/youtu.be/gi, "www.youtube.com/embed");
     let result2 = result1.replace(/watch\?v\=/gi, "embed/");
     let resultFinal = result2.substring(0, 41);
 

@@ -3,5 +3,5 @@
  import {diariesReducer} from './diariesReducer';
 
  export default combineReducers({
-     diariesReducer
+    diariesReducer
  });

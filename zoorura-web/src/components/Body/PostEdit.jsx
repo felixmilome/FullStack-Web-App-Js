@@ -1,5 +1,5 @@
 
-import{useState} from 'react';
+import{useState, useEffect } from 'react';
 //import FileBase from 'react-file-base64';
 
 import {useNavigate} from 'react-router-dom';
@@ -15,13 +15,15 @@ import { CgWebsite } from "react-icons/cg";
 import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm} from "./PostForms/Previews.jsx";
 
 
-import {useDispatch} from 'react-redux'; 
-import { postDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
+import {useDispatch, useSelector} from 'react-redux'; 
+import { patchDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
 import PostFRow from "./PostFRow.jsx";
 
 
 
-function PostForm() {
+function PostEdit({diaryId, setDiaryId, postId, setpopOptions, setPostId}) {
+
+    const diary = useSelector((state)=> postId ? state.diariesReducer.find((d)=> d._id=== postId): null);
 
     const [diariesData, setdiariesData] = useState({
         title:'', caption:'', file: '',  publicity:'',
@@ -32,6 +34,11 @@ function PostForm() {
     const navigate = useNavigate();
 
     const[popPosted, setpopPosted] = useState(false);
+
+    useEffect(()=>{
+       if(diary) setdiariesData(diary);
+       console.log(diary);
+    },[diary])
 
 
     const handleUrl = async (e) =>{
@@ -148,11 +155,12 @@ function PostForm() {
             try{
                 console.log(diariesData);
 
-                dispatch(postDiariesAction (diariesData)); 
+                dispatch(patchDiariesAction(postId, diariesData)); 
                
                 setpopPosted(true);
+                
 
-                setTimeout( function() {navigate ('/')}, 1000);
+                setTimeout( function() {setpopOptions(false)}, 1000);
 
             }
             catch(err){
@@ -166,19 +174,19 @@ function PostForm() {
         <div className="flex items-center justify-center">
 
                 { popPosted &&
-                        <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
-                           <p> Post Added! </p>
+                        <div className=" bg-gray-700 py-4 top-28 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
+                           <p> Post Updated! </p>
                         </div>
-                }
+                    }
                
-                <div className="space-y-5 w-full xl:w-2/5 bg-transparent items-center  z-30  m-4">
+                <div className="space-y-5 w-full bg-transparent items-center  z-30  m-4">
                         
                        
                        
                         {/* Cyan Heading */}
                         <div className="bg-transparent border-b-2 border-gray-300">
-                            <p className="text-center p-3 font-bold text-gray-400 ">Attach Post From</p>
-                            <div className ="text-center  items-center p-1 flex flex-wrap text-gray-400 justify-around">
+                            <p className="text-center p-3 font-bold text-gray-400 ">Edit This Post</p>
+                            {/* <div className ="text-center  items-center p-1 flex flex-wrap text-gray-400 justify-around">
                                <PostFRow sizing={45} Icon={ImYoutube2}/>
                                <PostFRow sizing ={20} Icon={BsInstagram}/>
                                <PostFRow sizing ={20} Icon={SiFacebook}/>
@@ -196,7 +204,7 @@ function PostForm() {
                                <PostFRow sizing ={20} Icon={ImWordpress}/>
                                <PostFRow sizing ={20} Icon={FaGoogleDrive}/>
 
-                            </div>
+                            </div> */}
                         </div>
 
                     {/*----- FORM------------------------- */}
@@ -237,6 +245,21 @@ function PostForm() {
                                         <p className= "text-center text-xs font-base text-gray-400">Photo</p>
                                     </div> */}
 
+                                       {/*-- Title------------ */}
+                                       <div className="flex justify-center">
+                                        <input name= "title"
+                                        value= {diariesData.title}
+                                        onChange={(e)=> setdiariesData({...diariesData, title: e.target.value})}
+                                        placeholder="Enter Title" className="text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border-2 border-gray-300 rounded-md bg-gray-200"/>
+                                    </div>
+                                {/* ---Content---------------  */}
+                                    <div className="px-3 items-center flex justify-center">
+                                        <textarea name= "caption"
+                                        value= {diariesData.caption}
+                                        onChange={(e)=> setdiariesData({...diariesData, caption: e.target.value})}
+                                        placeholder=" Enter Caption" className="resize-none h-14 sm:h-24 text-gray-700 font-light outline-none  m-1 w-full  px-4 py-2 border-2 border-gray-300 rounded-md bg-gray-200"/>
+                                    </div>
+
 
                                 {/*-- URL------------ */}
                                     <div className="flex justify-center">
@@ -244,7 +267,7 @@ function PostForm() {
                                        //value= {diariesData.file}
                                         //onChange={(e)=> setdiariesData({...diariesData, file: e.target.value})}
                                         onChange={handleUrl}
-                                        placeholder="Paste Url Here" className="rounded-full text-center text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-400 bg-gray-200"/>
+                                        placeholder="To Edit Url Paste New Url Here" className="rounded-full text-center text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-400 bg-gray-200"/>
                                     </div>
 
 
@@ -518,20 +541,7 @@ function PostForm() {
 
 
 
-                                        {/*-- Title------------ */}
-                                    <div className="flex justify-center">
-                                        <input name= "title"
-                                        value= {diariesData.title}
-                                        onChange={(e)=> setdiariesData({...diariesData, title: e.target.value})}
-                                        placeholder="Enter Title" className="text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border-2 border-gray-300 rounded-md bg-gray-200"/>
-                                    </div>
-                                {/* ---Content---------------  */}
-                                    <div className="px-3 items-center flex justify-center">
-                                        <textarea name= "caption"
-                                        value= {diariesData.caption}
-                                        onChange={(e)=> setdiariesData({...diariesData, caption: e.target.value})}
-                                        placeholder=" Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 font-light outline-none  m-1 w-full  px-4 py-2 border-2 border-gray-300 rounded-md bg-gray-200"/>
-                                    </div>
+                                     
                                     
                                 {/* Button------------- */}
                                     <button type='submit' className="items-center mx-auto bg-gradient-to-r from-pink-300 to-cyan-400 
@@ -541,7 +551,7 @@ function PostForm() {
                                         my-2 justify-center 
                                         text-white cursor-pointer
                                         font-semibold p-1">
-                                       Post
+                                       Edit Post
                                     </button>
 
                             
@@ -555,4 +565,4 @@ function PostForm() {
     )
 }
 
-export default PostForm;
+export default PostEdit;
