@@ -24,8 +24,8 @@ export const patchDiariesAction = (id, diariesEditData) => async (dispatch)=>{
         dispatch ({type: 'PATCH_DIARY', payload: data});
     } catch(error){
         console.log(error);
-        console.log(diariesEditData);
-        console.log(id);
+        // console.log(diariesEditData);
+        // console.log(id);
     }
 }
 
@@ -37,4 +37,15 @@ export const deleteDiariesAction = (id) => async (dispatch) =>{
         } catch(error){
             console.log(error);
         }
+}
+
+export const tipDiariesAction = (id, tipperData) => async (dispatch)=>{
+    try{
+        const {data} = await axs.tipDiariesApi(id, tipperData); 
+        dispatch ({type: 'TIP_DIARY', payload: data});
+    } catch(error){
+        console.log(error);
+        // console.log(diariesEditData);
+        // console.log(id);
     }
+}

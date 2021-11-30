@@ -5,18 +5,25 @@ import Posts from "./Posts.jsx";
 import CreatediaryModal from "../Modals/CreatediaryModal.jsx";
 import { useState } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
+import{SignupForm, LoginForm} from '../Modals/RegForms.jsx'
 
 function Feed(diaryId, setDiaryId) {
-
+    const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const[popCreatediary, setpopCreatediary] = useState(false);
+    const[popLogin, setpopLogin] = useState(false);
+    const[popSignup, setpopSignup] = useState(true);
+   
+
     
+
     return (
     
     <div className="overflow-y-scroll">
                     
-                    
-    
-        
+        {/*==============SIGN UP/ LOGIN =================*/}
+
+             { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
+             {popLogin && !user ? <LoginForm  popLogin = {popLogin} popSignup ={popSignup}  setpopLogin ={setpopLogin} setpopSignup = {setpopSignup} />: <></>}
                 <div className="flex justify-center">
                 {/* Button */}  
                     {/* <OutsideClickHandler onOutsideClick={() => {setpopCreatediary(false);}}>
@@ -30,6 +37,8 @@ function Feed(diaryId, setDiaryId) {
                                 {popCreatediary && <CreatediaryModal diaryId ={diaryId} setDiaryId ={setDiaryId}/>}
                             </div>
                     </OutsideClickHandler> */}
+
+                   
                    
                             <Link to ='/PostForm'>
                                 <div className="bg-gradient-to-r bg-gray-700 

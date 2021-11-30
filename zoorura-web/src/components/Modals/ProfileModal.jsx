@@ -6,10 +6,18 @@ import {
     QuestionMarkCircleIcon,
    
     } from '@heroicons/react/outline'
+import { useDispatch } from "react-redux";
 
 
 
 function ProfileModal({setshowProfile}) {
+
+    const dispatch= useDispatch();
+
+    const logout =() =>{
+        dispatch({type:"LOGOUT"});
+        window.location.reload(true);
+    }
     return (
         <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-1/2 mt-4 rounded-xl sm:rounded-none sm:mt-2 right-3 sm:right-2 top-20 h-full z-0 flex justify-center bg-gray-200">
 
@@ -38,7 +46,10 @@ function ProfileModal({setshowProfile}) {
                 <ProfilemodalRow Icon = {CreditCardIcon} title ="Wallet"/>
                 <ProfilemodalRow Icon = {AdjustmentsIcon} title ="Settings"/>
                 <ProfilemodalRow Icon = {QuestionMarkCircleIcon} title ="Help"/>
-                <ProfilemodalRow Icon = {LogoutIcon} title ="Logout"/>
+                
+                <div onClick={logout}>
+                    <ProfilemodalRow Icon = {LogoutIcon} title ="Logout"/>
+                </div>
        
             </div>
             </div>

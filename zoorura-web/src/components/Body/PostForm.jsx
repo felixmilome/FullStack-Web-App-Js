@@ -30,6 +30,7 @@ function PostForm() {
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     const[popPosted, setpopPosted] = useState(false);
 
@@ -148,7 +149,7 @@ function PostForm() {
             try{
                 console.log(diariesData);
 
-                dispatch(postDiariesAction (diariesData)); 
+                dispatch(postDiariesAction ({...diariesData, name:user?.result?.name })); 
                
                 setpopPosted(true);
 

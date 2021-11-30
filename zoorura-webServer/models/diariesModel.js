@@ -1,7 +1,26 @@
 import mongoose from 'mongoose';
+const tipSchema = mongoose.Schema({
+    tipper: {
+        type:String,
+    }, 
+    tipperId:{
+        type:String
+    },
+    time: {
+        type: Date,
+        default: new Date()
+    },
+    amount: {
+        type:Number,
+    },   
+  
 
+
+})
 const diariesSchema = mongoose.Schema({
-    title: String,
+    creator: String,
+    name: String,
+    title: String, 
     caption: String,
     file: String,
     publicity: {
@@ -9,9 +28,11 @@ const diariesSchema = mongoose.Schema({
         default: 'Public'
     },
     tips: {
-        type: Number,
-        default: 0
-    },
+        type:Number,
+        default: 0,
+    },   
+    tippers: [tipSchema]
+    ,
     reviews: { 
         type: Number,
         default: 0
@@ -28,6 +49,7 @@ const diariesSchema = mongoose.Schema({
 
 });
 
-const DiariesModel = mongoose.model("DiariesModel", diariesSchema);
+export const DiariesModel = mongoose.model("DiariesModel", diariesSchema);
+export const TipModel = mongoose.model("TipModel", tipSchema);
 
-export default DiariesModel;
+//export default DiariesModel;

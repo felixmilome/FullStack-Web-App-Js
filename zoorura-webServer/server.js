@@ -3,6 +3,7 @@ import path from 'path';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import diariesRouter from './routes/diariesRouter.js ';
+import {usersRouter} from './routes/usersRouter.js ';
 //import diaryFilesRouter from './routes/diaryFilesRouter';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -12,6 +13,8 @@ app.use(cors());
 app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({extended: true, limit: '50mb'})); 
 app.use('/diaries', diariesRouter);
+app.use('/users', usersRouter);
+
 //app.use('/diaryfiles', diaryFilesRouter);
 
 const MONGO_URL = process.env.MONGO_URI;

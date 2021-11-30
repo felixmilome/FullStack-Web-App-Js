@@ -25,12 +25,44 @@ import { useState } from 'react';
 import PostoptionsModal from "../Modals/PostoptionsModal.jsx";
 import OutsideClickHandler from 'react-outside-click-handler';
 import ReviewBubble from "./ReviewBubble.jsx";
+import { tipDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
 
 import moment from 'moment';
-function PostFrame({diary, diaryId, setDiaryId}) {
+import {useDispatch} from 'react-redux'; 
 
+
+function PostFrame({diary, diaryId, setDiaryId}) {
+    const user = JSON.parse(localStorage.getItem('profile'));
+   const dispatch = useDispatch();
     const[popTip, setpopTip] = useState(false);
+    //const[tipperData, settipperData] = useState({tipper: '', tipperId: '', amount: null, tipperObj: {tipper: '', tipperId:'', amount: null}});
+    const[tipperData, settipperData] = useState({tipper: '', tipperId: '', amount: null});
+    const[popSure, setpopSure] = useState(false);
+    const[tip, setTip] = useState({tips:null});
     const[popOptions, setpopOptions] = useState(false);
+
+    const tipDiary = () =>{
+       // const tipper = user.result.name;
+        const id = diary._id;
+        const userName = user.result.userName;
+        const userId = user.result._id;
+        
+       
+        console.log(userName);
+        console.log(userId)
+       // console.log(tipper);
+       // console.log(amount);
+        console.log(tipperData);
+    
+        try{
+            dispatch(tipDiariesAction(id, tipperData));
+            setpopSure(false);
+            setpopTip(false);
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
 
     return (
 
@@ -86,12 +118,17 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         <div className="bg-gray-100 rounded-b-xl">
 
         {/* Post Caption Invisible Parent */}
-        <div className="flex justify-center bg-gray-100  my-0.5">
+        <div className="relative flex justify-center bg-gray-100  my-0.5">
             {/* Post Mid Frame*/}
             <div className="w-full lg:w-2/3 text-center items-center p-2 rounded-t-xl"> 
                                 <p className="leading-5 text-base font-bold my-1 text-gray-400">{diary.title}</p>
                                 <p className="leading-5 text-sm font-base text-gray-700">{diary.caption}</p>                 
             </div>  
+
+             {/* ======== Like Comment Display Modals==============
+            <div className='z-50 bottom-0 left-0 h-1/2 w-1/2 absolute bg-white'>
+                            p
+            </div> */}
         </div>
 
         <div className="flex p-1 justify-center bg-gray-100 rounded-b-xl ">
@@ -373,15 +410,86 @@ function PostFrame({diary, diaryId, setDiaryId}) {
             {/* Post Bottom Icons*/}
             <div className="w-full  justify-around transition delay-50 flex items-center  bg-transparent border-b-2 border-gray-300 font-bold p-3">
             <OutsideClickHandler onOutsideClick={() => {setpopTip(false);}}>
-            {popTip && <TipModal />}
+            {/* {popTip && <TipModal />} */}
+
+{/* TIIIIPPPPZZZZZ=+===================== */}
+                                    {/* are you sure */}
+        { popSure &&  <div className="flex justify-center  fixed left-0 z-40 flex w-full  bg-transparent text-base font-light text-gray-700">
+                    <div className= "fixed z-40 top-80 bg-gray-100 rounded-xl p-8 text-center">
                     
-                    <div className="relative flex items-center rounded-full p-1 cursor-pointer bg-gradient-to-r hover:bg-cyan-100 hover:from-blue-100 hover:to-green-100"
-                        onClick={ () => {setpopTip(!popTip)}}>
-                           
-                        <GiTakeMyMoney  size ={29} className="text-gray-600"/>
-                        <p className="font-light text-xs m-1 text-gray-800">{diary.tips} Honours</p>
-                        
-                    </div>   
+                            <p> Give <span className="font-bold">{tipperData.amount}</span> Honours to this post?</p>
+                            <div className="flex justify-around items-center pt-4 m-auto">
+                                
+                                <div onClick = {tipDiary} className= "bg-red-400 text-white p-2 rounded-md cursor-pointer hover:bg-red-500">
+                                    Yes
+                                </div>
+                            
+                                <div onClick = {()=> [setpopTip(false), setpopSure(false)]} className= "bg-gray-400 text-white p-2 rounded-md cursor-pointer hover:bg-gray-500">
+                                    No
+                                </div>
+                            </div>
+                                    
+                            
+                        </div>
+                        <div className="fixed opacity-70 top-10 z-10 left-0 w-full h-full bg-gray-800"></div>
+                </div> 
+                }
+
+    {popTip &&  <div className="relative">
+       <div className= "absolute bottom-4 lg:bottom-4 left-8 sm:p-1 sm:left-20 z-30 flex bg-transparent items-center justify-center">
+            <div className="font-mono flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-80 m-1 p-0.5 bg-gradient-to-r from-cyan-300 to-teal-700 font-bold text-lg text-teal-300">
+                <div>
+                    <div>
+                        </div>
+                </div>
+                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 1}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                    <div className= "items-center flex justify-center border-4 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
+                        1
+                    </div>
+                </div>
+                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 5}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                    <div className= " items-center flex justify-center border-4 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
+                        5
+                    </div>
+                </div>
+                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 10}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                    <div className= "items-center flex justify-center border-4 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
+                        10
+                    </div>
+                </div>
+                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 25}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                    <div className= "items-center flex justify-center border-4 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
+                        25
+                    </div>
+                </div>
+                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 50}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                    <div className= "items-center flex justify-center border-4 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
+                        50
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+        </div> 
+        }
+        {/*========== ENDTIPZZZZZZZZ======================== */}
+                    <div >
+                       
+                        {/* Tip Amount box */}
+                        <div className= "flex p-0.5">
+                            <div className= ' shadow-md m-auto flex justify-around p-1 bg-transparent border rounded-md border-gray-300 cursor-pointer hover:bg-gray-100'>
+                            <p className= "text-xs text-center text-gray-500">{diary.tips}</p>
+                            </div>
+                        </div>
+
+                        <div className="relative flex items-center rounded-full p-1 cursor-pointer bg-gradient-to-r hover:bg-cyan-100 hover:from-blue-100 hover:to-green-100"
+                            onClick={ () => {setpopTip(!popTip)}}>
+                            
+                            <GiTakeMyMoney  size ={29} className="text-gray-600"/>
+                            <p className="font-light text-xs m-1 text-gray-800">Honour</p>
+                            
+                        </div>  
+                    </div> 
                     </OutsideClickHandler>
                 {/* <OutsideClickHandler onOutsideClick={() => {setpopTip(false);}}> */}
                 

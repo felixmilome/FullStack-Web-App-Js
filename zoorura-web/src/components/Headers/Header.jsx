@@ -17,8 +17,12 @@ import NotificationsModal from '../Modals/NotificationsModal.jsx';
 import CartModal from '../Modals/CartModal.jsx';
 import LeftbarMob from '../Sidebars/LeftbarMob.jsx';
 import RightbarMob from '../Sidebars/RightbarMob.jsx';
+import {Link} from 'react-router-dom';
+
 function Header() {
 
+    const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    console.log(user);
     const[popProfile, setpopProfile] = useState(false);
     const[popSubscribers, setpopSubscribers] = useState(false);
     const[popNotifications, setpopNotifications] = useState(false);
@@ -33,13 +37,16 @@ function Header() {
         <div className= "sticky top-0 z-50 bg-gray-200 border-b-2 border-gray-300 p-2 lg:px-6 lg:py-3 shadow-md ">
         <div className= "flex items-center  space-x-2 justify-between">
             {/*Left*/}
-            <div className=" bg-transparent flex items-center justify-between">
-                        <div className= 'mx-2 p-0.5 rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
-                        <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
-                        </div>
-                <h1 className= "inline-flex text-base font-thin text-gray-400">Zoorura</h1>
-   
-            </div>
+            <Link to='/'>
+                <div className="cursor-pointer  rounded-full hover:bg-gray-100 bg-transparent flex items-center justify-between">
+                            
+                            <div className= 'rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
+                            <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
+                            </div>
+                    <h1 className= "m-1 inline-flex text-base font-light text-gray-400">Zoorura</h1>
+    
+                </div>
+           </Link>
             
             {/* Mid */}
             
@@ -52,6 +59,7 @@ function Header() {
             
 
             {/*Header Right*/}
+            { user &&
                 <div className="flex items-center  bg-transparent sm:space-x-2 justify-end">
                        
                         {/* Subscribers Modal & Button */}
@@ -120,6 +128,7 @@ function Header() {
                         </OutsideClickHandler>
 
                     {/*Profile Pic Modal && Button*/}
+                  
                     <OutsideClickHandler     
                         onOutsideClick={() => {
                             setpopProfile(false);
@@ -129,20 +138,22 @@ function Header() {
                      onClick={ () => 
                      {setpopProfile(!popProfile)}
                      }>
-                        <img src="./assets/images/milome.jpeg" alt="DP" className="rounded-full h-7 w-7"/>
-                        <span className="hidden md:inline-flex w-full mx-2 font-light text-sm">Felix Milome</span>
+                       <img src={user.result.imageUrl} alt="DP" className="rounded-full h-7 w-7"/>
+                        <span className="hidden md:inline-flex w-full mx-2 font-light text-sm">{user.result.name}</span>
                         </div>
 
                      {popProfile && <ProfileModal setshowProfile={setpopProfile}/>}
                     
                     </OutsideClickHandler>
                     
+                    
                    
                     
                     
                     
                 </div>
-                </div>
+                }
+            </div>
 
                 <div className="xl:hidden  mx-3 items-center flex justify-around">
                     

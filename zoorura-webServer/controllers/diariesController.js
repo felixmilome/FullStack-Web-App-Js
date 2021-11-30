@@ -1,5 +1,6 @@
 import  mongoose  from "mongoose"; 
-import DiariesModel from "../models/diariesModel.js";
+import {DiariesModel, TipModel} from "../models/diariesModel.js";
+import { taxer } from "../functions.js";
 
 
 export const getDiaries = async  (req, res) => {
@@ -12,8 +13,9 @@ export const getDiaries = async  (req, res) => {
 }
 
 export const postDiaries =  async (req, res)=> {
-        
-        const newDiary = new DiariesModel(req.body);
+
+        const diary = req.body;  
+        const newDiary = new DiariesModel({...diary, creator: req.userId, time: new Date().toISOString()});
        
     try{
         await newDiary.save();
@@ -43,4 +45,48 @@ export const deleteDiaries = async (req,res) =>{
     res.json({message: "Post Deleted Successfully"});
 
 
+}
+
+export const tipDiaries = async (req,res) => {
+
+    const{id} = req.params;
+    const tipperData = req.body;
+    const tipper = tipperData.tipper;
+    const tipperId = tipperData.tipperId;
+    const amount = tipperData.amount;
+    
+    const tax = taxer(amount);
+    const netAmount = amount - tax;
+   
+    console.log(req.body);
+    console.log(tipperData);
+    
+    console.log (`post Id: ${id}`);
+    console.log (`Gross: ${amount}`);
+    console.log (`Tax: ${tax}`);
+    console.log (`Net: ${netAmount.toFixed(2)}`);
+    console.log (`Tipper: ${tipper}`);
+    console.log (`Tipper Id: ${tipperId}`);
+    
+    if (!req.userId) return res.json({message: 'Unauthorized'});
+ 
+   
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
+
+    if(amount > 0 && amount < 51){
+    
+   const diary = await DiariesModel.findById(id);
+   diary.tippers.push(tipperData);
+   //diary
+   diary.save();
+
+   const tippedDiary = await DiariesModel.findByIdAndUpdate(id,  {tips: (diary.tips + netAmount).toFixed(2) }, { new: true });
+   
+  //{tips: (diary.tips + netAmount).toFixed(2)},
+ 
+    //const tippedDiary = await DiariesModel.findByIdAndUpdate(id,  newTip, { new: true });
+
+    res.json(tippedDiary);
+    }
+    //console.log(`${netAmount.toFixed(2)}: honours tipped successfully`)
 }
