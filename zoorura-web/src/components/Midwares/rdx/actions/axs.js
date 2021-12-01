@@ -16,6 +16,7 @@ export const postDiariesApi =(newDiary) => API.post('/diaries', newDiary);
 export const patchDiariesApi = (id, diariesEditData) => API.patch(`/diaries/${id}`, diariesEditData);
 export const deleteDiariesApi = (id) => API.delete(`/diaries/${id}`);
 export const tipDiariesApi = (id, tipperData) => API.patch(`/diaries/${id}/tipDiaries`, tipperData);
+export const reviewDiariesApi = (id, reviewData) => API.patch(`/diaries/${id}/reviewDiaries`, reviewData);
 
 export const loginApi = (formData) => API.post ('/users/login', formData);
-export const registerApi = (formData) => API.post ('/users/register', formData);
+export const registerApi = (formData) => API.post ('/users/register', formData); 

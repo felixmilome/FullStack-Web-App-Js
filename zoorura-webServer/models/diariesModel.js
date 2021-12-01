@@ -13,10 +13,29 @@ const tipSchema = mongoose.Schema({
     amount: {
         type:Number,
     },   
-  
-
-
 })
+
+const reviewSchema = mongoose.Schema({
+    reviewer: {
+        type:String,
+    },  
+    reviewerId:{
+        type:String
+    },
+    body:{
+        type:String
+    },
+    time: {
+        type: Date,
+        default: new Date()
+    },
+    tips: {
+        type:Number,
+        default: null,
+    },   
+    tippers: [], 
+})
+
 const diariesSchema = mongoose.Schema({
     creator: String,
     name: String,
@@ -31,12 +50,12 @@ const diariesSchema = mongoose.Schema({
         type:Number,
         default: 0,
     },   
-    tippers: [tipSchema]
-    ,
-    reviews: { 
+   
+    reviewtotal:{
         type: Number,
         default: 0
     },
+    
     displays:{
         type: Number,
         default: 0
@@ -46,10 +65,10 @@ const diariesSchema = mongoose.Schema({
         default: new Date()
 
     },
+    tippers: [tipSchema],
+    reviews: [reviewSchema],
 
 });
 
 export const DiariesModel = mongoose.model("DiariesModel", diariesSchema);
-export const TipModel = mongoose.model("TipModel", tipSchema);
 
-//export default DiariesModel;

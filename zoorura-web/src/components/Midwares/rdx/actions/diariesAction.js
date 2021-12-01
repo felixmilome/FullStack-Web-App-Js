@@ -42,10 +42,20 @@ export const deleteDiariesAction = (id) => async (dispatch) =>{
 export const tipDiariesAction = (id, tipperData) => async (dispatch)=>{
     try{
         const {data} = await axs.tipDiariesApi(id, tipperData); 
+       
         dispatch ({type: 'TIP_DIARY', payload: data});
     } catch(error){
         console.log(error);
-        // console.log(diariesEditData);
-        // console.log(id);
+     
+    }
+}
+export const reviewDiariesAction = (id, reviewData) => async (dispatch)=>{
+    try{
+        const {data} = await axs.reviewDiariesApi(id, reviewData); 
+      
+        dispatch ({type: 'REVIEW_DIARY', payload: data});
+    } catch(error){
+        console.log(error);
+       
     }
 }

@@ -149,7 +149,8 @@ function PostForm() {
             try{
                 console.log(diariesData);
 
-                dispatch(postDiariesAction ({...diariesData, name:user?.result?.name })); 
+               // dispatch(postDiariesAction ({...diariesData, name:user?.result?.userName }));
+               dispatch(postDiariesAction (diariesData)); 
                
                 setpopPosted(true);
 

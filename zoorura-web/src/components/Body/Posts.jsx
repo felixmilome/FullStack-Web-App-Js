@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 
 import IGbox from './IGbox.jsx'
 import PostFrame from "./PostFrame";
+import { Test } from "./test";
 
 
 function Posts(diaryId, setDiaryId) { 
@@ -35,9 +36,11 @@ console.log(diaries);
                     {
                 
                     diaries.map((diary) =>(
+                        
+                        // <Test key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
 
-                       <PostFrame key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
-                        //<PostBox key={diary._id} diary={diary} setDiaryId ={setDiaryId}/>
+                      <PostFrame key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
+                        // <PostBox key={diary._id} diary={diary} setDiaryId ={setDiaryId}/>
                     ))
                     }
                 </div>

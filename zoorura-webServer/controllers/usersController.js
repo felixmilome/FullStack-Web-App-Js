@@ -24,7 +24,7 @@ export const login = async (req,res) => {
      //if(!isPasswordCorrectU || !isPasswordCorrectE) return res.status(400).json({message:"invalid credentials"});
      if(!isPasswordCorrectE) return res.status(400).json({message:"invalid credentials"});
      
-     const token = jwt.sign({email: existingEmail.email, id: existingEmail._id}, JWT_SECRET, {expiresIn: "1h"});
+     const token = jwt.sign({email: existingEmail.email, id: existingEmail._id}, JWT_SECRET, {expiresIn: "12h"});
 
     res. status(200).json({result: existingEmail, token});
 

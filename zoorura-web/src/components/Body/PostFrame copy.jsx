@@ -511,7 +511,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 {/* Other Icon */}
                 <div className="flex items-center rounded-full p-1 cursor-pointer hover:bg-blue-100">
                                 <AiOutlineComment  size ={22} className="text-gray-500"/>
-                    <p className="font-light text-xs m-1 text-gray-800">{diary.reviews.length} Reviews</p>
+                    <p className="font-light text-xs m-1 text-gray-800">{diary.reviews} Reviews</p>
                 </div>
                 <div className="flex items-center p-1 rounded-full cursor-pointer hover:bg-green-100">
                                  <RiShareForwardBoxLine size ={22} className="text-gray-500"/>
