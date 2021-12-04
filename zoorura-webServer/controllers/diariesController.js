@@ -7,6 +7,7 @@ import { taxer } from "../functions.js";
 export const getDiaries = async  (req, res) => {
    try{
         const diaries = await DiariesModel.find();
+        
         res.status(200).json(diaries);
    } catch(error){
        res.status(404).json({message: error.message});
@@ -42,12 +43,21 @@ export const patchDiaries = async (req, res) =>{
 }
 export const deleteDiaries = async (req,res) =>{
     const {id} = req.params;
+    const requester = req.userId;
+   const diary = await DiariesModel.findById(id);
+   const creator = diary.creator;
+
+   console.log(requester);
+   console.log(creator);
+
+   if (requester === creator) {
 
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
-    
     await DiariesModel.findByIdAndRemove(id);
     console.log("Diary Deleted!")
     res.json({message: "Post Deleted Successfully"});
+
+   }
 
 
 }
@@ -55,6 +65,8 @@ export const deleteDiaries = async (req,res) =>{
 export const tipDiaries = async (req,res) => {
 
     const{id} = req.params;
+    
+
     const tipperData = req.body;
     const tipper = tipperData.tipper;
     const tipperId = tipperData.tipperId;
@@ -81,20 +93,43 @@ export const tipDiaries = async (req,res) => {
     if(amount > 0 && amount < 51){
     
    const diary = await DiariesModel.findById(id);
-   //diary.tippers.push(tipperData);
-    //diary.save();
+
    const tippers = diary.tippers;
    console.log(tippers);
    console.log(tipperData);
 
-   //tips: (diary.tips + netAmount).toFixed(2),
+    try{
+   
+    
+       // Withdrawal from Requester
+       const requesterId = req.userId;
+       const requester = await UsersModel.findById(requesterId);  
+       const rwallet = requester.wallet
+       console.log(rwallet);
 
+    const walletcut = await UsersModel.findByIdAndUpdate(requesterId, {wallet:(rwallet - amount).toFixed(2)}, { new: true });
+        
+        // Deposit to Taker
+        const creatorId = diary.creator;
+        const creator = await UsersModel.findById(creatorId);
+        const cwallet = creator.wallet
+        console.log(cwallet);
 
-   const tippedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  tippers:diary.tippers.push(tipperData)}, { new: true });
-   const tippedDiary2 = await DiariesModel.findByIdAndUpdate(id, { tips: (diary.tips + netAmount).toFixed(2)}, { new: true });
+    const walletadd = await UsersModel.findByIdAndUpdate(creatorId, {wallet:(cwallet + netAmount).toFixed(2)}, { new: true });
+     
+     //const withdrawalData = {postId: id, amount: amount };
 
+    console.log(walletcut);
+    console.log(walletadd);
 
-    res.json(tippedDiary2); 
+    
+        }
+        catch (error){
+            res.status(404).json({message: error.message});
+        }
+        const tippedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  tippers:diary.tippers.push(tipperData)}, { new: true });
+        const tippedDiary2 = await DiariesModel.findByIdAndUpdate(id, {tips: (diary.tips + netAmount).toFixed(2)}, { new: true });
+        res.json(tippedDiary2); 
     }
 
 }

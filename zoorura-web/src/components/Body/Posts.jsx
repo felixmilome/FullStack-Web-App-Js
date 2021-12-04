@@ -24,7 +24,7 @@ console.log(diaries);
             <div className="p-3 flex">   
                 <div className="text-center text-sm text-gray-400 p-3 m-auto bg-transparent rounded-xl">
                     
-                    <BeatLoader size={48} color='pink' loading/>
+                    <BeatLoader size={24} color='pink' loading/>
                     <p className= 'text-sm'>fetching posts..</p>
                     
                 </div>

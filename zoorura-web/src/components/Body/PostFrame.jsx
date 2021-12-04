@@ -9,7 +9,10 @@ import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { MdSend} from "react-icons/md";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
+import { BiCommentEdit } from "react-icons/bi";
+
 import {BeatLoader} from "react-spinners";
+
 import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm} from "./PostForms/Previews.jsx";
 
 
@@ -51,6 +54,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         console.log(reviewData);
         try{
             dispatch(reviewDiariesAction(id, reviewData));
+            setreviewData({...reviewData, body:''})
         }
         catch(error){
             console.log(error);
@@ -431,7 +435,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         { popSure &&  <div className="flex justify-center  fixed left-0 z-40 flex w-full  bg-transparent text-base font-light text-gray-700">
                     <div className= "fixed z-40 top-80 bg-gray-100 rounded-xl p-8 text-center">
                     
-                            <p> Give <span className="font-bold">{tipperData.amount}</span> Honours to this post?</p>
+                            <p> Give <span className="font-bold">{tipperData.amount}</span> Honours to this post? No reversal</p>
                             <div className="flex justify-around items-center pt-4 m-auto">
                                 
                                 <div onClick = {tipDiary} className= "bg-red-400 text-white p-2 rounded-md cursor-pointer hover:bg-red-500">
@@ -487,19 +491,19 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         </div> 
         }
         {/*========== ENDTIPZZZZZZZZ======================== */}
-                    <div >
+                    <div className='flex'>
 
                         <div className="relative flex items-center rounded-full p-1 cursor-pointer bg-gradient-to-r hover:bg-cyan-100 hover:from-blue-100 hover:to-green-100"
                             onClick={ () => {setpopTip(!popTip)}}>
                             
                             <GiTakeMyMoney  size ={29} className="text-gray-600"/>
-                            <p className="font-light text-xs m-1 text-gray-800">Honour</p>
+                            <p className="font-light text-xs m-1 text-gray-800">Honours:</p>
                             
                         </div>  
                          {/* Tip Amount box */}
                        { diary.tips > 0  && <div  className= "flex p-0.5">
-                            <div onClick={() => {seTipperview(true)}} className= ' shadow-md m-auto flex justify-around p-1 bg-transparent border rounded-md border-gray-300 cursor-pointer hover:bg-gray-100'>
-                            <p className= "text-xs text-center text-gray-500">{diary.tips} Hons</p>
+                            <div onClick={() => {seTipperview(true)}} className= 'bg-gray-200 shadow-md m-auto flex justify-around p-1 bg-transparent border rounded-md border-gray-300 cursor-pointer hover:bg-gray-100'>
+                            <p className= "text-xs text-center text-cyan-500">{diary.tips}</p>
                             </div>
                         </div>}
                     </div> 
@@ -511,11 +515,11 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 {/* Other Icon */}
                 <div className="flex items-center rounded-full p-1 cursor-pointer hover:bg-blue-100">
                                 <AiOutlineComment  size ={22} className="text-gray-500"/>
-                    <p className="font-light text-xs m-1 text-gray-800">{diary.reviews.length} Reviews</p>
+                    <p className="font-light text-xs m-1 text-gray-800">Reviews: {diary.reviews.length}</p>
                 </div>
                 <div className="flex items-center p-1 rounded-full cursor-pointer hover:bg-green-100">
                                  <RiShareForwardBoxLine size ={22} className="text-gray-500"/>
-                    <p className="font-light text-xs m-1 text-gray-800">{diary.displays} Displays</p>
+                    <p className="font-light text-xs m-1 text-gray-800">Displays: {diary.displays}</p>
                 </div>
             </div> 
 
@@ -540,18 +544,12 @@ function PostFrame({diary, diaryId, setDiaryId}) {
             </ OutsideClickHandler>
                          {/* Comment Box */}
                            
-                            <div className="relative w-full items-center">
-                                <div className='absolute bottom-2 right-2'>
-                                    <MdSend onClick= {reviewDiary}/>
-                                </div>
-                                <textarea onChange={(e)=> setreviewData({reviewer: user.result.userName, reviewerId:user.result._id, body: e.target.value})}
-                                type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded-md py-3 pl-3 pr-8"/>
-                            </div>
                             
-                             
-                            {diary.reviews.length > 0  && diary.reviews.map((review) =>(
-
-                                    <div key={review._id} className="flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
+                            
+                              <div className='bg-gray-200 border border-gray-300 rounded-md max-h-64 overflow-y-auto'>
+                            {diary.reviews.length > 0  && diary.reviews.map((reviewmap) =>(
+                               
+                                    <div key={reviewmap._id} className="p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
                                         
                                         {/* EMoji & Pic */}
                                             <div className="space-y-3 items-center inline-block p-1">
@@ -560,22 +558,41 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                             </div>
                                             {/* Name and Comment*/}
                                             <div className="flex items-center m-1 bg-transparent w-5/6">  
-                                            <div className="bg-gray-100 border  border-white p-3 rounded-2xl max-w-3/4">
-                                                    <p> @{review.reviewer} </p>
-                                                <div className= "font-normal text-sm break-words">{review.body}</div>
+                                            <div className="bg-gray-100 border  border-gray-300 p-3 rounded-2xl max-w-3/4">
+                                                    <div className= 'bg-transpparent rounded-md'>
+                                                    <p className='text-xs font-light'> @{reviewmap.reviewer}:</p>
+                                                     {/* <p className='font-light'>{moment (reviewmap.time).fromNow()}</p></p> */}
+                                                     </div>
+                                                    
+                                                <div className= "font-normal text-xs break-words">{reviewmap.body}</div>
                                                 </div>
-                                                <div className="bg-gray-100 rounded-full flex justify-center cursor-pointer h-7 w-7 items-center hover:bg-white group m-3">
-                                                    <GiTakeMyMoney  size ={29} className="text-gray-600"/>
+                                                <div className="bg-transparent rounded-full flex justify-center cursor-pointer h-7 w-7 items-center hover:bg-white group m-3">
+                                                    <GiTakeMyMoney onclick  size ={24} className="text-gray-400"/>
+                                                </div>
+                                                  <div className="bg-transparent rounded-full flex justify-center cursor-pointer h-7 w-7 items-center hover:bg-white group m-3">
+                                                    <BiCommentEdit  size ={20} className="text-gray-400"/>
                                                 </div>
                                             </div>
                                                 
                                     </div>
+                                
                                     // Src= "./assets/images/beyonce.jpeg" 
                             //<ReviewBubble Name = {review.reviewer} Review={review.body}/>
                             // <ReviewBubble Name="@Hover" Review="Wow Milome I am jealous. He knows how to invest and can give you anything you ask for or want He is a good friend of mine. hhddfjkbdfhjbdfhkbdfhjbdfjhbdjfhbdfjhbkbdjhbjhbhjbjhbjhbjhbbfsjhkb jknbjbnj jnkbnkj huihiuhuihi uhiuhiuhiuh h
                             // hahahahahahah"/>
                             ))
+                            
                         } 
+                        </div>
+
+                        <div className="relative w-full items-center">
+                                <div className='absolute bottom-2 right-2'>
+                                  { reviewData.body.length > 0 &&  <MdSend onClick= {reviewDiary}/> }
+                                </div>
+                                <textarea value= {reviewData.body}
+                                onChange={(e)=> setreviewData({reviewer: user.result.userName, reviewerId:user.result._id, body: e.target.value})}
+                                type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded-md py-3 pl-3 pr-8"/>
+                            </div>
         </div>
 
         </div>
