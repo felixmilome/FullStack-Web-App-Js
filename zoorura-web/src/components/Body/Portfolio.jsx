@@ -33,9 +33,13 @@ import { tipDiariesAction, reviewDiariesAction } from "../Midwares/rdx/actions/d
 
 import moment from 'moment';
 import {useDispatch} from 'react-redux'; 
+import {useSelector} from 'react-redux';
 
 
-function PostFrame({diary, diaryId, setDiaryId}) {
+
+
+function Portfolio({diary, diaryId, setDiaryId}) {
+    const diaries = useSelector((state) => state.diariesReducer);
     const user = JSON.parse(localStorage.getItem('profile'));
    const dispatch = useDispatch();
     const[popTip, setpopTip] = useState(false);
@@ -599,5 +603,5 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     )
 }
 
-export default PostFrame;
+export default Portfolio;
 

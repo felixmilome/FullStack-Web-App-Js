@@ -9,11 +9,16 @@ export const getDiariesAction = () => async (dispatch) => {
         console.log(error);
     }
 }
-export const postDiariesAction = (diary) => async (dispatch) => {
+export const postDiariesAction = (diary, setpopPosted, navigate) => async (dispatch) => {
     try{
         const {data} = await axs.postDiariesApi(diary);
 
         dispatch ({type: 'POST_DIARY', payload: data});
+
+        setpopPosted(true);
+        navigate ('/');
+
+        //setTimeout( function() {navigate ('/')}, 1000);
     } catch(error) {
         console.log(error);
     }
@@ -39,21 +44,29 @@ export const deleteDiariesAction = (id) => async (dispatch) =>{
         }
 }
 
-export const tipDiariesAction = (id, tipperData) => async (dispatch)=>{
+export const tipDiariesAction = (id, tipperData, setpopSure, setpopTip) => async (dispatch)=>{
     try{
         const {data} = await axs.tipDiariesApi(id, tipperData); 
        
         dispatch ({type: 'TIP_DIARY', payload: data});
+        // if(dispatch)
+        // {
+        setpopSure(false);
+        setpopTip(false);
+        //}
+        
     } catch(error){
         console.log(error);
      
     }
 }
-export const reviewDiariesAction = (id, reviewData) => async (dispatch)=>{
+export const reviewDiariesAction = (id, reviewData, setreviewData) => async (dispatch)=>{
     try{
         const {data} = await axs.reviewDiariesApi(id, reviewData); 
-      
+        
         dispatch ({type: 'REVIEW_DIARY', payload: data});
+
+        setreviewData({reviewer:'', reviewerId:'', body: ''});
     } catch(error){
         console.log(error);
        

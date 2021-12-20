@@ -150,11 +150,11 @@ function PostForm() {
                 console.log(diariesData);
 
                // dispatch(postDiariesAction ({...diariesData, name:user?.result?.userName }));
-               dispatch(postDiariesAction (diariesData)); 
+               dispatch(postDiariesAction (diariesData, setpopPosted, navigate)); 
                
-                setpopPosted(true);
+               // setpopPosted(true);
 
-                setTimeout( function() {navigate ('/')}, 1000);
+                //setTimeout( function() {navigate ('/')}, 1000);
 
             }
             catch(err){

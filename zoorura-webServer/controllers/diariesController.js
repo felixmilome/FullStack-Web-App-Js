@@ -4,6 +4,7 @@ import {UsersModel} from "../models/usersModel.js";
 import { taxer } from "../functions.js";
 
 
+//Get  Diariessss===========================================
 export const getDiaries = async  (req, res) => {
    try{
         const diaries = await DiariesModel.find();
@@ -14,13 +15,15 @@ export const getDiaries = async  (req, res) => {
    }
 }
 
+
+//Post  Diariessss===========================================
 export const postDiaries =  async (req, res)=> {
 
         const diary = req.body;  
         console.log(diary);
         const user = await UsersModel.findById(req.userId);
         console.log(user);
-        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, time: new Date().toISOString()});
+        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, time: new Date().toISOString()}); //time is for updates
        
     try{
         await newDiary.save();
@@ -31,6 +34,9 @@ export const postDiaries =  async (req, res)=> {
    }
 
 }
+
+
+//Patch  Diariessss===========================================
 export const patchDiaries = async (req, res) =>{
     const{id:_id} = req.params;
     const newDiary=req.body;
@@ -41,6 +47,9 @@ export const patchDiaries = async (req, res) =>{
     res.json(patchedDiary);
 
 }
+
+
+//Delete  Diariessss===========================================
 export const deleteDiaries = async (req,res) =>{
     const {id} = req.params;
     const requester = req.userId;
@@ -62,6 +71,9 @@ export const deleteDiaries = async (req,res) =>{
 
 }
 
+
+
+//Tip  Diariessss===========================================
 export const tipDiaries = async (req,res) => {
 
     const{id} = req.params;
@@ -95,32 +107,45 @@ export const tipDiaries = async (req,res) => {
    const diary = await DiariesModel.findById(id);
 
    const tippers = diary.tippers;
-   console.log(tippers);
-   console.log(tipperData);
+//    console.log(tippers);
+//    console.log(tipperData);
 
     try{
    
     
-       // Withdrawal from Requester
+    // Withdrawal from Giver/Requester//---------------------------
+
        const requesterId = req.userId;
        const requester = await UsersModel.findById(requesterId);  
        const rwallet = requester.wallet
-       console.log(rwallet);
-
+      // console.log(rwallet);
+       const withdrawalData = {type:'diarytip', receiver:diary.name, receiverId: diary.creator, title:diary.heading, postId: id, amount: amount};
+       
+    const withdrawRecord = await UsersModel.findByIdAndUpdate(requesterId, {...requester, withdrawals:requester.withdrawals.push(withdrawalData)}, { new: true });
     const walletcut = await UsersModel.findByIdAndUpdate(requesterId, {wallet:(rwallet - amount).toFixed(2)}, { new: true });
         
-        // Deposit to Taker
+       
+    
+    // Deposit to Taker/Creator//-----------------------
+
         const creatorId = diary.creator;
         const creator = await UsersModel.findById(creatorId);
         const cwallet = creator.wallet
-        console.log(cwallet);
+       // console.log(cwallet);
+        const depositData = {type:'diarytip', giver:creator.userName, giverId: creatorId, title:diary.heading, postId:id, amount: netAmount };
 
+    const depositRecord = await UsersModel.findByIdAndUpdate(creatorId, {...creator, deposits:creator.deposits.push(depositData)}, { new: true });
     const walletadd = await UsersModel.findByIdAndUpdate(creatorId, {wallet:(cwallet + netAmount).toFixed(2)}, { new: true });
+    
+    
      
      //const withdrawalData = {postId: id, amount: amount };
 
     console.log(walletcut);
     console.log(walletadd);
+    console.log(withdrawRecord);
+   console.log(depositRecord);
+
 
     
         }
@@ -134,6 +159,9 @@ export const tipDiaries = async (req,res) => {
 
 }
 
+
+
+//Review  Diariessss===========================================
 export const reviewDiaries = async (req,res) => {
 
     const{id} = req.params;

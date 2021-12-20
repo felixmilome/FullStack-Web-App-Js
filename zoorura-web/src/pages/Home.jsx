@@ -6,6 +6,7 @@ import Rightbar from "../components/Sidebars/Rightbar.jsx";
 import {Routes, Route} from 'react-router-dom';
 import PostForm from "../components/Body/PostForm.jsx";
 import PostEdit from "../components/Body/PostEdit.jsx";
+import Portfolios from "../components/Body/Portfolios.jsx";
 import {useState} from 'react'; 
 
 
@@ -23,6 +24,7 @@ function Home({showProfile}) {
                         <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId}/>}/>
                         <Route exact path ="/PostForm" element ={<PostForm />}/>
                         <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId}/>}/>
+                        <Route exact path ="/Portfolios" element ={<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId}/>}/>
                         
                     </Routes> 
                 <Rightbar/>             
