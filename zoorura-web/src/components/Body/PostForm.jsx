@@ -19,12 +19,17 @@ import {useDispatch} from 'react-redux';
 import { postDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
 import PostFRow from "./PostFRow.jsx";
 
+//firebase
+import {storage} from "../Midwares/firebase/config";
+import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
+
+
 
 
 function PostForm() {
 
     const [diariesData, setdiariesData] = useState({
-        title:'', caption:'', file: '',  publicity:'',
+        title:'', caption:'', file: '', image: '',  publicity:'',
     }); 
    
     const dispatch = useDispatch();
@@ -33,6 +38,36 @@ function PostForm() {
     const user = JSON.parse(localStorage.getItem('profile'));
 
     const[popPosted, setpopPosted] = useState(false);
+
+    const [progress, setProgress] = useState(0);
+
+ 
+    
+    const uploadImage = (image) =>{
+        if (!image) return;
+        const storageRef = ref (storage, `/diaryfiles/${image.name}`);
+        const uploadTask=uploadBytesResumable(storageRef,image);
+    
+        uploadTask.on("state-changed", (snapshot)=>{
+            const prog = Math.round(
+                (snapshot.bytesTransferred/ snapshot.totalBytes)* 100
+                );
+            setProgress(prog);
+        },
+        (err) => console.log(err),
+        () => {
+           getDownloadURL(uploadTask.snapshot.ref).then((url)=> console.log(url)); 
+        }
+        );
+    };
+
+    const handleImage = async (e)=>{
+        e.preventDefault();
+        const image = e.target.files[0];
+        console.log(image);
+        uploadImage(image);
+            
+    };
 
 
     const handleUrl = async (e) =>{
@@ -143,6 +178,7 @@ function PostForm() {
         }
     }
 
+
     const handleSubmit = async (e)=>{
         e.preventDefault();
 
@@ -247,6 +283,16 @@ function PostForm() {
                                         //onChange={(e)=> setdiariesData({...diariesData, file: e.target.value})}
                                         onChange={handleUrl}
                                         placeholder="Paste Url Here" className="rounded-full text-center text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-400 bg-gray-200"/>
+                                    </div>
+
+                                {/*======== IMAGE============= */}
+                                    <div className="flex justify-center">
+                                        <input type='file' name= "image"
+                                       //value= {diariesData.file}
+                                       // onChange={(e)=> setdiariesData({...diariesData, image: e.target.files[0]})}
+                                        onChange={handleImage}
+                                        placeholder="Paste Url Here" className="rounded-full text-center text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-400 bg-gray-200"/>
+                                        <p> Uploaded {progress} % </p>
                                     </div>
 
 

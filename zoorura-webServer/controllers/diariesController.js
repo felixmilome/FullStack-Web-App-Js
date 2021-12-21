@@ -22,13 +22,13 @@ export const postDiaries =  async (req, res)=> {
         const diary = req.body;  
         console.log(diary);
         const user = await UsersModel.findById(req.userId);
-        console.log(user);
+       // console.log(user);
         const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, time: new Date().toISOString()}); //time is for updates
        
     try{
         await newDiary.save();
         res.status(201).json(newDiary);
-        console.log(newDiary);
+       // console.log(newDiary);
    } catch(error){
        res.status(409).json({message:error.message});
    }

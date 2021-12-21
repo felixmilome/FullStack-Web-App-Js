@@ -60,7 +60,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
         e.preventDefault();
         console.log(formData);
 
-        try{
+        try{ 
             dispatch(registerAction(formData, navigate));
            
         } catch (error){

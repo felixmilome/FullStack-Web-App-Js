@@ -1,6 +1,9 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
+import {createUserWithEmailAndPassword, sendSignInLinkToEmail} from "firebase/auth";
+import {auth} from "../firebaseBack/config.js";
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -51,8 +54,15 @@ export const register = async (req,res) => {
 
          const result = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`});
 
-         const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "1h"});
+         //Firebase Stuff
+        try{
+         createUserWithEmailAndPassword (auth, email, password);
+        } catch (error){
+            res.status(500).json({message: 'Something went wrong'});  
+            UsersModel.findOneAndDelete ({email});
+        }
 
+         const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
          res.status(200).json({result, token});
     } catch (error) { 
        res.status(500).json({message: 'Something went wrong'});  
