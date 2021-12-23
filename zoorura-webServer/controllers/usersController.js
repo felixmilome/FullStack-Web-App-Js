@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import {createUserWithEmailAndPassword, sendSignInLinkToEmail} from "firebase/auth";
+import {createUserWithEmailAndPassword, sendEmailVerification, sendSignInLinkToEmail, sendPasswordResetEmail} from "firebase/auth";
 import {auth} from "../firebaseBack/config.js";
 
 import dotenv from 'dotenv';
@@ -10,6 +10,30 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 import {UsersModel} from '../models/usersModel.js';
+
+import nodemailer from "nodemailer";
+
+//nodemailer transporter
+ let transporter = nodemailer.createTransport({
+   host: 'zoorura.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'zoorura@zoorura.com', 
+        pass: 'December2021!'          
+    }
+  });
+
+  const sendVerifyEmail = (email) => {
+      const mailOptions = {
+        from: 'Zoorura <zoorura@zoorura.com>', 
+        to: email, 
+        subject: "Zoorura Email Verification Testing", 
+        //text: "Testing", 
+        html: '<p><img src="https://zoorura.com/home/assets/images/logo-light.png" width="300" height="93" /></p><b>You opened an account on Zoorura. This is a test Email to verify its you.</b>', 
+      }
+      transporter.sendMail(mailOptions);
+  }
 
 
 export const login = async (req,res) => {
@@ -31,7 +55,11 @@ export const login = async (req,res) => {
 
     res. status(200).json({result: existingEmail, token});
 
-    
+    try{ 
+        sendVerifyEmail (email);
+    } catch (err){
+        console.log(err.message);
+    }
 
  } catch (error){
      res.status(500).json({message: 'Something went wrong'});
@@ -56,7 +84,15 @@ export const register = async (req,res) => {
 
          //Firebase Stuff
         try{
-         createUserWithEmailAndPassword (auth, email, password);
+            createUserWithEmailAndPassword (auth, email, password)
+            .then(response=> {
+                console.log(response);
+              //  sendPasswordResetEmail (auth, email, {url: 'http://localhost:3000/'});
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
+         
         } catch (error){
             res.status(500).json({message: 'Something went wrong'});  
             UsersModel.findOneAndDelete ({email});
