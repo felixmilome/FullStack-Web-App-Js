@@ -19,22 +19,22 @@ import nodemailer from "nodemailer";
     port: 465,
     secure: true,
     auth: {
-        user: 'zoorura@zoorura.com', 
-        pass: 'December2021!'          
+        user: process.env.AUTH_EMAIL, 
+        pass: process.env.AUTH_PASS,          
     }
   });
 
   const sendVerifyEmail = (email) => {
       const mailOptions = {
-        from: 'Zoorura <zoorura@zoorura.com>', 
+        from: 'Zoorura <noreply@zoorura.com>', 
         to: email, 
         subject: "Zoorura Email Verification Testing", 
         //text: "Testing", 
-        html: '<p><img src="https://zoorura.com/home/assets/images/logo-light.png" width="300" height="93" /></p><b>You opened an account on Zoorura. This is a test Email to verify its you.</b>', 
+        html: '<b>You opened an account on Zoorura. This is a test Email to verify its you.</b>', 
       }
       transporter.sendMail(mailOptions);
   }
-
+//<p><img src="https://zoorura.com/home/assets/images/logo-light.png" width="300" height="93" /></p>
 
 export const login = async (req,res) => {
  const {email, password} = req.body
