@@ -19,4 +19,5 @@ export const tipDiariesApi = (id, tipperData) => API.patch(`/diaries/${id}/tipDi
 export const reviewDiariesApi = (id, reviewData) => API.patch(`/diaries/${id}/reviewDiaries`, reviewData);
 
 export const loginApi = (formData) => API.post ('/users/login', formData);
-export const registerApi = (formData) => API.post ('/users/register', formData); 
+export const registerApi = (formData) => API.post ('/users/register', formData);
+export const verifyApi = (formData) => API.patch ('/users/verify', formData);  

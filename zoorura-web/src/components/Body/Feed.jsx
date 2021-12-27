@@ -5,14 +5,16 @@ import Posts from "./Posts.jsx";
 import CreatediaryModal from "../Modals/CreatediaryModal.jsx";
 import { useState } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
-import{SignupForm, LoginForm} from '../Modals/RegForms.jsx'
+import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
 
-function Feed(diaryId, setDiaryId) {
+function Feed(diaryId, setDiaryId, setNavbars) {
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const[popCreatediary, setpopCreatediary] = useState(false);
     const[popLogin, setpopLogin] = useState(false);
     const[popSignup, setpopSignup] = useState(true);
-   
+    console.log(user);
+    console.log('yes');
+
 
     
 
@@ -21,7 +23,8 @@ function Feed(diaryId, setDiaryId) {
     <div className="overflow-y-scroll">
                     
         {/*==============SIGN UP/ LOGIN =================*/}
-
+        {user && !user.result.verified  ? <VerifyForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
+            
              { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
              {popLogin && !user ? <LoginForm  popLogin = {popLogin} popSignup ={popSignup}  setpopLogin ={setpopLogin} setpopSignup = {setpopSignup} />: <></>}
                 <div className="flex justify-center">
@@ -39,7 +42,7 @@ function Feed(diaryId, setDiaryId) {
                     </OutsideClickHandler> */}
 
                    
-                   
+                        {user && user.result.verified == true?
                             <Link to ='/PostForm'>
                                 <div className="bg-gradient-to-r bg-gray-700 
                                 hover:from-pink-500 hover:to-yellow-500 
@@ -52,7 +55,8 @@ function Feed(diaryId, setDiaryId) {
                                     <LinkIcon className="p-0.5 h-6 text-white"/>
                                     <p className="text-white">Attach Post</p>
                                 </div>
-                            </Link>
+                            </Link> : <></>
+                        }
                            
                     
 

@@ -22,7 +22,7 @@ import {Link} from 'react-router-dom';
 function Header() {
 
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    console.log(user);
+    //console.log(user);
     const[popProfile, setpopProfile] = useState(false);
     const[popSubscribers, setpopSubscribers] = useState(false);
     const[popNotifications, setpopNotifications] = useState(false);
@@ -43,7 +43,7 @@ function Header() {
                             <div className= 'rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
                             <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
                             </div>
-                    <h1 className= "m-1 inline-flex text-base font-light text-gray-400">Zoorura</h1>
+                    <h1 className= "m-1 inline-flex text-base font-bold text-gray-400">Home</h1>
     
                 </div>
            </Link>

@@ -5,7 +5,7 @@ import {useDispatch} from 'react-redux';
 import{useNavigate} from 'react-router-dom';
 import{useState} from 'react';
 
-import {loginAction, registerAction} from '../Midwares/rdx/actions/auth.js';
+import {loginAction, registerAction, verifyAction} from '../Midwares/rdx/actions/auth.js';
 
 
 
@@ -258,6 +258,87 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                                 font-semibold p-1 mb-4">
                             
                              Log In
+                        </button>
+                      
+                       
+                        
+                </div>
+            </form>
+            </div>
+          
+
+        </div>
+    )
+}
+
+export const VerifyForm = ({setpopSignup, setpopLogin}) => {
+    const dispatch = useDispatch();
+    const initialState ={email: '', otp: ''}
+    const [formData, setFormData] = useState(initialState);
+    const navigate = useNavigate();
+    const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+
+    const handleChange = (e) =>{
+        setFormData({email:user.result.email, otp: e.target.value});
+    };
+
+  
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(formData);
+     
+
+        try{
+           dispatch(verifyAction(formData, navigate));    
+        } catch (error){
+            console.log(error);
+        }
+        
+    }
+
+    return (
+        <div className="bg-gray-300 opacity-95 fixed h-full text-gray-600 font-bold top-0 left-0 w-full flex justify-center z-50">
+                    
+        {/* ============Floating Box======== */}
+
+             
+            <div className="w-full lg:w-2/5 h-1/2 bg-gray-100 rounded-md shadow-xl mt-24">
+            
+            <form onSubmit={handleSubmit}>
+                        <div className= "pt-3 pb-1 flex items-center justify-around">
+                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-full h-8 w-8 sm:h-20 sm:w-20"/>
+                        </div>  
+                        <div className="p-1 text-center font-light bg-transparent">
+                           
+                            <p>Hello {user.result.name}. </p> 
+                            <p className= "font-bold">Enter the Verification OTP Sent to {user.result.email}</p>
+                            <p> To verify your account</p>
+
+                            
+                        </div>
+
+
+                        {/*========= Inputs=============== */}
+                        <div className="p-3 text-sm ">
+                        {/* Code*/}
+                         <div className= "p-1 flex items-center justify-around">
+                            <input onChange={handleChange} name='otp' className= "text-center w-1/2 font-semibold text-lg bg-gray-100 border border-gray-300 m-1 p-2 rounded-md" type="text" placeholder= "Enter OTP"/>
+                        </div>
+                  
+                            
+                </div>
+                
+
+                <div className='flex justify-between'>
+                        <button type='submit' className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-pink-500 to-cyan-500 
+                            bg-gradient-to-r hover:from-pink-500
+                            hover:to-yellow-500 flex
+                            mx-auto rounded-md
+                                 justify-center 
+                                text-white text-sm cursor-pointer
+                                font-semibold p-1 mb-4">
+                            
+                             Verify Me
                         </button>
                       
                        
