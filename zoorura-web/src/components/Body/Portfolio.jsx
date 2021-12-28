@@ -92,7 +92,7 @@ function Portfolio({diary, diaryId, setDiaryId}) {
     return (
 
         // Post-Box
-        <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent relative xl:w-1/2 mx-auto my-1"> 
+        <div className="z-30 p-2 sm:px-12 py-4 rounded-xl bg-transparent relative xl:w-1/2 mx-auto my-1"> 
 
             {/* Post-Top-Cyan Invisible Parent*/}
             <div className="flex  justify-end">

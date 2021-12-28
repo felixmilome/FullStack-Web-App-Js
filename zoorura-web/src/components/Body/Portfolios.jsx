@@ -2,18 +2,21 @@
 import PostBox from "./PostBox";
 import {BeatLoader} from "react-spinners";
 import {useSelector} from 'react-redux';
+import { useState } from 'react';
 
 import {RiUserAddLine} from "react-icons/ri";
 import {HiOutlineChatAlt2} from "react-icons/hi"
 
 import IGbox from './IGbox.jsx'
 import Portfolio from "./Portfolio";
+import { DpCropper } from "./DpCropper.jsx";
 import { Test } from "./test";
 
 
 function Portfolios(diaryId, setDiaryId) { 
 
 const user = JSON.parse(localStorage.getItem('profile'));
+const[dpCropper, setdpCropper] = useState(false);
 const userName = user.result.userName;
 const diaries = useSelector((state) => state.diariesReducer);
 
@@ -23,20 +26,12 @@ console.log(diaries);
        <div>
 
 
-            { !diaries.length ? 
-
-            <div className="p-3 flex">   
-                <div className="text-center text-sm text-gray-400 p-3 m-auto bg-transparent rounded-xl">
-                    
-                    <BeatLoader size={24} color='pink' loading/>
-                    <p className= 'text-sm'>fetching posts..</p>
-                    
-                </div>
-            </div>
-
-            : (
+            
                 <div >
                     {/* portbox */}
+                    { dpCropper &&
+                    <DpCropper setdpCropper ={setdpCropper}/>
+                    }
                     
                         <div className='w-full opacity-90  m-auto z-30  bg-transparent'>
                             <div className= 'flex m-auto bg-transparent'>
@@ -45,7 +40,11 @@ console.log(diaries);
                                     {/* PIC frame */}
                                     <div className='rounded-md'>
                                             <div className= " cursor-pointer mx-3 space-y-2 rounded-xl text-xs  bg-transparent items-center mt-4 mb-3 group">
-                                                <img src="./assets/images/milome.jpeg" alt="DP" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
+                                             
+                                            
+                                                <img onClick={()=>{setdpCropper(true)}} src={user.result.dpUrl} alt="Dp" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
+                                               
+                                                
                                                 <p className= "text-gray-600 leading-3 text-center text-base font-bold ">@{userName}</p>
                                             <div className="bg-gray-100 rounded-md items-center"> 
                                             
@@ -102,26 +101,26 @@ console.log(diaries);
                             
                       
                         
-                    </div>
+                    </div> 
 
 
-                    {/* Diaries */}
-                    <div className=''>
-
-                    {
-                
-                    diaries.map((diary) =>(
-                        
-                        // <Test key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
-                        
-                      <Portfolio key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
-                        // <PostBox key={diary._id} diary={diary} setDiaryId ={setDiaryId}/>
-                    ))
-                    }
-                    </div>
+                           {/* //Diaries Map ========================== */}
+                            <div className=''>
+                                
+                                   { diaries.map((diary) =>(
+                                        
+                                        // <Test key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
+                                        
+                                    <Portfolio key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
+                                        // <PostBox key={diary._id} diary={diary} setDiaryId ={setDiaryId}/>
+                                    ))
+                                    }
+                            </div>
+                        )
+                    
                 </div>
-            )
-            }
+            
+            
            
 
            {/* <IGbox/> */}
