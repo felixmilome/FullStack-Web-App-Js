@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import Cropper from "react-easy-crop";
+import {getCroppedImg} from "../Midwares/cleaners/imageCrop.js";
+
+//firebase
+import {storage} from "../Midwares/firebase/config";
+import {ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 
 export const DpCropper = ({setdpCropper}) => {
 
@@ -10,11 +15,14 @@ export const DpCropper = ({setdpCropper}) => {
     const[dpCrop, setdpCrop] = useState({x:0, y:0});
     const[dpZoom, setdpZoom] = useState(1);
     const[dpCroppedArea, setdpCroppedArea] = useState(null);
+     const [croppedImage, setCroppedImage] = useState(null);
 
     const ondpCropComplete = (croppedAreaPercentage, croppedAreaPixels) => {
         console.log(croppedAreaPercentage, croppedAreaPixels);
         setdpCroppedArea (croppedAreaPixels);
     };
+
+
 
     const handleImage = async (e)=>{
 
@@ -26,16 +34,52 @@ export const DpCropper = ({setdpCropper}) => {
         console.log(image);
         console.log(dpPreview);
         console.log(dpPreviewUrl);
-        
+         
         
             
+    };
+
+     const handleSubmit = async()=>{
+
+          try {
+            const croppedDp = await getCroppedImg(dpPreviewUrl, dpCroppedArea)
+            console.log('donee', { croppedDp });
+            setCroppedImage(croppedDp)
+
+           
+            
+
+              if (!dpPreview) return;
+                    const storageRef = ref (storage, `/diaryfiles/${dpPreview.name}`);
+                    const uploadTask=uploadBytesResumable(storageRef,croppedDp);
+                
+                    uploadTask.on("state-changed", (snapshot)=>{
+                            const prog = Math.round(
+                                (snapshot.bytesTransferred/ snapshot.totalBytes)* 100
+                                );
+                           // setProgress(prog);
+                    },
+                    (err) => console.log(err),
+                    () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((url)=> console.log(url)); 
+                    }
+                );
+
+
+
+            } catch (e) {
+            console.error(e)
+            }
+
+               
+               
     };
 
    
     return (
         <div className= "fixed w-full h-full z-50 left-0 top-0 bg-transparent ">
-            <div className= "w-full h-full bg-transparent  flex">
-                <div className="p-3 m-auto bg-transparent w-screen flex justify-center ">
+            <div className= "w-full h-full bg-black opacity-90  flex">
+                <div className="p-3 m-auto bg-black w-screen opacity-90 flex justify-center ">
                     <div>
                         <div className="flex justify-center ">
                             {dpPreview=='none' ?
@@ -46,6 +90,7 @@ export const DpCropper = ({setdpCropper}) => {
                                 image={dpPreviewUrl}
                                 crop ={dpCrop}
                                 zoom ={dpZoom}
+                                cropShape="round"
                                 aspect = {1}
                                 onCropChange={setdpCrop}
                                 onZoomChange={setdpZoom}
@@ -56,7 +101,7 @@ export const DpCropper = ({setdpCropper}) => {
 
                             }
                         </div>
-                        <div className="absolute bottom-8 opacity-80 right-0 w-full z-50 flex justify-center space-x-3 p-2">
+                        <div className="absolute bottom-8 opacity-80 right-0 w-full text-sm z-50 flex justify-center space-x-3 p-2">
 
                             
 
@@ -67,8 +112,11 @@ export const DpCropper = ({setdpCropper}) => {
                                 </div>
                             </label>
 
+                            <div onClick= {handleSubmit} className="p-2 font-semibold text-white rounded-md bg-cyan-600 items-center flex">
+                                Update
+                            </div>
                             <div className="p-2 font-semibold text-white rounded-md bg-cyan-600 items-center flex">
-                                Make Profile Picture
+                               Remove
                             </div>
 
                         </div>

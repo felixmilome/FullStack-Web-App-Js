@@ -42,6 +42,10 @@ const usersSchema = mongoose.Schema({
         email: {
                 type: String,
                 required: true
+                },
+        dpUrl: {
+                type: String,
+                default: "./assets/images/avatar.png"
                 },  
         password: {
                 type: String,

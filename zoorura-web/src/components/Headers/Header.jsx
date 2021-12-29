@@ -138,11 +138,9 @@ function Header() {
                      onClick={ () => 
                      {setpopProfile(!popProfile)}
                      }>
-                       { user.result.dpUrl ?
-                                                <img src="./assets/images/avatar.png"  className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
-                                                :
-                                                <img src="./assets/images/avatar.png"  className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
-                                                }
+                     
+                        <img src={user.result.dpUrl}  className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
+                                             
                         <span className="hidden md:inline-flex w-full mx-2 font-light text-sm">{user.result.name}</span>
                         </div>
 

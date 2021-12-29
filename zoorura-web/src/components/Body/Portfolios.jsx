@@ -41,7 +41,7 @@ console.log(diaries);
                                     <div className='rounded-md'>
                                             <div className= " cursor-pointer mx-3 space-y-2 rounded-xl text-xs  bg-transparent items-center mt-4 mb-3 group">
                                              
-                                            
+                                             
                                                 <img onClick={()=>{setdpCropper(true)}} src={user.result.dpUrl} alt="Dp" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
                                                
                                                 
