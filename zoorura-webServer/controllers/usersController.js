@@ -537,3 +537,24 @@ export const verify = async(req,res) => {
          console.log ("expired");
      }
 }
+
+export const dp = async(req,res) => {
+ const {id, dp} = req.body;
+ console.log(req.body);
+// const old_User_Profile = await UsersModel.findOne ({id});
+ try{
+  const updated_User_Profile = await UsersModel.findOneAndUpdate (id, {dpUrl: dp}, { new: true });
+  
+  const result = updated_User_Profile;
+
+  const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
+  res.status(200).json({result, token});
+  console.log (result);
+  console.log('dpSet');
+ // console.log(updated_User_Profile);
+ } catch(error){
+   console.log(error);
+ }
+
+ 
+}

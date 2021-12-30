@@ -12,7 +12,7 @@ export const diariesReducer = (diaries = [], action) => {
         case 'POST_DIARY':
             return [...diaries, action.payload];
         default:
-            return diaries;
+            return diaries; 
      }
      
  }

@@ -21,3 +21,5 @@ export const reviewDiariesApi = (id, reviewData) => API.patch(`/diaries/${id}/re
 export const loginApi = (formData) => API.post ('/users/login', formData);
 export const registerApi = (formData) => API.post ('/users/register', formData);
 export const verifyApi = (formData) => API.patch ('/users/verify', formData);  
+
+export const dpApi = (dp) => API.patch ('/users/dp', dp);

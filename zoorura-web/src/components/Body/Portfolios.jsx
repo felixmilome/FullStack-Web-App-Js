@@ -30,7 +30,7 @@ console.log(diaries);
                 <div >
                     {/* portbox */}
                     { dpCropper &&
-                    <DpCropper setdpCropper ={setdpCropper}/>
+                    <DpCropper dpCropper={dpCropper} setdpCropper ={setdpCropper}/>
                     }
                     
                         <div className='w-full opacity-90  m-auto z-30  bg-transparent'>

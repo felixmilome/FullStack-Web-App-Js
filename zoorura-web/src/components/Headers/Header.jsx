@@ -22,7 +22,7 @@ import {Link} from 'react-router-dom';
 function Header() {
 
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    //console.log(user);
+    console.log(user);
     const[popProfile, setpopProfile] = useState(false);
     const[popSubscribers, setpopSubscribers] = useState(false);
     const[popNotifications, setpopNotifications] = useState(false);

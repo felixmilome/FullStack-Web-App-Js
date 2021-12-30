@@ -3,7 +3,7 @@ import LeftbarmobRow from './LeftbarmobRow';
 
 function LeftbarMob(){
 return (
-    <div className="rounded-xl visible md:invisible p-2 w-full m-x-4 bg-gray-200 border-r border-gray-300 z-40 fixed left-0 top-24 h-screen  overflow-y-auto overflow-x-hidden">
+    <div className="rounded-xl visible xs:invisible p-2 w-full m-x-4 bg-gray-200 border-r border-gray-300 z-40 fixed left-0 top-24 h-screen  overflow-y-auto overflow-x-hidden">
         <div className="overflow-scroll">
                 <div className="ml-1 font-bold text-gray-500 p-1">
                     Hall of Fame Ranks

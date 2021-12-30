@@ -25,7 +25,7 @@ export const loginAction = (formData, navigate) => async (dispatch) => {
     } catch (error){
         console.log(error);
     }
-}
+} 
 
 export const verifyAction = (formData, navigate) => async (dispatch) => {
     try{
