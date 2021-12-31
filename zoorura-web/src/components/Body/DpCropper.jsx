@@ -9,7 +9,7 @@ import {IoIosImages } from "react-icons/io";
 import {TiDocumentDelete} from "react-icons/ti";
 import {ImCancelCircle} from "react-icons/im";
 
-import { dpAction } from "../Midwares/rdx/actions/profileAction";
+import { changeDpAction } from "../Midwares/rdx/actions/profileAction";
 import {useDispatch} from 'react-redux';
 import{useNavigate} from 'react-router-dom';
 
@@ -107,7 +107,7 @@ export const DpCropper = ({dpCropper, setdpCropper}) => {
             console.log(dpData);
 
 
-            dispatch(dpAction (dpData, navigate));
+            dispatch(changeDpAction (dpData, navigate));
             // console.log(user.result);
 
 

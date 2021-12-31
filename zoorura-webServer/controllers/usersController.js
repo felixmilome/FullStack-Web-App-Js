@@ -16,6 +16,8 @@ import {UsersModel} from '../models/usersModel.js';
 
 import nodemailer from "nodemailer";
 
+const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
+
 //nodemailer transporter
  let transporter = nodemailer.createTransport({
    host: 'zoorura.com',
@@ -454,8 +456,9 @@ export const login = async (req,res) => {
      if(!isPasswordCorrectE) return res.status(400).json({message:"invalid credentials"});
      
      const token = jwt.sign({email: existingEmail.email, id: existingEmail._id}, JWT_SECRET, {expiresIn: "12h"});
-
-    res. status(200).json({result: existingEmail, token});
+     
+   
+      res. status(200).json({result:existingEmail, token});
 
  } catch (error){
      res.status(500).json({message: 'Something went wrong'});
@@ -486,23 +489,6 @@ export const register = async (req,res) => {
             res.status(200).json({result, token});
 
          }
-         
-
-           //  //Firebase Stuff
-        // try{
-        //     createUserWithEmailAndPassword (auth, email, password)
-        //     .then(response=> {
-        //         console.log(response);
-        //       //  sendPasswordResetEmail (auth, email, {url: 'http://localhost:3000/'});
-        //     })
-        //     .catch(error => {
-        //         console.log(error.message)
-        //     })
-         
-        // } catch (error){
-        //     res.status(500).json({message: 'Something went wrong'});  
-        //     UsersModel.findOneAndDelete ({email});
-        // }
 
     } catch (error) { 
        res.status(500).json({message: 'Something went wrong'});  
@@ -512,11 +498,14 @@ export const register = async (req,res) => {
 export const verify = async(req,res) => {
     const {otp, email} = req.body
     const user = await UsersModel.findOne ({email});
-    //console.log(user);
+    console.log(email);
+    console.log(user);
+    const id = user._id;
+    console.log(id);
     
     if (user.verCode === otp && user.verExpiry > Date.now ()){
         try {
-        const verifiedUser = await UsersModel.findOneAndUpdate (email, {verified: true}, { new: true });
+        const verifiedUser = await UsersModel.findByIdAndUpdate (id, {verified: true}, { new: true });
         
 
         const result = verifiedUser;
@@ -538,12 +527,12 @@ export const verify = async(req,res) => {
      }
 }
 
-export const dp = async(req,res) => {
+export const changeDp = async(req,res) => {
  const {id, dp} = req.body;
  console.log(req.body);
 // const old_User_Profile = await UsersModel.findOne ({id});
  try{
-  const updated_User_Profile = await UsersModel.findOneAndUpdate (id, {dpUrl: dp}, { new: true });
+  const updated_User_Profile = await UsersModel.findByIdAndUpdate (id, {dpUrl: dp}, { new: true });
   
   const result = updated_User_Profile;
 

@@ -22,4 +22,5 @@ export const loginApi = (formData) => API.post ('/users/login', formData);
 export const registerApi = (formData) => API.post ('/users/register', formData);
 export const verifyApi = (formData) => API.patch ('/users/verify', formData);  
 
-export const dpApi = (dp) => API.patch ('/users/dp', dp);
+export const changeDpApi = (dp) => API.patch ('/users/changeDp', dp);
+export const getMiniProfileApi = (id) => API.patch (`/users/getMiniProfileDp/${id}`, id);
