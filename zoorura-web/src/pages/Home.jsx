@@ -7,7 +7,7 @@ import {Routes, Route} from 'react-router-dom';
 import PostForm from "../components/Body/PostForm.jsx";
 import PostEdit from "../components/Body/PostEdit.jsx";
 import Portfolios from "../components/Body/Portfolios.jsx";
-import Verified from "../components/Body/Verified.jsx";
+import {NoPage} from "../components/Body/NoPage.jsx";
 import {useState} from 'react'; 
 
 
@@ -33,8 +33,8 @@ function Home({showProfile}) {
                         <>
                         <Route exact path ="/PostForm" element ={<PostForm />}/>
                         <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
-                        <Route exact path ="/Portfolios" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
-                        <Route exact path ="/users/verify/" element ={<Verified diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                        <Route exact path ="*" element ={<NoPage diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         </>
                         }
                     </Routes> 

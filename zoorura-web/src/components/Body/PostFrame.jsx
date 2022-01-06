@@ -30,12 +30,17 @@ import PostoptionsModal from "../Modals/PostoptionsModal.jsx";
 import OutsideClickHandler from 'react-outside-click-handler';
 import ReviewBubble from "./ReviewBubble.jsx";
 import { tipDiariesAction, reviewDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
+import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
 
 import moment from 'moment';
-import {useDispatch} from 'react-redux'; 
+import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
+
+import { useEffect } from 'react';
 
 
 function PostFrame({diary, diaryId, setDiaryId}) {
+
     const user = JSON.parse(localStorage.getItem('profile'));
    const dispatch = useDispatch();
     const[popTip, setpopTip] = useState(false);
@@ -47,6 +52,21 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[tip, setTip] = useState({tips:null});
     const[popOptions, setpopOptions] = useState(false);
     const[tipperView, seTipperview] = useState(false);
+    const [miniProfile, setMiniProfile] = useState(null);
+
+    
+    // useEffect(() => {
+    //     dispatch(getMiniProfileAction(diary.creator));
+    // }, [dispatch]);
+   
+    // const miniProfileData = useSelector((state) => state.getMiniProfileReducer);
+
+    // console.log(miniProfile);
+   
+    
+    
+   // console.log(miniProfile);
+    //console.log(diary);
 
     const reviewDiary = () =>{
         const id = diary._id;
@@ -89,6 +109,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
         // Post-Box
         <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent relative xl:w-1/2 mx-auto my-1"> 
+         
 
             {/* Post-Top-Cyan Invisible Parent*/}
             <div className="flex  justify-end">
@@ -98,11 +119,11 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                         <div className="flex items-center justify-between">
                             {/* Top-Mid Img*/}
                             <div className="ml-3 bg-white rounded-full">
-                                <img src="./assets/images/milome.jpeg" alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
+                                <img src={diary.miniProfile.dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
                             </div> 
                             {/*Top-Mid-Words */}
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.name} #3</p>
+                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile.userName} #3</p>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                             
                             </div>

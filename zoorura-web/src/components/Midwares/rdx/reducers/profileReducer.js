@@ -1,15 +1,24 @@
-export const profileReducer = (state ={googleauthData: null}, action) => {
+export const dpReducer = (state ={googleauthData: null}, action) => {
      
     switch(action.type) {
         case 'CHANGE_DP':
             console.log(action?.data);
             localStorage.setItem('profile', JSON.stringify({...action?.data}))
             return {...state, googleauthData: action?.data};
-        case 'GET_MINI_PROFILE':
-            console.log(action.payload);
-            return action.payload;
         default:
             return state;
+            
+     }
+     
+ }
+ export const getMiniProfileReducer = (miniProfile = {}, action) => {
+     
+    switch(action.type) {
+        case 'GET_MINI_PROFILE':
+            return action?.data;
+         
+        default:
+            return miniProfile; 
             
      }
      

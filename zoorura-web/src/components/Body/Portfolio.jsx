@@ -102,11 +102,11 @@ function Portfolio({diary, diaryId, setDiaryId}) {
                         <div className="flex items-center justify-between">
                             {/* Top-Mid Img*/}
                             <div className="ml-3 bg-white rounded-full">
-                                <img src="./assets/images/milome.jpeg" alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
+                                <img src={diary.miniProfile.dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
                             </div> 
                             {/*Top-Mid-Words */}
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.name} #3</p>
+                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile.userName} #3</p>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                             
                             </div>

@@ -2,8 +2,8 @@
 
  import {diariesReducer} from './diariesReducer';
  import {googleauthReducer} from './googleauthReducer';
- import {profileReducer} from './profileReducer';
+ import {dpReducer, getMiniProfileReducer} from './profileReducer';
 
  export default combineReducers({
-    diariesReducer, googleauthReducer, profileReducer
+    diariesReducer, googleauthReducer, dpReducer, getMiniProfileReducer
  });

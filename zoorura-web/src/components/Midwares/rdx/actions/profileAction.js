@@ -11,12 +11,15 @@ export const changeDpAction = (dp) => async (dispatch, navigate) => {
         console.log(error);
     }
 }
-export const getMiniProfileAction = (id) => async (dispatch) => {
-    try{
-        const {data} = await axs.getMiniProfileApi(id); 
-        dispatch ({type: 'GET_MINI_PROFILE', id});
-       
-    } catch(error) {
-        console.log(error);
-    }
+export const getMiniProfileAction = (profileName) => async (dispatch) => {
+
+        try{
+            const {data} = await axs.getMiniProfileApi(profileName); 
+            dispatch ({type: 'GET_MINI_PROFILE', data});
+            console.log('miniprofile fetched');
+        
+        } catch(error) { 
+            console.log(error);
+        }
+          
 }

@@ -7,9 +7,15 @@ import { taxer } from "../functions.js";
 //Get  Diariessss===========================================
 export const getDiaries = async  (req, res) => {
    try{
-        const diaries = await DiariesModel.find();
-        
+        const diaries = await DiariesModel.find().limit(20).sort({"tips":-1, "time":-1})
+        .populate('miniProfile', 'dpUrl userName');
+        console.log(diaries);
         res.status(200).json(diaries);
+    //    ]const diaries = await unpopulated.populate({path:'miniProfile', model:'UsersModel'});
+    //    console.log(diaries)
+           //const owners = diaries.map(d => d.creator);
+        //const diariesP = idArray.map(id => UsersModel.findById(id));      
+        
    } catch(error){
        res.status(404).json({message: error.message});
    }
@@ -23,12 +29,12 @@ export const postDiaries =  async (req, res)=> {
         console.log(diary);
         const user = await UsersModel.findById(req.userId);
        // console.log(user);
-        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, time: new Date().toISOString()}); //time is for updates
+        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, miniProfile: req.userId, time: new Date().toISOString()}); //time is for updates
        
     try{
         await newDiary.save();
         res.status(201).json(newDiary);
-       // console.log(newDiary);
+       console.log(newDiary);
    } catch(error){
        res.status(409).json({message:error.message});
    }
@@ -38,11 +44,12 @@ export const postDiaries =  async (req, res)=> {
 
 //Patch  Diariessss===========================================
 export const patchDiaries = async (req, res) =>{
-    const{id:_id} = req.params;
+    const{id} = req.params;
     const newDiary=req.body;
 
-   if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send("Invalid Id");
-    const patchedDiary = await DiariesModel.findByIdAndUpdate(_id, newDiary, { new: true });
+   if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
+    const patchedDiary = await DiariesModel.findByIdAndUpdate(id, newDiary, { new: true })
+    .populate('miniProfile', 'dpUrl userName');
 
     res.json(patchedDiary);
 

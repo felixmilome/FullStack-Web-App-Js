@@ -547,3 +547,37 @@ export const changeDp = async(req,res) => {
 
  
 }
+
+export const getMiniProfile = async(req,res) => {
+
+    const {profileName} = req.params;
+    console.log(req.params);
+    try{
+      
+    //const miniProfile = await UsersModel.findOne (profileName,  {userName:1, dpUrl:1});
+    // const profileUser = await UsersModel.findOne (userName === profileName);
+    // console.log(profileUser);
+    const miniProfile = await UsersModel.findOne ({userName: { $in: [ profileName ] } },  {userName:1, dpUrl:1});
+    //if(!miniProfile) return res.status(404).json({message:"User doesn't exist."});
+    res.json(miniProfile);
+    console.log(miniProfile);
+
+    } catch(error){
+      console.log(error)
+    }
+    // try{
+    //   const updated_User_Profile = await UsersModel.findByIdAndUpdate (id, {dpUrl: dp}, { new: true });
+      
+    //   const result = updated_User_Profile;
+
+    //   const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
+    //   res.status(200).json({result, token});
+    //   console.log (result);
+    //   console.log('dpSet');
+    // // console.log(updated_User_Profile);
+    // } catch(error){
+    //   console.log(error);
+    // }
+
+ 
+}

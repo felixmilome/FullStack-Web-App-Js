@@ -1,32 +1,51 @@
 
 import PostBox from "./PostBox";
 import {BeatLoader} from "react-spinners";
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { useState } from 'react';
 
 import {RiUserAddLine} from "react-icons/ri";
 import {HiOutlineChatAlt2} from "react-icons/hi"
 
-import IGbox from './IGbox.jsx'
+//import IGbox from './IGbox.jsx'
 import Portfolio from "./Portfolio";
 import { DpCropper } from "./DpCropper.jsx";
-import { Test } from "./test";
+//import { Test } from "./test";
+import {useParams} from "react-router-dom";
+import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
+import { useEffect } from 'react';
 
 
 function Portfolios(diaryId, setDiaryId) { 
 
-const user = JSON.parse(localStorage.getItem('profile'));
-const[dpCropper, setdpCropper] = useState(false);
-const userName = user.result.userName;
-const diaries = useSelector((state) => state.diariesReducer);
+        const {profileName} = useParams();
+        console.log(profileName);
 
-console.log(diaries);
+        const dispatch = useDispatch();
 
-    return ( 
+        useEffect(() => {
+            dispatch(getMiniProfileAction(profileName));
+        }, [dispatch]);
+    
+        const miniProfile = useSelector((state) => state.getMiniProfileReducer);
+
+        console.log(miniProfile.dpUrl);
+
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const[dpCropper, setdpCropper] = useState(false);
+    const userName = user.result.userName;
+    const diaries = useSelector((state) => state.diariesReducer);
+
+
+
+
+
+//console.log(diaries);
+
+    return (
+        
+    
        <div>
-
-
-            
                 <div >
                     {/* portbox */}
                     { dpCropper &&
@@ -42,10 +61,10 @@ console.log(diaries);
                                             <div className= " cursor-pointer mx-3 space-y-2 rounded-xl text-xs  bg-transparent items-center mt-4 mb-3 group">
                                              
                                              
-                                                <img onClick={()=>{setdpCropper(true)}} src={user.result.dpUrl} alt="Dp" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
+                                                <img onClick={()=>{setdpCropper(true)}} src={miniProfile.dpUrl} alt="Dp" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
                                                
                                                 
-                                                <p className= "text-gray-600 leading-3 text-center text-base font-bold ">@{userName}</p>
+                                                <p className= "text-gray-600 leading-3 text-center text-base font-bold ">@{miniProfile.userName}</p>
                                             <div className="bg-gray-100 rounded-md items-center"> 
                                             
                                                 <p className= "w-1/2 m-auto text-gray-600 leading-4 text-center font-light break-words ">The Journey to Being a Billionaire is possible and exciting. Work smart and stay motivated </p> 
@@ -55,10 +74,13 @@ console.log(diaries);
                                              
                                               {/* Buttons */}
                                         <div className= 'flex justify-center text-sm items-center'>
+
+                                            {/* FOLLOW BUTTON ===*/}
                                             <div className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1"> 
                                                 <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Follow</p> 
                                                 <RiUserAddLine/>
                                             </div>
+                                            {/* INBOX BUTTON ===*/}
                                             <div className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1"> 
                                                 <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Inbox</p> 
                                                 <HiOutlineChatAlt2 />
@@ -116,25 +138,20 @@ console.log(diaries);
                                     ))
                                     }
                             </div>
-                        )
+                        
                     
                 </div>
             
             
            
 
-           {/* <IGbox/> */}
+      
           
 
 
-           </div>
-
-
+           </div>   
    
-            
-        
-   
-    )
-}
+    )}
+
 
 export default Portfolios;
