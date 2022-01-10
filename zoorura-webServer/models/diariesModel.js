@@ -57,7 +57,7 @@ const diariesSchema = mongoose.Schema({
         default: 0,
     },  
     
-    miniProfile: {
+    miniProfile: { 
             type: Schema.Types.ObjectId,
             ref: 'UsersModel'
         

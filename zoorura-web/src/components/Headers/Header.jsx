@@ -19,6 +19,8 @@ import LeftbarMob from '../Sidebars/LeftbarMob.jsx';
 import RightbarMob from '../Sidebars/RightbarMob.jsx';
 import {Link} from 'react-router-dom';
 
+import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
+
 function Header() {
 
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -29,11 +31,19 @@ function Header() {
     const[popCart, setpopCart] = useState(false);
     const[popRankings, setpopRankings] = useState(false);
     const[popContacts, setpopContacts] = useState(false);
+
+    const[popLogin, setpopLogin] = useState(false);
+    const[popSignup, setpopSignup] = useState(true);
     
 
     return (
         
         <div className= "sticky top-0 z-50">
+              {/*==============SIGN UP/ LOGIN =================*/}
+            {user && !user.result.verified  ? <VerifyForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>} 
+            { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
+            {popLogin && !user ? <LoginForm  popLogin = {popLogin} popSignup ={popSignup}  setpopLogin ={setpopLogin} setpopSignup = {setpopSignup} />: <></>}
+       
         <div className= "sticky top-0 z-50 bg-gray-200 border-b-2 border-gray-300 p-2 lg:px-6 lg:py-3 shadow-md ">
         <div className= "flex items-center  space-x-2 justify-between">
             {/*Left*/}
@@ -41,10 +51,13 @@ function Header() {
                 <div className="cursor-pointer  rounded-full hover:bg-gray-100 bg-transparent flex items-center justify-between">
                             
                             <div className= 'rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
-                            <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
+                                <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
                             </div>
-                    <h1 className= "m-1 inline-flex text-base font-bold text-gray-400">Home</h1>
-    
+
+                            {user ?
+                        <h1 className= "m-1 inline-flex text-base font-bold text-gray-400">Home</h1>:
+                        <h1 className= "m-1 inline-flex text-base font-bold text-gray-700">Log In / Sign Up</h1>   
+                            }
                 </div>
            </Link>
             
@@ -144,7 +157,7 @@ function Header() {
                         <span className="hidden md:inline-flex w-full mx-2 font-light text-sm">{user.result.name}</span>
                         </div>
 
-                     {popProfile && <ProfileModal setshowProfile={setpopProfile}/>}
+                     {popProfile && <ProfileModal setpopProfile= {setpopProfile}/>}
                     
                     </OutsideClickHandler>
                     

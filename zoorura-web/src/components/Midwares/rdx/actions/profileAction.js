@@ -23,3 +23,16 @@ export const getMiniProfileAction = (profileName) => async (dispatch) => {
         }
           
 }
+export const followAction = (followData) => async (dispatch) => {
+
+    try{
+        const {data} = await axs.followApi(followData); 
+        dispatch ({type: 'FOLLOW', data});
+        console.log('followed');
+        console.log(data);
+    
+    } catch(error) { 
+        console.log(error);
+    }
+      
+}

@@ -94,15 +94,6 @@ export const tipDiaries = async (req,res) => {
     const tax = taxer(amount);
     const netAmount = amount - tax;
    
-    // console.log(req.body);
-    // console.log(tipperData);
-    
-    // console.log (`post Id: ${id}`);
-    // console.log (`Gross: ${amount}`);
-    // console.log (`Tax: ${tax}`);
-    // console.log (`Net: ${netAmount.toFixed(2)}`);
-    // console.log (`Tipper: ${tipper}`);
-    // console.log (`Tipper Id: ${tipperId}`);
     
     if (!req.userId) return res.json({message: 'Unauthorized'});
  
@@ -114,8 +105,6 @@ export const tipDiaries = async (req,res) => {
    const diary = await DiariesModel.findById(id);
 
    const tippers = diary.tippers;
-//    console.log(tippers);
-//    console.log(tipperData);
 
     try{
    
@@ -160,7 +149,9 @@ export const tipDiaries = async (req,res) => {
             res.status(404).json({message: error.message});
         }
         const tippedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  tippers:diary.tippers.push(tipperData)}, { new: true });
-        const tippedDiary2 = await DiariesModel.findByIdAndUpdate(id, {tips: (diary.tips + netAmount).toFixed(2)}, { new: true });
+        const tippedDiary2 = await DiariesModel.findByIdAndUpdate(id, {tips: (diary.tips + netAmount).toFixed(2)}, { new: true })
+        .populate('miniProfile', 'dpUrl userName');
+        
         res.json(tippedDiary2); 
     }
 
@@ -194,7 +185,8 @@ export const reviewDiaries = async (req,res) => {
 
 
    const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  reviews:diary.reviews.push(reviewData)}, { new: true });
-   const reviewedDiary2 = await DiariesModel.findByIdAndUpdate(id, { reviewtotal: (diary.reviews.length)}, { new: true });
+   const reviewedDiary2 = await DiariesModel.findByIdAndUpdate(id, { reviewtotal: (diary.reviews.length)}, { new: true })
+   .populate('miniProfile', 'dpUrl userName');
 
 
     res.json(reviewedDiary2); 

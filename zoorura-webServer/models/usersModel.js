@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
 
         const withdrawalSchema = mongoose.Schema({
@@ -79,7 +80,15 @@ const usersSchema = mongoose.Schema({
                 required: true,
         },
 
-
+        follows: [{ 
+                type: Schema.Types.ObjectId,
+                ref: 'UsersModel'
+            
+            }],
+        followers: [{ 
+                type: Schema.Types.ObjectId,
+                ref: 'UsersModel'  
+            }],
         withdrawals:[withdrawalSchema],
         deposits:[depositSchema],
 

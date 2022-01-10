@@ -16,7 +16,7 @@ export const postDiariesAction = (diary, setpopPosted, navigate) => async (dispa
         dispatch ({type: 'POST_DIARY', payload: data});
 
         setpopPosted(true);
-
+ 
         navigate ('/');
         window.location.reload(true);
 

@@ -553,14 +553,19 @@ export const getMiniProfile = async(req,res) => {
     const {profileName} = req.params;
     console.log(req.params);
     try{
-      
-    //const miniProfile = await UsersModel.findOne (profileName,  {userName:1, dpUrl:1});
-    // const profileUser = await UsersModel.findOne (userName === profileName);
-    // console.log(profileUser);
-    const miniProfile = await UsersModel.findOne ({userName: { $in: [ profileName ] } },  {userName:1, dpUrl:1});
-    //if(!miniProfile) return res.status(404).json({message:"User doesn't exist."});
-    res.json(miniProfile);
-    console.log(miniProfile);
+  
+    const miniProfile = await UsersModel.findOne ({userName: { $in: [ profileName ] } },  {userName:1, dpUrl:1, follows:1, followers:1});
+    
+    if (!miniProfile){  
+
+      res.json("NO_USER");
+
+    } else {
+
+      res.json(miniProfile);
+      console.log(miniProfile);
+
+    }
 
     } catch(error){
       console.log(error)
@@ -580,4 +585,41 @@ export const getMiniProfile = async(req,res) => {
     // }
 
  
+}
+
+
+export const follow =  async (req, res)=> {
+
+  const {follower, followed} = req.body;
+  // console.log(follower);
+  // console.log(followed);
+  // console.log(req.body);
+     
+    try{
+      const followerUser = await UsersModel.findById (follower);
+      console.log(followerUser.follows);
+
+      if (followerUser.follows.includes(followed)){
+        
+        const updatedFollower= await UsersModel.findByIdAndUpdate (follower, { $pull: { "follows": followed }}, { new: true });
+        const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $pull: { "followers": updatedFollower._id }}, { new: true });
+        const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
+        res.json(miniProfile);
+        console.log("followed");
+
+    
+    } else {
+
+        const updatedFollower = await UsersModel.findByIdAndUpdate (follower, { $push: { "follows": followed }}, { new: true });
+        const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $push: { "followers": updatedFollower._id }}, { new: true });
+        const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
+        res.json(miniProfile);
+        console.log("unfollowed");
+    }
+     // res.json(followed);
+
+  } catch(error){
+      res.status(409).json({message:error.message});
+  }
+
 }

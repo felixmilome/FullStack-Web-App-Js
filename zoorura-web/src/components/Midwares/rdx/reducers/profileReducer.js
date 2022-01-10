@@ -15,6 +15,7 @@ export const dpReducer = (state ={googleauthData: null}, action) => {
      
     switch(action.type) {
         case 'GET_MINI_PROFILE':
+        case 'FOLLOW':
             return action?.data;
          
         default:
@@ -23,3 +24,16 @@ export const dpReducer = (state ={googleauthData: null}, action) => {
      }
      
  }
+//  export const followReducer = (follows = {}, action) => {
+     
+//     switch(action.type) {
+//         case 'FOLLOW':
+           
+//             return action?.data;
+           
+//         default:
+//             return follows; 
+            
+//      }
+     
+//  }
