@@ -70,7 +70,7 @@ function ProfileModal({setpopProfile}) {
             </div>
             </div>
 
-        </div>
+        </div> 
     )
 }
 

@@ -6,9 +6,9 @@ import { taxer } from "../functions.js";
 
 //Get  Diariessss===========================================
 export const getDiaries = async  (req, res) => {
-   try{
+   try{ 
         const diaries = await DiariesModel.find().limit(20).sort({"tips":-1, "time":-1})
-        .populate('miniProfile', 'dpUrl userName');
+        .populate('diaryMiniProfile', 'dpUrl userName');
         console.log(diaries);
         res.status(200).json(diaries);
     //    ]const diaries = await unpopulated.populate({path:'miniProfile', model:'UsersModel'});
@@ -29,7 +29,7 @@ export const postDiaries =  async (req, res)=> {
         console.log(diary);
         const user = await UsersModel.findById(req.userId);
        // console.log(user);
-        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, miniProfile: req.userId, time: new Date().toISOString()}); //time is for updates
+        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, diaryMiniProfile: req.userId, time: new Date().toISOString()}); //time is for updates
        
     try{
         await newDiary.save();
@@ -84,6 +84,7 @@ export const deleteDiaries = async (req,res) =>{
 export const tipDiaries = async (req,res) => {
 
     const{id} = req.params;
+    console.log("id" + id);
     
 
     const tipperData = req.body;
@@ -106,53 +107,83 @@ export const tipDiaries = async (req,res) => {
 
    const tippers = diary.tippers;
 
-    try{
+    
    
     
     // Withdrawal from Giver/Requester//---------------------------
 
-       const requesterId = req.userId;
-       const requester = await UsersModel.findById(requesterId);  
-       const rwallet = requester.wallet
-      // console.log(rwallet);
+       const giver = await UsersModel.findById(tipperId);
+      // console.log("giverObject: " + giver);
+
+       try{ 
+       const givers_Wallet = giver.wallet;
+       const givers_Points = giver.activityPoints;
+ 
        const withdrawalData = {type:'diarytip', receiver:diary.name, receiverId: diary.creator, title:diary.heading, postId: id, amount: amount};
-       
-    const withdrawRecord = await UsersModel.findByIdAndUpdate(requesterId, {...requester, withdrawals:requester.withdrawals.push(withdrawalData)}, { new: true });
-    const walletcut = await UsersModel.findByIdAndUpdate(requesterId, {wallet:(rwallet - amount).toFixed(2)}, { new: true });
+        const walletCut = 0 - amount;
+       const added_Points_Giver = 50 * amount;
+    //    const walletCutted = (givers_Wallet - amount).toFixed(2);
+    //    const giverAddedPoints = (givers_Points + (50 * amount));
+    //    console.log("withdrawalDataType: " + withdrawalData.type);
+
+    //    console.log("walletCutted: "+ walletCutted);
+    //    console.log("giverAddedTotal: "+ giverAddedPoints);
+
+  // const withdrawnGiver = await UsersModel.findByIdAndUpdate(tipperId, { $push: { "withdrawals": withdrawalData}, $set: { wallet: walletCutted, activityPoints: giverAddedPoints}}, { new: true });
+  const withdrawnGiver = await UsersModel.findByIdAndUpdate(tipperId, { $push: { "withdrawals": withdrawalData, "wallet": walletCut, "activityPoints": added_Points_Giver }}, { new: true });    
+  console.log(withdrawnGiver);
+
+
         
        
     
     // Deposit to Taker/Creator//-----------------------
+    const takerId = diary.creator;
+    const taker = await UsersModel.findById(takerId);
+    console.log("taker: "+ taker);
 
-        const creatorId = diary.creator;
-        const creator = await UsersModel.findById(creatorId);
-        const cwallet = creator.wallet
-       // console.log(cwallet);
-        const depositData = {type:'diarytip', giver:creator.userName, giverId: creatorId, title:diary.heading, postId:id, amount: netAmount };
+        const takers_Wallet = taker.wallet;
+        const takers_Points = taker.activityPoints;
 
-    const depositRecord = await UsersModel.findByIdAndUpdate(creatorId, {...creator, deposits:creator.deposits.push(depositData)}, { new: true });
-    const walletadd = await UsersModel.findByIdAndUpdate(creatorId, {wallet:(cwallet + netAmount).toFixed(2)}, { new: true });
+        const depositData = {type:'diarytip', giver:giver.userName, giverId: giver.Id, title:diary.heading, postId:id, amount: netAmount };
+        
+        const walletAdd = netAmount;
+       const added_Points_Taker = 50 * amount;
+
+        // const walletAdded = (takers_Wallet + netAmount).toFixed(2);
+        // const takerAddedPoints = (takers_Points + (25 * amount));
+        // const diarys_Added_Tips = ((diary.tips + netAmount).toFixed(2));
+        
+
+        // console.log("depositDataType: " + depositData.type);
+
+        // console.log("walletAdded: "+ walletAdded);
+        // console.log("takerAddedTotal: "+ takerAddedPoints);
+
+    //const depositedTaker = await UsersModel.findByIdAndUpdate(takerId, { $push: { "deposits": depositData}, $set: { wallet: walletAdded, activityPoints: takerAddedPoints}}, { new: true });
+    const depositedTaker = await UsersModel.findByIdAndUpdate(diary.creator, { $push: { "deposits": depositData, "wallet": walletAdd, "activityPoints": added_Points_Taker }}, { new: true }); 
+    console.log("deposittaker: "+ depositedTaker);
+
+    ////FinalLLY +++++++++++++++++++++++++
+
+    const tippedDiary = await DiariesModel.findByIdAndUpdate(id, { $push: { "tippers": tipperData, "tips": netAmount }}, { new: true })
+    .populate('diaryMiniProfile', 'dpUrl userName');
+    console.log("TippedDiary: "+ tippedDiary);
     
-    
-     
-     //const withdrawalData = {postId: id, amount: amount };
-
-    console.log(walletcut);
-    console.log(walletadd);
-    console.log(withdrawRecord);
-   console.log(depositRecord);
-
+    res.json(tippedDiary); 
 
     
         }
         catch (error){
             res.status(404).json({message: error.message});
         }
-        const tippedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  tippers:diary.tippers.push(tipperData)}, { new: true });
-        const tippedDiary2 = await DiariesModel.findByIdAndUpdate(id, {tips: (diary.tips + netAmount).toFixed(2)}, { new: true })
-        .populate('miniProfile', 'dpUrl userName');
+
+       
+        // const tippedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  tippers:diary.tippers.push(tipperData)}, { new: true });
+        // const tippedDiary2 = await DiariesModel.findByIdAndUpdate(id, {tips: (diary.tips + netAmount).toFixed(2)}, { new: true })
+        // .populate('miniProfile', 'dpUrl userName');
         
-        res.json(tippedDiary2); 
+        
     }
 
 }
@@ -182,11 +213,9 @@ export const reviewDiaries = async (req,res) => {
    console.log(reviewData);
 
 
-
-
    const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  reviews:diary.reviews.push(reviewData)}, { new: true });
    const reviewedDiary2 = await DiariesModel.findByIdAndUpdate(id, { reviewtotal: (diary.reviews.length)}, { new: true })
-   .populate('miniProfile', 'dpUrl userName');
+   .populate('reviewMiniProfile', 'dpUrl userName');
 
 
     res.json(reviewedDiary2); 

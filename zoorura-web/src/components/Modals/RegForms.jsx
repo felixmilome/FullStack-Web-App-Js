@@ -86,7 +86,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                                <div>
                                    Already have an account?
                                </div>
-                                <div onClick={switchLogin} className="bg-cyan-400 text-white cursor-ponter hover:bg-pink-500 font-bold p-1 rounded-md">
+                                <div onClick={switchLogin} className="bg-gray-100 border border-gray-400 text-gray-500 cursor-ponter hover:bg-white font-semibold p-1 rounded">
                                 <p className="cursor-pointer"> Log In </p>
                                 </div>
                             </div>
@@ -128,13 +128,13 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                 
 
                 <div className= "flex justify-between">
-                        <button type='submit' className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-pink-500 to-cyan-500 
-                                    bg-gradient-to-r hover:from-pink-500
-                                    hover:to-yellow-500 flex
-                                    mx-auto rounded-md
-                                        justify-center 
-                                        text-white text-sm cursor-pointer
-                                        font-semibold p-1 mb-4">
+                        <button type='submit' className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                            bg-gradient-to-r hover:from-pink-500
+                            hover:to-yellow-500 flex
+                            mx-auto rounded-md
+                                 justify-center 
+                                text-white text-sm cursor-pointer
+                                font-semibold p-1 mb-4">
                                     Create Account
                         </button>
                         <GoogleLogin
@@ -173,7 +173,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
 
 export const LoginForm = ({setpopSignup, setpopLogin}) => {
     const dispatch = useDispatch();
-    const initialState ={email: '', password: ''}
+    const initialState ={email: '', password: '', autologout: '1h'}
     const [formData, setFormData] = useState(initialState);
     const navigate = useNavigate();
     const[user,setUser] = useState(null);
@@ -195,9 +195,9 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
      
 
         try{
-           dispatch(loginAction(formData, navigate));
+          dispatch(loginAction(formData, navigate));
      
-           console.log(user);
+          console.log(user);
            
         
         } catch (error){
@@ -225,7 +225,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                                <div>
                                    Don't have an account?
                                </div>
-                                <div onClick={switchSignup} className="bg-cyan-400 text-white cursor-ponter hover:bg-pink-500 font-bold p-1 rounded-md">
+                                <div onClick={switchSignup} className="bg-gray-100 border border-gray-400 text-gray-500 cursor-ponter hover:bg-white font-semibold p-1 rounded">
                                    <p className="cursor-pointer"> Register</p>
                                 </div>
                             </div>
@@ -244,12 +244,29 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                             <input onChange={handleChange} name='password' className= "w-full bg-gray-100 border border-gray-300 m-1 p-2 rounded-md"
                              type="password" placeholder= "Password"/>
                         </div>
+                             {/* Auto Logout Protection*/}
+                    <div className= "p-1 flex items-center justify-center">
+                        <p className="font-light">
+                            Auto-Logout Protection:
+                        </p>
+                        <select 
+                        name= "autologout"
+                        onChange={handleChange}   
+                        className="m-2 flex text-center justify-center items-center font-bold text-xs  outline-none bg-gray-200 rounded-md p-1 border-none">
+                                <option value="1h"> 1 Hour </option>
+                                <option value="6h"> 6 Hours </option>
+                                <option value="12h"> 12 Hours </option>
+                                <option value="24h"> 1 Day </option>
+                                <option value="7d"> 1 Week </option>
+                                <option value="365d"> Until I logout </option>
+                        </select> 
+                    </div>
                             
                 </div>
                 
 
                 <div className='flex justify-between'>
-                        <button type='submit' className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-pink-500 to-cyan-500 
+                        <button type='submit' className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                             bg-gradient-to-r hover:from-pink-500
                             hover:to-yellow-500 flex
                             mx-auto rounded-md

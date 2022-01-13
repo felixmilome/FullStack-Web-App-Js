@@ -1,5 +1,5 @@
 import express from 'express';
-import{register, login, verify, changeDp,getMiniProfile,follow} from '../controllers/usersController.js';
+import{register, login, verify, changeDp,getMiniProfile,follow, dailyPoints} from '../controllers/usersController.js';
 //import { auth } from '../middleware/authMiddleware.js';
 
 
@@ -11,5 +11,6 @@ usersRouter.post ('/login', login);
 usersRouter.patch ('/verify', verify);
 
 usersRouter.patch ('/changeDp', changeDp);
+usersRouter.patch ('/dailyPoints/:id', dailyPoints);
 usersRouter.get ('/getMiniProfile/:profileName', getMiniProfile);
-usersRouter.post ('/follow/', follow);
+usersRouter.post ('/follow/:id', follow);

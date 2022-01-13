@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const tipSchema = mongoose.Schema({
-    tipper: {
-        type:String,
+    tipMiniProfile: {
+        type: Schema.Types.ObjectId,
+        ref: 'UsersModel'
     }, 
     tipperId:{
         type:String
@@ -14,11 +15,12 @@ const tipSchema = mongoose.Schema({
     amount: {
         type:Number,
     },   
-})
+});
 
 const reviewSchema = mongoose.Schema({
-    reviewer: {
-        type:String,
+    reviewMiniProfile: {
+        type: Schema.Types.ObjectId,
+        ref: 'UsersModel'
     },  
     reviewerId:{
         type:String
@@ -33,14 +35,10 @@ const reviewSchema = mongoose.Schema({
     tips: {
         type:Number,
         default: null,
-    },   
+    },    
     tippers: [], 
-})
+});
 
-const miniProfileSchema = mongoose.Schema({
-    "$ref" : {type:String},
-     "$id" : {type: Schema.Types.ObjectId}
-})
 
 const diariesSchema = mongoose.Schema({
     creator: String,
@@ -52,21 +50,13 @@ const diariesSchema = mongoose.Schema({
         type:String,
         default: 'Public'
     },
-    tips: {
-        type:Number,
-        default: 0,
-    },  
+    tips: [Number],  
     
-    miniProfile: { 
+    diaryMiniProfile: { 
             type: Schema.Types.ObjectId,
             ref: 'UsersModel'
         
         },
-   
-    reviewtotal:{
-        type: Number,
-        default: 0
-    },
     
     displays:{
         type: Number,

@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 //import { uuid } from 'uuidv4';
 import { v4 as uuid_v4 } from "uuid";
 
-import {createUserWithEmailAndPassword, sendEmailVerification, sendSignInLinkToEmail, sendPasswordResetEmail} from "firebase/auth";
+//import {createUserWithEmailAndPassword, sendEmailVerification, sendSignInLinkToEmail, sendPasswordResetEmail} from "firebase/auth";
 import {auth} from "../firebaseBack/config.js";
 
 import dotenv from 'dotenv';
@@ -430,35 +430,47 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
             </table>
           </body>
         </html>` 
-        //html: `<p>Hello. This Email was used to Open and Account on Zoorura.com with the username <b>@${userName}</b>. Use the OTP below to verify the Email an Account Openning. Expiry in 6 hours:</p> <p><h1>${uniqueStr}</h1></p>`, 
+       
       }
       transporter.sendMail(mailOptions);
   }
-//<p><img src="https://zoorura.com/home/assets/images/logo-light.png" width="300" height="93" /></p>
+
 
 function getCodec() {
     return Math.floor(Math.random() * 969696);
    };
 
+
+
+
+
+
+
+  // CONTROLLERS==================================
+
+
 export const login = async (req,res) => {
- const {email, password} = req.body
- try{
-     //const existingUser = await UsersModel.findOne({userName}); 
-     const existingEmail = await UsersModel.findOne({email}); 
+ const {email, password, autologout} = req.body;
+ //console.log(req.body);
+ try{ 
+  
+     const existingEmail = await UsersModel.findOne({email: { $in: [ email ] } });; 
      
-    // if(!existingUsername && !existingEmail) return res.status(404).json({message:"User doesn't exist."});
+
      if(!existingEmail) return res.status(404).json({message:"User Email doesn't exist."});
 
-     //const isPasswordCorrectU = await bcrypt.compare(password, existingUsername.password);
      const isPasswordCorrectE = await bcrypt.compare(password, existingEmail.password);
      
-     //if(!isPasswordCorrectU || !isPasswordCorrectE) return res.status(400).json({message:"invalid credentials"});
      if(!isPasswordCorrectE) return res.status(400).json({message:"invalid credentials"});
-     
-     const token = jwt.sign({email: existingEmail.email, id: existingEmail._id}, JWT_SECRET, {expiresIn: "12h"});
-     
+
+     const loggedUser_Detailed = await UsersModel.findByIdAndUpdate(existingEmail._id, {jwtExpiry: autologout}, { new: true });
+      const loggedUser = await UsersModel.findById(loggedUser_Detailed._id, {password:0, verCode:0});
+      console.log(loggedUser);
+     const token = jwt.sign({email: loggedUser.email, id: loggedUser._id}, JWT_SECRET, {expiresIn: autologout});
    
-      res. status(200).json({result:existingEmail, token});
+   res. status(200).json({result:loggedUser, token});
+   console.log(loggedUser);
+     
 
  } catch (error){
      res.status(500).json({message: 'Something went wrong'});
@@ -468,8 +480,10 @@ export const register = async (req,res) => {
     
     const {firstName, lastName, userName, email, password, confirmPassword} = req.body;
     try {
-        const existingUser = await UsersModel.findOne ({userName});
-        const existingEmail = await UsersModel.findOne ({email});
+        const existingUser = await UsersModel.findOne ({userName: { $in: [ userName ] } });;
+        const existingEmail = await UsersModel.findOne ({email: { $in: [ email ] } });;
+
+        console.log(existingEmail);
 
          if(existingUser) return res.status(400).json({message:"Username Taken."});
          
@@ -479,8 +493,9 @@ export const register = async (req,res) => {
 
          const hashedPassword = await bcrypt.hash (password, 12);
          const uniqueStr = getCodec ()
-         const result = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`, verCode: uniqueStr, verTime: Date.now(), verExpiry: Date.now() + 172800000});
-         
+         const resultX = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`, verCode: uniqueStr, verTime: Date.now(), verExpiry: Date.now() + 172800000});
+         const result = await UsersModel.findById(resultX._id, {password:0, verCode:0});
+         console.log(result);
          if (result) {
 
             const remail = result.email;
@@ -497,7 +512,7 @@ export const register = async (req,res) => {
 
 export const verify = async(req,res) => {
     const {otp, email} = req.body
-    const user = await UsersModel.findOne ({email});
+    const user = await UsersModel.findOne ({email: { $in: [ email ] } });
     console.log(email);
     console.log(user);
     const id = user._id;
@@ -505,10 +520,10 @@ export const verify = async(req,res) => {
     
     if (user.verCode === otp && user.verExpiry > Date.now ()){
         try {
-        const verifiedUser = await UsersModel.findByIdAndUpdate (id, {verified: true}, { new: true });
+        const verifiedUser = await UsersModel.findByIdAndUpdate (id, {verified: true, dailyLogin: Date.now()}, { new: true });
         
 
-        const result = verifiedUser;
+        const result = await UsersModel.findById(verifiedUser._id, {password:0, verCode:0});
 
         const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
         res.status(200).json({result, token});
@@ -530,17 +545,15 @@ export const verify = async(req,res) => {
 export const changeDp = async(req,res) => {
  const {id, dp} = req.body;
  console.log(req.body);
-// const old_User_Profile = await UsersModel.findOne ({id});
  try{
   const updated_User_Profile = await UsersModel.findByIdAndUpdate (id, {dpUrl: dp}, { new: true });
   
-  const result = updated_User_Profile;
+  const result = await UsersModel.findById(updated_User_Profile._id, {password:0, verCode:0});
 
-  const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
+  const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: result.jwtExpiry});
   res.status(200).json({result, token});
   console.log (result);
   console.log('dpSet');
- // console.log(updated_User_Profile);
  } catch(error){
    console.log(error);
  }
@@ -570,20 +583,6 @@ export const getMiniProfile = async(req,res) => {
     } catch(error){
       console.log(error)
     }
-    // try{
-    //   const updated_User_Profile = await UsersModel.findByIdAndUpdate (id, {dpUrl: dp}, { new: true });
-      
-    //   const result = updated_User_Profile;
-
-    //   const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
-    //   res.status(200).json({result, token});
-    //   console.log (result);
-    //   console.log('dpSet');
-    // // console.log(updated_User_Profile);
-    // } catch(error){
-    //   console.log(error);
-    // }
-
  
 }
 
@@ -591,9 +590,6 @@ export const getMiniProfile = async(req,res) => {
 export const follow =  async (req, res)=> {
 
   const {follower, followed} = req.body;
-  // console.log(follower);
-  // console.log(followed);
-  // console.log(req.body);
      
     try{
       const followerUser = await UsersModel.findById (follower);
@@ -616,10 +612,40 @@ export const follow =  async (req, res)=> {
         res.json(miniProfile);
         console.log("unfollowed");
     }
-     // res.json(followed);
-
+  
   } catch(error){
       res.status(409).json({message:error.message});
   }
 
 }
+
+export const dailyPoints = async(req,res) => {
+  const {id} = req.params;
+  console.log(req.params);
+ 
+  
+  try{
+    const userTime = await UsersModel.findById (id, {dailyLogin:1});
+
+    console.log(userTime);
+
+    if (Date.now() > (userTime.dailyLogin + 86400000)){
+
+      const awarded_User_Profile = await UsersModel.findByIdAndUpdate (id, {dailyLogin: Date.now(), activityPoints: 10}, { new: true });
+      
+      const result = await UsersModel.findById(awarded_User_Profile._id, {password:0, verCode:0});
+
+      const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: result.jwtExpiry});
+      res.status(200).json({result, token});
+      console.log (result);
+      console.log('daily Points Awarded');
+
+    } else {
+      res.json("Dont Manipulate Html Again")
+    }
+  } catch(error){
+    console.log(error);
+  }
+ 
+  
+ }

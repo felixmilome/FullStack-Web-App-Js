@@ -32,7 +32,7 @@ import ReviewBubble from "./ReviewBubble.jsx";
 import { tipDiariesAction, reviewDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
 import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
 
-import moment from 'moment';
+import moment from 'moment'; 
 import {useDispatch} from 'react-redux';
 import {useSelector} from 'react-redux';
 
@@ -119,11 +119,11 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                         <div className="flex items-center justify-between">
                             {/* Top-Mid Img*/}
                             <div className="ml-3 bg-white rounded-full">
-                                <img src={diary.miniProfile.dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
+                                <img src={diary.diaryMiniProfile.dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
                             </div> 
                             {/*Top-Mid-Words */}
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile.userName} #3</p>
+                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName} #3</p>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                             
                             </div>

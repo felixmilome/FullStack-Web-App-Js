@@ -25,3 +25,4 @@ export const verifyApi = (formData) => API.patch ('/users/verify', formData);
 export const changeDpApi = (dp) => API.patch ('/users/changeDp', dp);
 export const getMiniProfileApi = (profileName) => API.get (`/users/getMiniProfile/${profileName}`, profileName);
 export const followApi = (followData) => API.post (`/users/follow/`, followData);
+export const dailyPointsApi =(id) => API.patch (`/users/dailyPoints/${id}`, id);

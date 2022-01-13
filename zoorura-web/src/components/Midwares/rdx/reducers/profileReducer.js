@@ -1,7 +1,8 @@
-export const dpReducer = (state ={googleauthData: null}, action) => {
+export const dpReducer = (state ={googleauthData: null}, action) => { //other user editings also
      
     switch(action.type) {
-        case 'CHANGE_DP':
+        case 'CHANGE_DP':          ///DP REDUCER FOR ALL USER EDITTINGS
+        case 'DAILY_POINTS':
             console.log(action?.data);
             localStorage.setItem('profile', JSON.stringify({...action?.data}))
             return {...state, googleauthData: action?.data};
@@ -14,7 +15,7 @@ export const dpReducer = (state ={googleauthData: null}, action) => {
  export const getMiniProfileReducer = (miniProfile = {}, action) => {
      
     switch(action.type) {
-        case 'GET_MINI_PROFILE':
+        case 'GET_MINI_PROFILE': 
         case 'FOLLOW':
             return action?.data;
          

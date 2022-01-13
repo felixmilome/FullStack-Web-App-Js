@@ -52,11 +52,7 @@ const usersSchema = mongoose.Schema({
                 type: String,
                 required: true
                 },
-        wallet: {
-                type:Number,
-                default: 100000,
-                min: 0
-                },
+        wallet: [Number],
         id: {
                 type: String,
         },
@@ -72,19 +68,31 @@ const usersSchema = mongoose.Schema({
                 type: String,
         },
         verTime: {
-                type: Date,
-                required: true,
+                type: Number,
+                required: parseInt(Date.now()),
         },
         verExpiry: {
                 type: Date,
                 required: true,
+        }, 
+        activityPoints:[Number],
+        dailyLogin:{
+                type:Number,
+                default: parseInt(Date.now()),
         },
-
+        jwtExpiry:{
+                type:String,
+                
+        },
+        lastLogin:{
+                type:Date,
+                default: Date.now()
+        },
         follows: [{ 
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'
             
-            }],
+            }], 
         followers: [{ 
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'  

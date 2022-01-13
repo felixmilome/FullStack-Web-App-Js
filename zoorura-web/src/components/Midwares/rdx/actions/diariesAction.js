@@ -48,7 +48,7 @@ export const deleteDiariesAction = (id) => async (dispatch) =>{
 
 export const tipDiariesAction = (id, tipperData, setpopSure, setpopTip) => async (dispatch)=>{
     try{
-        const {data} = await axs.tipDiariesApi(id, tipperData); 
+        const {data} = await axs.tipDiariesApi(id, tipperData);  
        
         dispatch ({type: 'TIP_DIARY', payload: data});
         // if(dispatch)
