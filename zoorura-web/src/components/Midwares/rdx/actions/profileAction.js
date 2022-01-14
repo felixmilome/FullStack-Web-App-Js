@@ -17,6 +17,7 @@ export const getMiniProfileAction = (profileName) => async (dispatch) => {
             const {data} = await axs.getMiniProfileApi(profileName); 
             dispatch ({type: 'GET_MINI_PROFILE', data});
             console.log('miniprofile fetched');
+            
         
         } catch(error) { 
             console.log(error);

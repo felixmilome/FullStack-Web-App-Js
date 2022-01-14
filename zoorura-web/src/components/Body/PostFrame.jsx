@@ -67,6 +67,15 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     
    // console.log(miniProfile);
     //console.log(diary);
+  
+
+        function getSum(total, num) {
+            return total + num;
+        }
+        const tipsArray = diary.tips;
+        const tips = tipsArray.reduce(getSum, 0);
+        console.log(tips);
+    
 
     const reviewDiary = () =>{
         const id = diary._id;
@@ -517,15 +526,15 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             onClick={ () => {setpopTip(!popTip)}}>
                             
                             <GiTakeMyMoney  size ={29} className="text-gray-600"/>
-                            <p className="font-light text-xs m-1 text-gray-800">Honours:</p>
+                            <p className="font-light text-xs m-1 text-gray-800">Honours</p>
                             
                         </div>  
                          {/* Tip Amount box */}
-                       { diary.tips > 0  && <div  className= "flex p-0.5">
+                      <div  className= "flex p-0.5">
                             <div onClick={() => {seTipperview(true)}} className= 'bg-gray-200 shadow-md m-auto flex justify-around p-1 bg-transparent border rounded-md border-gray-300 cursor-pointer hover:bg-gray-100'>
-                            <p className= "text-xs text-center text-cyan-500">{diary.tips}</p>
+                            <p className= "text-xs text-center text-cyan-500">{tips}</p>
                             </div>
-                        </div>}
+                        </div>
                     </div> 
                     </OutsideClickHandler>
                 {/* <OutsideClickHandler onOutsideClick={() => {setpopTip(false);}}> */}

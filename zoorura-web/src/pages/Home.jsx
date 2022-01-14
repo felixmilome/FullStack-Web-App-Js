@@ -9,10 +9,19 @@ import PostEdit from "../components/Body/PostEdit.jsx";
 import Portfolios from "../components/Body/Portfolios.jsx";
 import {NoPage} from "../components/Body/NoPage.jsx";
 import {useState} from 'react'; 
+import {getHallFameAction} from '../components/Midwares/rdx/actions/hallFameAction.js'
+import { useEffect } from 'react';
+import {useDispatch} from 'react-redux';
 
 
 
 function Home({showProfile}) {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getHallFameAction());
+      }, [dispatch]);
 
     const [diaryId, setDiaryId]= useState(null);
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -20,7 +29,7 @@ function Home({showProfile}) {
     return (
         <div className="bg-gray-200 h-full min-h-screen pb-40">
            
-               
+    
             
                 <Header/> 
                 <Leftbar/>  

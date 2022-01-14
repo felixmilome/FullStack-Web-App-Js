@@ -30,7 +30,7 @@ function ProfileModal({setpopProfile}) {
 
     const profileLoader =() =>{
         setpopProfile(false);
-        dispatch(getMiniProfileAction(user.result.userName));
+       // dispatch(getMiniProfileAction(user.result.userName));
         navigate('/Portfolios/' + user.result.userName);
       //  window.location.reload(true);
     }
@@ -49,7 +49,7 @@ function ProfileModal({setpopProfile}) {
             {/* Heading */}
       
                 <div onClick={ profileLoader} className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl hover:bg-gray-100  bg-transparent items-center mt-4 mb-3 group">
-                <img src="./assets/images/milome.jpeg" alt="DP" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
+                <img src={user.result.dpUrl} alt="DP" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
                     <p className= "text-gray-500 leading-3 text-center text-sm font-bold">Visit Portfolio</p> 
                    <div className="bg-gray-100 rounded-md py-1 items-center"> 
                     <p className= "text-gray-500 leading-4 text-center text-xs font-light">Rank: #3</p> 

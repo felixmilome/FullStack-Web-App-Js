@@ -24,8 +24,8 @@ function Portfolios(diaryId, setDiaryId) {
         const dispatch = useDispatch();
 
         useEffect(() => {
-            dispatch(getMiniProfileAction(profileName));
-        }, [dispatch]);
+            dispatch(getMiniProfileAction(profileName));   
+        }, [profileName]);
     
         const miniProfile = useSelector((state) => state.getMiniProfileReducer);
 
@@ -99,7 +99,7 @@ function Portfolios(diaryId, setDiaryId) {
                                             <div className='rounded-md'>
                                                     <div className= "mx-3 space-y-2 rounded-xl text-xs  bg-transparent items-center mt-4 mb-3 group">
                                                         <img onClick={()=>{setdpCropper(true)}} src={miniProfile.dpUrl} alt="" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
-                                                        <p className= "text-gray-600 leading-3 text-center text-base font-bold ">@{profileName}</p>
+                                                        <p className= "text-gray-600 leading-3 text-center text-base font-bold ">@{miniProfile.userName}</p>
                                                     <div className="bg-gray-100 rounded-md items-center">
                                                         <p className= "w-1/2 m-auto text-gray-600 leading-4 text-center font-light break-words ">The Journey to Being a Billionaire is possible and exciting. Work smart and stay motivated </p> 
                                                         

@@ -27,6 +27,14 @@ const Schema = mongoose.Schema;
                         default: new Date()
                 },
         })
+        const activitiesSchema = mongoose.Schema({
+                type:{type:String},
+                points:{type:Number},
+                time: {
+                        type: Date,
+                        default: new Date()
+                },
+        })
 
     //===========MAIN USER============================
 
@@ -53,9 +61,6 @@ const usersSchema = mongoose.Schema({
                 required: true
                 },
         wallet: [Number],
-        id: {
-                type: String,
-        },
         time: {
                 type: Date,
                 default: new Date()
@@ -74,14 +79,18 @@ const usersSchema = mongoose.Schema({
         verExpiry: {
                 type: Date,
                 required: true,
-        }, 
-        activityPoints:[Number],
+        },   
+        activityPointsTotal:{
+                type: Number,
+                default: 10
+        },
         dailyLogin:{
                 type:Number,
                 default: parseInt(Date.now()),
         },
         jwtExpiry:{
                 type:String,
+                default: "12h"
                 
         },
         lastLogin:{
@@ -97,6 +106,7 @@ const usersSchema = mongoose.Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'  
             }],
+        activityRecord:[activitiesSchema],
         withdrawals:[withdrawalSchema],
         deposits:[depositSchema],
 

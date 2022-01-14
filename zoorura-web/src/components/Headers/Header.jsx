@@ -60,7 +60,7 @@ function Header() {
                     }
                 }
             }, [setpopDailyPoints]);
-      
+       
             if (user) {
                 const decodedJwt = parseJwt(user.token);
                 console.log(decodedJwt);
@@ -241,7 +241,12 @@ function Header() {
                             }>
                             <HashtagIcon className ="h-6 group-hover:text-white cursor-pointer text-gray-400"/>
                             </div>
-                            {popRankings && <LeftbarMob setshowRankings={setpopRankings}/>}
+                            {
+                            popRankings &&
+
+                             <LeftbarMob setshowRankings={setpopRankings}/>  // HALL OF FAME=========================
+                             
+                             }
                             
                         </OutsideClickHandler> 
                     </div>

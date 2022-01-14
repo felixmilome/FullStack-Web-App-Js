@@ -20,7 +20,7 @@ function Posts(diaryId, setDiaryId) {
 
 const diaries = useSelector((state) => state.diariesReducer);
 
-console.log(diaries);
+console.log(diaries); 
 
 
     return ( 
