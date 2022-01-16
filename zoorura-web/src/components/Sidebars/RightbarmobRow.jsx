@@ -1,7 +1,7 @@
 
-function RightbarmobRow({Src, title, PersonName, Points}) {
+function RightbarmobRow({Src, title, PersonName, Points, setpopChatBox}) {
     return (
-        <div>
+        <div onClick= {(e)=> setpopChatBox(true)} >
            {/* <ContactMod/> */}
         <div className="Relative items-center space-x-2
          mt-0.5 p-2 text-gray-500 hover:bg-white

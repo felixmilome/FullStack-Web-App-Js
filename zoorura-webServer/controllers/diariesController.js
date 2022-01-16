@@ -114,12 +114,12 @@ export const tipDiaries = async (req,res) => {
 
        try{ 
        const givers_Wallet = giver.wallet;
-       const givers_Points = giver.activityPointsTotal;
+       const givers_Points = giver.activityPointsTotal; 
  
        const withdrawalData = {type:'diarytip', receiver:diary.name, receiverId: diary.creator, title:diary.heading, postId: id, amount: amount};
         const walletCut = 0 - amount;
        const added_Points_Giver = 5 * amount;
-       const activityRecording = {type: `(${amount}) Tip On Post`, points: added_Points_Giver}
+       const activityRecording = {type: `(${amount}) Tip On Post Points`, points: added_Points_Giver}
        const giverAddedPoints = (givers_Points + added_Points_Giver);
     //    const walletCutted = (givers_Wallet - amount).toFixed(2);
     //    const giverAddedPoints = (givers_Points + (50 * amount));

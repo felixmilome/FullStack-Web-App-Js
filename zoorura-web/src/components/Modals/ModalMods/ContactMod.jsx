@@ -1,7 +1,7 @@
 import { PhoneIcon, VideoCameraIcon, XCircleIcon } from "@heroicons/react/outline"
 import ReceivedBubble from "./ReceivedBubble.jsx"
 import SentBubble from "./SentBubble.jsx";
-function ContactMod() {
+function ContactMod({setpopChatBox}) {
     return (
         <div className="border-gray-300 fixed top-24 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4 h-screen xl:h-2/3 overflow-y-scroll bg-gray-200">
             {/* Top Part */}
@@ -29,7 +29,7 @@ function ContactMod() {
                      p-1 rounded-full cursor-pointer group">
                         <PhoneIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
                     </div>
-                    <div className="hover:bg-gray-300
+                    <div onClick ={(e)=> setpopChatBox(false)} className="hover:bg-gray-300
                      p-1 rounded-full cursor-pointer group">
                         <XCircleIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
                     </div>

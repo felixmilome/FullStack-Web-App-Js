@@ -54,7 +54,7 @@ function Header() {
 
             useEffect(() => {
                 if(user){
-                    if (parseInt(Date.now()) > (user.result.dailyLogin + 86400000)){
+                    if (parseInt(Date.now()) > (user.result.dailyLogin + 86400000)){ //86400000
                         setpopDailyPoints(true)
                         console.log("Daily Log in")
                     }
@@ -139,7 +139,10 @@ function Header() {
                             >
                             <div 
                             onClick={ () => 
-                            {setpopSubscribers(!popSubscribers)}
+                            {
+                                setpopSubscribers(!popSubscribers);
+                                setpopContacts(false);
+                            }
                             }>
                             <HeaderRightIcon Icon = {UserAddIcon} badge="1"/>
                             </div>
@@ -156,7 +159,10 @@ function Header() {
                             >
                             <div
                             onClick={ () => 
-                            {setpopNotifications(!popNotifications)}
+                            {
+                                setpopNotifications(!popNotifications);
+                                setpopContacts(false);
+                            }
                             }>
                             <HeaderRightIcon Icon = {BellIcon} badge="1"/>
                             </div>
@@ -165,20 +171,23 @@ function Header() {
                         </OutsideClickHandler>
 
                             {/* Chat Modal */}
-                            <OutsideClickHandler     
+                            {/* <OutsideClickHandler     
                             onOutsideClick={() => {
                                 setpopContacts(false);
                             }}
-                            >
+                            > */}
                             <div
                             onClick={ () => 
-                            {setpopContacts(!popContacts)}
+                            {
+                                setpopContacts(!popContacts);
+                                
+                             }
                             }>
                                 <HeaderRightIcon Icon = {ChatIcon} badge="3"/> 
                                 </div>
                             {popContacts && <RightbarMob setshowContacts={setpopContacts}/>}
                             
-                        </OutsideClickHandler>     
+                        {/* </OutsideClickHandler>      */}
 
                         {/* Cart Modal */}
                         <OutsideClickHandler     
@@ -188,7 +197,10 @@ function Header() {
                             >
                             <div
                             onClick={ () => 
-                            {setpopCart(!popCart)}
+                            {
+                                setpopCart(!popCart);
+                                setpopContacts(false);
+                            }
                             }>
                                 <HeaderRightIcon Icon = {ShoppingCartIcon} badge="2"/>
                         </div>
@@ -205,7 +217,10 @@ function Header() {
                         >
                         <div className="cursor-pointer inline-flex items-center justify-center p-1 rounded-full sm:hover:bg-gray-100 mx-1"
                      onClick={ () => 
-                     {setpopProfile(!popProfile)}
+                         {
+                            setpopProfile(!popProfile);
+                            setpopContacts(false);
+                        }
                      }>
                      
                         <img src={user.result.dpUrl}  className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>

@@ -1,19 +1,18 @@
 
-import PostBox from "./PostBox";
+
 import {BeatLoader} from "react-spinners";
 import {useDispatch, useSelector} from 'react-redux';
 import { useState } from 'react';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 import {RiUserAddLine, RiUserUnfollowLine} from "react-icons/ri";
 import {HiOutlineChatAlt2} from "react-icons/hi"
-
-//import IGbox from './IGbox.jsx'
 import Portfolio from "./Portfolio";
 import { DpCropper } from "./DpCropper.jsx";
-//import { Test } from "./test";
 import {useParams} from "react-router-dom";
 import {getMiniProfileAction, followAction} from "../Midwares/rdx/actions/profileAction.js"
 import { useEffect } from 'react';
+import ConvoForm from './ConvoForm.jsx'
 
 
 function Portfolios(diaryId, setDiaryId) { 
@@ -34,13 +33,13 @@ function Portfolios(diaryId, setDiaryId) {
     const user = JSON.parse(localStorage.getItem('profile'));
     const[dpCropper, setdpCropper] = useState(false);
     const [Ifollow, setIfollow] = useState(false);
-    //const userName = user.result.userName;
+    const [popConvoForm, setpopConvoForm] = useState(false);
+
+    const [members, setMembers] = useState([]);
+    const [convoCreator, setconvoCreator] = useState(false);
+
     const diaries = useSelector((state) => state.diariesReducer);
-    // if(miniProfile && miniProfile!="NO_USER"){
-    //     if (miniProfile && miniProfile.followers.includes(user.result._id));{
-    //         setIfollow(true);
-    //     }
-    // }
+  
 
     const setFollowData = async()=>{
         return new Promise((resolve, reject) => {
@@ -56,6 +55,16 @@ function Portfolios(diaryId, setDiaryId) {
         console.log(user.result._id);
         console.log(miniProfile._id);
    }
+   const handleConvo = async() =>{
+  
+    setMembers([user.result._id, miniProfile.Id]);
+    setpopConvoForm(true);
+
+    // dispatch(createConvoAction(followData));
+    // console.log(followData);
+    // console.log(user.result._id);
+    // console.log(miniProfile._id);
+}
 
 
 
@@ -65,7 +74,27 @@ function Portfolios(diaryId, setDiaryId) {
     return (
         
     
-       <div>
+       <div className="">
+           
+        {user && miniProfile && miniProfile._id != user.result._id ?
+            <>
+            {popConvoForm &&
+            <div className="fixed  top-36 z-40  flex w-full justify-center">
+
+                <OutsideClickHandler     
+                onOutsideClick={() => {
+                    setpopConvoForm(false);
+                }}>
+                    <div className="m-auto">
+                    <ConvoForm miniProfile={miniProfile} user= {user} setpopConvoForm ={setpopConvoForm}/>
+                    </div>
+                </OutsideClickHandler>
+                </div>
+             } 
+            </>:
+            <></>
+        }
+
                 <div >
                     {/* portbox */}
                     {user && user.result._id == miniProfile._id ?
@@ -77,7 +106,7 @@ function Portfolios(diaryId, setDiaryId) {
                         <></>
                     }
                     
-                        <div className='w-full opacity-90  m-auto z-30  bg-transparent'>
+                        <div className='w-full opacity-90  m-auto  bg-transparent'>
                             <div className= 'flex m-auto bg-transparent'>
                             <div className="bg-gray-100 w-full lg:w-2/5 rounded-lg  text-gray-700 m-auto justify-around text-center items-center p-2 ">
                                 
@@ -103,7 +132,7 @@ function Portfolios(diaryId, setDiaryId) {
                                                     <div className="bg-gray-100 rounded-md items-center">
                                                         <p className= "w-1/2 m-auto text-gray-600 leading-4 text-center font-light break-words ">The Journey to Being a Billionaire is possible and exciting. Work smart and stay motivated </p> 
                                                         
-                                                        {user && miniProfile.followers.includes(user.result._id) &&  
+                                                        {user && miniProfile.follows.includes(user.result._id) &&  
                                                                 <p className= "text-gray-600 leading-3 text-center font-semibold">I follow @{user.result.userName}</p>
                                                             }
 
@@ -112,6 +141,7 @@ function Portfolios(diaryId, setDiaryId) {
                                                     
                                                     {user &&
                                                     <div className= 'flex justify-center text-sm items-center'>
+                                                       
 
                                                         {miniProfile.followers.includes(user.result._id) ?
                                                         <div onClick= {handleFollow} className=" flex text-gray-100 m-1 bg-cyan-400 rounded-md items-center p-1 cursor-pointer hover:bg-cyan-600"> 
@@ -124,11 +154,15 @@ function Portfolios(diaryId, setDiaryId) {
                                                             <RiUserAddLine/>
                                                         </div>
                                                         }
-                                                
-                                                        <div className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1"> 
-                                                            <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Inbox</p> 
-                                                            <HiOutlineChatAlt2 />
-                                                        </div>
+                                                         {miniProfile._id != user.result._id &&
+                                                            <>
+                                                           
+                                                                <div onClick= {handleConvo} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
+                                                                    <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Chat Room</p> 
+                                                                    <HiOutlineChatAlt2 />
+                                                                </div>
+                                                            </>
+                                                        }
                                                         
                                                     </div>
                                                     }

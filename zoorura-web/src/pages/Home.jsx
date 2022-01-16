@@ -38,14 +38,15 @@ function Home({showProfile}) {
            
                     <Routes>
                         <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                        <Route exact path ="*" element ={<NoPage diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         {user &&
                         <>
                         <Route exact path ="/PostForm" element ={<PostForm />}/>
                         <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         </>
                         }
-                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
-                        <Route exact path ="*" element ={<NoPage diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                       
                     </Routes> 
 
                 

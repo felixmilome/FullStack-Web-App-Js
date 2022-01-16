@@ -629,11 +629,11 @@ export const dailyPoints = async(req,res) => {
 
     console.log(userTime);
     const addedTotalPoints = (userTime.activityPointsTotal + 10);
-    const loginRecord = {type: "login", points: 10};
+    const loginRecord = {type: "Daily Login Points", points: 10};
 
     if (Date.now() > (userTime.dailyLogin + 86400000)){
                                                                         
-      const awarded_User_Profile = await UsersModel.findByIdAndUpdate (id,{push:{"activityRecord": loginRecord}, $set: {dailyLogin: Date.now(), activityPointsTotal: addedTotalPoints}}, { new: true });
+      const awarded_User_Profile = await UsersModel.findByIdAndUpdate (id,{ $push:{"activityRecord": loginRecord}, $set: {dailyLogin: Date.now(), activityPointsTotal: addedTotalPoints}}, { new: true });
       
       const result = await UsersModel.findById(awarded_User_Profile._id, {password:0, verCode:0});
 

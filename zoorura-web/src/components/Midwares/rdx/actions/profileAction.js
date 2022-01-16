@@ -43,7 +43,7 @@ export const dailyPointsAction = (id) => async (dispatch, setpopDailyPoints) => 
         const {data} = await axs.dailyPointsApi(id); 
         dispatch ({type: 'DAILY_POINTS', data});
         setpopDailyPoints(false);
-       // window.location.reload(true);
+        window.location.reload(true);
     } catch(error) {
         console.log(error);
     }
