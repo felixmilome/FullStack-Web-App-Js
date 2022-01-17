@@ -11,7 +11,8 @@ const convosSchema = mongoose.Schema({
                 ref: 'UsersModel'           
                  }],
         title: {
-                type: String
+                type: String,
+                default:null
         },
         dpUrl:{
                 type: String, 
@@ -19,23 +20,27 @@ const convosSchema = mongoose.Schema({
         },
         createdOn: {
                 type: Date,
-                default: new Date ()
+                //default: new Date ()
                 }, 
         updatedOn: {
                 type: Date,
                 default: new Date()
                 }, 
         pinner: {
-                type: String,
-                default:null
+                type: Number,
+                default:0
                 },
-        publicity:{
+        type:{
                 type:String,
                 default:null
         },
         approved:{
                 type:Boolean,
                 default: false
+        },
+        tip:{
+                type:Number, 
+                default:0
         }
 
 });

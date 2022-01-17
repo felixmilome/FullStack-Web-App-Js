@@ -11,20 +11,29 @@ API.interceptors.request.use((req)=>{
     }
     return req;
 })
+//Diary
 export const getDiariesApi = () => API.get('/diaries');
 export const postDiariesApi =(newDiary) => API.post('/diaries', newDiary);
 export const patchDiariesApi = (id, diariesEditData) => API.patch(`/diaries/${id}`, diariesEditData);
 export const deleteDiariesApi = (id) => API.delete(`/diaries/${id}`);
 export const tipDiariesApi = (id, tipperData) => API.patch(`/diaries/${id}/tipDiaries`, tipperData);
 export const reviewDiariesApi = (id, reviewData) => API.patch(`/diaries/${id}/reviewDiaries`, reviewData);
-
+//User Auth
 export const loginApi = (formData) => API.post ('/users/login', formData);
 export const registerApi = (formData) => API.post ('/users/register', formData);
 export const verifyApi = (formData) => API.patch ('/users/verify', formData);  
-
+//UserProfile
 export const changeDpApi = (dp) => API.patch ('/users/changeDp', dp);
 export const getMiniProfileApi = (profileName) => API.get (`/users/getMiniProfile/${profileName}`, profileName);
 export const followApi = (followData) => API.post (`/users/follow/`, followData);
 export const dailyPointsApi =(id) => API.patch (`/users/dailyPoints/${id}`, id);
-
-export const getHallFameApi = () => API.get('system/hallFame'); 
+//System
+export const getHallFameApi = () => API.get('/system/hallFame');
+//Convo
+export const getConvosApi = (id) => API.get(`/convos/${id}`, id); 
+export const postConvosApi = (convoData) => API.post('/convos', convoData);
+export const patchConvosApi = (id, convoData) => API.patch(`/convos/${id}`, convoData);
+export const deleteConvosApi = (id) => API.delete(`/convos/${id}`);
+//Message
+// export const getMessagesApi = () => API.post('/message/:id', id); 
+// export const postMessagesApi = () => API.post('/message/:id', messageData);  

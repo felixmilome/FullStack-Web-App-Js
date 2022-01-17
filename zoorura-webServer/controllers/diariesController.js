@@ -111,7 +111,7 @@ export const tipDiaries = async (req,res) => {
 
        const giver = await UsersModel.findById(tipperId);
         console.log("giverObject: " + giver);
-
+ 
        try{ 
        const givers_Wallet = giver.wallet;
        const givers_Points = giver.activityPointsTotal; 

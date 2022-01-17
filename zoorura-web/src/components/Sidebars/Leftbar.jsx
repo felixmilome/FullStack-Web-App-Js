@@ -37,8 +37,8 @@ return (
                  
                     <>
                     { hallFame.map((rank) =>(
-                         <Link to={'/Portfolios/' + rank.userName}>
-                             <LeftbarRow key={rank._id} Src = {rank.dpUrl} title ={(hallFame.indexOf(rank)+1)} PersonName= {rank.userName} Points= {rank.activityPointsTotal}/>
+                        <Link to={'/Portfolios/' + rank.userName} key={rank._id}>
+                             <LeftbarRow Src = {rank.dpUrl} title ={(hallFame.indexOf(rank)+1)} PersonName= {rank.userName} Points= {rank.activityPointsTotal}/>
                         </Link>
                         ))
                     } 

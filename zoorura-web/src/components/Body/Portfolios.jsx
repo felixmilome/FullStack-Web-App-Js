@@ -158,7 +158,7 @@ function Portfolios(diaryId, setDiaryId) {
                                                             <>
                                                            
                                                                 <div onClick= {handleConvo} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
-                                                                    <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Chat Room</p> 
+                                                                    <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Convo/Chat</p> 
                                                                     <HiOutlineChatAlt2 />
                                                                 </div>
                                                             </>
@@ -177,8 +177,8 @@ function Portfolios(diaryId, setDiaryId) {
                                             
                                                 <div className='text-base flex justify-around items-center py-2'>
                                                     <div className='leading-4'>
-                                                        <p className= 'font-bold '>#3</p>
-                                                        <p className= 'font-light text-sm'>Rank</p>
+                                                        <p className= 'font-bold '>30 tips</p>
+                                                        <p className= 'font-light text-sm'>Convo Request</p>
                                                     </div>
                                                     <div className='leading-4'>
                                                         <p className= 'font-bold '>3000</p>
