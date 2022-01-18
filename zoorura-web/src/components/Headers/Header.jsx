@@ -25,6 +25,7 @@ import { useEffect } from 'react';
 
 import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
 import {dailyPointsAction} from '../Midwares/rdx/actions/profileAction.js'
+import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 
 function Header() {
 
@@ -60,6 +61,12 @@ function Header() {
                     }
                 }
             }, [setpopDailyPoints]);
+
+            useEffect(() => {
+                if(user){
+                    dispatch(getConvosAction(user.result._id));
+                }
+            }, [dispatch]);   
        
             if (user) {
                 const decodedJwt = parseJwt(user.token);
@@ -79,6 +86,13 @@ function Header() {
                 dispatch(dailyPointsAction(user.result._id, setpopDailyPoints));
                 console.log('awarded');
            }
+
+         
+               
+        
+
+          
+
        
    
     
@@ -182,10 +196,10 @@ function Header() {
                                 setpopContacts(!popContacts);
                                 
                              }
-                            }>
+                            }> 
                                 <HeaderRightIcon Icon = {ChatIcon} badge="3"/> 
                                 </div>
-                            {popContacts && <RightbarMob setshowContacts={setpopContacts}/>}
+                            {popContacts &&  <RightbarMob setshowContacts={setpopContacts} user={user}/>}
                             
                         {/* </OutsideClickHandler>      */}
 

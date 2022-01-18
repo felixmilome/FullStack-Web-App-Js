@@ -16,7 +16,7 @@ import { useEffect } from 'react';
 
 
 function Posts(diaryId, setDiaryId) { 
-     const dispatch = useDispatch();
+     const dispatch = useDispatch(); 
 
 const diaries = useSelector((state) => state.diariesReducer);
 

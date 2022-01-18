@@ -7,12 +7,7 @@ export const convosReducer = (convos = [], action) => {
             return convos.map((convo) => convo._id === action.payload._id ? action.payload : convo);
         case 'GET_ALL_CONVOS':
              return action.payload;
-               // if (diaries.length < 50){
-                //return action.payload];
-                // }
-                // else if (diaries.length > 49){
-                //     return action.payload;
-                // }
+             
         case 'POST_CONVO':
             return convos;
         default:

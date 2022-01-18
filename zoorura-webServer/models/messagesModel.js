@@ -3,19 +3,21 @@ const Schema = mongoose.Schema;
 
 const messagesSchema = mongoose.Schema({
         convoId:{
-                type:String
+                type:String,
+                required:true
                 },
         senderId: { 
                 type: Schema.Types.ObjectId,
-                ref: 'UsersModel'           
+                ref: 'UsersModel',        
                  },
         receiverId: { 
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'           
-                },
+                }, 
         body: {
-                type: Date,
-                default: new Date()
+                type: String,
+                default: null,
+                required:true
                 },       
         createdOn: {
                 type: Date,

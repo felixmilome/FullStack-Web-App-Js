@@ -6,6 +6,10 @@ const convosSchema = mongoose.Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'           
                  },
+        guest: {
+                type: Schema.Types.ObjectId,
+                ref: 'UsersModel'   
+                },
         members: [{ 
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'           
@@ -21,7 +25,12 @@ const convosSchema = mongoose.Schema({
         createdOn: {
                 type: Date,
                 //default: new Date ()
-                }, 
+                },
+        dateRank:{
+                type: Number,
+                delault: 0,
+                required:true
+        },
         updatedOn: {
                 type: Date,
                 default: new Date()

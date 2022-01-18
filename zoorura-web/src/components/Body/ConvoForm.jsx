@@ -1,7 +1,7 @@
 
 import{useState, useEffect } from 'react';
 import {useDispatch} from 'react-redux'; 
-import { postConvosAction } from "../Midwares/rdx/actions/convosActions.js";
+import { postConvosAction } from "../Midwares/rdx/actions/convosAction.js";
 
 import {HiOutlineChatAlt2} from "react-icons/hi"
 //import {BsLightningCharge} from "react-icons/bs"
@@ -12,8 +12,10 @@ import { XCircleIcon } from "@heroicons/react/outline"
 
 function ConvoForm({miniProfile, user, setpopConvoForm}) {
     
-    const[freeConvoData, setfreeConvoData] = useState({host: user.result._id, members: [user.result._id, miniProfile._id], type:'2', tip: 0})
-    const[tipConvoData, settipConvoData] = useState({host: user.result._id, members: [user.result._id, miniProfile._id], type:'2', tip: 30}) //miniProfile.convoTip
+    const[freeConvoData, setfreeConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: 0, intro:''});
+    const[tipConvoData, settipConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: 30, intro:''}); //miniProfile.convoTip
+
+    const[messageData, setmessageData] = useState({convoId: user.result._id, senderId: user.result._id, receiverId: miniProfile._id, body:''});
 
     const dispatch = useDispatch();
 
@@ -22,13 +24,10 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
 
             try{
                 dispatch(postConvosAction (freeConvoData)); 
-                console.log(freeConvoData);
+                console.log(freeConvoData); 
             }
-            catch(err){
-
-                
-                console.log(err)
-
+            catch(err){    
+                console.log(err);
             }
             
     }
@@ -38,12 +37,9 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
             try{
                 dispatch(postConvosAction (tipConvoData)); 
                 console.log(tipConvoData);
-
             }
             catch(err){
-
-                console.log(err)
-
+                console.log(err);
             }
             
     }
@@ -100,10 +96,12 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                     </div> */}
                                 {/* ---Content---------------  */}
                                     <div className="px-3 items-center flex justify-center">
-                                        <textarea name= "message"
-                                        //  onChange={(e)=> 
-                                        //     setMessageData({...messageData, message: e.target.value});
-                                        // }
+                                        <textarea name= "body"
+                                         onChange={(e)=> {
+                                            setfreeConvoData({...freeConvoData, intro: e.target.value});
+                                            settipConvoData({...tipConvoData, intro: e.target.value});
+                                         }}
+                                        
                                         placeholder="Enter Intro Message" className="resize-none h-28 text-gray-700 text-sm font-light outline-none  m-1 w-full  px-4 py-2 border border-gray-300 rounded-md bg-gray-200"/>
                                     </div>
 

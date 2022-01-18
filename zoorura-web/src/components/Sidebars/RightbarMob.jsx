@@ -1,10 +1,18 @@
 import RightbarmobRow from './RightbarmobRow.jsx';
 import ContactMod from '../Modals/ModalMods/ContactMod.jsx';
 import { useState } from 'react';
+import {useSelector} from 'react-redux';
+//import { UserIcon } from '@heroicons/react/outline';
+import {BeatLoader} from "react-spinners";
 
-function RightbarMob(){
+
+function RightbarMob({user, setpopContacts}){
 
     const[popChatBox, setpopChatBox] = useState(false);
+    const[guest, setGuest] = useState('');
+    const convos = useSelector((state) => state.convosReducer);
+   console.log(convos);
+    console.log('IDDD:' + user.result._id);
 
 return (
     
@@ -20,9 +28,43 @@ return (
                {popChatBox && 
                <ContactMod setpopChatBox={setpopChatBox}/>
                }
-                <RightbarmobRow  setpopChatBox={setpopChatBox} Src = "./assets/images/jolie.jpeg" title ="#111" PersonName= "@AngelinaJolie:" Points= "3b aps" />
-            
-            </div>
+               {convos.length &&
+                <>
+                    {
+                        convos.map((convo) => {
+
+                            if (convo.host._id == user.result._id){       
+                                return (
+                                    <RightbarmobRow key={convo._id} setpopChatBox={setpopChatBox} Src = {convo.guest.dpUrl} title ="#111" PersonName= {convo.guest.userName} Points= {convo.tip} />
+                                )
+                            }
+                            if (convo.host._id != user.result._id) {
+                                return (
+                                    <RightbarmobRow key={convo._id} setpopChatBox={setpopChatBox} Src = {convo.host.dpUrl} title ="#111" PersonName= {convo.host.userName} Points= {convo.tip} />
+                                )
+                            }
+                        }
+                        )
+                    }
+                </> 
+                }
+                {convos == "NO_CONVO" &&
+                <>
+                  
+                            <RightbarmobRow  setpopChatBox={setpopChatBox} title ="NO CONVOS FOUND"/>
+                 
+                </> 
+                }
+                {!convos.length &&
+                <>
+                  
+                            <BeatLoader size={24} color='white' loading/>
+                            <RightbarmobRow  setpopChatBox={setpopChatBox}  title ="Fetchincg Convos" />
+
+                </> 
+                }
+
+            </div> 
     </div>
 </div>
 );
