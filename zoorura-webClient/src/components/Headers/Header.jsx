@@ -20,7 +20,7 @@ import RightbarMob from '../Sidebars/RightbarMob.jsx';
 import {Link} from 'react-router-dom';
 
 import { useDispatch } from "react-redux";
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 
 import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
@@ -39,10 +39,11 @@ function Header() {
     const[popRankings, setpopRankings] = useState(false);
     const[popContacts, setpopContacts] = useState(false);
     const[popDailyPoints, setpopDailyPoints] = useState(false);
-
+   
     const[popLogin, setpopLogin] = useState(false);
     const[popSignup, setpopSignup] = useState(true);
-    const[socket, setSocket] = useState(null); 
+  
+   const socket = useRef();
 
     const dispatch= useDispatch();
     
@@ -51,23 +52,39 @@ function Header() {
         try {
           return JSON.parse(atob(token.split(".")[1]));
         } catch (e) {
-          return null; 
+             return null; 
         }
       };    
 
+      //Sockets++++++++++++++++
+
             useEffect(() => {
-                if(user){
-                    setSocket(io("ws://localhost:8900"));
-                }
+              socket.current = io("ws://localhost:8900");
             }, []); 
-            
+
             useEffect(() => {
+
                 if(user && socket){
-                    socket.on("Welcome", message => {
-                        console.log(message);
-                    })
+
+                    socket.current.emit("addUser",  user.result._id);
+                    socket.current.on("getUsers", users=>{
+                        console.log(users)
+                        console.log(user.result._id)
+                    }); 
+
                 }
-            }, [socket]); 
+
+            }, [user]); 
+           
+            
+            // useEffect(() => {
+            //     if(user && socket){
+            //         socket.on("Welcome", message => {
+            //             console.log(message);
+            //         })
+            //     }
+            // }, [socket]); 
+
 
             useEffect(() => {
                 if(user){
@@ -215,7 +232,7 @@ function Header() {
                             }> 
                                 <HeaderRightIcon Icon = {ChatIcon} badge="3"/> 
                                 </div>
-                            {popContacts &&  <RightbarMob setshowContacts={setpopContacts} user={user}/>}
+                            {popContacts &&  <RightbarMob setshowContacts={setpopContacts} user={user} socket = {socket}/>}
                             
                         {/* </OutsideClickHandler>      */}
 

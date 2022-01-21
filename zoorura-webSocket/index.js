@@ -4,7 +4,47 @@ const io = require("socket.io")(8900, {
     },
 });
 
+let users=[];
+
+const addUser = (userId, socketId) => { 
+    !users.some((user)=> user.userId === userId) &&
+    users.push({userId, socketId});
+    console.log(userId);
+
+}
+const getUser =(userId) => {
+    return users.find(user => user.userId === userId);
+
+}
+
+const removeUser = (socketId) =>{
+    users= users.filter(user=>user.socketId !== socketId)
+}
+
 io.on("connection", (socket)=> {
     console.log("a user connected.");
-    io.emit("Welcome","Hello this is Zoorura Socket Server");
+    
+    //Get userId and socketId from User
+    socket.on("addUser", userId =>{
+        addUser(userId, socket.id);
+        io.emit("getUsers", users);
+    });
+    
+    //Send and Get Message
+    socket.on("sendMessage",({userId, receiverId, text})=>{
+        const user = getUser(userId);
+        io.to(user.socketId).emit("getMessage", {
+            senderId,
+            text,
+        });
+    });
+    
+    
+    
+    // When Disconnect
+    socket.on("disconnect", () =>{
+        console.log("a user disconnected");
+        removeUser(socket.id);
+        io.emit("getUsers", users);
+    });
 });
