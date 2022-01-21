@@ -23,6 +23,10 @@ const messagesSchema = mongoose.Schema({
                 type: Date,
                 default: new Date()
                 }, 
+        dateRank:{
+                type: Number,
+                default: Date.now()
+        }
 
 });
 
