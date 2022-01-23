@@ -14,24 +14,21 @@ function RightbarMob({user, setpopContacts}){
     const[viewer, setViewer] = useState(null);
     const[convoId, setConvoId] = useState(null);
     const convos = useSelector((state) => state.convosReducer);
-//    console.log(convos);
-//     console.log('IDDD:' + user.result._id);
-//     console.log(displayed);
-//     console.log(viewer);
+
 
 const chatSetterDirect = (guestData, hostData, idConvo) =>{
     setDisplayed(guestData);
     setViewer(hostData);
     setConvoId(idConvo);
     getMessagesAction(idConvo);
-    console.log('Direct')
+  
 }
 const chatSetterInverse = (guestData, hostData, idConvo) =>{
     setDisplayed(hostData);
     setViewer(guestData);
     setConvoId(idConvo);
     getMessagesAction(idConvo);
-    console.log('Inverse')
+  
 }
 
 

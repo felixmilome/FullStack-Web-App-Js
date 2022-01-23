@@ -87,7 +87,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         catch(error){
             console.log(error);
         }
-        
+         
     }
 
     const tipDiary = () =>{
@@ -596,7 +596,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                                 <div className= "font-normal text-xs break-words">{reviewmap.body}</div>
                                                 </div>
                                                 <div className="bg-transparent rounded-full flex justify-center cursor-pointer h-7 w-7 items-center hover:bg-white group m-3">
-                                                    <GiTakeMyMoney onclick  size ={24} className="text-gray-400"/>
+                                                    <GiTakeMyMoney size ={24} className="text-gray-400"/>
                                                 </div>
                                                   <div className="bg-transparent rounded-full flex justify-center cursor-pointer h-7 w-7 items-center hover:bg-white group m-3">
                                                     <BiCommentEdit  size ={20} className="text-gray-400"/>

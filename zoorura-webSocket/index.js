@@ -31,12 +31,13 @@ io.on("connection", (socket)=> {
     });
     
     //Send and Get Message
-    socket.on("sendMessage",({userId, receiverId, text})=>{
-        const user = getUser(userId);
-        io.to(user.socketId).emit("getMessage", {
-            senderId,
-            text,
-        });
+    socket.on("sendMessage",({messageData})=>{
+        console.log(messageData);
+        // const receiver = getUser(messageData.receiverId);
+        // io.to(receiver.socketId).emit("getMessage", {
+        //     senderId,
+        //     text,
+        // });
     });
     
     

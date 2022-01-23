@@ -19,7 +19,7 @@ import LeftbarMob from '../Sidebars/LeftbarMob.jsx';
 import RightbarMob from '../Sidebars/RightbarMob.jsx';
 import {Link} from 'react-router-dom';
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from 'react';
 
 
@@ -42,11 +42,12 @@ function Header() {
    
     const[popLogin, setpopLogin] = useState(false);
     const[popSignup, setpopSignup] = useState(true);
+    //const [socket, setSocket] = useState(null)
   
-   const socket = useRef();
+   const socketRef = useRef();
 
     const dispatch= useDispatch();
-    
+     
 
     const parseJwt = (token) => {
         try {
@@ -58,13 +59,20 @@ function Header() {
 
       //Sockets++++++++++++++++
 
-            useEffect(() => {
-              socket.current = io("ws://localhost:8900");
+            useEffect(() => {    
+                    socketRef.current = io("ws://localhost:8900");
+                    dispatch ({type: 'SOCKET_SETUP', payload:  socketRef});  
             }, []); 
 
+           const socket = useSelector((state) => state.socketReducer);
+
+           console.log(socketRef);
+            console.log (socket);
+
+
             useEffect(() => {
 
-                if(user && socket){
+                if(user && socket.length){
 
                     socket.current.emit("addUser",  user.result._id);
                     socket.current.on("getUsers", users=>{

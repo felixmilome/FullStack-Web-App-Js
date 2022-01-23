@@ -26,7 +26,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
         setpopLogin(true);
 
         setpopSignup(false);
-       
+        
     }
 
     const googleSuccess = async (res) =>{

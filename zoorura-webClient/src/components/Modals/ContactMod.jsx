@@ -11,13 +11,27 @@ import {postMessagesAction, getMessagesAction} from '../Midwares/rdx/actions/mes
 function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     const dispatch = useDispatch(); 
 
-    useEffect(() => {
-        dispatch(getMessagesAction(convoId));
+    const socket = useSelector((state) => state.socketReducer);
+    console.log(socket);
+
+    const messagesAll = useSelector((state) => state.messagesReducer);
+
+
+
+    useEffect(() => { 
+
+        const availableMessages = messagesAll.filter(message => message.convoId === convoId);
+        if(!availableMessages.length){
+            console.log (availableMessages);
+            dispatch(getMessagesAction(convoId));
+            
+        }
+
     }, [dispatch]); 
 
-    const messages = useSelector((state) => state.messagesReducer);
+    //const messages = useSelector((state) => state.messagesReducer);
 
-    console.log(messages);
+     const messages = messagesAll.filter(message => message.convoId === convoId);
 
     const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:''});
     // console.log(convoId);
@@ -34,9 +48,12 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         scrollToBottom()
     }, [messages]);
   
-    const sendMessage = () => {
+    const sendMessage = () => { 
         console.log(messageData); 
-        dispatch(postMessagesAction(messageData));
+        dispatch(postMessagesAction(messageData, socket));
+        
+        setmessageData({...messageData, body: ''});
+       
     }
 
     return (
@@ -120,6 +137,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                         <div className='p-2 bg-gray-100 rounded-xl w-full'>
                                         
                                         <textarea 
+                                        value={messageData.body}
                                         onChange={(e)=> setmessageData({...messageData, body: e.target.value})}
                                         type="text" placeholder="TYPE MESSAGE HERE..." className=" resize-none h-36 max-h-screen w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded"/>
                                     
@@ -141,7 +159,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                   
                                          <div ref={messagesEndRef} />
                                 </div>
-                                 
+                                  
                                 
                     </div>
 
