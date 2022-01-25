@@ -9,7 +9,7 @@ export const messagesReducer = (messages = [], action) => {
            
              return messages.concat(action.payload);
           
-             
+        case 'SOCKET_GOT_MESSAGE':    
         case 'POST_MESSAGE':
             return [...messages, action.payload];
         default:

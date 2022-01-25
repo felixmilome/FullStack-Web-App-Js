@@ -36,4 +36,7 @@ export const patchConvosApi = (id, convoData) => API.patch(`/convos/${id}`, conv
 export const deleteConvosApi = (id) => API.delete(`/convos/${id}`);
 //Message
 export const getMessagesApi = (convoId) => API.get(`/messages/${convoId}`); 
-export const postMessagesApi = (messageData) => API.post('/messages/', messageData);  
+export const postMessagesApi = (messageData) => API.post('/messages/', messageData); 
+//Notifications
+export const postNotificationsApi = (notificationData) => API.get('/notifications/', notificationData); 
+export const getNotificationsApi = (id) => API.post(`/notifications/${id}`);

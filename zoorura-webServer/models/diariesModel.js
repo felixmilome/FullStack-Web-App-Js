@@ -65,8 +65,11 @@ const diariesSchema = mongoose.Schema({
     time : {
         type: Date,
         default: new Date()
-
     }, 
+    dateRank:{
+        type: Number,
+        default: (Date.now())/360000, //We will sum so that an extra point gains you 6 ahead minutes to shine.
+    },
     tippers: [tipSchema],
     reviews: [reviewSchema],
 

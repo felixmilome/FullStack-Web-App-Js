@@ -10,7 +10,7 @@ export const getConvos = async  (req, res) => {
         .populate('host', 'dpUrl userName')
         .populate('guest', 'dpUrl userName')
         .populate('members', 'dpUrl userName');
-        console.log(convos);
+       // console.log(convos);
         res.status(200).json(convos);  
         
    } catch(error){

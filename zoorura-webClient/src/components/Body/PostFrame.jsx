@@ -127,15 +127,32 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                         {/*Top-Mid*/}
                         <div className="flex items-center justify-between">
                             {/* Top-Mid Img*/}
+                            {diary.miniProfile &&
+                            <>
+                            <div className="ml-3 bg-white rounded-full">
+                                <img src={diary.miniProfile[0].dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
+                            </div> 
+                           
+                            <div className="sm:ml-2 items-center ml-0.5 py-3"> 
+                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile[0].userName} #3</p>
+                                <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
+                            
+                            </div>
+                            </>
+                            }
+                            {!diary.miniProfile &&
+                            <>
                             <div className="ml-3 bg-white rounded-full">
                                 <img src={diary.diaryMiniProfile.dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
                             </div> 
-                            {/*Top-Mid-Words */}
+                           
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
                                 <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName} #3</p>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                             
                             </div>
+                            </>
+                            }
                         </div>
                     {/* Top-Menu */}
                     <div>

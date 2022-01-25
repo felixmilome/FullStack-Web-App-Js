@@ -9,22 +9,20 @@ import {postMessagesAction, getMessagesAction} from '../Midwares/rdx/actions/mes
 
 
 function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
+   
     const dispatch = useDispatch(); 
 
     const socket = useSelector((state) => state.socketReducer);
-    console.log(socket);
 
     const messagesAll = useSelector((state) => state.messagesReducer);
 
 
-
+    /// THIS ONLY RUNS WHEN NO MESSAGES+++++
     useEffect(() => { 
-
         const availableMessages = messagesAll.filter(message => message.convoId === convoId);
         if(!availableMessages.length){
             console.log (availableMessages);
-            dispatch(getMessagesAction(convoId));
-            
+            dispatch(getMessagesAction(convoId));    
         }
 
     }, [dispatch]); 
@@ -47,6 +45,16 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     useEffect(() => {
         scrollToBottom()
     }, [messages]);
+
+    useEffect(() => {
+        socket.current.on("getMessage", messageData =>{
+            console.log(messageData);
+            console.log("Message Gotten");
+            dispatch ({type: 'SOCKET_GOT_MESSAGE', payload: messageData});
+            console.log(messages);
+
+        })
+    }, []);
   
     const sendMessage = () => { 
         console.log(messageData); 

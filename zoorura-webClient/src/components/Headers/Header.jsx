@@ -61,7 +61,11 @@ function Header() {
 
             useEffect(() => {    
                     socketRef.current = io("ws://localhost:8900");
-                    dispatch ({type: 'SOCKET_SETUP', payload:  socketRef});  
+                    dispatch ({type: 'SOCKET_SETUP', payload:  socketRef}); 
+                    // socketRef.current.on("getMessage", messageData =>{
+                    //    if(pop) setpopContacts(true);
+                    //     console.log("matureConts");  ///Add to Notifications???????????????????
+                    // }) 
             }, []); 
 
            const socket = useSelector((state) => state.socketReducer);
@@ -72,10 +76,10 @@ function Header() {
 
             useEffect(() => {
 
-                if(user && socket.length){
+                if(user){
 
-                    socket.current.emit("addUser",  user.result._id);
-                    socket.current.on("getUsers", users=>{
+                    socketRef.current.emit("addUser",  user.result._id);
+                    socketRef.current.on("getUsers", users=>{
                         console.log(users)
                         console.log(user.result._id)
                     }); 

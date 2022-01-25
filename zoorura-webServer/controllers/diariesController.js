@@ -7,10 +7,45 @@ import { taxer } from "../functions.js";
 //Get  Diariessss===========================================
 export const getDiaries = async  (req, res) => {
    try{ 
-        const diaries = await DiariesModel.find().limit(20).sort({"tips":-1, "time":-1})
-        .populate('diaryMiniProfile', 'dpUrl userName');
-       // console.log(diaries);
-        res.status(200).json(diaries); 
+    //     const diaries = await DiariesModel.find().limit(20).sort({"tips":-1, "time":-1})
+    //     .populate('diaryMiniProfile', 'dpUrl userName');
+    //    // console.log(diaries);
+    //     res.status(200).json(diaries); 
+
+
+    const diaries = await DiariesModel.aggregate([
+        {
+            $limit: 4
+        },
+        
+        {   
+       
+            $lookup: {
+
+              from: 'UsersModel',
+              localField: 'diaryMiniProfile',
+              foreignField: '_id',
+              as: 'miniProfile',
+
+            },
+            
+ 
+        },
+        
+        
+
+        { $addFields: 
+            { "avgRank": 
+                { $sum: [ "$dateRank", "$displays", {$sum: ["$tips"]}] }
+            }
+        }
+
+        ]).sort({"avgRank":-1});
+
+ 
+        console.log(diaries);
+        res.status(200).json(diaries);
+
         
    } catch(error){
        res.status(404).json({message: error.message});
@@ -25,7 +60,7 @@ export const postDiaries =  async (req, res)=> {
        // console.log(diary);
         const user = await UsersModel.findById(req.userId);
        // console.log(user);
-        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, diaryMiniProfile: req.userId, time: new Date().toISOString()}); //time is for updates
+        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, diaryMiniProfile: req.userId, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
        
     try{
         await newDiary.save();

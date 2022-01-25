@@ -7,8 +7,9 @@ import { hallFameReducer } from './hallFameReducer';
  import {convosReducer} from './convosReducer';
  import {messagesReducer} from './messagesReducer';
  import {socketReducer} from './socketReducer';
+ import {notificationsReducer} from './notificationsReducer';
 
  export default combineReducers({
     diariesReducer, googleauthReducer, dpReducer, getMiniProfileReducer,
-     hallFameReducer, convosReducer, messagesReducer, socketReducer
+     hallFameReducer, convosReducer, messagesReducer, socketReducer, notificationsReducer
  });

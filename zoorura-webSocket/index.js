@@ -10,15 +10,19 @@ const addUser = (userId, socketId) => {
     !users.some((user)=> user.userId === userId) &&
     users.push({userId, socketId});
     console.log(userId);
+    console.log(users);
 
 }
-const getUser =(userId) => {
+const getUser = (userId) => {
+    console.log(users);
+    // console.log(users.find(user => user.userId === userId));
     return users.find(user => user.userId === userId);
+    
 
 }
 
 const removeUser = (socketId) =>{
-    users= users.filter(user=>user.socketId !== socketId)
+    users = users.filter(user=>user.socketId !== socketId)
 }
 
 io.on("connection", (socket)=> {
@@ -31,13 +35,20 @@ io.on("connection", (socket)=> {
     });
     
     //Send and Get Message
-    socket.on("sendMessage",({messageData})=>{
+    socket.on("sendMessage", ({messageData})=>{
+        console.log(users);
         console.log(messageData);
-        // const receiver = getUser(messageData.receiverId);
-        // io.to(receiver.socketId).emit("getMessage", {
-        //     senderId,
-        //     text,
-        // });
+        console.log(messageData.receiverId);
+        const receiver = getUser(messageData.receiverId);
+        console.log(receiver);
+        io.to(receiver.socketId).emit("getMessage", {
+           convoId:messageData.convoId,
+           senderId:messageData.senderId,
+           receiverId:messageData.receiverId,
+           body:messageData.body,
+           createdOn:new Date(),
+           dateRank:Date.now(),
+        });
     });
     
     
@@ -45,7 +56,9 @@ io.on("connection", (socket)=> {
     // When Disconnect
     socket.on("disconnect", () =>{
         console.log("a user disconnected");
-        removeUser(socket.id);
+        removeUser(socket.id);      
         io.emit("getUsers", users);
+        console.log(users);
+        
     });
 });
