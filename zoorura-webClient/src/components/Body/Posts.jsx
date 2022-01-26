@@ -19,7 +19,7 @@ function Posts(diaryId, setDiaryId) {
      const dispatch = useDispatch(); 
 
 const diaries = useSelector((state) => state.diariesReducer);
-
+ 
 console.log(diaries); 
 
 

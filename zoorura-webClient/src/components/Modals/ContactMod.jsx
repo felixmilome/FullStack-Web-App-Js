@@ -6,17 +6,25 @@ import {useSelector, useDispatch} from 'react-redux';
 import { MdSend} from "react-icons/md";
 import {useState, useRef, useEffect} from 'react';
 import {postMessagesAction, getMessagesAction} from '../Midwares/rdx/actions/messagesAction.js';
+import {postNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js';
 
 
 function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
+
+    const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:''});
+    const[notificationData, setnotificationData] = useState({sender:viewer._id, receiver:displayed._id, body:'', type: ''});
    
     const dispatch = useDispatch(); 
+
+    const diaries = useSelector((state) => state.diariesReducer);
+
+    console.log(diaries); 
 
     const socket = useSelector((state) => state.socketReducer);
 
     const messagesAll = useSelector((state) => state.messagesReducer);
 
-
+ 
     /// THIS ONLY RUNS WHEN NO MESSAGES+++++
     useEffect(() => { 
         const availableMessages = messagesAll.filter(message => message.convoId === convoId);
@@ -31,10 +39,8 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
      const messages = messagesAll.filter(message => message.convoId === convoId);
 
-    const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:''});
-    // console.log(convoId);
-    // console.log(displayed);
-    // console.log(viewer); 
+    
+
 
     const messagesEndRef = useRef(null)
 
@@ -55,12 +61,19 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
         })
     }, []);
+
+    const notifier = () =>{
+        dispatch(postNotificationsAction(notificationData));
+    }
   
     const sendMessage = () => { 
         console.log(messageData); 
-        dispatch(postMessagesAction(messageData, socket));
+        dispatch(postMessagesAction(messageData, socket, notifier));
+        console.log(notificationData);
+       // dispatch(postNotificationsAction(notificationData)); 
         
         setmessageData({...messageData, body: ''});
+        setnotificationData({...notificationData, body: ''});
        
     }
 
@@ -146,7 +159,11 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                         
                                         <textarea 
                                         value={messageData.body}
-                                        onChange={(e)=> setmessageData({...messageData, body: e.target.value})}
+                                        onChange={(e)=>{
+                                             setmessageData({...messageData, body: e.target.value});
+                                            setnotificationData({...notificationData, body: e.target.value, type:'message'});
+                                             }
+                                            }
                                         type="text" placeholder="TYPE MESSAGE HERE..." className=" resize-none h-36 max-h-screen w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded"/>
                                     
                                         </div>

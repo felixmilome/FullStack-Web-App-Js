@@ -36,6 +36,7 @@ io.on("connection", (socket)=> {
     
     //Send and Get Message
     socket.on("sendMessage", ({messageData})=>{
+        try{
         console.log(users);
         console.log(messageData);
         console.log(messageData.receiverId);
@@ -49,6 +50,9 @@ io.on("connection", (socket)=> {
            createdOn:new Date(),
            dateRank:Date.now(),
         });
+        }catch(error){
+            console.log(error);
+        }
     });
     
     

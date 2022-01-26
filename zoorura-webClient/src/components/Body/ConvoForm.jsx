@@ -1,13 +1,13 @@
 
 import{useState, useEffect } from 'react';
-import {useDispatch} from 'react-redux'; 
+import {useDispatch, useSelector} from 'react-redux'; 
 import { postConvosAction } from "../Midwares/rdx/actions/convosAction.js";
 
 import {HiOutlineChatAlt2} from "react-icons/hi"
 //import {BsLightningCharge} from "react-icons/bs"
 import { XCircleIcon } from "@heroicons/react/outline"
 
-
+ 
 
 
 function ConvoForm({miniProfile, user, setpopConvoForm}) {
@@ -18,6 +18,8 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
     const[messageData, setmessageData] = useState({convoId: user.result._id, senderId: user.result._id, receiverId: miniProfile._id, body:''});
 
     const dispatch = useDispatch();
+
+  
 
     const requestFree = async ()=>{
       
@@ -86,7 +88,7 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                         </div>
 
                         <div className="">
-            
+             
 
                                        {/*-- Title------------ */}
                                        {/* <div className="flex justify-center">

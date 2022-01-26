@@ -17,7 +17,7 @@ export const getMessagesAction = (convoId) => async (dispatch) => {
 }
 
 
-export const postMessagesAction = (messageData, socket) => async (dispatch) => {
+export const postMessagesAction = (messageData, socket, notifier) => async (dispatch) => {
     console.log("Message Action Act");
     try{
         const {data} = await axs.postMessagesApi(messageData);
@@ -27,7 +27,7 @@ export const postMessagesAction = (messageData, socket) => async (dispatch) => {
         });
  
         dispatch ({type: 'POST_MESSAGE', payload: data});
-        
+        notifier();
     } catch(error) {  
         console.log(error);
     }

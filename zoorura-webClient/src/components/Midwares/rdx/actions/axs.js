@@ -38,5 +38,5 @@ export const deleteConvosApi = (id) => API.delete(`/convos/${id}`);
 export const getMessagesApi = (convoId) => API.get(`/messages/${convoId}`); 
 export const postMessagesApi = (messageData) => API.post('/messages/', messageData); 
 //Notifications
-export const postNotificationsApi = (notificationData) => API.get('/notifications/', notificationData); 
-export const getNotificationsApi = (id) => API.post(`/notifications/${id}`);
+export const postNotificationsApi = (notificationData) => API.post('/notifications/', notificationData); 
+export const getNotificationsApi = (id) => API.get(`/notifications/${id}`);

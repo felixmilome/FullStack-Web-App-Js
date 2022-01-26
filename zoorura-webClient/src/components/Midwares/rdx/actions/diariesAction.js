@@ -1,5 +1,6 @@
 import * as axs from './axs';
 
+ 
 export const getDiariesAction = () => async (dispatch) => {
     try{
         const {data} = await axs.getDiariesApi();
@@ -9,16 +10,14 @@ export const getDiariesAction = () => async (dispatch) => {
         console.log(error);
     }
 }
-export const postDiariesAction = (diary, setpopPosted, navigate) => async (dispatch) => {
+export const postDiariesAction = (diary, setpopPosted, navigate, getDiaries) => async (dispatch) => {
     try{
         const {data} = await axs.postDiariesApi(diary);
-
         dispatch ({type: 'POST_DIARY', payload: data});
-
         setpopPosted(true);
- 
+        getDiaries();
+       // window.location.reload(true);
         navigate ('/');
-        window.location.reload(true);
 
         //setTimeout( function() {navigate ('/')}, 1000);
     } catch(error) {

@@ -16,7 +16,7 @@ import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm,
 
 
 import {useDispatch} from 'react-redux'; 
-import { postDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
+import { postDiariesAction, getDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
 import PostFRow from "./PostFRow.jsx";
 
 //firebase
@@ -35,7 +35,7 @@ function PostForm() {
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
-    const user = JSON.parse(localStorage.getItem('profile'));
+    const user = JSON.parse(localStorage.getItem('profile')); 
 
     const[popPosted, setpopPosted] = useState(false);
 
@@ -178,7 +178,9 @@ function PostForm() {
         }
     }
 
-
+    const getDiaries = async()=>{
+        dispatch(getDiariesAction()); 
+    }
     const handleSubmit = async (e)=>{
         e.preventDefault();
 
@@ -186,7 +188,9 @@ function PostForm() {
                 console.log(diariesData);
 
                // dispatch(postDiariesAction ({...diariesData, name:user?.result?.userName }));
-               dispatch(postDiariesAction (diariesData, setpopPosted, navigate)); 
+               dispatch(postDiariesAction (diariesData, setpopPosted, navigate, getDiaries)); 
+
+                
                
                // setpopPosted(true);
 

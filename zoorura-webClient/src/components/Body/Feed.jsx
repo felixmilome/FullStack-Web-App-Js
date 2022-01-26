@@ -14,6 +14,7 @@ function Feed(diaryId, setDiaryId, setNavbars) {
     const[popSignup, setpopSignup] = useState(true);
     console.log(user);
     console.log('yes'); 
+   
 
 
     

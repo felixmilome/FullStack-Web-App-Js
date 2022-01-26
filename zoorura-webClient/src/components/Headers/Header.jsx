@@ -26,6 +26,7 @@ import { useEffect, useRef } from 'react';
 import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
 import {dailyPointsAction} from '../Midwares/rdx/actions/profileAction.js'
 import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
+import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {io} from 'socket.io-client'
 
 function Header() {
@@ -62,6 +63,7 @@ function Header() {
             useEffect(() => {    
                     socketRef.current = io("ws://localhost:8900");
                     dispatch ({type: 'SOCKET_SETUP', payload:  socketRef}); 
+                    
                     // socketRef.current.on("getMessage", messageData =>{
                     //    if(pop) setpopContacts(true);
                     //     console.log("matureConts");  ///Add to Notifications???????????????????
@@ -111,7 +113,16 @@ function Header() {
                 if(user){
                     dispatch(getConvosAction(user.result._id));
                 }
-            }, [dispatch]);   
+            }, [dispatch]);
+
+            useEffect(() => {
+                if(user){
+                    dispatch(getNotificationsAction(user.result._id));
+                }
+            }, []);  
+
+            const notifications = useSelector((state) => state.notificationsReducer);
+            console.log(notifications);
        
             if (user) {
                 const decodedJwt = parseJwt(user.token);

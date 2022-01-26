@@ -69,7 +69,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     //console.log(diary);
   
 
-        function getSum(total, num) {
+        function getSum(total, num) { 
             return total + num;
         }
         const tipsArray = diary.tips;
@@ -87,7 +87,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         catch(error){
             console.log(error);
         }
-         
+          
     }
 
     const tipDiary = () =>{

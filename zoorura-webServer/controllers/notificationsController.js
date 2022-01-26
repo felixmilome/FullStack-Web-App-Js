@@ -3,6 +3,7 @@ import  mongoose  from "mongoose";
 
 export const getNotifications = async  (req, res) => {
     const {id} = req.params;
+    console.log('params :'+ req.params);
 
     try{ 
         const notifications = await NotificationsModel.find({receiver: { $in: [ id ] } }).sort({"dateRank":-1})
@@ -12,18 +13,18 @@ export const getNotifications = async  (req, res) => {
         res.status(200).json(notifications);
 
     } catch(error){
-        res.status(404).json({message: error.message});
+        res.status(404).json({message: error.message}); 
     }
  }
 
 export const postNotifications = async  (req, res) => {
-    const {id} = req.params;
+    //const {id} = req.params;
 
     try{ 
         const{sender, receiver, type, body, link} = req.body;
-            
-        const newNotification = await NotificationsModel.create({sender, receiver, type, body, createdOn: new Date(), dateRank: Date.now(), link});
-
+       
+        const newNotification = await NotificationsModel.create({sender, receiver, type, body, read: false, createdOn: new Date(), dateRank: Date.now(), link});
+        //console.log(newNotification);
         res.status(200).json(newNotification);
 
     } catch(error){

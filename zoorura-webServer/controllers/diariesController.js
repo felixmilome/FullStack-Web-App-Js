@@ -7,18 +7,17 @@ import { taxer } from "../functions.js";
 //Get  Diariessss===========================================
 export const getDiaries = async  (req, res) => {
    try{ 
-    //     const diaries = await DiariesModel.find().limit(20).sort({"tips":-1, "time":-1})
+
+    //     const diaries = await DiariesModel.find().limit(5).sort({"tips":-1, "time":-1})
     //     .populate('diaryMiniProfile', 'dpUrl userName');
     //    // console.log(diaries);
     //     res.status(200).json(diaries); 
 
 
     const diaries = await DiariesModel.aggregate([
-        {
-            $limit: 4
-        },
+       
         
-        {   
+        { 
        
             $lookup: {
 
@@ -28,22 +27,44 @@ export const getDiaries = async  (req, res) => {
               as: 'miniProfile',
 
             },
-            
+           
  
         },
         
-        
+        { 
+            $project: {
+                "miniProfile.name": 0, 
+                 "miniProfile.email": 0, 
+                 "miniProfile.password": 0, 
+                 "miniProfile.wallet": 0, 
+                 "miniProfile.time": 0, 
+                 "miniProfile.verified": 0, 
+                 "miniProfile.verCode": 0, 
+                 "miniProfile.verTime": 0, 
+                 "miniProfile.verExpiry": 0,
+                 "miniProfile.activityPointsTotal": 0,
+                 "miniProfile.dailyLogin": 0,
+                 "miniProfile.jwtExpiry": 0,  
+                 "miniProfile.lastLogin": 0,
+                 "miniProfile.follows": 0, 
+                 "miniProfile.followers": 0,
+                 "miniProfile.activityRecord": 0, 
+                 "miniProfile.withdrawals": 0,
+                 "miniProfile.deposits": 0,
+                } 
+        },
 
         { $addFields: 
             { "avgRank": 
                 { $sum: [ "$dateRank", "$displays", {$sum: ["$tips"]}] }
             }
-        }
+        },
+       
 
-        ]).sort({"avgRank":-1});
+        ]).sort({"avgRank":-1}).limit(5);
 
  
-        console.log(diaries);
+       
         res.status(200).json(diaries);
 
         

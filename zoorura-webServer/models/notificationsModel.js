@@ -15,7 +15,14 @@ const notificationsSchema = mongoose.Schema({
                 type: String,
                 default: null,
                 required:true
-                },       
+                }, 
+        read: {
+                type: Boolean,
+                default: false,
+        }, 
+        type: {
+                type: String,
+        },       
         createdOn: {
                 type: Date,
                 default: new Date()
@@ -23,12 +30,7 @@ const notificationsSchema = mongoose.Schema({
         dateRank:{
                 type: Number,
                 default: Date.now()
-        },
-        body: {
-            type: String,
-            default: null,
-            required:true
-            }, 
+        }
 
 });
 
