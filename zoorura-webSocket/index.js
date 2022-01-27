@@ -34,35 +34,72 @@ io.on("connection", (socket)=> {
         io.emit("getUsers", users);
     });
     
+    // When Disconnect
+    socket.on("disconnect", () =>{
+    console.log("a user disconnected");
+    removeUser(socket.id);      
+    io.emit("getUsers", users);
+    console.log(users);
+        
+    });
+    
     //Send and Get Message
     socket.on("sendMessage", ({messageData})=>{
         try{
+
         console.log(users);
         console.log(messageData);
         console.log(messageData.receiverId);
         const receiver = getUser(messageData.receiverId);
         console.log(receiver);
-        io.to(receiver.socketId).emit("getMessage", {
-           convoId:messageData.convoId,
-           senderId:messageData.senderId,
-           receiverId:messageData.receiverId,
-           body:messageData.body,
-           createdOn:new Date(),
-           dateRank:Date.now(),
+
+            io.to(receiver.socketId).emit("getMessage", {
+                
+                convoId:messageData.convoId,
+                senderId:messageData.senderId,
+                receiverId:messageData.receiverId,
+                body:messageData.body,
+                createdOn:new Date(),
+                dateRank:Date.now(),
+
+            });
+        }catch(error){
+
+            console.log(error);
+
+        }
+    });
+
+    //Send and Get Notification
+    socket.on("sendNotification", ({socketNotificationData})=>{
+        try{
+
+            console.log(users);
+            console.log('socket notified');
+            console.log(socketNotificationData);
+            console.log(socketNotificationData.receiver);
+            const receiver = getUser(socketNotificationData.receiver);
+            console.log(receiver);
+
+            io.to(receiver.socketId).emit("getNotification", {
+              
+                sender:socketNotificationData.sender,
+                receiver:socketNotificationData.receiver,
+                body:socketNotificationData.body,
+                read:false,
+                type:socketNotificationData.type,
+                createdOn:new Date(),
+                dateRank:Date.now(), 
+
         });
         }catch(error){
+
             console.log(error);
+
         }
     });
     
     
     
-    // When Disconnect
-    socket.on("disconnect", () =>{
-        console.log("a user disconnected");
-        removeUser(socket.id);      
-        io.emit("getUsers", users);
-        console.log(users);
-        
-    });
+  
 });

@@ -22,7 +22,11 @@ const notificationsSchema = mongoose.Schema({
         }, 
         type: {
                 type: String,
-        },       
+        },  
+        link: {
+                type: String,
+                default: ''
+        },      
         createdOn: {
                 type: Date,
                 default: new Date()

@@ -5,7 +5,7 @@ export const notificationsReducer = (notifications = [], action) => {
             return notifications;
         case 'GET_NOTIFICATIONS': 
             return action.payload;      
-        case 'SOCKET_GET_NOTIFICATIONS':    
+        case 'SOCKET_GOT_NOTIFICATION':    
             return [...notifications, action.payload];
         default:
             return notifications; 

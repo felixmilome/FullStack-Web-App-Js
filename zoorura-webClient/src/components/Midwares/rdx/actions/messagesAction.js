@@ -25,6 +25,7 @@ export const postMessagesAction = (messageData, socket, notifier) => async (disp
         socket.current.emit("sendMessage", {
            messageData
         });
+        
  
         dispatch ({type: 'POST_MESSAGE', payload: data});
         notifier();

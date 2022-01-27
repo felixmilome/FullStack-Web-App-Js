@@ -117,12 +117,28 @@ function Header() {
 
             useEffect(() => {
                 if(user){
+
                     dispatch(getNotificationsAction(user.result._id));
+
+                    socketRef.current.on("getNotification", socketNotificationData =>{
+                    console.log(socketNotificationData);
+                    console.log("Notification Gotten");
+                    dispatch ({type: 'SOCKET_GOT_NOTIFICATION', payload: socketNotificationData});
+                    console.log(notifications);
+        
+                 })
                 }
-            }, []);  
+            }, []);
+
+            // useEffect(() => {
+               
+            // }, []); 
 
             const notifications = useSelector((state) => state.notificationsReducer);
-            console.log(notifications);
+            //console.log(notifications);
+            const unreadMessages = notifications.filter(notification => notification.read === false && notification.type ==='message');
+            const unreadNotifications = notifications.filter(notification => notification.read === false && notification.type !=='message');
+            console.log(unreadNotifications)
        
             if (user) {
                 const decodedJwt = parseJwt(user.token);
@@ -234,9 +250,9 @@ function Header() {
                                 setpopContacts(false);
                             }
                             }>
-                            <HeaderRightIcon Icon = {BellIcon} badge="1"/>
+                            <HeaderRightIcon Icon = {BellIcon} badge={unreadNotifications.length}/>
                             </div>
-                            {popNotifications && <NotificationsModal setshowNotifications={setpopNotifications}/>}
+                            {popNotifications && <NotificationsModal unreadNotifications={unreadNotifications} setshowNotifications={setpopNotifications}/>}
                             
                         </OutsideClickHandler>
 
@@ -253,9 +269,9 @@ function Header() {
                                 
                              }
                             }> 
-                                <HeaderRightIcon Icon = {ChatIcon} badge="3"/> 
+                                <HeaderRightIcon Icon = {ChatIcon} badge={unreadMessages.length}/> 
                                 </div>
-                            {popContacts &&  <RightbarMob setshowContacts={setpopContacts} user={user} socket = {socket}/>}
+                            {popContacts &&  <RightbarMob unreadMessages ={unreadMessages} setshowContacts={setpopContacts} user={user} socket = {socket}/>}
                             
                         {/* </OutsideClickHandler>      */}
 

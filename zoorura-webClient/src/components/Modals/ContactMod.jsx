@@ -13,7 +13,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
     const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:''});
     const[notificationData, setnotificationData] = useState({sender:viewer._id, receiver:displayed._id, body:'', type: ''});
-   
+    const[socketNotificationData, setsocketNotificationData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName, body:'', type: ''}, receiver:displayed._id, body:'', type: ''});
     const dispatch = useDispatch(); 
 
     const diaries = useSelector((state) => state.diariesReducer);
@@ -63,7 +63,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     }, []);
 
     const notifier = () =>{
-        dispatch(postNotificationsAction(notificationData));
+        dispatch(postNotificationsAction(notificationData, socketNotificationData, socket));
     }
   
     const sendMessage = () => { 
@@ -162,6 +162,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                         onChange={(e)=>{
                                              setmessageData({...messageData, body: e.target.value});
                                             setnotificationData({...notificationData, body: e.target.value, type:'message'});
+                                            setsocketNotificationData({...socketNotificationData, body: e.target.value, type:'message'});
                                              }
                                             }
                                         type="text" placeholder="TYPE MESSAGE HERE..." className=" resize-none h-36 max-h-screen w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded"/>

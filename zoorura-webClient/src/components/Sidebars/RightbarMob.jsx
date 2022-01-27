@@ -7,7 +7,7 @@ import {BeatLoader} from "react-spinners";
 import{getMessagesAction} from "../Midwares/rdx/actions/messagesAction.js"
 
 
-function RightbarMob({user, setpopContacts}){
+function RightbarMob({user, setpopContacts, unreadMessages}){
 
     const[popChatBox, setpopChatBox] = useState(false);
     const[displayed, setDisplayed] = useState(null);
@@ -54,6 +54,8 @@ return (
                     {
                         convos.map((convo) => {
 
+                            const unreadConvoMessage = unreadMessages.filter(unreadMessage => unreadMessage.read === false && unreadMessage.receiver._id === user.result._id);
+                            console.log(unreadConvoMessage);
                             if (convo.host._id === user.result._id){
                               
                                     return (    //X--DISPLAY (THEM)GUEST: THEY ARE GUEST 
@@ -64,7 +66,7 @@ return (
                                             }} >
 
                                             <RightbarmobRow popChatBox={popChatBox}  setpopChatBox={setpopChatBox} 
-                                            Src = {convo.guest.dpUrl} title ="#111" GuestName= {convo.guest.userName} Points= {convo.tip} /> 
+                                            Src = {convo.guest.dpUrl} title ={unreadConvoMessage.length} GuestName= {convo.guest.userName} Points= {convo.tip} /> 
                                            
                                             {/* {popChatBox && 
                                                 <ContactMod setpopChatBox={setpopChatBox} convoId={convo._id} guest={JSON.parse(guest)} host={JSON.parse(host)}/>
@@ -87,10 +89,14 @@ return (
                                                 chatSetterInverse(convo.guest, convo.host, convo._id)
                                             }
                                             }>
-
-                                            <RightbarmobRow key={convo._id} popChatBox={popChatBox} setpopChatBox={setpopChatBox} 
-                                            Src = {convo.host.dpUrl} title ="#111" GuestName= {convo.host.userName} Points= {convo.tip} />
-                                            
+                                                {unreadConvoMessage.length &&
+                                                        <RightbarmobRow key={convo._id} popChatBox={popChatBox} setpopChatBox={setpopChatBox} 
+                                                         Src = {convo.host.dpUrl} title ={unreadConvoMessage.length} GuestName= {convo.host.userName} Points= {convo.tip} />
+                                                }
+                                                {unreadConvoMessage.length === 0 &&
+                                                        <RightbarmobRow key={convo._id} popChatBox={popChatBox} setpopChatBox={setpopChatBox} 
+                                                        Src = {convo.host.dpUrl} title ={unreadConvoMessage.length} GuestName= {convo.host.userName} Points= {convo.tip} />
+                                                }
                                             {/* {popChatBox && 
                                                 <ContactMod setpopChatBox={setpopChatBox} convoId={convo._id} guest={host} host={guest}/>
                                             }   */}
