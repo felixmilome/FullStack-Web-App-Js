@@ -184,7 +184,7 @@ function PostForm() {
     const handleSubmit = async (e)=>{
         e.preventDefault();
 
-            try{
+            try{ 
                 console.log(diariesData);
 
                // dispatch(postDiariesAction ({...diariesData, name:user?.result?.userName }));

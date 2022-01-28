@@ -54,9 +54,15 @@ return (
                     {
                         convos.map((convo) => {
 
-                            const unreadConvoMessage = unreadMessages.filter(unreadMessage => unreadMessage.read === false && unreadMessage.receiver._id === user.result._id);
-                            console.log(unreadConvoMessage);
+                           // const unreadConvoMessage = unreadMessages.filter(unreadMessage => unreadMessage.read === false && (unreadMessage.receiver._id === user.result._id || unreadMessage.receiver === user.result._id ));
+                           // console.log(unreadConvoMessage);
                             if (convo.host._id === user.result._id){
+
+                                const unreadConvoMessage = unreadMessages.filter(unreadMessage =>
+                                     (unreadMessage.read === false)
+                                      && (unreadMessage.sender._id === convo.guest._id)
+                                       && (unreadMessage.receiver._id === user.result._id
+                                         || unreadMessage.receiver === user.result._id ));
                               
                                     return (    //X--DISPLAY (THEM)GUEST: THEY ARE GUEST 
                                         <div key={convo._id}
@@ -77,6 +83,12 @@ return (
                                 
                                 
                             if (convo.host._id !== user.result._id) {
+
+                                const unreadConvoMessage = unreadMessages.filter(unreadMessage => 
+                                    (unreadMessage.read === false)
+                                     && (unreadMessage.sender._id === convo.host._id)
+                                      && (unreadMessage.receiver._id === convo.guest._id
+                                         || unreadMessage.receiver === convo.guest._id ));
                                 
                                 // const guest = JSON.stringify(convo.host);
                                 // const host = JSON.stringify(convo.guest);

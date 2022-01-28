@@ -185,12 +185,12 @@ function Portfolios(diaryId, setDiaryId) {
                                                         <p className= 'font-light text-sm'>Posts</p>
                                                     </div>
                                                     <div className='leading-4'>
-                                                        <p className= 'font-bold '>1.9B</p>
-                                                        <p className= 'font-light text-sm'>Followers</p>
+                                                        <p className= 'font-bold '>{miniProfile.followers.length}</p>
+                                                        <p className= 'font-light text-sm'>Subscribers</p>
                                                     </div>
                                                     <div className='leading-4'>
-                                                        <p className= 'font-bold '>1</p>
-                                                        <p className= 'font-light text-sm'>Following</p>
+                                                        <p className= 'font-bold '>{miniProfile.follows.length}</p>
+                                                        <p className= 'font-light text-sm'>Subscriptions</p>
                                                     </div>
 
                                                 </div> 

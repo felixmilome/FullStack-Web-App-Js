@@ -13,7 +13,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
     const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:''});
     const[notificationData, setnotificationData] = useState({sender:viewer._id, receiver:displayed._id, body:'', type: ''});
-    const[socketNotificationData, setsocketNotificationData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName, body:'', type: ''}, receiver:displayed._id, body:'', type: ''});
+    const[socketNotificationData, setsocketNotificationData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiver:displayed._id, body:'', type: ''});
     const dispatch = useDispatch(); 
 
     const diaries = useSelector((state) => state.diariesReducer);

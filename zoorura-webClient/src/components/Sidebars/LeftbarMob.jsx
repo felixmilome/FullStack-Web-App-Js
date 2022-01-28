@@ -9,7 +9,7 @@ return (
                     Hall of Fame Ranks
                 </div>
             {/* People */}
-            <div className="mb-60">
+            <div className="mb-60 ">
                 <LeftbarmobRow Src = "./assets/images/jolie.jpeg" title ="#1" PersonName= "@AngelinaJolie:" Points= "3b aps"/>
                 <LeftbarmobRow Src = "./assets/images/milome.jpeg" title ="#2" PersonName= "@FelixMilome:" Points= "2b aps"/>
                 <LeftbarmobRow Src = "./assets/images/jordan.jpeg" title ="#3" PersonName= "@Michael Jordan:" Points= "1.7b aps"/>
