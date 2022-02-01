@@ -35,7 +35,7 @@ function ProfileModal({setpopProfile}) {
       //  window.location.reload(true);
     }
     return (
-        <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-3/4 mt-4 rounded-xl sm:rounded-none mt-6 sm:mt-2 right-3 sm:right-2 top-20 h-full z-0 flex justify-center bg-gray-200">
+        <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-3/4 mt-4 rounded-md mt-6 sm:mt-0 right-3 sm:right-1.5 top-20 h-full z-0 flex justify-center bg-gray-200">
 
             <div className="overflow-scroll">
 

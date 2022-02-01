@@ -2,7 +2,7 @@ import NotificationsmodalRow from './NotificationsmodalRow';
 
 function NotificationsModal({setshowNotifications}) {
     return (
-        <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-2/3 mt-4  sm:mt-2 right-0 top-20 h-full z-0 flex justify-center bg-gray-200">
+        <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-2/3 mt-4  sm:mt-2 right-0 sm:right-1.5 rounded-md top-20 h-full z-0 flex justify-center bg-gray-200">
 
             <div className="overflow-scroll">
 

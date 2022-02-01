@@ -449,12 +449,61 @@ function getCodec() {
   // CONTROLLERS==================================
 
 
+
+  export const checkEmail = async (req,res) => {
+    const {email} = req.params;
+    console.log(email);
+    if(email){
+      try{ 
+      
+          const existingEmail = await UsersModel.findOne({email: { $in: [ email ] } });
+          if (existingEmail){
+          res.json("emailExists");
+          }
+          else if(!existingEmail){
+            res.json("noEmail");
+          }
+          
+    
+      } catch (error){
+          res.status(500).json({message: 'Something went wrong'});
+      }
+   }else{
+     console.log('empty');
+   }
+  }
+  
+   export const checkUsername = async (req,res) => {
+    const {username} = req.params;
+    console.log(req.body);
+    
+   
+      try{ 
+      
+          const existingUsername = await UsersModel.findOne({userName: { $in: [ username ] } }); 
+          
+          if (existingUsername){
+            res.json("usernameExists");
+            console.log(existingUsername);
+          }
+          else if(!existingUsername){
+            res.json("noUsername");
+          }
+          
+    
+      } catch (error){
+          res.status(500).json({message: 'Something went wrong'});
+      }
+
+  }
+
+
 export const login = async (req,res) => {
  const {email, password, autologout} = req.body;
  //console.log(req.body);
  try{ 
   
-     const existingEmail = await UsersModel.findOne({email: { $in: [ email ] } });; 
+     const existingEmail = await UsersModel.findOne({email: { $in: [ email ] } });
      
 
      if(!existingEmail) return res.status(404).json({message:"User Email doesn't exist."});
@@ -483,31 +532,45 @@ export const register = async (req,res) => {
         const existingUser = await UsersModel.findOne ({userName: { $in: [ userName ] } });;
         const existingEmail = await UsersModel.findOne ({email: { $in: [ email ] } });;
 
-        console.log(existingEmail);
+        // console.log(existingEmail);
 
-         if(existingUser) return res.status(400).json({message:"Username Taken."});
+        //  if(existingUser) return res.status(400).json({message:"Username Taken."});
          
-         if(existingEmail) return res.status(400).json({message:"Email Taken."});
+        //  if(existingEmail) return res.status(400).json({message:"Email Taken."});
 
-         if(password !== confirmPassword) return res.status(400).json({message: 'passwords dont match'});
+        //  if(password !== confirmPassword) return res.status(400).json({message: 'passwords dont match'});
 
          const hashedPassword = await bcrypt.hash (password, 12);
          const uniqueStr = getCodec ()
-         const resultX = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`, verCode: uniqueStr, verTime: Date.now(), verExpiry: Date.now() + 172800000});
-         const result = await UsersModel.findById(resultX._id, {password:0, verCode:0});
-         console.log(result);
-         if (result) {
 
-            const remail = result.email;
-            sendVerifyEmail (remail,uniqueStr, userName, firstName, lastName);    
-            const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
-            res.status(200).json({result, token});
+        if(!existingEmail && !existingUser 
+          && firstName > 2 && firstName < 15
+          && lastName > 2 && lastName < 15 
+          && email > 2 && email < 40
+          && password > 5 && password <25
+          && confirmPassword === password   
+          ){
+             
+              const resultX = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`, verCode: uniqueStr, verTime: Date.now(), verExpiry: Date.now() + 172800000});
+              const result = await UsersModel.findById(resultX._id, {password:0, verCode:0});
+                
+              console.log(result);
 
-         }
+              if (result) {
+
+                  const remail = result.email;
+                  sendVerifyEmail (remail,uniqueStr, userName, firstName, lastName);    
+                  const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
+                  res.status(200).json({result, token});
+
+              }
+
+        }
 
     } catch (error) { 
        res.status(500).json({message: 'Something went wrong'});  
     }
+  
 }
 
 export const verify = async(req,res) => {

@@ -171,13 +171,18 @@ function Header() {
 
     return (
         
-        <div className= "sticky top-0 z-50">
+        <div style={{  
+            backgroundImage: "url(" + "https://thumbs.dreamstime.com/z/cartoon-cute-doodles-hand-drawn-african-illustration-sketchy-picture-doodle-inscription-africa-74329506.jpg" + ")",
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'
+          }} className= "sticky top-0 z-50 ">
               {/*==============SIGN UP/ LOGIN =================*/}
             {user && !user.result.verified  ? <VerifyForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>} 
             { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
             {popLogin && !user ? <LoginForm  popLogin = {popLogin} popSignup ={popSignup}  setpopLogin ={setpopLogin} setpopSignup = {setpopSignup} />: <></>}
        
-        <div className= "sticky top-0 z-50 bg-gray-200 border-b-2 border-gray-300 p-2 lg:px-6 lg:py-3 shadow-md ">
+        <div className= "sticky top-0 z-50 bg-gray-200 border-b border-teal-200 p-2 lg:px-6 lg:py-3 shadow-md ">
         <div className= "flex items-center  p-0  space-x-2 justify-between">
             {/*Left*/}
             <Link to='/'>
@@ -189,7 +194,7 @@ function Header() {
 
                             {user ?
                             <>
-                                <h1 className= "m-1 inline-flex text-base font-light text-gray-400">Home</h1>
+                                <h1 className= "m-1 inline-flex text-lg font-bold text-gray-600">Home</h1>
                                
                             </>
                         :
@@ -301,7 +306,7 @@ function Header() {
                             setpopProfile(false);
                         }}
                         >
-                        <div className="cursor-pointer inline-flex items-center justify-center p-1 rounded-full sm:hover:bg-gray-100 mx-1"
+                        <div className="cursor-pointer inline-flex items-center justify-center p-1 rounded-full bg-gray-100 sm:hover:bg-cyan-300 mx-1"
                      onClick={ () => 
                          {
                             setpopProfile(!popProfile);

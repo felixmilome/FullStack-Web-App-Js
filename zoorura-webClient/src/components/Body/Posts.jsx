@@ -2,6 +2,7 @@
 import PostBox from "./PostBox";
 import {BeatLoader} from "react-spinners";
 
+
 import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
 
 
@@ -27,9 +28,9 @@ console.log(diaries);
        <div>
 
 
-            { !diaries.length ? 
+            { !diaries.length ?  
 
-            <div className="p-3 flex">   
+            <div className="p-3 flex ">   
                 <div className="text-center text-sm text-gray-400 p-3 m-auto bg-transparent rounded-xl">
                     
                     <BeatLoader size={24} color='pink' loading/>

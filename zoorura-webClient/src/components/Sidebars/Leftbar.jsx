@@ -10,7 +10,7 @@ function Leftbar(){
     console.log(hallFame); 
     
 return (
-    <div className="invisible xl:visible p-2 my-1 w-1/4 m-x-4 bg-transparent border-r border-gray-300 z-40 fixed left-0 top-10 h-screen  overflow-y-auto overflow-x-hidden">
+    <div className="invisible xl:visible p-2 my-1 w-1/4 m-x-4 bg-transparent border-r border-gray-300 z-30 fixed left-0 top-10 h-screen  overflow-y-auto overflow-x-hidden">
         <div className="overflow-scroll">
             {/* space */}
         <div className= "h-16">

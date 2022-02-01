@@ -21,7 +21,7 @@ function Feed(diaryId, setDiaryId, setNavbars) {
 
     return (
     
-    <div className="overflow-y-scroll">
+    <div className="bg-transparent overflow-y-scroll">
                     
         {/*==============SIGN UP/ LOGIN =================*/}
         {/* {user && !user.result.verified  ? <VerifyForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
@@ -50,9 +50,13 @@ function Feed(diaryId, setDiaryId, setNavbars) {
 
                 </div>
 
+     
+
             
         
        <Posts diaryId={diaryId} setDiaryId={setDiaryId}/>
+
+      
       
         
     </div>

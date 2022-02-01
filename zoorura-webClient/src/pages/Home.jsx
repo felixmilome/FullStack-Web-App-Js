@@ -27,8 +27,9 @@ function Home({showProfile}) {
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
     return (
-        <div className="bg-gray-200 h-full min-h-screen pb-40">
-           
+        <div className="bg-transparent h-full min-h-screen pb-40">
+
+       
     
             
                 <Header/> 
@@ -53,10 +54,25 @@ function Home({showProfile}) {
                 {user &&
                 <>
                 <Rightbar/>             
-                <Footer/>
+                {/* <Footer/> */}
                 </>
                 }
-           
+            
+            <div 
+                        
+                        style={{  
+                                // backgroundImage: "url(" + "https://thumbs.dreamstime.com/z/cartoon-cute-doodles-hand-drawn-african-illustration-sketchy-picture-doodle-inscription-africa-74329506.jpg" + ")",
+                                backgroundImage: "url(" + "./assets/images/zooruraBGClean.jpg" + ")", 
+                                backgroundPosition: 'center',
+                                    //backgroundSize: 'cover',
+                                    backgroundSize: 'contain',
+                                    backgroundRepeat: 'repeat',
+                                    pointerEvents: 'none',
+                                    opacity: 0.03,
+                                }}
+                className=" fixed top-0 z-0  w-screen h-screen">  
+                    
+            </div>
            
 
         </div>

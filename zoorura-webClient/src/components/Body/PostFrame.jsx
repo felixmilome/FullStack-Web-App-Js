@@ -126,7 +126,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         <>
 
         
-        <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent relative xl:w-1/2 mx-auto my-1"> 
+        <div className="p-2 sm:px-12 py-4 rounded-xl bg-gray-200 relative xl:w-5/12 mx-auto my-1"> 
          
 
             {/* Post-Top-Cyan Invisible Parent*/}

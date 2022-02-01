@@ -1,5 +1,6 @@
 const colors = require('tailwindcss/colors')
 
+
 module.exports = {
   node: 'jit',
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
@@ -14,6 +15,10 @@ module.exports = {
       colors: {
         cyan: colors.cyan,
         teal: colors.teal
+      },
+      backgroundImage: {
+        //'afro-pattern': "url('../public/assets/images/afropattern.jpeg')",
+      //  'footer-texture': "url('/img/footer-texture.png')",
       }
     },
   },
