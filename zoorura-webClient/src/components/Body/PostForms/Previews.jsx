@@ -1,4 +1,15 @@
-export const YtForm = ({Url}) => {
+export const PicForm = ({Url}) => {
+    return (
+        <div className='max-h-screen w-4/5 bg-green-100 p-1'>
+            <div className= "z-10 h-full w-full">     
+                <img src= {Url} className="object-container h-full w-full"/>
+            </div> 
+        </div>
+    )
+}
+
+
+export const YtForm = ({Url}) => { 
     return (
         <>
             <iframe className= "z-10" growth="HaskellandPythonLibratriesLibraryk

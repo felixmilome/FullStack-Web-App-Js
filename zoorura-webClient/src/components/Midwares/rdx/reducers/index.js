@@ -12,4 +12,4 @@ import { hallFameReducer } from './hallFameReducer';
  export default combineReducers({
     diariesReducer, googleauthReducer, dpReducer, getMiniProfileReducer,
      hallFameReducer, convosReducer, messagesReducer, socketReducer, notificationsReducer
- });
+ }); 

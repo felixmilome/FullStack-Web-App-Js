@@ -12,7 +12,8 @@ import{ImReddit, ImWordpress, ImYoutube2} from "react-icons/im";
 import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
-import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm} from "./PostForms/Previews.jsx";
+import {MdFileUpload, MdOutlineUploadFile } from "react-icons/md";
+import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm} from "./PostForms/Previews.jsx";
 
 
 import {useDispatch} from 'react-redux'; 
@@ -31,7 +32,8 @@ function PostForm() {
     const [diariesData, setdiariesData] = useState({
         title:'', caption:'', file: '', image: '',  publicity:'',
     }); 
-   
+   const[imageBlob, setImageBlob] = useState('');
+   const[fileData, setFileData] = useState('');
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -40,34 +42,19 @@ function PostForm() {
     const[popPosted, setpopPosted] = useState(false);
 
     const [progress, setProgress] = useState(0);
+    const[attachment, setAttachment] = useState('link');
 
  
     
-    const uploadImage = (image) =>{
-        if (!image) return;
-        const storageRef = ref (storage, `/diaryfiles/${image.name}`);
-        const uploadTask=uploadBytesResumable(storageRef,image);
-    
-        uploadTask.on("state-changed", (snapshot)=>{
-            const prog = Math.round(
-                (snapshot.bytesTransferred/ snapshot.totalBytes)* 100
-                );
-            setProgress(prog);
-        },
-        (err) => console.log(err),
-        () => {
-           getDownloadURL(uploadTask.snapshot.ref).then((url)=> console.log(url)); 
-        }
-        );
-    };
+   
 
-    const handleImage = async (e)=>{
-        e.preventDefault();
-        const image = e.target.files[0];
-        console.log(image);
-        uploadImage(image);
+    // const handleImage = async (e)=>{
+    //     e.preventDefault();
+    //     const image = e.target.files[0];
+    //     console.log(image);
+    //     uploadImage(image);
             
-    };
+    // };
 
 
     const handleUrl = async (e) =>{
@@ -181,20 +168,29 @@ function PostForm() {
     const getDiaries = async()=>{
         dispatch(getDiariesAction()); 
     }
-    const handleSubmit = async (e)=>{
-        e.preventDefault();
 
-            try{ 
+    const uploadLink = async (url)=>{
+
+
+       const constructor = async(url) => {
+
+            const diariesDataConstruct = {
+                    title: diariesData.title,
+                    caption: diariesData.caption,
+                    file: url,
+                    image: '',
+                        publicity: diariesData.publicity};
+
+                return diariesDataConstruct;
+
+            }
+
+           try{ 
+           
+                const diariesData = await constructor (url);
                 console.log(diariesData);
 
-               // dispatch(postDiariesAction ({...diariesData, name:user?.result?.userName }));
-               dispatch(postDiariesAction (diariesData, setpopPosted, navigate, getDiaries)); 
-
-                
-               
-               // setpopPosted(true);
-
-                //setTimeout( function() {navigate ('/')}, 1000);
+              dispatch(postDiariesAction (diariesData, setpopPosted, navigate, getDiaries)); 
 
             }
             catch(err){
@@ -202,6 +198,62 @@ function PostForm() {
                 console.log(err)
 
             }
+    }
+    const uploadLinkPost = async ()=>{
+ 
+            try{ 
+            
+                 console.log(diariesData);
+ 
+               dispatch(postDiariesAction (diariesData, setpopPosted, navigate, getDiaries)); 
+ 
+             }
+             catch(err){
+ 
+                 console.log(err)
+ 
+             }
+     }
+    
+
+    const uploadFile = async (image) =>{
+            if (!image) return;
+            const storageRef = ref (storage, `/diaryfiles/${image.name}`);
+            const uploadTask=uploadBytesResumable(storageRef,image);
+        
+            uploadTask.on("state-changed", (snapshot)=>{
+                const prog = Math.round(
+                    (snapshot.bytesTransferred/ snapshot.totalBytes)* 100
+                    );
+                setProgress(prog);
+            },
+            (err) => console.log(err),
+            () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((url)=> {
+            
+                setdiariesData({...diariesData, file: url});
+                uploadLink(url);
+                console.log(url);
+              
+                
+                })
+            }
+
+        );
+       
+    };
+
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+
+        if (imageBlob.includes('blob')){
+
+         uploadFile(fileData);
+
+             
+        } else {
+            uploadLinkPost();
+        }
             
     }
     return (
@@ -251,13 +303,52 @@ function PostForm() {
                         value= {diariesData.publicity}
                         onChange={(e)=> setdiariesData({...diariesData, publicity: e.target.value})}
                         
-                        className="m-2 flex text-center justify-center items-center font-semibold text-xs text-gray-100 outline-none bg-gray-300 rounded-full p-1 border-none">
+                        className="m-2 flex text-center justify-center items-center font-light text-xs text-gray-600 outline-none bg-gray-200 rounded-full p-1 border-none">
                             <option value="public"> Public </option>
                             <option value="subscribers">My Subscribers </option>
                             <option value="private"> Private/Only Me </option>
                         </select> 
                         </div>
                         <div className="">
+
+                            <div className= 'flex w-full bg-transparent'>
+                                <div className='flex m-auto space-x-4'>
+
+                                   { attachment === 'link' &&
+                                        <>
+                                            <div className= ' items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-cyan-500 text-white' >
+                                                link Site
+                                            </div>
+                                            <div onClick ={(e)=> setAttachment('file')} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-cyan-500 hover:text-white' >
+                                            <div className= 'items-center flex'>
+                                                <MdFileUpload/>
+                                                    Attach File
+                                                </div>
+                                            </div>
+                                        </>
+                                    }
+
+                                    {attachment === 'file' &&
+                                        <>
+                                            <div onClick ={(e)=> {
+                                                setAttachment('link');
+                                                setImageBlob('');
+                                        }} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-cyan-500 hover:text-white' >
+                                                link Site
+                                            </div>
+
+                        
+                                            <div className= 'items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-cyan-500 text-white'>
+                                                <div className= 'items-center flex'>
+                                                       Attach File
+                                                </div>
+                                            </div>
+                                       
+                                        </>
+                                    }
+
+                                </div>
+                            </div>
 
 
                             
@@ -281,6 +372,7 @@ function PostForm() {
 
 
                                 {/*-- URL------------ */}
+                                    {attachment === 'link' &&
                                     <div className="flex justify-center">
                                         <input name= "file"
                                        //value= {diariesData.file}
@@ -288,21 +380,51 @@ function PostForm() {
                                         onChange={handleUrl}
                                         placeholder="Paste Url Here" className="rounded-full text-center text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-400 bg-gray-200"/>
                                     </div>
+                                    }
+                                 {/*-- FILE------------ */}
+                                 {attachment === 'file' &&
+                                    <div className= 'w-full flex'>
+                                    
 
-                                {/*======== IMAGE============= */}
-                                    <div className="flex justify-center">
-                                        <input type='file' name= "image"
-                                       //value= {diariesData.file}
-                                       // onChange={(e)=> setdiariesData({...diariesData, image: e.target.files[0]})}
-                                        onChange={handleImage}
-                                        placeholder="Paste Url Here" className="rounded-full text-center text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-400 bg-gray-200"/>
-                                        <p> Uploaded {progress} % </p>
+                                        <label htmlFor= 'FileUpload' className='flex m-auto p-3'>
+                                                    <div onClick ={(e)=>setProgress(0)}className= 'm-auto items-center border-gray-300 hover:bg-gray-500 hover:text-white  rounded-md  text-xs font p-4 bg-gray-200 text-gray-400 p-10'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent'>
+                                                            <MdOutlineUploadFile size={40}/> 
+                                                         upload
+                                                        </div>
+                                                        
+                                                        
+                                                    </div>
+                                                </label>
+                                        <input onChange={(e)=>{ 
+                                            setImageBlob(URL.createObjectURL(e.target.files[0]));
+                                            setFileData(e.target.files[0]);
+                                        }} className= "hidden" id='FileUpload' type="file"/> 
                                     </div>
+                                }
 
+                     
 
 
 
                     {/*========== ========Preview Box ===========*/}
+
+                                        {/* =======IMAGE ===========*/}
+                                     {imageBlob.length && imageBlob.includes('blob')?
+                                        <div >
+                                            {/* <div className='flex justify-center text-gray-400'>
+                                                <BsInstagram/>
+                                                
+                                           </div>
+                                            <p className= 'text-center text-gray-400 p-1 text-xs' >Instagram Attachment</p> */}
+                                            <div className="relative flex justify-center m-auto w-full p-2 lg:p-0">
+                                                <PicForm Url= {imageBlob}/>
+                                            </div>
+                                       </div> : 
+                                       <>
+                                          
+                                        </>
+                                    }
                                     
                                 {/* ======YOUTUBE======== */}
                                   { diariesData.file.length && diariesData.file.includes('www.youtube.com')?
@@ -535,6 +657,7 @@ function PostForm() {
                                     }
                                       { diariesData.file.length && diariesData.file.includes('https://')
                                       && !diariesData.file.includes('www.youtube.com')
+                                      && !diariesData.file.includes('firebasestorage.googleapis.com')
                                       && !diariesData.file.includes('www.instagram.com')
                                       && !diariesData.file.includes('www.tiktok.com')
                                       && !diariesData.file.includes('twitter.com')
@@ -586,14 +709,15 @@ function PostForm() {
                                     </div>
                                     
                                 {/* Button------------- */}
-                                    <button type='submit' className="items-center mx-auto bg-gradient-to-r from-pink-300 to-cyan-400 
+                                    <button type='submit' className="items-center mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                                     bg-gradient-to-r hover:from-pink-500
                                     hover:to-yellow-500 my-3 flex
                                     mx-auto w-1/3 rounded-full
                                         my-2 justify-center 
                                         text-white cursor-pointer
                                         font-semibold p-1">
-                                       Post
+                                        {progress ===0 ?<p>Post</p>:
+                                      <p>Uploading: {progress}%</p>}
                                     </button>
 
                             

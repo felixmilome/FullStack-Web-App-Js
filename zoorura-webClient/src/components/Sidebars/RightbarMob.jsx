@@ -35,7 +35,7 @@ const chatSetterInverse = (guestData, hostData, idConvo) =>{
 
 return (
     
-    <div className=" p-7 w-full sm:w-1/4 m-x-4 bg-gray-200 z-10 fixed right-0 sm:right-1.5 top-24 sm:top-20 rounded-md h-screen overflow-y-auto overflow-x-hidden">
+    <div className=" p-7 w-full sm:w-1/4 m-x-4 bg-gray-100 z-10 fixed right-0 sm:right-1.5 top-24 sm:top-20 rounded-md h-screen overflow-y-auto overflow-x-hidden">
         <div className="overflow-scroll">
 
         <div className="ml-1 font-bold text-gray-500 p-1">

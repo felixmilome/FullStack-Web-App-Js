@@ -33,10 +33,11 @@ function Feed(diaryId, setDiaryId, setNavbars) {
 
                         {user && user.result.verified == true?
                             <Link to ='/PostForm'>
-                                <div className="bg-gradient-to-r bg-gray-700 
-                                hover:from-pink-500 hover:to-yellow-500 
+                                <div className="bg-gradient-to-r 
+                                from-pink-500 to-yellow-500 
+                                hover:from-cyan-500 hover:to-yellow-500
                                 flex justify-around mx-4 mt-2 
-                                sm:mt-4 py-2 text-sm px-5 
+                                sm:mt-4 py-2 text-sm px-5  
                                 items-center cursor-pointer 
                                 font-bold rounded-full shadow-xl"
                                     >

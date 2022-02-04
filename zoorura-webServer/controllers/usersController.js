@@ -505,20 +505,24 @@ export const login = async (req,res) => {
   
      const existingEmail = await UsersModel.findOne({email: { $in: [ email ] } });
      
-
-     if(!existingEmail) return res.status(404).json({message:"User Email doesn't exist."});
+     if(!existingEmail) return res.json({message:"LoginError"});
 
      const isPasswordCorrectE = await bcrypt.compare(password, existingEmail.password);
      
-     if(!isPasswordCorrectE) return res.status(400).json({message:"invalid credentials"});
+     if(!isPasswordCorrectE) return res.json({message:"LoginError"});
+    
+    
+    if (existingEmail &&  isPasswordCorrectE){
 
-     const loggedUser_Detailed = await UsersModel.findByIdAndUpdate(existingEmail._id, {jwtExpiry: autologout}, { new: true });
+      const loggedUser_Detailed = await UsersModel.findByIdAndUpdate(existingEmail._id, {jwtExpiry: autologout}, { new: true });
       const loggedUser = await UsersModel.findById(loggedUser_Detailed._id, {password:0, verCode:0});
       console.log(loggedUser);
-     const token = jwt.sign({email: loggedUser.email, id: loggedUser._id}, JWT_SECRET, {expiresIn: autologout});
+      const token = jwt.sign({email: loggedUser.email, id: loggedUser._id}, JWT_SECRET, {expiresIn: autologout});
    
-   res. status(200).json({result:loggedUser, token});
-   console.log(loggedUser);
+      res. status(200).json({result:loggedUser, token});
+      console.log(loggedUser);
+
+    }
      
 
  } catch (error){
@@ -540,32 +544,47 @@ export const register = async (req,res) => {
 
         //  if(password !== confirmPassword) return res.status(400).json({message: 'passwords dont match'});
 
-         const hashedPassword = await bcrypt.hash (password, 12);
-         const uniqueStr = getCodec ()
+         if(existingUser && !existingEmail){
 
-        if(!existingEmail && !existingUser 
-          && firstName > 2 && firstName < 15
-          && lastName > 2 && lastName < 15 
-          && email > 2 && email < 40
-          && password > 5 && password <25
-          && confirmPassword === password   
-          ){
+            return res.json({message:"EmailTaken"});
+
+          } else if (existingEmail && !existingUser) {
+
+            return res.json({message:"UsernameTaken"});
+
+          }else if (existingEmail && existingUser) { 
+
+            return res.json({message:"UsernameEmailTaken"});
+  
+          }else if(!existingEmail && !existingUser 
+            && firstName.length > 1 && firstName.length < 16 && /^[aA-zZ]+$/.test(firstName) == true
+            && lastName.length > 1 && lastName.length < 16 && /^[aA-zZ]+$/.test(lastName) == true
+            && userName.length > 1 && userName.length < 31 && /^\d*[a-zA-Z][a-zA-Z\d]*$/.test(userName) == true
+            && email.length > 2 && email.length < 41 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) == true
+            && password.length > 4 && password.length < 24 && /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/.test(password) == true
+            && confirmPassword === password   
+            ){  
+             
+              const hashedPassword = await bcrypt.hash (password, 12);
+              const uniqueStr = getCodec ();
              
               const resultX = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`, verCode: uniqueStr, verTime: Date.now(), verExpiry: Date.now() + 172800000});
               const result = await UsersModel.findById(resultX._id, {password:0, verCode:0});
                 
               console.log(result);
 
-              if (result) {
+                if (result) {
+                    const remail = result.email;
+                    sendVerifyEmail (remail,uniqueStr, userName, firstName, lastName);    
+                    const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
+                    res.status(200).json({result, token});
+                }
 
-                  const remail = result.email;
-                  sendVerifyEmail (remail,uniqueStr, userName, firstName, lastName);    
-                  const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
-                  res.status(200).json({result, token});
+            }else{
+              return res.json({message:"InputError"});
+            }
 
-              }
-
-        }
+        
 
     } catch (error) { 
        res.status(500).json({message: 'Something went wrong'});  
@@ -575,11 +594,13 @@ export const register = async (req,res) => {
 
 export const verify = async(req,res) => {
     const {otp, email} = req.body
-    const user = await UsersModel.findOne ({email: { $in: [ email ] } });
-    console.log(email);
-    console.log(user);
-    const id = user._id;
+    //const user = await UsersModel.findOne ({email: { $in: [ email ] } });
+     
+    const id = req.userId;
     console.log(id);
+   
+    const user = await UsersModel.findById (id);
+     console.log(user);
     
     if (user.verCode === otp && user.verExpiry > Date.now ()){
         try {
@@ -599,9 +620,12 @@ export const verify = async(req,res) => {
 
      }
      else if (user.verCode !== otp){
-      console.log("mismatch");
+       res.json({message: "OtpError"});
+
      }else if (user.verExpiry < Date.now()){
          console.log ("expired");
+         await UsersModel.findByIdAndRemove(id);
+         res.json({message: "OtpExpired"});
      }
 }
 
@@ -706,7 +730,8 @@ export const dailyPoints = async(req,res) => {
       console.log('daily Points Awarded');
 
     } else {
-      res.json("Dont Manipulate Html Again")
+      res.json("Dont Manipulate Html Again");
+
     }
   } catch(error){
     console.log(error);

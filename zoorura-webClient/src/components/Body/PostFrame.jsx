@@ -11,9 +11,9 @@ import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
 import { BiCommentEdit } from "react-icons/bi";
 
-import {BeatLoader} from "react-spinners";
+import {BeatLoader} from "react-spinners"; 
 
-import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm} from "./PostForms/Previews.jsx";
+import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm} from "./PostForms/Previews.jsx";
 
 
 import{GiMoneyStack, GiTakeMyMoney} from "react-icons/gi"; 
@@ -126,11 +126,11 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         <>
 
         
-        <div className="p-2 sm:px-12 py-4 rounded-xl bg-gray-200 relative xl:w-5/12 mx-auto my-1"> 
+        <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent relative xl:w-1/2 mx-auto my-1"> 
          
 
             {/* Post-Top-Cyan Invisible Parent*/}
-            <div className="flex  justify-end">
+            <div className="flex justify-end">
                 {/* Top-Cyan */}
                 <div className="bg-gray-100 rounded-t-xl w-full transition delay-50 py-0.5 flex items-center font-bold justify-between">
                         {/*Top-Mid*/}
@@ -206,10 +206,23 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
         <div className="flex p-1 justify-center bg-gray-100 rounded-b-xl ">
             {/* Post Mid Frame*/}
-            <div className="max-h-screen w-full transition delay-50 flex justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
+            {diary.file && diary.file.length > 0 && <div className="max-h-screen w-full transition delay-50 flex justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
                             
             
             {/*=============================IFRAMES========================================*/}
+                                   {/* ======FILE======== */}
+                                   { diary.file.length && diary.file.includes('zooruraweb.appspot.com')?
+                                        <div className =" w-full">
+                                            <div className="relative z-10 flex justify-center m-auto w-full lg:p-0">
+                                                <PicForm Url= {diary.file}/>
+                                            </div>
+                                           
+                                       </div> 
+                                      :  
+                                       <>
+                                          
+                                        </>
+                                    }
                                     
                                 {/* ======YOUTUBE======== */}
                                 { diary.file.length && diary.file.includes('www.youtube.com')?
@@ -442,6 +455,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                     }
                                       { diary.file.length && diary.file.includes('https://')
                                       && !diary.file.includes('www.youtube.com')
+                                      && !diary.file.includes('zooruraweb.appspot.com')
                                       && !diary.file.includes('www.instagram.com')
                                       && !diary.file.includes('www.tiktok.com')
                                       && !diary.file.includes('twitter.com')
@@ -473,7 +487,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                         </>
                                     }
         {/* ====================================IFRAMES END====================================== */}
-            </div>     
+            </div> }    
         </div>
         </div>
 
@@ -481,7 +495,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {/*Bottom Icon invisible Parent*/}
         <div className="">
             {/* Post Bottom Icons*/}
-            <div className="w-full  justify-around transition delay-50 flex items-center  bg-transparent border-b-2 border-gray-300 font-bold p-3">
+            <div className="w-full  justify-around transition delay-50 flex items-center  bg-gray-100 border-b border-t border-gray-300 font-bold p-3">
             <OutsideClickHandler onOutsideClick={() => {setpopTip(false);}}>
             {/* {popTip && <TipModal />} */}
 
@@ -509,7 +523,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 }
 
     {popTip &&  <div className="relative bg-red-100">
-        <div className='flex w-96 bg-transparent left-2 absolute -bottom-2.5 z-30 sm:p-1'>
+        <div className='flex w-96 bg-transparent left-2 absolute bottom-2.5 z-30 sm:p-1'>
        <div className= "bg-transparent items-center justify-center">
             {/* <div className="font-mono flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-80 m-1 p-1 bg-gradient-to-r from-cyan-300 to-teal-700 font-bold text-lg text-teal-300"> */}
             <div className="flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-90 m-1 p-1 border border-gray-400 bg-gray-100 font-medium text-lg text-gray-300 shadow-md">
@@ -581,7 +595,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
             {/* Opinion Box */}
 
-            <div className="relative p-3 bg-transparent border-b-2 border-gray-300">
+            <div className="relative p-3 bg-gray-100 rounded-b-md  border-gray-300">
 
                  {/* ======== Like Comment Display Modals============== */}
                  <OutsideClickHandler onOutsideClick={() => {seTipperview(false);}}>
@@ -600,12 +614,12 @@ function PostFrame({diary, diaryId, setDiaryId}) {
             </ OutsideClickHandler>
                          {/* Comment Box */}
                            
+                         {diary.reviews.length > 0  && diary.reviews.map((reviewmap) =>(
                             
-                            
-                              <div className='bg-gray-200 border border-gray-300 rounded-md max-h-64 overflow-y-auto'>
-                            {diary.reviews.length > 0  && diary.reviews.map((reviewmap) =>(
+                              <div key={reviewmap._id}  className='bg-gray-100 border-gray-300 rounded-md max-h-64 overflow-y-auto'>
+                           
                                
-                                    <div key={reviewmap._id} className="p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
+                                    <div className="p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
                                         
                                         {/* EMoji & Pic */}
                                             <div className="space-y-3 items-center inline-block p-1">
@@ -632,14 +646,12 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                                 
                                     </div>
                                 
-                                    // Src= "./assets/images/beyonce.jpeg" 
-                            //<ReviewBubble Name = {review.reviewer} Review={review.body}/>
-                            // <ReviewBubble Name="@Hover" Review="Wow Milome I am jealous. He knows how to invest and can give you anything you ask for or want He is a good friend of mine. hhddfjkbdfhjbdfhkbdfhjbdfjhbdjfhbdfjhbkbdjhbjhbhjbjhbjhbjhbbfsjhkb jknbjbnj jnkbnkj huihiuhuihi uhiuhiuhiuh h
-                            // hahahahahahah"/>
+                               
+                            </div>
                             ))
                             
                         } 
-                        </div>
+                        
 
                         <div className="relative w-full items-center">
                                 <div className='absolute bottom-2 right-2'>
@@ -647,7 +659,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                 </div>
                                 <textarea value= {reviewData.body}
                                 onChange={(e)=> setreviewData({reviewer: user.result.userName, reviewerId:user.result._id, body: e.target.value})}
-                                type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded-md py-3 pl-3 pr-8"/>
+                                type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                             </div>
         </div>
 
@@ -1016,6 +1028,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                         }
                                         { diary.file.length && diary.file.includes('https://')
                                         && !diary.file.includes('www.youtube.com')
+                                        && !diary.file.includes('zooruraweb.appspot.com')
                                         && !diary.file.includes('www.instagram.com')
                                         && !diary.file.includes('www.tiktok.com')
                                         && !diary.file.includes('twitter.com')
