@@ -49,6 +49,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     const[visibleError, setVisibleError] = useState (false);
     const[visibleSuccess, setVisibleSuccess] = useState (false);
     const[loading, setLoading] = useState (false);
+    const[required, setRequired] = useState (false);
     
 
     const [formData, setFormData] = useState ({firstName: '', lastName: '', userName: '', email: '', password: '', confirmPassword: '', isChecked: false});
@@ -283,8 +284,8 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                         </div>
                     </div>
                     <div className= "p-1 font-light flex items-center justify-center space-x-0.5">
-                            {formData.isChecked ===false &&
-                            <p className='text-xs text-red-800 text-center font-light' >Required!</p>
+                            {formData.isChecked ===false && required &&
+                            <p className='text-xs text-red-600 text-center font-semibold' >Required!</p>
                             }
                             <input
                             
@@ -300,7 +301,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                                 }
                                 value={formData.isChecked}
                             name='isChecked' className= "bg-gray-100" type="checkbox"/>
-                            <p className="px-2 text-xs">Agree with the Terms and Conditions</p>
+                            <p className="px-0.5 text-xs">I Agree with the Terms and Conditions</p>
                             
                         </div>
                 </div>
@@ -310,6 +311,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                         <button onClick={(e)=>{
 
                             setVisibleError(false);
+                            setRequired(true);
                             
                             
                         }} type={loading === false ? 'submit' : 'button'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
