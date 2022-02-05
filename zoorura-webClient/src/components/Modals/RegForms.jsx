@@ -1,7 +1,7 @@
 
 import {GoogleLogin} from 'react-google-login';
 import {FcGoogle } from "react-icons/fc";
-import {BsEyeFill,BsEyeSlashFill, BsCheck2Circle} from "react-icons/bs";
+import {BsEyeFill,BsEyeSlashFill, BsCheck2Circle,BsShieldCheck} from "react-icons/bs";
 import { MdOutlineCancel, } from "react-icons/md";
 import {useDispatch, useSelector} from 'react-redux';
 import{useNavigate} from 'react-router-dom';
@@ -134,11 +134,15 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     // };
 
     const signUp = (data) => {
+        
         //e.preventDefault();
-        if(formData.isChecked === true && emailCheck === 'noEmail' && userNameCheck === 'noUsername'){
+        if(formData.isChecked === true){
+
+            setLoading(true);
             
             console.log(data);
             try{ 
+                
                 dispatch(registerAction(data, navigate,setVisibleError,setVisibleSuccess,setLoading));
             
             } catch (error){
@@ -152,11 +156,11 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-        <div className="fixed text-gray-600 font-bold top-16 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+        <div className="fixed text-gray-600 font-bold top-10 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
              
         {/* ============Floating FORM BOX ======== */}
 
-        
+         
 
             <div className="w-full lg:w-2/5 bg-gray-100 rounded-md shadow-xl m-2 h-full">
                  <form onSubmit={handleSubmit(signUp)}>
@@ -253,9 +257,9 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                         {/* Password*/}
                     <div className= "p-1 flex items-center justify-around">
                         <div className="w-full relative">
-                            <input  {...register('password',{
+                            <input {...register('password',{
                                  onChange: (e) => {setFormData({...formData, password: e.target.value})}
-                                })} 
+                                })}
                             name='password' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md"
                              type= {visible ? "text" : "password"} placeholder= "Password" />
                              <p className='text-xs text-red-700 text-center font-light' >{errors.password?.message}</p>
@@ -304,16 +308,18 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
 
                 <div className= "flex justify-between">
                         <button onClick={(e)=>{
+
                             setVisibleError(false);
-                            setLoading(true);
-                        }} type={!loading ? 'button' : 'submit'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                            
+                            
+                        }} type={loading === false ? 'submit' : 'button'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                             bg-gradient-to-r hover:from-pink-500
                             hover:to-yellow-500 flex
                             mx-auto rounded-md
                                  justify-center 
                                 text-white text-sm cursor-pointer
                                 font-semibold p-1 mb-4">
-                                {!loading ? <p>Create Account</p> : <BeatLoader size={10} color='white' loading/>}
+                                {loading === false ? <p>Create Account</p> : <BeatLoader size={10} color='white' loading/>}
                         </button>
                         {/* <GoogleLogin
                         clientId="285886074445-79pdnit476c0enipcvt9cpnsnpn3dida.apps.googleusercontent.com"
@@ -380,13 +386,13 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
   
     const logIn = async (data, navigate) => {
        // e.preventDefault();
-        console.log(formData);
-        console.log(loggedUser);
+        // console.log(formData);
+        // console.log(loggedUser);
      
-
+        setLoading(true);
         try{
           dispatch(loginAction(formData, navigate, setVisibleError, setLoading));
-     
+             
           console.log(user);
            
         
@@ -397,7 +403,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-         <div className="fixed text-gray-600 font-bold top-16 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+         <div className="fixed text-gray-600 font-bold top-10 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
 
@@ -486,8 +492,9 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                 <div className='flex justify-between'>
                         <button onClick={(e)=>{
                             setVisibleError(false);
-                            setLoading(true);
-                        }}  type={!loading ? 'button' : 'submit'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                           
+                           
+                        }}  type={loading === false ? 'submit' : 'button'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                             bg-gradient-to-r hover:from-pink-500
                             hover:to-yellow-500 flex
                             mx-auto rounded-md
@@ -495,7 +502,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                                 text-white text-sm cursor-pointer
                                 font-semibold p-1 mb-4">
                             
-                            {!loading ? <p>Log In</p> : <BeatLoader size={10} color='white' loading/>}
+                            {loading === false ? <p>Log In</p> : <BeatLoader size={10} color='white' loading/>}
 
                         </button>
                       
@@ -540,7 +547,7 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-        <div className="fixed text-gray-600 font-bold top-16 bg-gray-300 pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+        <div className="fixed text-gray-600 font-bold top-10 bg-gray-300 pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
 
@@ -554,7 +561,7 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                         <div className="p-1 text-center font-light bg-transparent">
                            
                             <p>Hello {user.result.name}. </p> 
-                            <p className= "font-bold">Enter the Verification OTP Sent to {user.result.email}</p>
+                            <p className= "font-bold">Enter the OTP Sent to {user.result.email}</p>
                             <p> To verify your account</p>                     
                         </div>
 
@@ -574,34 +581,44 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                         }
 
                         {/*========= Inputs=============== */}
+                        {visibleError !== 'Otp Expired! Re-Register this Account' &&
+                        <>
                         <div className="p-3 text-sm ">
                         {/* Code*/}
-                         <div className= "p-1 flex items-center justify-around">
-                            <input onChange={handleChange} name='otp' className= "text-center w-1/2 font-semibold text-lg bg-gray-100 border border-gray-300 m-1 p-2 rounded-md" type="text" placeholder= "Enter OTP"/>
-                        </div>
+                            <div className= "p-1 flex items-center justify-around">
+                                <input onChange={handleChange} name='otp' className= "text-center w-1/2 font-semibold text-lg bg-gray-100 border border-gray-300 m-1 p-2 rounded-md" type="text" placeholder= "Enter OTP"/>
+                            </div>
                   
                             
-                </div>
+                        </div>
                 
 
-                <div className='flex justify-between'>
-                        <button onClick={(e)=>{
-                            setVisibleError(false);
-                            setLoading(true);
-                        }} type={!loading ? 'button' : 'submit'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-pink-500 to-cyan-500 
-                            bg-gradient-to-r hover:from-pink-500
-                            hover:to-yellow-500 flex
-                            mx-auto rounded-md
-                                 justify-center 
-                                text-white text-sm cursor-pointer
-                                font-semibold p-1 mb-4">
-                            
-                            {!loading ? <p>Verify Me</p> : <BeatLoader size={10} color='white' loading/>}
-                        </button>
-                      
-                       
-                        
-                </div>
+                        <div className='flex justify-between'>
+                                <button onClick={(e)=>{
+                                    setVisibleError(false);
+                                    setLoading(true);
+                                }} type={!loading ? 'button' : 'submit'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                                    bg-gradient-to-r hover:from-pink-500
+                                    hover:to-yellow-500 flex
+                                    mx-auto rounded-md
+                                        justify-center 
+                                        text-white text-sm cursor-pointer
+                                        font-semibold  mb-4">
+                                    
+                                    {!loading ?<><BsShieldCheck size={25} className ='m-1'/> <p>Verify Me</p></>: <BeatLoader size={10} color='white' loading/>}
+                                </button> 
+                               
+                        </div>
+                        <div className='m-auto w-2/3 text-xs text-center text-gray-400 font-light bg-transparent py-8'>
+                                    <p className= "font-bold text-sm">Didn't get an OTP email?</p> 
+                                    <p>-Check Spam Folder</p>
+                                    <p>-If none, give it 5-10 Minutes.</p>
+                                <div className= "cursor-pointer font-semibold hover:text-cyan-600">
+                                    <p>If None, Clik Here to Resend OTP</p> 
+                                </div>     
+                        </div>
+                        </>
+                        }
             </form>
             </div>
           

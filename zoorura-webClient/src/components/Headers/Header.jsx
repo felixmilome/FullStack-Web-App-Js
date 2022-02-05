@@ -159,7 +159,10 @@ function Header() {
                 console.log('awarded');
            }
 
-         
+           const logout =() =>{
+            dispatch({type:"LOGOUT"});
+            window.location.reload(true);
+            }
                
         
 
@@ -185,6 +188,8 @@ function Header() {
         <div className= "sticky top-0 z-50 bg-gray-100 border-b border-gray-400 p-2 lg:px-6 lg:py-3 shadow-md ">
         <div className= "flex items-center  p-0  space-x-2 justify-between">
             {/*Left*/}
+            { user && user.result.verified ?
+            <>
             <Link to='/'>
                 <div onClick ={(e)=>(setpopContacts(false))}className="cursor-pointer  rounded-full hover:bg-gray-100 bg-transparent flex items-center justify-between">
                             
@@ -192,33 +197,50 @@ function Header() {
                                 <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
                             </div>
 
-                            {user ?
+                            
                             <>
                                 <h1 className= "m-1 inline-flex text-lg font-extralight text-gray-600">Home</h1>
                                
                             </>
-                        :
-                           <> 
-                                <h1 className= "m-1 inline-flex text-base font-bold text-gray-700">Log In / Sign Up</h1> 
-                                
-                            </>
-                            }
+                       
                 </div>
-           </Link>
-            
-            {/* Mid */}
-            
+           </Link> 
+        
+            {/* MID SEARCH COMP */}
                 <div className="hidden sm:flex items-center rounded-full w-1/3 mx-1 bg-gray-100 sm:pr-4">
                     <div className="p-2 sm:p-3 bg-gray-400 hover:bg-cyan-400 rounded-full items:center"> <SearchIcon className= 'h-6 text-white'/></div>
                     <input className ="hidden sm:w-full bg-transparent sm:pr-1 h-10 md:inline-flex ml-1 bg-transparent items-center outline-none font-light placeholder-gray-400"
-                     type="text"
+                        type="text"
                     placeholder="Search Zoorura"/>
-                
+            
                 </div>
+                </>
+       
+       :
+           
+           <div onClick ={logout} className="cursor-pointer  rounded-full hover:bg-gray-200 bg-transparent flex items-center justify-between">
+                       
+                       <div className= 'rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
+                           <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
+                       </div>
+
+                   
+                   
+                      <> 
+                           <h1 className= "m-1 inline-flex text-sm font-bold text-gray-700 p-1">{user && !user.result.verified && <>Go Back to  </>} Log In/Sign Up</h1> 
+                           
+                       </>
+                       
+           </div>
+
+   
+        }
+            
+            
             
 
             {/*Header Right*/}
-            { user &&
+            { user && user.result.verified &&
                 <div className="flex items-center  bg-transparent sm:space-x-2 justify-end">
                     
                        
@@ -329,9 +351,9 @@ function Header() {
                     
                     
                 </div>
-                }
+            }
             </div>
-
+            { user && user.result.verified &&
                 <div className="xl:hidden  mx-3 items-center flex justify-around">
                     
                     {/* Rankings Leftbar Mobile Modal */}
@@ -387,9 +409,10 @@ function Header() {
                         </OutsideClickHandler>    
                     </div> */}
                 </div>
+            }
 
         </div>
-                    
+                                    
 
 
                     {/* POINTERRRRRRRRR */}

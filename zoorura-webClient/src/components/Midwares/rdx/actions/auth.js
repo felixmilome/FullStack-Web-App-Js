@@ -2,7 +2,7 @@ import * as axs from './axs';
 
 
 export const registerAction = (formData, navigate, setVisibleError,setVisibleSuccess,setLoading) => async (dispatch) => {
-  
+    setLoading(true);
     try{
         const {data} = await axs.registerApi(formData);
         if (data.message === 'UsernameTaken'){
@@ -67,6 +67,10 @@ export const verifyAction = (formData, navigate, setVisibleError, setLoading) =>
             setVisibleError(true); 
             setLoading(false);                 
         } else if (data.message === 'OtpExpired'){
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+            setVisibleError(true); 
+            setLoading(false);                 
+        }else if (data.message === 'UnknownError'){
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 
             setLoading(false);                 

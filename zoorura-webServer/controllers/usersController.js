@@ -437,7 +437,8 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
 
 
 function getCodec() {
-    return Math.floor(Math.random() * 969696);
+   // return Math.floor(Math.random() * 969696);
+    return Math.floor(Math.random()*1e9).toString(32);
    };
 
 
@@ -546,11 +547,11 @@ export const register = async (req,res) => {
 
          if(existingUser && !existingEmail){
 
-            return res.json({message:"EmailTaken"});
+            return res.json({message:"UsernameTaken"});
 
           } else if (existingEmail && !existingUser) {
 
-            return res.json({message:"UsernameTaken"});
+            return res.json({message:"EmailTaken"});
 
           }else if (existingEmail && existingUser) { 
 
@@ -567,11 +568,14 @@ export const register = async (req,res) => {
              
               const hashedPassword = await bcrypt.hash (password, 12);
               const uniqueStr = getCodec ();
-             
-              const resultX = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`, verCode: uniqueStr, verTime: Date.now(), verExpiry: Date.now() + 172800000});
+              console.log(uniqueStr);
+              const uniqueStrEncrypted = await bcrypt.hash (uniqueStr, 12);
+              
+              const resultX = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`, verCode: uniqueStrEncrypted, verTime: Date.now(), verExpiry: Date.now() + 172800000});
               const result = await UsersModel.findById(resultX._id, {password:0, verCode:0});
                 
               console.log(result);
+              
 
                 if (result) {
                     const remail = result.email;
@@ -601,8 +605,10 @@ export const verify = async(req,res) => {
    
     const user = await UsersModel.findById (id);
      console.log(user);
+     const codeMatch = await bcrypt.compare(otp,user.verCode);
+     console.log(codeMatch);
     
-    if (user.verCode === otp && user.verExpiry > Date.now ()){
+    if (codeMatch && user.verExpiry > Date.now ()){
         try {
         const verifiedUser = await UsersModel.findByIdAndUpdate (id, {verified: true, dailyLogin: Date.now()}, { new: true });
         
@@ -618,15 +624,17 @@ export const verify = async(req,res) => {
             console.log(error.message);
         }
 
-     }
-     else if (user.verCode !== otp){
-       res.json({message: "OtpError"});
+     }  else if (!codeMatch && user.verExpiry > Date.now()){
+      res.json({message: "OtpError"});
+    }else if (user.verExpiry < Date.now()){
 
-     }else if (user.verExpiry < Date.now()){
          console.log ("expired");
          await UsersModel.findByIdAndRemove(id);
          res.json({message: "OtpExpired"});
-     }
+
+    }else{
+      res.json({message: "UnknownError"});
+    }
 }
 
 export const changeDp = async(req,res) => {

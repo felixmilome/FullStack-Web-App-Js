@@ -12,10 +12,12 @@ export const googleauthReducer = (state ={googleauthData: null}, action) => {
                 return "Username and Email Already in Use";
             }else if (action.data.message === "InputError"){
                 return "Error In One Field";
-            }else if (action.data.message === "OtpError"){
-                return "Wrong Otp! Confirm from the sent Email.";
+            }else if (action.data.message === "OtpError"){ 
+                return "Wrong Otp! Confirm from the sent Email";
             }else if (action.data.message === "OtpExpired"){
-                return "Otp Expired! Create Another Account";
+                return "Otp Expired! Re-Register this Account";
+            }else if (action.data.message === 'UnknownError'){
+                return "Unknown Error Occured. Please Try again Later";
             }else {
                 
                  localStorage.setItem('profile', JSON.stringify({...action?.data}));
