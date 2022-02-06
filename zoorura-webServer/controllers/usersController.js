@@ -29,7 +29,7 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
     } 
   });
 
-  const sendVerifyEmail = (remail, uniqueStr, userName, firstName, lastName) => {
+  const sendVerifyEmail = async (remail, uniqueStr, userName, firstName, lastName) => {
 
 
       const mailOptions = {
@@ -390,7 +390,7 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
                             <tr>
                               <td>
                                 
-                                <p>An account called @<b>${userName}</b> was created by <b>${firstName} ${lastName}</b> using this email in Zoorura. Enter the OTP Verification code below in your Zoorura App/Website to verify it's you. Expiry in 48hrs:</p>
+                                <p>An account called @<b>${userName}</b> was created using this email in Zoorura. Enter the OTP Verification code below in your Zoorura App/Website to verify it's you. Expiry in 48hrs:</p>
                                 
                                 <h1>${uniqueStr}</h1>
                                 
@@ -410,7 +410,7 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
                         <tr>
                           <td class="content-block">
                             <span class="apple-link">Zoorura Technologies Ltd, Nairobi, Kenya</span>
-                            <br> This is an auto generated email for ${firstName} ${lastName}. Please do not reply
+                            <br> This is an auto generated email for @${userName}. Please do not reply
                             <br> Ignore if it is not you. Or <a href= "#"> report violation. </a>
                           </td>
                         </tr>
@@ -432,7 +432,7 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
         </html>` 
        
       }
-      transporter.sendMail(mailOptions);
+      return transporter.sendMail(mailOptions);
   }
 
 
@@ -448,7 +448,41 @@ function getCodec() {
 
 
   // CONTROLLERS==================================
+  export const sendOtp = async (req,res) => {
+    const id = req.userId;
+    console.log('userId :' + id);
+  
+      try{ 
+      
+          const user = await UsersModel.findById(id);
+          console.log(user);
+          const {userName, email, firstName, lastName} = user;
+  
+            const uniqueStr = getCodec ();
+            
+            console.log(uniqueStr);
+        
+            const uniqueStrEncrypted = await bcrypt.hash (uniqueStr, 12);
+          
+    
+            const otpPatchedUser = await UsersModel.findByIdAndUpdate(id, {$set: {verCode: uniqueStrEncrypted}}, { new: true });
+            console.log(otpPatchedUser);
+            const emailSent = sendVerifyEmail (email,uniqueStr, userName, firstName, lastName);
+            console.log(emailSent);
 
+            if(emailSent){
+              res.json({message:"sent"});
+            }else {
+              res.json({message:"error"});
+            }
+          
+         
+          
+    
+      } catch (error){
+          res.json({message: 'error'});
+      }
+  }
 
 
   export const checkEmail = async (req,res) => {
@@ -713,7 +747,7 @@ export const follow =  async (req, res)=> {
   }
 
 }
-
+ 
 export const dailyPoints = async(req,res) => {
   const {id} = req.params;
   console.log(req.params);

@@ -28,6 +28,9 @@ const logInSchema = yup.object().shape({
     email: yup.string().email().required('email required').max(40),
     password: yup.string().required('password required').max(25),
 });
+const verifySchema = yup.object().shape({
+    otp: yup.string().required('OTP required').matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/, "no spaces"),
+});
 
 
 function emailIsValid (email) {
@@ -265,7 +268,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              type= {visible ? "text" : "password"} placeholder= "Password" />
                              <p className='text-xs text-red-700 text-center font-light' >{errors.password?.message}</p>
                               {formData.password.length >0 && <p className='absolute top-3 right-10 text-gray-400 text-xs text-center font-light'>Password:</p>}
-                            <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2.5 right-3 text-gray-300 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
+                            <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2.5 right-3 text-gray-400 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
 
                         </div>
                     </div>
@@ -280,7 +283,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              type= {visible ? "text" : "password"}  placeholder= "Confirm Password"/>
                              <p className='text-xs text-red-700 text-center font-light' >{errors.confirmPassword && "Passwords Should Match"}</p>
                              {formData.confirmPassword.length >0 && <p className='absolute top-3 right-10 text-gray-400 text-xs text-center font-light'>Confirm Password:</p>}
-                            <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2.5 right-3 text-gray-300 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
+                            <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2.5 right-3 text-gray-400 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
                         </div>
                     </div>
                     <div className= "p-1 font-light flex items-center justify-center space-x-0.5">
@@ -467,7 +470,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                                 type={visible ? "text" : "password"} placeholder= "Password"/>
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.password?.message}</p>
                                     {formData.password.length >0 && <p className='absolute top-2.5 right-9 text-gray-400 text-xs text-center font-light'>Password:</p>}
-                                <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2 right-3 text-gray-300 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
+                                <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2 right-3 text-gray-400 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
                         </div>
                         </div>
                              {/* Auto Logout Protection*/}
@@ -521,26 +524,35 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
 
 export const VerifyForm = ({setpopSignup, setpopLogin}) => {
     const dispatch = useDispatch();
-    const initialState ={email: '', otp: ''}
+    //const initialState ={email: '', otp: ''}
     const [formData, setFormData] = useState({email: '', otp: ''});
     const navigate = useNavigate();
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const[visibleError, setVisibleError] = useState (false);
     const[loading, setLoading] = useState (false);
+    const[sendOtpReply, setsendOtpReply] = useState ('fresh');
 
      const loggedUser = useSelector((state) => state.googleauthReducer);
 
     const handleChange = (e) =>{
         setFormData({email:user.result.email, otp: e.target.value.trim()});
     };
+    const {register, handleSubmit, formState: {errors}} = useForm({
+        resolver: yupResolver(verifySchema),
+    });
+
+    const sendOtp = async () => {
+        const email = user.result.email;
+        const {data} = await axs.sendOtpApi(email);
+        setsendOtpReply(data.message);
+    }
 
   
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(formData); 
-     
-
+    const verify = (data) => {
+        
         try{
+            setLoading(true);
+            console.log(data);
            dispatch(verifyAction(formData, navigate, setVisibleError, setLoading));    
         } catch (error){
             console.log(error);
@@ -556,14 +568,14 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
              
             <div className="w-full lg:w-2/5 h-1/2 bg-gray-100 rounded-md shadow-xl mt-10 mb-40 h-full">
             
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(verify)}>
                         <div className= "pt-3 pb-1 flex items-center justify-around">
                             <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-full h-8 w-8 sm:h-20 sm:w-20"/>
                         </div>  
                         <div className="p-1 text-center font-light bg-transparent">
                            
                             <p>Hello {user.result.name}. </p> 
-                            <p className= "font-bold">Enter the OTP Sent to {user.result.email}</p>
+                            <p className= "font-bold">Enter the latest OTP Sent to {user.result.email}</p>
                             <p> To verify your account</p>                     
                         </div>
 
@@ -587,9 +599,16 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                         <>
                         <div className="p-3 text-sm ">
                         {/* Code*/}
-                            <div className= "p-1 flex items-center justify-around">
-                                <input onChange={handleChange} name='otp' className= "text-center w-1/2 font-semibold text-lg bg-gray-100 border border-gray-300 m-1 p-2 rounded-md" type="text" placeholder= "Enter OTP"/>
+                            
+                            <div onClick={(e)=>setVisibleError(false)} className= "flex items-center justify-center">
+                                <input 
+                                 {...register('otp',{
+                                    onChange: (e) => {setFormData({email: user.result.email, otp: e.target.value.trim()})}
+                                   })} name='otp' className= "text-center w-1/2 font-semibold text-lg bg-gray-100 border border-gray-300 m-1 p-2 rounded-md" type="text" placeholder= "Enter OTP"/>
+                                    
                             </div>
+                            <p className='text-xs text-red-700 text-center font-light' >{errors.otp?.message}</p>
+                            
                   
                             
                         </div>
@@ -597,9 +616,10 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
 
                         <div className='flex justify-between'>
                                 <button onClick={(e)=>{
+
                                     setVisibleError(false);
-                                    setLoading(true);
-                                }} type={!loading ? 'button' : 'submit'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                                    
+                                }} type={loading===false ? 'submit' : 'button'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                                     bg-gradient-to-r hover:from-pink-500
                                     hover:to-yellow-500 flex
                                     mx-auto rounded-md
@@ -607,7 +627,7 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                                         text-white text-sm cursor-pointer
                                         font-semibold  mb-4">
                                     
-                                    {!loading ?<><BsShieldCheck size={25} className ='m-1'/> <p>Verify Me</p></>: <BeatLoader size={10} color='white' loading/>}
+                                    {loading===false ?<><BsShieldCheck size={25} className ='m-1'/> <p>Verify Me</p></>: <BeatLoader size={10} color='white' loading/>}
                                 </button> 
                                
                         </div>
@@ -615,8 +635,42 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                                     <p className= "font-bold text-sm">Didn't get an OTP email?</p> 
                                     <p>-Check Spam Folder</p>
                                     <p>-If none, give it 5-10 Minutes.</p>
-                                <div className= "cursor-pointer font-semibold hover:text-cyan-600">
-                                    <p>If None, Clik Here to Resend OTP</p> 
+
+                                <div className= "flex justify-center cursor-pointer bg-transparent font-semibold ">
+                                    
+
+                                    { loading === true ? 
+                                    
+                                        <div  className ='bg-transparent hover:text-cyan-600'>
+                                            <p> ...loading </p> 
+                                        </div>
+                                        : 
+                                        <>
+                                           {sendOtpReply === 'fresh' &&
+                                                <div onClick= {sendOtp} className ='bg-transparent hover:text-cyan-600'> 
+                                                        <p>     
+                                                            If None, Click Here to Resend OTP 
+                                                        </p>
+                                                </div>
+                                            }
+                                            {sendOtpReply === 'sent' &&
+                                                <div className ='bg-transparent hover:text-cyan-600'> 
+                                                    <p>     
+                                                        Resent to {user.result.email}. Check your Email. 
+                                                    </p>
+                                                </div>
+                                            }
+                                            {sendOtpReply === 'error' &&
+                                                <div className ='bg-transparent hover:text-cyan-600'> 
+                                                    <p>     
+                                                        An error occured. Please try later. 
+                                                    </p>
+                                                </div>
+                                            }
+                                        </>
+                                    
+                                    }
+
                                 </div>     
                         </div>
                         </>

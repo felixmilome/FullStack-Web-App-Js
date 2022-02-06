@@ -1,5 +1,5 @@
 import express from 'express';
-import{register, login, verify, changeDp,getMiniProfile,follow, dailyPoints, checkEmail,checkUsername} from '../controllers/usersController.js';
+import{register, login, verify,sendOtp, changeDp,getMiniProfile,follow, dailyPoints, checkEmail,checkUsername} from '../controllers/usersController.js';
 import { auth } from '../middleware/authMiddleware.js';
 
 
@@ -8,6 +8,7 @@ export const usersRouter = express.Router();
 usersRouter.post ('/register', register);
 usersRouter.post ('/login', login);
 usersRouter.patch ('/verify', auth, verify);
+usersRouter.get ('/sendOtp/:email', auth, sendOtp);
 usersRouter.get ('/checkEmail/:email', checkEmail);
 usersRouter.get ('/checkUsername/:username', checkUsername);
 

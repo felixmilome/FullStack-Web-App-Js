@@ -22,7 +22,8 @@ export const reviewDiariesApi = (id, reviewData) => API.patch(`/diaries/${id}/re
 export const loginApi = (formData) => API.post ('/users/login', formData);
 export const registerApi = (formData) => API.post ('/users/register', formData);
 export const verifyApi = (formData) => API.patch ('/users/verify', formData);
-//MailName Checkers
+export const sendOtpApi = (email) => API.get (`/users/sendOtp/${email}`); 
+//MailName Checkers 
 export const checkUsernameApi = (username) => API.get (`/users/checkUsername/${username}`, username);
 export const checkEmailApi = (email) => API.get (`/users/checkEmail/${email}`, email); 
 //UserProfile
