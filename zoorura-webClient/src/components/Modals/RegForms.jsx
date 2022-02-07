@@ -14,6 +14,7 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import * as axs from "../Midwares/rdx/actions/axs.js"
+import VideoPlayer from 'react-video-js-player'
 
 const signUpSchema = yup.object().shape({
     firstName: yup.string().strict(false).trim().required('firstname required').matches(/^[aA-zZ]+$/, "letters only for firstname").min(2).max(15),
@@ -25,11 +26,11 @@ const signUpSchema = yup.object().shape({
 }); 
 
 const logInSchema = yup.object().shape({
-    email: yup.string().email().required('email required').max(40),
-    password: yup.string().required('password required').max(25),
+    email: yup.string().strict(false).trim().email().required('email required').max(40),
+    password: yup.string().strict(false).trim().required('password required').max(25),
 });
 const verifySchema = yup.object().shape({
-    otp: yup.string().required('OTP required').matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/, "no spaces"),
+    otp: yup.string().strict(false).trim().required('OTP required').matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/, "no spaces"),
 });
 
 
@@ -163,9 +164,11 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
         <div className="fixed text-gray-600 font-bold top-10 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
              
         {/* ============Floating FORM BOX ======== */}
-
-         
-
+    {/* <iframe src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2F%5BNo%20Copyright%20Music%5D%20Sins%20of%20the%20Past%20-%20(Royalty%20Free%20Epic%20Music).mp4?alt=media&token=eaf73188-7fcd-4f96-939b-5bebe809a38e"
+     allow="fullscreen" width="100%" height="700" >
+    </iframe> */}
+    <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2F%5BNo%20Copyright%20Music%5D%20Sins%20of%20the%20Past%20-%20(Royalty%20Free%20Epic%20Music).mp4?alt=media&token=eaf73188-7fcd-4f96-939b-5bebe809a38e"/>
+    
             <div className="w-full lg:w-2/5 bg-gray-100 rounded-md shadow-xl m-2 h-full">
                  <form onSubmit={handleSubmit(signUp)}>
                         <div className= "pt-3 pb-1 flex items-center justify-around">

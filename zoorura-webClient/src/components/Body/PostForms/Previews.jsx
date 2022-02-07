@@ -1,6 +1,17 @@
+export const MediaForm = ({Url}) => {
+    return (
+        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
+            <div className= "z-10 h-full w-full">     
+                <iframe src={Url}
+                    allow="fullscreen" width="100%" height='400' >
+                </iframe> 
+            </div> 
+        </div>
+    )
+}
 export const PicForm = ({Url}) => {
     return (
-        <div className='max-h-screen w-4/5 bg-green-100 p-1'>
+        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
             <div className= "z-10 h-full w-full">     
                 <img src= {Url} className="object-container h-full w-full"/>
             </div> 

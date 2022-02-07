@@ -6,33 +6,45 @@ import {useNavigate} from 'react-router-dom';
 
 import { urIg, urTk, urYt, urSn, urPn, urRd, urFb, urDr, urTch } from "../Midwares/cleaners/cleaner.js";
 
-import{BsInstagram, BsTwitch} from "react-icons/bs";
+import{BsInstagram, BsTwitch, BsFileEarmarkImageFill} from "react-icons/bs";
 import{RiSoundcloudLine, RiPinterestLine, RiRedditFill} from "react-icons/ri";
 import{ImReddit, ImWordpress, ImYoutube2} from "react-icons/im";
 import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
-import {MdFileUpload, MdOutlineUploadFile } from "react-icons/md";
-import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm} from "./PostForms/Previews.jsx";
+import {MdFileUpload, MdOutlineUploadFile, MdVideoLibrary,MdLibraryMusic, MdPictureAsPdf } from "react-icons/md";
+import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, MediaForm} from "./PostForms/Previews.jsx";
 
 
 import {useDispatch} from 'react-redux'; 
 import { postDiariesAction, getDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
 import PostFRow from "./PostFRow.jsx";
 
+import VideoPlayer from 'react-video-js-player'
+
+import * as yup from "yup";
+
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+
 //firebase
 import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 
 
+const postSchema = yup.object().shape({
+    title: yup.string().strict(false).trim().required('Title required').max(50),
+    caption: yup.string().strict(false).trim().required('Caption required').max(500),
+});
 
 
 function PostForm() {
 
     const [diariesData, setdiariesData] = useState({
-        title:'', caption:'', file: '', image: '',  publicity:'',
+        title:'', caption:'', file: '',  publicity:'',
     }); 
    const[imageBlob, setImageBlob] = useState('');
+   const[mediaType, setMediaType] = useState('');
    const[fileData, setFileData] = useState('');
     const dispatch = useDispatch();
 
@@ -44,7 +56,10 @@ function PostForm() {
     const [progress, setProgress] = useState(0);
     const[attachment, setAttachment] = useState('link');
 
- 
+ const {register, handleSubmit, formState: {errors}} = useForm({
+        resolver: yupResolver(postSchema),
+    });
+
     
    
 
@@ -243,8 +258,8 @@ function PostForm() {
        
     };
 
-    const handleSubmit = async (e)=>{
-        e.preventDefault();
+    const post = (data)=>{
+        
 
         if (imageBlob.includes('blob')){
 
@@ -258,6 +273,7 @@ function PostForm() {
     }
     return (
         <div className="flex items-center justify-center">
+       
 
                 { popPosted &&
                         <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
@@ -270,7 +286,7 @@ function PostForm() {
                        
                        
                         {/* Cyan Heading */}
-                        <div className="bg-transparent border-b-2 border-gray-300">
+                        <div className="bg-transparent border-b border-gray-300">
                             <p className="text-center p-3 font-bold text-gray-400 ">Attach Post From</p>
                             <div className ="text-center  items-center p-1 flex flex-wrap text-gray-400 justify-around">
                                <PostFRow sizing={45} Icon={ImYoutube2}/>
@@ -294,7 +310,7 @@ function PostForm() {
                         </div>
 
                     {/*----- FORM------------------------- */}
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit(post)}>
                         <div className= "flex justify-center items-center p-0.5">
                             <img src="./assets/images/milome.jpeg" alt="DP" className="rounded-full h-7 w-7"/>
                         
@@ -316,10 +332,10 @@ function PostForm() {
 
                                    { attachment === 'link' &&
                                         <>
-                                            <div className= ' items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-cyan-500 text-white' >
+                                            <div className= ' items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-500 text-white' >
                                                 link Site
                                             </div>
-                                            <div onClick ={(e)=> setAttachment('file')} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-cyan-500 hover:text-white' >
+                                            <div onClick ={(e)=> setAttachment('file')} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
                                             <div className= 'items-center flex'>
                                                 <MdFileUpload/>
                                                     Attach File
@@ -333,12 +349,12 @@ function PostForm() {
                                             <div onClick ={(e)=> {
                                                 setAttachment('link');
                                                 setImageBlob('');
-                                        }} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-cyan-500 hover:text-white' >
+                                        }} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
                                                 link Site
                                             </div>
 
                         
-                                            <div className= 'items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-cyan-500 text-white'>
+                                            <div className= 'items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-500 text-white'>
                                                 <div className= 'items-center flex'>
                                                        Attach File
                                                 </div>
@@ -378,19 +394,22 @@ function PostForm() {
                                        //value= {diariesData.file}
                                         //onChange={(e)=> setdiariesData({...diariesData, file: e.target.value})}
                                         onChange={handleUrl}
-                                        placeholder="Paste Url Here" className="rounded-full text-center text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-400 bg-gray-200"/>
+                                        placeholder="Paste Url Here (Optional)" className="rounded-full text-center text-gray-700 font-light outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-300 bg-gray-100"/>
                                     </div>
                                     }
                                  {/*-- FILE------------ */}
-                                 {attachment === 'file' &&
-                                    <div className= 'w-full flex'>
+                                 {attachment === 'file' && 
+                                    <div className= 'w-full flex justify-around'>
                                     
 
-                                        <label htmlFor= 'FileUpload' className='flex m-auto p-3'>
-                                                    <div onClick ={(e)=>setProgress(0)}className= 'm-auto items-center border-gray-300 hover:bg-gray-500 hover:text-white  rounded-md  text-xs font p-4 bg-gray-200 text-gray-400 p-10'>
-                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent'>
-                                                            <MdOutlineUploadFile size={40}/> 
-                                                         upload
+                                        <label htmlFor= 'ImageUpload' className='py-3'>
+                                                    <div onClick ={(e)=>{
+                                                        setProgress(0);
+                                                       
+                                                        }}className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font bg-gray-100 border border-gray-300 text-gray-400 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent p-1'>
+                                                            <BsFileEarmarkImageFill size={20}/> 
+                                                         Image
                                                         </div>
                                                         
                                                         
@@ -399,7 +418,73 @@ function PostForm() {
                                         <input onChange={(e)=>{ 
                                             setImageBlob(URL.createObjectURL(e.target.files[0]));
                                             setFileData(e.target.files[0]);
-                                        }} className= "hidden" id='FileUpload' type="file"/> 
+                                            setMediaType('image');
+                                            console.log(imageBlob);
+                                        }} className= "hidden" id='ImageUpload' type="file"/> 
+                                          
+                                          <input onChange={(e)=>{ 
+                                            setImageBlob(window.URL.createObjectURL(e.target.files[0]));
+                                            setFileData(e.target.files[0]);
+                                            setMediaType('media');
+                                            console.log(imageBlob);
+                                        }} className= "hidden" id='MediaUpload' type="file"/> 
+
+
+                                        <label htmlFor= 'MediaUpload' className='py-3'>
+                                                    <div onClick ={(e)=>{
+                                                        setProgress(0);
+                                                       
+                                                        }}className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font  bg-gray-100 border border-gray-300 text-gray-400 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent p-1'>
+                                                            <MdVideoLibrary size={20}/> 
+                                                         Video
+                                                        </div>          
+                                                    </div>
+                                                </label>
+                                      
+
+
+                                         <label htmlFor= 'MediaUpload' className='py-3'>
+                                                    <div onClick ={(e)=>{
+                                                        setProgress(0);
+                                                      
+                                                        }}className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font  bg-gray-100 border border-gray-300 text-gray-400 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent p-1'>
+                                                            <MdLibraryMusic size={20}/> 
+                                                         Audio
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                        {/* <input onChange={(e)=>{ 
+                                              setFileData(e.target.files[0]);
+                                            setImageBlob(URL.createObjectURL(e.target.files[0]));
+                                          
+                                            setMediaType('media');
+                                            console.log(imageBlob);
+                                        }} className= "hidden" id='AudioUpload' type="file"/>  */}
+
+
+                                         <label htmlFor= 'MediaUpload' className='py-3'>
+                                                    <div onClick ={(e)=>{
+                                                        setProgress(0);
+                                                       
+                                                        }}className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font bg-gray-100 border border-gray-300 text-gray-400 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent p-1'>
+                                                            <MdPictureAsPdf size={20}/> 
+                                                         Pdf
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                        {/* <input onChange={(e)=>{ 
+
+                                            setFileData(e.target.files[0]);
+                                            setImageBlob(URL.createObjectURL(e.target.files[0]));
+                                            setMediaType('media');
+                                            console.log(imageBlob);
+
+                                        }} className= "hidden" id='PdfUpload' type="file"/>  */}
+
+
                                     </div>
                                 }
 
@@ -409,8 +494,8 @@ function PostForm() {
 
                     {/*========== ========Preview Box ===========*/}
 
-                                        {/* =======IMAGE ===========*/}
-                                     {imageBlob.length && imageBlob.includes('blob')?
+                                        {/* =======MEDIAS ===========*/}
+                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'image'?
                                         <div >
                                             {/* <div className='flex justify-center text-gray-400'>
                                                 <BsInstagram/>
@@ -419,6 +504,27 @@ function PostForm() {
                                             <p className= 'text-center text-gray-400 p-1 text-xs' >Instagram Attachment</p> */}
                                             <div className="relative flex justify-center m-auto w-full p-2 lg:p-0">
                                                 <PicForm Url= {imageBlob}/>
+                                               {/* <iframe src={imageBlob}
+                                                allow="fullscreen" width="100%" height="700" >
+                                                </iframe>  */}
+                                            </div>
+                                       </div> : 
+                                       <>
+                                          
+                                        </>
+                                    }
+                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'media' ?
+                                        <div >
+                                            {/* <div className='flex justify-center text-gray-400'>
+                                                <BsInstagram/>
+                                                
+                                           </div>
+                                            <p className= 'text-center text-gray-400 p-1 text-xs' >Instagram Attachment</p> */}
+                                            <div className="flex justify-center m-auto w-full p-2 lg:p-0">
+                                                <MediaForm Url= {imageBlob}/>
+                                               {/* <iframe src={imageBlob}
+                                                allow="fullscreen" width="100%" height="700" >
+                                                </iframe>  */}
                                             </div>
                                        </div> : 
                                        <>
@@ -694,25 +800,39 @@ function PostForm() {
 
 
                                         {/*-- Title------------ */}
-                                    <div className="flex justify-center">
+                                    <div className="flex justify-right">
+                                        <div className='w-4/5'>
                                         <input name= "title"
-                                        value= {diariesData.title}
-                                        onChange={(e)=> setdiariesData({...diariesData, title: e.target.value})}
-                                        placeholder="Enter Title" className="text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border-2 border-gray-300 rounded-md bg-gray-200"/>
+                                        value= {diariesData.title} 
+
+                                        {...register('title',{
+                                        onChange: (e) => {setdiariesData({...diariesData, title: e.target.value})}
+                                        })}  
+                        
+                                        placeholder="Enter Title" className="text-gray-700 font-light outline-none  mx-3 my-1 w-full px-4 p-1 sm:py-2 border border-gray-300 rounded-md bg-gray-100"/>
+                                         <p className='mx-3 text-xs text-red-700 font-light' >{errors.title?.message}</p>
+                                        </div>
                                     </div>
                                 {/* ---Content---------------  */}
                                     <div className="px-3 items-center flex justify-center">
+                                        <div className='w-full'>
                                         <textarea name= "caption"
-                                        value= {diariesData.caption}
-                                        onChange={(e)=> setdiariesData({...diariesData, caption: e.target.value})}
-                                        placeholder=" Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 font-light outline-none  m-1 w-full  px-4 py-2 border-2 border-gray-300 rounded-md bg-gray-200"/>
+                                        value= {diariesData.caption} 
+
+                                         {...register('caption',{
+                                        onChange: (e) => {setdiariesData({...diariesData, caption: e.target.value})}
+                                        })}   
+                        
+                                        placeholder="Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 font-light outline-none  mt-1 w-full  px-4 py-2 border border-gray-300 rounded-md bg-gray-100"/>
+                                        <p className='text-xs text-red-700 font-light' >{errors.caption?.message}</p>
+                                        </div>
                                     </div>
                                     
                                 {/* Button------------- */}
                                     <button type='submit' className="items-center mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                                     bg-gradient-to-r hover:from-pink-500
                                     hover:to-yellow-500 my-3 flex
-                                    mx-auto w-1/3 rounded-full
+                                    mx-auto w-1/3 rounded-md
                                         my-2 justify-center 
                                         text-white cursor-pointer
                                         font-semibold p-1">
@@ -721,12 +841,13 @@ function PostForm() {
                                     </button>
 
                             
-                        
+                            
                             
 
                         </div>
                         </form>
         </div>
+      
         </div>
     )
 }
