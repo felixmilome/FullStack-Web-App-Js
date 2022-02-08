@@ -13,7 +13,7 @@ import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
 import {MdFileUpload, MdOutlineUploadFile, MdVideoLibrary,MdLibraryMusic, MdPictureAsPdf } from "react-icons/md";
-import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, MediaForm} from "./PostForms/Previews.jsx";
+import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, AudioForm, VideoForm, PdfForm} from "./PostForms/Previews.jsx";
 
 
 import {useDispatch} from 'react-redux'; 
@@ -31,12 +31,10 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 
-
 const postSchema = yup.object().shape({
     title: yup.string().strict(false).trim().required('Title required').max(50),
     caption: yup.string().strict(false).trim().required('Caption required').max(500),
 });
-
 
 function PostForm() {
 
@@ -55,6 +53,7 @@ function PostForm() {
 
     const [progress, setProgress] = useState(0);
     const[attachment, setAttachment] = useState('link');
+    const[types, setTypes] = useState({image:'image', audio:'audio', video:'video', pdf:'pdf' });
 
  const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: yupResolver(postSchema),
@@ -70,6 +69,35 @@ function PostForm() {
     //     uploadImage(image);
             
     // };
+
+    const reader = new FileReader();
+
+
+
+function readFile(input, type) {
+
+    let file = input;
+    setFileData(file);
+    setMediaType(type);
+    setImageBlob(URL.createObjectURL(file));
+    console.log(imageBlob);
+    console.log(type);
+ 
+    // reader.readAsArrayBuffer(file);
+
+    // reader.onload = function() {
+
+    //     console.log('result:'+ reader.result); 
+    //     setImageBlob(reader.result);
+    //     setMediaType(type);
+    //     console.log(type);
+
+    // };
+  
+    // reader.onerror = function() {
+    //   console.log('error :'+ reader.error);
+    // };
+}
 
 
     const handleUrl = async (e) =>{
@@ -402,6 +430,44 @@ function PostForm() {
                                     <div className= 'w-full flex justify-around'>
                                     
 
+                                       {/* UPLOAD INPUTS */}
+
+                                        <input onChange={(e)=>readFile(e.target.files[0], types.image)}
+                                         className= "hidden" id='ImageUpload' type="file"/> 
+
+                                        <input onChange={(e)=>readFile(e.target.files[0], types.video)}
+                                         className= "hidden" id='VideoUpload' type="file"/> 
+
+                                        <input onChange={(e)=>readFile(e.target.files[0], types.audio)}
+                                         className= "hidden" id='AudioUpload' type="file"/> 
+                                        
+                                        <input onChange={(e)=>readFile(e.target.files[0], types.pdf)}
+                                         className= "hidden" id='PdfUpload' type="file"/> 
+         
+                                          {/* <input onChange={(e)=>{ 
+                                            setImageBlob(reader.readAsText(e.target.files[0]));
+                                            setFileData(e.target.files[0]);
+                                            setMediaType('pdf');
+                                            console.log(imageBlob);
+                                        }} className= "hidden" id='PdfUpload' type="file"/> 
+
+                                          <input onChange={(e)=>{ 
+                                            setImageBlob(reader.readAsText(e.target.files[0]));
+                                            setFileData(e.target.files[0]);
+                                            setMediaType('audio');
+                                            console.log(imageBlob);
+                                        }} className= "hidden" id='AudioUpload' type="file"/> 
+
+                                          <input onChange={(e)=>{ 
+                                            setImageBlob(reader.readAsText(e.target.files[0]));
+                                            setFileData(e.target.files[0]);
+                                            setMediaType('video');
+                                            console.log(imageBlob);
+                                        }} className= "hidden" id='VideoUpload' type="file"/>  */}
+
+
+                                        {/* LABELSSSS */}
+
                                         <label htmlFor= 'ImageUpload' className='py-3'>
                                                     <div onClick ={(e)=>{
                                                         setProgress(0);
@@ -414,23 +480,9 @@ function PostForm() {
                                                         
                                                         
                                                     </div>
-                                                </label>
-                                        <input onChange={(e)=>{ 
-                                            setImageBlob(URL.createObjectURL(e.target.files[0]));
-                                            setFileData(e.target.files[0]);
-                                            setMediaType('image');
-                                            console.log(imageBlob);
-                                        }} className= "hidden" id='ImageUpload' type="file"/> 
-                                          
-                                          <input onChange={(e)=>{ 
-                                            setImageBlob(window.URL.createObjectURL(e.target.files[0]));
-                                            setFileData(e.target.files[0]);
-                                            setMediaType('media');
-                                            console.log(imageBlob);
-                                        }} className= "hidden" id='MediaUpload' type="file"/> 
+                                        </label>
 
-
-                                        <label htmlFor= 'MediaUpload' className='py-3'>
+                                        <label htmlFor= 'PdfUpload' className='py-3'>
                                                     <div onClick ={(e)=>{
                                                         setProgress(0);
                                                        
@@ -440,11 +492,9 @@ function PostForm() {
                                                          Video
                                                         </div>          
                                                     </div>
-                                                </label>
+                                        </label>
                                       
-
-
-                                         <label htmlFor= 'MediaUpload' className='py-3'>
+                                         <label htmlFor= 'AudioUpload' className='py-3'>
                                                     <div onClick ={(e)=>{
                                                         setProgress(0);
                                                       
@@ -454,17 +504,10 @@ function PostForm() {
                                                          Audio
                                                         </div>
                                                     </div>
-                                                </label>
-                                        {/* <input onChange={(e)=>{ 
-                                              setFileData(e.target.files[0]);
-                                            setImageBlob(URL.createObjectURL(e.target.files[0]));
-                                          
-                                            setMediaType('media');
-                                            console.log(imageBlob);
-                                        }} className= "hidden" id='AudioUpload' type="file"/>  */}
+                                        </label>
+                                      
 
-
-                                         <label htmlFor= 'MediaUpload' className='py-3'>
+                                         <label htmlFor= 'PdfUpload' className='py-3'>
                                                     <div onClick ={(e)=>{
                                                         setProgress(0);
                                                        
@@ -474,17 +517,8 @@ function PostForm() {
                                                          Pdf
                                                         </div>
                                                     </div>
-                                                </label>
-                                        {/* <input onChange={(e)=>{ 
-
-                                            setFileData(e.target.files[0]);
-                                            setImageBlob(URL.createObjectURL(e.target.files[0]));
-                                            setMediaType('media');
-                                            console.log(imageBlob);
-
-                                        }} className= "hidden" id='PdfUpload' type="file"/>  */}
-
-
+                                        </label>
+                                       
                                     </div>
                                 }
 
@@ -497,34 +531,42 @@ function PostForm() {
                                         {/* =======MEDIAS ===========*/}
                                      {imageBlob.length && imageBlob.includes('blob') && mediaType === 'image'?
                                         <div >
-                                            {/* <div className='flex justify-center text-gray-400'>
-                                                <BsInstagram/>
-                                                
-                                           </div>
-                                            <p className= 'text-center text-gray-400 p-1 text-xs' >Instagram Attachment</p> */}
+                                          
                                             <div className="relative flex justify-center m-auto w-full p-2 lg:p-0">
                                                 <PicForm Url= {imageBlob}/>
-                                               {/* <iframe src={imageBlob}
-                                                allow="fullscreen" width="100%" height="700" >
-                                                </iframe>  */}
                                             </div>
                                        </div> : 
                                        <>
                                           
                                         </>
                                     }
-                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'media' ?
+                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'pdf' ?
                                         <div >
-                                            {/* <div className='flex justify-center text-gray-400'>
-                                                <BsInstagram/>
-                                                
-                                           </div>
-                                            <p className= 'text-center text-gray-400 p-1 text-xs' >Instagram Attachment</p> */}
+                                          
                                             <div className="flex justify-center m-auto w-full p-2 lg:p-0">
-                                                <MediaForm Url= {imageBlob}/>
-                                               {/* <iframe src={imageBlob}
-                                                allow="fullscreen" width="100%" height="700" >
-                                                </iframe>  */}
+                                                <PdfForm Url= {imageBlob}/>
+                                            </div>
+                                       </div> : 
+                                       <>
+                                          
+                                        </>
+                                    }
+                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'audio' ?
+                                        <div >
+                                          
+                                            <div className="flex justify-center m-auto w-full p-2 lg:p-0">
+                                                <AudioForm Url= {imageBlob}/>
+                                            </div>
+                                       </div> : 
+                                       <>
+                                          
+                                        </>
+                                    }
+                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'video' ?
+                                        <div >
+                                          
+                                            <div className="flex justify-center m-auto w-full p-2 lg:p-0">
+                                                <VideoForm Url= {imageBlob}/>
                                             </div>
                                        </div> : 
                                        <>

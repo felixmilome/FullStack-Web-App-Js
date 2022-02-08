@@ -1,3 +1,11 @@
+import VideoPlayer from 'react-video-js-player';
+
+
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
+
+
+
 export const MediaForm = ({Url}) => {
     return (
         <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
@@ -5,6 +13,48 @@ export const MediaForm = ({Url}) => {
                 <iframe src={Url}
                     allow="fullscreen" width="100%" height='400' >
                 </iframe> 
+            </div> 
+        </div>
+    )
+}
+
+export const AudioForm = ({Url}) => {
+    return (
+        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
+            <div className= "z-10 h-full w-full">     
+                {/* <iframe src={Url}
+                    allow="fullscreen" width="100%" height='400' >
+                </iframe>  */}
+                <AudioPlayer
+                    autoPlay
+                    src={Url}
+                    onPlay={e => console.log("onPlay")}
+                />
+            </div> 
+        </div>
+    )
+}
+export const VideoForm = ({Url}) => {
+    return (
+        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
+            <div className= "z-10 h-full w-full"> 
+            <VideoPlayer src={Url}/>    
+                {/* <iframe src={Url}
+                    allow="fullscreen" width="100%" height='400' >
+                </iframe>  */}
+            </div> 
+        </div>
+    )
+}
+export const PdfForm = ({Url}) => {
+    return (
+        <div className='relative max-h-screen w-4/5 bg-gray-200 p-1'>
+            <div className= "z-10 h-full w-full"> 
+
+                <iframe src={Url}
+                     width="100%" height='400' >
+                </iframe> 
+               
             </div> 
         </div>
     )
