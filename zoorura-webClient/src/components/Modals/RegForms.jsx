@@ -8,6 +8,10 @@ import{useNavigate} from 'react-router-dom';
 import{useState} from 'react';
 import {BeatLoader} from "react-spinners";
 
+import VideoPlayer from 'react-video-js-player';
+
+
+
 
 
 import {loginAction, registerAction, verifyAction} from '../Midwares/rdx/actions/auth.js';
@@ -172,7 +176,6 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
      allow="fullscreen" width="100%" height="700" >
     </iframe> */}
     {/* <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2F%5BNo%20Copyright%20Music%5D%20Sins%20of%20the%20Past%20-%20(Royalty%20Free%20Epic%20Music).mp4?alt=media&token=eaf73188-7fcd-4f96-939b-5bebe809a38e"/> */}
- 
             <div className="w-full lg:w-2/5 bg-gray-100 rounded-md shadow-xl m-2 h-full">
                  <form onSubmit={handleSubmit(signUp)}>
                         <div className= "pt-3 pb-1 flex items-center justify-around">

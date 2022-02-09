@@ -6,17 +6,17 @@ import 'react-h5-audio-player/lib/styles.css';
 
 
 
-export const MediaForm = ({Url}) => {
-    return (
-        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
-            <div className= "z-10 h-full w-full">     
-                <iframe src={Url}
-                    allow="fullscreen" width="100%" height='400' >
-                </iframe> 
-            </div> 
-        </div>
-    )
-}
+// export const MediaForm = ({Url}) => {
+//     return (
+//         <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
+//             <div className= "z-10 h-full w-full">     
+//                 <iframe src={Url}
+//                     allow="fullscreen" width="100%" height='400' >
+//                 </iframe> 
+//             </div> 
+//         </div>
+//     )
+// }
 
 export const AudioForm = ({Url}) => {
     return (
@@ -28,20 +28,34 @@ export const AudioForm = ({Url}) => {
                 <AudioPlayer
                     autoPlay
                     src={Url}
-                    onPlay={e => console.log("onPlay")}
                 />
+                  {/* <audio src={Url} controls autoPlay='true'>
+                </audio> */}
+            </div> 
+        </div>
+    )
+}
+export const VideoFrame = ({Url}) => {
+    return (
+        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
+            <div className= "z-10 h-full w-full"> 
+            <VideoPlayer src={Url}
+            onLoad= {(console.log(Url))}/>    
             </div> 
         </div>
     )
 }
 export const VideoForm = ({Url}) => {
     return (
-        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
+        <div className='max-h-screen w-11/12 bg-black p-1 py-4'>
             <div className= "z-10 h-full w-full"> 
-            <VideoPlayer src={Url}/>    
+            {/* <VideoPlayer src={Url}
+            onLoad= {(console.log(Url))}/>     */}
                 {/* <iframe src={Url}
                     allow="fullscreen" width="100%" height='400' >
                 </iframe>  */}
+                 <video src={Url} controls autoPlay='true' controlsList="nodownload">
+                </video>
             </div> 
         </div>
     )
@@ -50,11 +64,20 @@ export const PdfForm = ({Url}) => {
     return (
         <div className='relative max-h-screen w-4/5 bg-gray-200 p-1'>
             <div className= "z-10 h-full w-full"> 
-
+                
                 <iframe src={Url}
                      width="100%" height='400' >
                 </iframe> 
                
+            </div> 
+        </div>
+    )
+}
+export const PicFrame = ({Url}) => {
+    return (
+        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
+            <div className= "z-10 h-full w-full">     
+                <img src= {Url} className="object-container h-full w-full"/>
             </div> 
         </div>
     )

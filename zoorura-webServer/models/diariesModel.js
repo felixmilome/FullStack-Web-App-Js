@@ -46,6 +46,7 @@ const diariesSchema = mongoose.Schema({
     title: String, 
     caption: String,
     file: String,
+    media:String,
     publicity: {
         type:String,
         default: 'Public'

@@ -39,7 +39,7 @@ const postSchema = yup.object().shape({
 function PostForm() {
 
     const [diariesData, setdiariesData] = useState({
-        title:'', caption:'', file: '',  publicity:'',
+        title:'', caption:'', file: '', media: '',  publicity:'',
     }); 
    const[imageBlob, setImageBlob] = useState('');
    const[mediaType, setMediaType] = useState('');
@@ -70,24 +70,67 @@ function PostForm() {
             
     // };
 
-    const reader = new FileReader();
+    //const reader = new FileReader();
+
+function clearInput (){
+    console.log(imageBlob);
+    setProgress(0);
+
+    if(document.getElementById('ImageUpload').value.length){
+        document.getElementById('ImageUpload').value = '';
+    };
+    if(document.getElementById('VideoUpload').value.length){
+        document.getElementById('VideoUpload').value = '';
+    };
+    if(document.getElementById('AudioUpload').value.length){
+        document.getElementById('AudioUpload').value = '';
+    };
+    if(document.getElementById('PdfUpload').value.length){
+        document.getElementById('PdfUpload').value = '';
+    };
+    // if(document.getElementById('file').value.length>0){
+    //     document.getElementById('file').value = '';
+    // };
+   
+
+    setFileData('');
+    setdiariesData({...diariesData, file:'', media: ''});
+    setImageBlob('');
+    console.log(diariesData);
+}
 
 
+function readFile(file, type) {
 
-function readFile(input, type) {
 
-    let file = input;
+// //BLOB------
+
+    
     setFileData(file);
-    setMediaType(type);
+    setdiariesData({...diariesData, media:type});
+
+   if(file){
     setImageBlob(URL.createObjectURL(file));
+   }
+    
     console.log(imageBlob);
     console.log(type);
+
+
+
+
+
+
+// Reader-----
+
+    // let file = input;
+    // setFileData(file);
  
-    // reader.readAsArrayBuffer(file);
+    // reader.readAsDataURL(file);
 
     // reader.onload = function() {
 
-    //     console.log('result:'+ reader.result); 
+    //     console.log(reader.result); 
     //     setImageBlob(reader.result);
     //     setMediaType(type);
     //     console.log(type);
@@ -261,7 +304,11 @@ function readFile(input, type) {
 
     const uploadFile = async (image) =>{
             if (!image) return;
-            const storageRef = ref (storage, `/diaryfiles/${image.name}`);
+            const uploadDate = Date.now();
+            const fileOwner = user.result._id;
+            const fileType = diariesData.media;
+
+            const storageRef = ref (storage, `/diaryfiles/${fileType}-${uploadDate}-${fileOwner}`);
             const uploadTask=uploadBytesResumable(storageRef,image);
         
             uploadTask.on("state-changed", (snapshot)=>{
@@ -418,7 +465,7 @@ function readFile(input, type) {
                                 {/*-- URL------------ */}
                                     {attachment === 'link' &&
                                     <div className="flex justify-center">
-                                        <input name= "file"
+                                        <input id= "file"
                                        //value= {diariesData.file}
                                         //onChange={(e)=> setdiariesData({...diariesData, file: e.target.value})}
                                         onChange={handleUrl}
@@ -427,7 +474,7 @@ function readFile(input, type) {
                                     }
                                  {/*-- FILE------------ */}
                                  {attachment === 'file' && 
-                                    <div className= 'w-full flex justify-around'>
+                                    <div className= 'w-full flex justify-center space-x-5'>
                                     
 
                                        {/* UPLOAD INPUTS */}
@@ -441,39 +488,19 @@ function readFile(input, type) {
                                         <input onChange={(e)=>readFile(e.target.files[0], types.audio)}
                                          className= "hidden" id='AudioUpload' type="file"/> 
                                         
-                                        <input onChange={(e)=>readFile(e.target.files[0], types.pdf)}
+                                        <input onChange={(e)=>{
+                                                       
+                                                        readFile(e.target.files[0], types.pdf);
+                                                    }}
                                          className= "hidden" id='PdfUpload' type="file"/> 
-         
-                                          {/* <input onChange={(e)=>{ 
-                                            setImageBlob(reader.readAsText(e.target.files[0]));
-                                            setFileData(e.target.files[0]);
-                                            setMediaType('pdf');
-                                            console.log(imageBlob);
-                                        }} className= "hidden" id='PdfUpload' type="file"/> 
-
-                                          <input onChange={(e)=>{ 
-                                            setImageBlob(reader.readAsText(e.target.files[0]));
-                                            setFileData(e.target.files[0]);
-                                            setMediaType('audio');
-                                            console.log(imageBlob);
-                                        }} className= "hidden" id='AudioUpload' type="file"/> 
-
-                                          <input onChange={(e)=>{ 
-                                            setImageBlob(reader.readAsText(e.target.files[0]));
-                                            setFileData(e.target.files[0]);
-                                            setMediaType('video');
-                                            console.log(imageBlob);
-                                        }} className= "hidden" id='VideoUpload' type="file"/>  */}
+                                                                         
 
 
                                         {/* LABELSSSS */}
 
                                         <label htmlFor= 'ImageUpload' className='py-3'>
-                                                    <div onClick ={(e)=>{
-                                                        setProgress(0);
-                                                       
-                                                        }}className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font bg-gray-100 border border-gray-300 text-gray-400 p-1'>
-                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent p-1'>
+                                                    <div onClick ={clearInput} className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-full  text-xs font bg-gray-100 border border-gray-300 text-gray-500 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-1'>
                                                             <BsFileEarmarkImageFill size={20}/> 
                                                          Image
                                                         </div>
@@ -482,12 +509,9 @@ function readFile(input, type) {
                                                     </div>
                                         </label>
 
-                                        <label htmlFor= 'PdfUpload' className='py-3'>
-                                                    <div onClick ={(e)=>{
-                                                        setProgress(0);
-                                                       
-                                                        }}className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font  bg-gray-100 border border-gray-300 text-gray-400 p-1'>
-                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent p-1'>
+                                        <label htmlFor= 'VideoUpload' className='py-3'>
+                                        <div onClick ={clearInput} className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-full  text-xs font  bg-gray-100 border border-gray-300 text-gray-500 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-1'>
                                                             <MdVideoLibrary size={20}/> 
                                                          Video
                                                         </div>          
@@ -495,11 +519,8 @@ function readFile(input, type) {
                                         </label>
                                       
                                          <label htmlFor= 'AudioUpload' className='py-3'>
-                                                    <div onClick ={(e)=>{
-                                                        setProgress(0);
-                                                      
-                                                        }}className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font  bg-gray-100 border border-gray-300 text-gray-400 p-1'>
-                                                        <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent p-1'>
+                                         <div onClick ={clearInput}className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-full  text-xs font  bg-gray-100 border border-gray-300 text-gray-500 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-1'>
                                                             <MdLibraryMusic size={20}/> 
                                                          Audio
                                                         </div>
@@ -507,17 +528,14 @@ function readFile(input, type) {
                                         </label>
                                       
 
-                                         <label htmlFor= 'PdfUpload' className='py-3'>
-                                                    <div onClick ={(e)=>{
-                                                        setProgress(0);
-                                                       
-                                                        }}className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font bg-gray-100 border border-gray-300 text-gray-400 p-1'>
+                                         {/* <label htmlFor= 'PdfUpload' className='py-3'>
+                                         <div onClick ={clearInput} className= 'm-auto items-center  hover:bg-gray-400 hover:text-white  rounded-md  text-xs font bg-gray-100 border border-gray-300 text-gray-400 p-1'>
                                                         <div className= 'flex justify-center items-center font-semibold text-sm m-auto bg-transparent p-1'>
                                                             <MdPictureAsPdf size={20}/> 
                                                          Pdf
                                                         </div>
                                                     </div>
-                                        </label>
+                                        </label> */}
                                        
                                     </div>
                                 }
@@ -529,7 +547,7 @@ function readFile(input, type) {
                     {/*========== ========Preview Box ===========*/}
 
                                         {/* =======MEDIAS ===========*/}
-                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'image'?
+                                     {imageBlob.length && imageBlob.includes('blob') && diariesData.media === 'image'?
                                         <div >
                                           
                                             <div className="relative flex justify-center m-auto w-full p-2 lg:p-0">
@@ -540,7 +558,7 @@ function readFile(input, type) {
                                           
                                         </>
                                     }
-                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'pdf' ?
+                                     {imageBlob.length && imageBlob.includes('blob') && diariesData.media === 'pdf' ?
                                         <div >
                                           
                                             <div className="flex justify-center m-auto w-full p-2 lg:p-0">
@@ -551,7 +569,7 @@ function readFile(input, type) {
                                           
                                         </>
                                     }
-                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'audio' ?
+                                     {imageBlob.length && imageBlob.includes('blob') && diariesData.media === 'audio' ?
                                         <div >
                                           
                                             <div className="flex justify-center m-auto w-full p-2 lg:p-0">
@@ -562,7 +580,7 @@ function readFile(input, type) {
                                           
                                         </>
                                     }
-                                     {imageBlob.length && imageBlob.includes('blob') && mediaType === 'video' ?
+                                     {imageBlob.length && imageBlob.includes('blob') && diariesData.media === 'video' ?
                                         <div >
                                           
                                             <div className="flex justify-center m-auto w-full p-2 lg:p-0">
@@ -842,7 +860,7 @@ function readFile(input, type) {
 
 
                                         {/*-- Title------------ */}
-                                    <div className="flex justify-right">
+                                    <div className="flex justify-center">
                                         <div className='w-4/5'>
                                         <input name= "title"
                                         value= {diariesData.title} 
@@ -851,7 +869,7 @@ function readFile(input, type) {
                                         onChange: (e) => {setdiariesData({...diariesData, title: e.target.value})}
                                         })}  
                         
-                                        placeholder="Enter Title" className="text-gray-700 font-light outline-none  mx-3 my-1 w-full px-4 p-1 sm:py-2 border border-gray-300 rounded-md bg-gray-100"/>
+                                        placeholder="Enter Title" className="text-gray-700 font-light outline-none my-1 w-full px-4 p-1 sm:py-2 border border-gray-300 rounded-md bg-gray-100"/>
                                          <p className='mx-3 text-xs text-red-700 font-light' >{errors.title?.message}</p>
                                         </div>
                                     </div>

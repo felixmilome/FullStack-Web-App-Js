@@ -191,7 +191,7 @@ function Header() {
             { user && user.result.verified ?
             <>
             <Link to='/'>
-                <div onClick ={(e)=>(setpopContacts(false))}className="cursor-pointer  rounded-full hover:bg-gray-100 bg-transparent flex items-center justify-between">
+                <div onClick ={(e)=>(setpopContacts(false))}className="cursor-pointer  rounded-full hover:bg-gray-200 bg-transparent flex items-center justify-between">
                             
                             <div className= 'rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
                                 <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
@@ -199,7 +199,7 @@ function Header() {
 
                             
                             <>
-                                <h1 className= "m-1 inline-flex text-lg font-extralight text-gray-600">Home</h1>
+                                <h1 className= "m-1 pr-2 inline-flex font-bold text-sm text-gray-500">Go Home</h1>
                                
                             </>
                        
@@ -328,7 +328,7 @@ function Header() {
                             setpopProfile(false); 
                         }}
                         >
-                        <div className="cursor-pointer inline-flex items-center justify-center p-1 rounded-full bg-teal-300 sm:hover:bg-cyan-300 mx-1"
+                        <div className="cursor-pointer inline-flex items-center justify-center p-1 rounded-full bg-gray-300 sm:bg-teal-300 sm:hover:bg-cyan-300 mx-1"
                      onClick={ () => 
                          {
                             setpopProfile(!popProfile);

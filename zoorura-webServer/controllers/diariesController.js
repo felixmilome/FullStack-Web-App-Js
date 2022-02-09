@@ -81,7 +81,7 @@ export const postDiaries =  async (req, res)=> {
        // console.log(diary);
         const user = await UsersModel.findById(req.userId);
        // console.log(user);
-        const newDiary = new DiariesModel({...diary, name: user.userName, creator: req.userId, diaryMiniProfile: req.userId, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
+        const newDiary = new DiariesModel({...diary, creator: req.userId, diaryMiniProfile: req.userId, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
        
     try{
         await newDiary.save();
