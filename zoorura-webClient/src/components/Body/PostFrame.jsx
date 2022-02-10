@@ -161,7 +161,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             
                             </div>
                             </>
-                            }
+                            } 
                         </div>
                     {/* Top-Menu */}
                     <div>

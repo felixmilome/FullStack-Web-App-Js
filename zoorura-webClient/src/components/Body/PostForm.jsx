@@ -1,5 +1,5 @@
 
-import{useState} from 'react';
+import{useState, useEffect} from 'react';
 //import FileBase from 'react-file-base64';
 
 import {useNavigate} from 'react-router-dom';
@@ -31,10 +31,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 
-const postSchema = yup.object().shape({
-    title: yup.string().strict(false).trim().required('Title required').max(50),
-    caption: yup.string().strict(false).trim().required('Caption required').max(500),
-});
+
 
 function PostForm() {
 
@@ -55,10 +52,65 @@ function PostForm() {
     const[attachment, setAttachment] = useState('link');
     const[types, setTypes] = useState({image:'image', audio:'audio', video:'video', pdf:'pdf' });
 
+    const postSchema = yup.object().shape({
+        title: yup.string().strict(false).trim().required('Title required').max(50),
+        caption: yup.string().strict(false).trim().required('Caption required').max(500),
+        url:yup.string().nullable().notRequired().when('url', {
+                is: (value) => value?.length,
+                then:(rule)=> rule.matches(/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/gm, "invalid Url").min(11, 'Url too short').max(700, 'Url too long'),
+                }),
+        ImageUpload: yup.mixed().nullable().notRequired().when('ImageUpload', {
+            is: (value) => value?.length,
+            then:(rule)=> rule.test("fileSize", "Image Size is too large. (Must be below 20MB)", (value) => {
+                console.log(value[0].size);
+                return value[0].size <= 20000000;
+              })
+              .test("fileType", "Unsupported Image Format (Must be png/jpeg/jpg)", (value) =>{
+                console.log(value[0].type);
+                return ["image/jpeg", "image/png", "image/jpg"].includes(value[0].type);
+              }),
+            }),
+        VideoUpload: yup.mixed().nullable().notRequired().when('VideoUpload', {
+            is: (value) => value?.length,
+            then:(rule)=> rule.test("fileSize", "Video Size too large. (Must be below 500MB)", (value) => {
+                console.log(value[0].size);
+                return value[0].size <= 500000000;
+                })
+                .test("fileType", "Unsupported Image Format (Must be png/jpeg/jpg)", (value) =>{
+                    console.log(value[0].type);
+                    return ["video/mp4","video/mpeg", "video/ogg", "video/webm"].includes(value[0].type);
+                }),
+            }),
+        AudioUpload: yup.mixed().nullable().notRequired().when('AudioUpload', {
+            is: (value) => value?.length,
+            then:(rule)=> rule.test("fileSize", "Audio Size too large. (Must be below 30MB)", (value) => {
+                console.log(value[0].size);
+                return value[0].size <= 30000000;
+                })
+                .test("fileType", "Unsupported Audio Format (Must be mp3/ogg/wav)", (value) =>{
+                
+                    console.log(value[0].type);
+                    return ["audio/mp3","audio/mpeg", "audio/ogg", "audio/wav"].includes(value[0].type);
+              
+                }),
+            }),
+      
+            
+            },
+                
+            [
+                ['url', 'url'],
+                ['ImageUpload', 'ImageUpload'],
+                ['AudioUpload', 'AudioUpload'],
+                ['VideoUpload', 'VideoUpload'],
+            ]
+        );
+
  const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: yupResolver(postSchema),
     });
 
+    
     
    
 
@@ -72,10 +124,26 @@ function PostForm() {
 
     //const reader = new FileReader();
 
+const clearUrl = ()=> {
+    //Useeffect cleared Url.value  
+     setdiariesData({...diariesData, media:'', file:''});
+     setAttachment('file')
+}
+useEffect(() => {
+    if(attachment==='link'){
+        document.getElementById('url').value = '';
+    }
+}, [attachment]);
+
+
+
 function clearInput (){
     console.log(imageBlob);
     setProgress(0);
 
+    // if(document.getElementById('url').value.length>0){
+    //     document.getElementById('url').value = '';
+    // };
     if(document.getElementById('ImageUpload').value.length){
         document.getElementById('ImageUpload').value = '';
     };
@@ -85,12 +153,10 @@ function clearInput (){
     if(document.getElementById('AudioUpload').value.length){
         document.getElementById('AudioUpload').value = '';
     };
-    if(document.getElementById('PdfUpload').value.length){
-        document.getElementById('PdfUpload').value = '';
-    };
-    // if(document.getElementById('file').value.length>0){
-    //     document.getElementById('file').value = '';
+    // if(document.getElementById('PdfUpload').value.length){
+    //     document.getElementById('PdfUpload').value = '';
     // };
+   
    
 
     setFileData('');
@@ -145,7 +211,7 @@ function readFile(file, type) {
 
     const handleUrl = async (e) =>{
     
-          const urInput = await e.target.value;
+          const urInput = await e.target.value.trim();
    
 
        if(urInput.includes('www.youtube.com') || urInput.includes('//youtu.be') ){
@@ -242,6 +308,14 @@ function readFile(file, type) {
 
         }
         else if(urInput.includes('https://')){
+
+           
+            const fileUrl = urInput.trim();
+            setdiariesData({...diariesData, file: fileUrl});
+            console.log(diariesData);
+
+        }
+        else if(urInput === ''){
 
            
             const fileUrl = urInput.trim();
@@ -410,12 +484,14 @@ function readFile(file, type) {
                                             <div className= ' items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-500 text-white' >
                                                 link Site
                                             </div>
-                                            <div onClick ={(e)=> setAttachment('file')} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
-                                            <div className= 'items-center flex'>
-                                                <MdFileUpload/>
-                                                    Attach File
+                                           
+                                                <div onClick ={clearUrl} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
+                                                <div className= 'items-center flex'>
+                                                    <MdFileUpload/>
+                                                        Attach File
+                                                    </div>
                                                 </div>
-                                            </div>
+                                        
                                         </>
                                     }
 
@@ -423,7 +499,10 @@ function readFile(file, type) {
                                         <>
                                             <div onClick ={(e)=> {
                                                 setAttachment('link');
-                                                setImageBlob('');
+                                               clearInput();
+                                               
+                                              
+        
                                         }} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
                                                 link Site
                                             </div>
@@ -464,39 +543,48 @@ function readFile(file, type) {
 
                                 {/*-- URL------------ */}
                                     {attachment === 'link' &&
+                                    
                                     <div className="flex justify-center">
-                                        <input id= "file"
-                                       //value= {diariesData.file}
+                                        <div className='m-auto bg-transparent p-3'>
+                                        <input id= "url"
+                                        //value= {diariesData.file}
                                         //onChange={(e)=> setdiariesData({...diariesData, file: e.target.value})}
-                                        onChange={handleUrl}
-                                        placeholder="Paste Url Here (Optional)" className="rounded-full text-center text-gray-700 font-light outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-300 bg-gray-100"/>
+                                        {...register('url',{
+                                            onChange: (e) => {handleUrl(e)}
+                                            })}  
+                                        
+                            
+                                        placeholder="Paste Url Here (Optional)" className="rounded-full text-center w-full text-gray-700 font-light outline-none text-sm px-4 p-1 sm:py-2 border border-gray-300 bg-gray-100"/>
+                                         <p className='mx-3 text-xs text-red-700 font-light' >{errors.url?.message}</p>
+                                         </div>
                                     </div>
+                                      
                                     }
                                  {/*-- FILE------------ */}
                                  {attachment === 'file' && 
+                                    <div>
                                     <div className= 'w-full flex justify-center space-x-5'>
                                     
 
                                        {/* UPLOAD INPUTS */}
-
-                                        <input onChange={(e)=>readFile(e.target.files[0], types.image)}
+                                        
+                                        <input {...register('ImageUpload',{
+                                            onChange: (e) => {readFile(e.target.files[0], types.image)}
+                                            })}  
                                          className= "hidden" id='ImageUpload' type="file"/> 
 
-                                        <input onChange={(e)=>readFile(e.target.files[0], types.video)}
+                                        <input {...register('VideoUpload',{
+                                            onChange: (e) => {readFile(e.target.files[0], types.video)}
+                                            })}  
                                          className= "hidden" id='VideoUpload' type="file"/> 
 
-                                        <input onChange={(e)=>readFile(e.target.files[0], types.audio)}
+                                        <input {...register('AudioUpload',{
+                                            onChange: (e) => {readFile(e.target.files[0], types.audio)}
+                                            })}  
                                          className= "hidden" id='AudioUpload' type="file"/> 
                                         
-                                        <input onChange={(e)=>{
-                                                       
-                                                        readFile(e.target.files[0], types.pdf);
-                                                    }}
-                                         className= "hidden" id='PdfUpload' type="file"/> 
-                                                                         
 
-
-                                        {/* LABELSSSS */}
+                                          {/* LABELSSSS */}
 
                                         <label htmlFor= 'ImageUpload' className='py-3'>
                                                     <div onClick ={clearInput} className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-full  text-xs font bg-gray-100 border border-gray-300 text-gray-500 p-1'>
@@ -526,6 +614,17 @@ function readFile(file, type) {
                                                         </div>
                                                     </div>
                                         </label>
+                                        </div>  
+
+                                        {diariesData.media ==='image' &&  <p className='mx-3 text-xs text-center text-red-700 font-light' >{errors.ImageUpload?.message}</p>} 
+                                        {diariesData.media ==='video' &&  <p className='mx-3 text-xs text-center text-red-700 font-light' >{errors.VideoUpload?.message}</p>}
+                                        {diariesData.media ==='audio' && <p className='mx-3 text-xs text-center text-red-700 font-light' >{errors.AudioUpload?.message}</p>}
+                                        
+                                          {/* <p className='mx-3 text-xs text-center text-red-700 font-light' >{errors.PdfUpload?.message}</p> */}
+                                                      
+
+
+                                       
                                       
 
                                          {/* <label htmlFor= 'PdfUpload' className='py-3'>
@@ -870,7 +969,7 @@ function readFile(file, type) {
                                         })}  
                         
                                         placeholder="Enter Title" className="text-gray-700 font-light outline-none my-1 w-full px-4 p-1 sm:py-2 border border-gray-300 rounded-md bg-gray-100"/>
-                                         <p className='mx-3 text-xs text-red-700 font-light' >{errors.title?.message}</p>
+                                        <p className='mx-3 text-xs text-red-700 font-light' >{errors.title?.message}</p>
                                         </div>
                                     </div>
                                 {/* ---Content---------------  */}
