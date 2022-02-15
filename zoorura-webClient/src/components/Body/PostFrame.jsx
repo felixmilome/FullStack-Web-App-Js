@@ -13,7 +13,7 @@ import { BiCommentEdit } from "react-icons/bi";
 
 import {BeatLoader} from "react-spinners"; 
 
-import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm} from "./PostForms/Previews.jsx";
+import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, PicFrame, VideoFrame, AudioForm, VideoForm} from "./PostForms/Previews.jsx";
 
 
 import{GiMoneyStack, GiTakeMyMoney} from "react-icons/gi"; 
@@ -210,21 +210,35 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             
             
             {/*=============================IFRAMES========================================*/}
-                                   {/* ======FILE======== */}
-                                   { diary.file.length && diary.file.includes('zooruraweb.appspot.com')?
+                                   {/* ======IMAGE FILE====== */}
+                                   { diary.file.length && diary.media === 'image' && diary.file.includes('zooruraweb.appspot.com') &&
                                         <div className =" w-full">
                                             <div className="relative z-10 flex justify-center m-auto w-full lg:p-0">
-                                                <PicForm Url= {diary.file}/>
-                                            </div>
-                                           
+                                                <PicFrame Url= {diary.file}/>
+                                            </div>     
                                        </div> 
-                                      :  
-                                       <>
-                                          
-                                        </>
+                                    }
+                                     {/* ======VIDEO FILE====== */}
+                                   { diary.file.length && diary.media === 'video' && diary.file.includes('zooruraweb.appspot.com') &&
+                                        <div className =" w-full">
+                                            <div className="relative z-10 flex justify-center m-auto w-full lg:p-0">
+                                                <VideoForm Url= {diary.file} DP={user.result.dpUrl}/>
+                                            </div>  
+                                       </div> 
+                                    }
+                                       {/* ======AUDIO FILE====== */}
+                                   { diary.file.length && diary.media === 'audio' && diary.file.includes('zooruraweb.appspot.com') &&
+                                        <div className =" w-full">
+                                            <div className="relative z-10 flex justify-center m-auto w-full lg:p-0">
+                                                <AudioForm Url= {diary.file} DP={user.result.dpUrl}/>
+                                            </div>
+ 
+                                       </div> 
                                     }
                                     
                                 {/* ======YOUTUBE======== */}
+                                {diary.media === 'url' &&
+                                <>
                                 { diary.file.length && diary.file.includes('www.youtube.com')?
                                         <div className ="w-full">
                                             <div className=' w-full flex justify-center text-gray-400'>
@@ -485,9 +499,12 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                        <>
                                         
                                         </>
-                                    }
+                                    } 
+                                </>}
         {/* ====================================IFRAMES END====================================== */}
+        
             </div> }    
+            
         </div>
         </div>
 

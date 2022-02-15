@@ -535,7 +535,7 @@ function getCodec() {
 
 export const login = async (req,res) => {
  const {email, password, autologout} = req.body;
- //console.log(req.body);
+ console.log(req.body);
  try{ 
   
      const existingEmail = await UsersModel.findOne({email: { $in: [ email ] } });
@@ -555,7 +555,6 @@ export const login = async (req,res) => {
       const token = jwt.sign({email: loggedUser.email, id: loggedUser._id}, JWT_SECRET, {expiresIn: autologout});
    
       res. status(200).json({result:loggedUser, token});
-      console.log(loggedUser);
 
     }
      

@@ -2,7 +2,7 @@
 import {GoogleLogin} from 'react-google-login';
 import {FcGoogle } from "react-icons/fc";
 import {BsEyeFill,BsEyeSlashFill, BsCheck2Circle,BsShieldCheck} from "react-icons/bs";
-import { MdOutlineCancel, } from "react-icons/md";
+import { MdOutlineCancel, MdSecurity } from "react-icons/md";
 import {useDispatch, useSelector} from 'react-redux';
 import{useNavigate} from 'react-router-dom';
 import{useState} from 'react';
@@ -172,17 +172,17 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
         <div className="fixed text-gray-600 font-bold top-10 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
              
         {/* ============Floating FORM BOX ======== */}
-    {/* <iframe src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2F%5BNo%20Copyright%20Music%5D%20Sins%20of%20the%20Past%20-%20(Royalty%20Free%20Epic%20Music).mp4?alt=media&token=eaf73188-7fcd-4f96-939b-5bebe809a38e"
+    {/* <iframe src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"
      allow="fullscreen" width="100%" height="700" >
     </iframe> */}
-    {/* <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2F%5BNo%20Copyright%20Music%5D%20Sins%20of%20the%20Past%20-%20(Royalty%20Free%20Epic%20Music).mp4?alt=media&token=eaf73188-7fcd-4f96-939b-5bebe809a38e"/> */}
+    {/* <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"/> */}
             <div className="w-full lg:w-2/5 bg-gray-100 rounded-md shadow-xl m-2 h-full">
                  <form onSubmit={handleSubmit(signUp)}>
                         <div className= "pt-3 pb-1 flex items-center justify-around">
                             <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
                         </div>  
                         <div className="p-1 text-center bg-transparent">
-                            <p>Register New Account</p>
+                            <p>Register to Join Zoorura</p>
                             <div className="p-1 font-light text-xs flex justify-center items-center space-x-1"> 
                                <div>
                                    Already have an account?
@@ -374,7 +374,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
     const dispatch = useDispatch();
     const[visible, setVisible] = useState (false);
     //const initialState ={email: '', password: '', autologout: '1h'}
-    const [formData, setFormData] = useState({email: '', password: '', autologout: '1h'});
+    const [formData, setFormData] = useState({email: '', password: '', autologout: '300d'});
     const navigate = useNavigate();
     const[user,setUser] = useState(null);
     const[visibleError, setVisibleError] = useState (false);
@@ -400,17 +400,11 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
     
   
     const logIn = async (data, navigate) => {
-       // e.preventDefault();
-        // console.log(formData);
-        // console.log(loggedUser);
      
         setLoading(true);
+
         try{
           dispatch(loginAction(formData, navigate, setVisibleError, setLoading));
-             
-          console.log(user);
-           
-        
         } catch (error){
             console.log(error);
         }
@@ -483,20 +477,23 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                         </div>
                         </div>
                              {/* Auto Logout Protection*/}
-                    <div className= "p-1 flex items-center justify-center">
+                    <div className= "p-1 flex items-center justify-center space-x-1">
+                        <MdSecurity size={18} className= "text-gray-500"/>
                         <p className="font-light">
-                            Auto-Logout Protection:
+                            Keep Me Logged In?
                         </p>
                         <select 
                         name= "autologout"
                         onChange={(e)=>setFormData({...formData, autologout: e.target.value})}   
                         className="m-2 flex text-center justify-center items-center font-bold text-xs  outline-none bg-gray-200 rounded-md p-1 border-none">
-                                <option value="1h"> 1 Hour </option>
-                                <option value="6h"> 6 Hours </option>
-                                <option value="12h"> 12 Hours </option>
-                                <option value="24h"> 1 Day </option>
-                                <option value="7d"> 1 Week </option>
-                                <option value="365d"> Until I logout </option>
+                                <option value="300d"> Never </option>
+                                <option value="365d"> Always, Until I logout </option>
+                                <option value="1h"> For 1 Hour </option>
+                                <option value="6h"> For 6 Hours </option>
+                                <option value="12h"> For 12 Hours </option>
+                                <option value="24h">For 1 Day </option>
+                                <option value="7d">For 1 Week </option>
+                                
                         </select> 
                     </div>
                             

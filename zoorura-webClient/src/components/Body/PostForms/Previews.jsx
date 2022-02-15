@@ -18,19 +18,18 @@ import 'react-h5-audio-player/lib/styles.css';
 //     )
 // }
 
-export const AudioForm = ({Url}) => {
+export const AudioForm = ({Url, DP}) => {
     return (
         <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
             <div className= "z-10 h-full w-full">     
                 {/* <iframe src={Url}
                     allow="fullscreen" width="100%" height='400' >
                 </iframe>  */}
-                <AudioPlayer
-                    autoPlay
+                {/* <AudioPlayer poster = {DP}
                     src={Url}
-                />
-                  {/* <audio src={Url} controls autoPlay='true'>
-                </audio> */}
+                /> */}
+                  <video src={Url} poster= {DP} controls controlsList="nodownload">
+                </video>
             </div> 
         </div>
     )
@@ -39,22 +38,21 @@ export const VideoFrame = ({Url}) => {
     return (
         <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
             <div className= "z-10 h-full w-full"> 
-            <VideoPlayer src={Url}
-            onLoad= {(console.log(Url))}/>    
+            <VideoPlayer src={Url}/>    
             </div> 
         </div>
     )
 }
-export const VideoForm = ({Url}) => {
+export const VideoForm = ({Url, DP}) => {
     return (
-        <div className='max-h-screen w-11/12 bg-black p-1 py-4'>
-            <div className= "z-10 h-full w-full"> 
+        <div className='flex justify-center max-h-screen w-11/12 bg-black p-1 py-4'>
+            <div className= "flex m-auto bg-gray-800 z-10 h-full w-full"> 
             {/* <VideoPlayer src={Url}
             onLoad= {(console.log(Url))}/>     */}
                 {/* <iframe src={Url}
                     allow="fullscreen" width="100%" height='400' >
                 </iframe>  */}
-                 <video src={Url} controls autoPlay='true' controlsList="nodownload">
+                 <video className= "m-auto" src={Url} poster={DP} controls controlsList="nodownload">
                 </video>
             </div> 
         </div>
@@ -98,13 +96,7 @@ export const YtForm = ({Url}) => {
         <>
             <iframe className= "z-10" growth="HaskellandPythonLibratriesLibraryk
             bsgfuyefsu763297032097987-77" decoder="zooruraJavaDecoder6565438zz66" 
-            title="375328 
-            Zoorura Decode-Embed-Embed Class
-             u82078364 846877870 444 uj735ho9ehksjfdh
-              osv6 hyejevi8 hdygd7 000000000000000000
-               hjksdfh jksdf k4982369ybhhvdjgjdfbjhbf
-               jbjfhbjCode976796976969697697Title9767896
-               98608698686876hjvhgvhgvchgcvhjvvjgvjv55557687876y"
+            title=""
             width="100%" height="400"
             src={Url}
                 //src="https://www.youtube.com/embed/dmFwB0WEEDY"

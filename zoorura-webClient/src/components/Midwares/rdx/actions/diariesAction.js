@@ -16,8 +16,9 @@ export const postDiariesAction = (diary, setpopPosted, navigate, getDiaries) => 
         dispatch ({type: 'POST_DIARY', payload: data});
         setpopPosted(true);
         getDiaries();
-       // window.location.reload(true);
+       
         navigate ('/');
+        window.location.reload(true);
 
         //setTimeout( function() {navigate ('/')}, 1000);
     } catch(error) {

@@ -6,8 +6,9 @@ import {useNavigate} from 'react-router-dom';
 
 import { urIg, urTk, urYt, urSn, urPn, urRd, urFb, urDr, urTch } from "../Midwares/cleaners/cleaner.js";
 
-import{BsInstagram, BsTwitch, BsFileEarmarkImageFill} from "react-icons/bs";
+import{BsInstagram, BsTwitch, BsFileEarmarkImageFill, BsLink45Deg, BsFileEarmarkMinus} from "react-icons/bs";
 import{RiSoundcloudLine, RiPinterestLine, RiRedditFill} from "react-icons/ri";
+import {BiUnlink} from 'react-icons/bi';
 import{ImReddit, ImWordpress, ImYoutube2} from "react-icons/im";
 import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { FaGoogleDrive } from "react-icons/fa";
@@ -129,11 +130,21 @@ const clearUrl = ()=> {
      setdiariesData({...diariesData, media:'', file:''});
      setAttachment('file')
 }
+const clearUrl_NoSwitch = ()=> {
+    //Useeffect cleared Url.value  
+     setdiariesData({...diariesData, media:'', file:''});
+     document.getElementById('url').value = '';
+     
+}
+
+
 useEffect(() => {
     if(attachment==='link'){
         document.getElementById('url').value = '';
     }
 }, [attachment]);
+
+
 
 
 
@@ -217,37 +228,37 @@ function readFile(file, type) {
        if(urInput.includes('www.youtube.com') || urInput.includes('//youtu.be') ){
             const fileUrl = urYt (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
        }
        else if(urInput.includes('www.instagram.com')){
             const fileUrl = urIg (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
        }
        else if(urInput.includes('www.tiktok.com')){
             const fileUrl = urTk (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
        }  
        else if(urInput.includes('vm.tiktok.com') || urInput.includes('vt.tiktok.com') ){ //tiktok errr-----------------
        
-            setdiariesData({...diariesData, file: urInput});
+            setdiariesData({...diariesData, file: urInput, media: 'url'});
             console.log(diariesData);
        }
        else if(urInput.includes('twitter.com')){
 
         const fileUrl = urInput.trim()
-        setdiariesData({...diariesData, file: fileUrl});
+        setdiariesData({...diariesData, file: fileUrl, media: 'url'});
         console.log(diariesData);
         }
         else if(urInput.includes('soundcloud.com')){
 
             const fileUrl = urSn (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
@@ -255,14 +266,14 @@ function readFile(file, type) {
 
             const fileUrl = urPn (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
         else if(urInput.includes('pin.it')){ //pin err--------------
 
         
-            setdiariesData({...diariesData, file: urInput});
+            setdiariesData({...diariesData, file: urInput, media: 'url'});
             console.log(diariesData);
 
         }
@@ -270,7 +281,7 @@ function readFile(file, type) {
 
             const fileUrl = urRd (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
@@ -279,7 +290,7 @@ function readFile(file, type) {
 
             const fileUrl = urFb (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
@@ -287,7 +298,7 @@ function readFile(file, type) {
 
             const fileUrl = urDr (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
@@ -295,7 +306,7 @@ function readFile(file, type) {
 
             const fileUrl = urTch (urInput);
             console.log (fileUrl);
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
@@ -303,7 +314,7 @@ function readFile(file, type) {
 
            
             const fileUrl = urInput.trim();
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
@@ -311,7 +322,7 @@ function readFile(file, type) {
 
            
             const fileUrl = urInput.trim();
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
@@ -319,7 +330,7 @@ function readFile(file, type) {
 
            
             const fileUrl = urInput.trim();
-            setdiariesData({...diariesData, file: fileUrl});
+            setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
 
         }
@@ -338,8 +349,8 @@ function readFile(file, type) {
                     title: diariesData.title,
                     caption: diariesData.caption,
                     file: url,
-                    image: '',
-                        publicity: diariesData.publicity};
+                    media: diariesData.media,
+                    publicity: diariesData.publicity};
 
                 return diariesDataConstruct;
 
@@ -482,13 +493,16 @@ function readFile(file, type) {
                                    { attachment === 'link' &&
                                         <>
                                             <div className= ' items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-500 text-white' >
-                                                link Site
+                                             <div className= 'items-center flex'>
+                                              <BsLink45Deg size={20}/> 
+                                               link Site
+                                              </div>
                                             </div>
                                            
                                                 <div onClick ={clearUrl} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
                                                 <div className= 'items-center flex'>
-                                                    <MdFileUpload/>
-                                                        Attach File
+                                                    <MdFileUpload size={20}/>
+                                                        Upload File Instead
                                                     </div>
                                                 </div>
                                         
@@ -504,13 +518,17 @@ function readFile(file, type) {
                                               
         
                                         }} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
-                                                link Site
+                                                <div className= 'items-center flex'>
+                                              <BsLink45Deg size={20}/> 
+                                               link Site Instead
+                                              </div>
                                             </div>
 
                         
                                             <div className= 'items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-500 text-white'>
-                                                <div className= 'items-center flex'>
-                                                       Attach File
+                                               <div className= 'items-center flex'>
+                                                    <MdFileUpload size={20}/>
+                                                        Upload File
                                                 </div>
                                             </div>
                                        
@@ -571,17 +589,17 @@ function readFile(file, type) {
                                         <input {...register('ImageUpload',{
                                             onChange: (e) => {readFile(e.target.files[0], types.image)}
                                             })}  
-                                         className= "hidden" id='ImageUpload' type="file"/> 
+                                         className= "hidden" id='ImageUpload' type="file" accept="image/png, image/jpeg, image/jpg"/> 
 
                                         <input {...register('VideoUpload',{
                                             onChange: (e) => {readFile(e.target.files[0], types.video)}
                                             })}  
-                                         className= "hidden" id='VideoUpload' type="file"/> 
+                                         className= "hidden" id='VideoUpload' type="file" accept="video/ogg, video/mp4, video/webm"/> 
 
                                         <input {...register('AudioUpload',{
                                             onChange: (e) => {readFile(e.target.files[0], types.audio)}
                                             })}  
-                                         className= "hidden" id='AudioUpload' type="file"/> 
+                                         className= "hidden" id='AudioUpload' type="file" accept="audio/mpeg, audio/mp3, audio/wav, audio/ogg"/> 
                                         
 
                                           {/* LABELSSSS */}
@@ -640,7 +658,20 @@ function readFile(file, type) {
                                 }
 
                      
+                                {/* Clear Button */}
 
+                                {diariesData.media === "url" && 
+                                        <div onClick= {clearUrl_NoSwitch} className= 'flex  w-1/5 justify-center items-center font-semibold text-xs m-auto bg-transparent p-1 text-gray-300 hover:text-red-400 cursor-pointer'>
+                                            <BiUnlink size={20}/> 
+                                            Clear Url
+                                        </div>                              
+                                }
+                                {diariesData.media.length>1 && diariesData.media !== "url" && 
+                                        <div onClick= {clearInput} className= 'flex w-1/5 justify-center items-center font-semibold text-xs m-auto bg-transparent p-1 text-gray-300  hover:text-red-400 cursor-pointer'>
+                                            <BsFileEarmarkMinus size={20}/> 
+                                           Clear File
+                                        </div>                              
+                                }
 
 
                     {/*========== ========Preview Box ===========*/}
@@ -988,16 +1019,27 @@ function readFile(file, type) {
                                     </div>
                                     
                                 {/* Button------------- */}
-                                    <button type='submit' className="items-center mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                                    <button type= {progress > 0 ? 'button' : 'submit'} className="items-center mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                                     bg-gradient-to-r hover:from-pink-500
                                     hover:to-yellow-500 my-3 flex
                                     mx-auto w-1/3 rounded-md
                                         my-2 justify-center 
                                         text-white cursor-pointer
                                         font-semibold p-1">
-                                        {progress ===0 ?<p>Post</p>:
+                                        {progress === 0 ?<p>Post</p>:
                                       <p>Uploading: {progress}%</p>}
                                     </button>
+                                    {progress >0 &&
+                                     <button type= 'button' className="items-center mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                                    bg-gradient-to-r hover:from-pink-500
+                                    hover:to-yellow-500 my-3 flex
+                                    mx-auto w-1/3 rounded-md
+                                        my-2 justify-center 
+                                        text-white cursor-pointer
+                                        font-semibold p-1">
+                                       Cancel Upload
+                                    </button>
+                                    }
 
                             
                             

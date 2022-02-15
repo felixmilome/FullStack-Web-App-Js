@@ -1,6 +1,7 @@
 import  mongoose  from "mongoose"; 
 import {DiariesModel} from "../models/diariesModel.js";
 import {UsersModel} from "../models/usersModel.js";
+import {ReviewsModel} from "../models/reviewsModel.js";
 import { taxer } from "../functions.js";
 
 
@@ -61,7 +62,7 @@ export const getDiaries = async  (req, res) => {
         },
        
 
-        ]).sort({"avgRank":-1}).limit(5);
+        ]).sort({"avgRank":-1}).limit(10);
 
  
        
@@ -78,11 +79,9 @@ export const getDiaries = async  (req, res) => {
 export const postDiaries =  async (req, res)=> {
 
         const diary = req.body;  
-       // console.log(diary);
         const user = await UsersModel.findById(req.userId);
-       // console.log(user);
         const newDiary = new DiariesModel({...diary, creator: req.userId, diaryMiniProfile: req.userId, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
-       
+      
     try{
         await newDiary.save();
         res.status(201).json(newDiary);
@@ -246,12 +245,43 @@ export const tipDiaries = async (req,res) => {
 
 
 //Review  Diariessss===========================================
+// export const reviewDiaries = async (req,res) => {
+
+//     const{id} = req.params;
+//     const reviewData = req.body;
+//     const reviewer = reviewData.reviewer;
+//     const reviewerId = reviewData.reviewerId; 
+//     const body = reviewData.body;
+    
+//     if (!req.userId) return res.json({message: 'Unauthorized'})
+//     //if (!req.userId && req.userId!== reviewerId){
+ 
+   
+//     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
+
+   
+    
+//    const diary = await DiariesModel.findById(id);
+//    const reviews = diary.reviews;
+//    console.log(reviews);
+//    console.log(reviewData);
+
+
+//    //const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  reviews:diary.reviews.push(reviewData)}, { new: true });
+//    //const reviewedDiary2 = await DiariesModel.findByIdAndUpdate(id, { reviewtotal: (diary.reviews.length)}, { new: true })
+//    const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { $push:{"reviews": reviewData}}, { new: true })
+//    .populate('diaryMiniProfile', 'dpUrl userName');
+
+//     res.json(reviewedDiary); 
+    
+//    // }
+// }
+
 export const reviewDiaries = async (req,res) => {
 
     const{id} = req.params;
     const reviewData = req.body;
-    const reviewer = reviewData.reviewer;
-    const reviewerId = reviewData.reviewerId; 
+    const reviewerId = req.userId;
     const body = reviewData.body;
     
     if (!req.userId) return res.json({message: 'Unauthorized'})
@@ -259,21 +289,13 @@ export const reviewDiaries = async (req,res) => {
  
    
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
-
    
-    
-   const diary = await DiariesModel.findById(id);
-   const reviews = diary.reviews;
-   console.log(reviews);
-   console.log(reviewData);
+   const newReview = await ReviewsModel.create({reviewerId: req.userId, reviewerMiniProfile: req.userId, reviewedMiniProfile: reviewData.reviewed, reviewedPostId: id, body: reviewData.body, time: Date.now(), tips: 0});
+   
+//    const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { $push:{"reviews": reviewData}}, { new: true })
+//    .populate('diaryMiniProfile', 'dpUrl userName');
 
-
-   //const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { ...diary,  reviews:diary.reviews.push(reviewData)}, { new: true });
-   //const reviewedDiary2 = await DiariesModel.findByIdAndUpdate(id, { reviewtotal: (diary.reviews.length)}, { new: true })
-   const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { $push:{"reviews": reviewData}}, { new: true })
-   .populate('diaryMiniProfile', 'dpUrl userName');
-
-    res.json(reviewedDiary); 
+    res.json(newReview); 
     
    // }
 }

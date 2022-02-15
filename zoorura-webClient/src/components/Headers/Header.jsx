@@ -58,11 +58,39 @@ function Header() {
         }
       };    
 
+           
+                    
+        //Logouter-------
+
+            window.onbeforeunload = function (e) {
+
+                localStorage.unloadTime = JSON.stringify(new Date());
+
+            };
+
+            window.onload = function () {
+
+                let loadTime = new Date();
+                let unloadTime = new Date(JSON.parse(window.localStorage.unloadTime));
+                let refreshTime = loadTime.getTime() - unloadTime.getTime();
+
+                if(user && user.result.jwtExpiry === "300d" && refreshTime > 10000)//10seconds
+                {   
+                    
+                    localStorage.clear();
+                    window.location.reload();
+                }
+
+            };
+
+                      
       //Sockets++++++++++++++++
 
             useEffect(() => {    
                     socketRef.current = io("ws://localhost:8900");
                     dispatch ({type: 'SOCKET_SETUP', payload:  socketRef}); 
+
+                    
                     
                     // socketRef.current.on("getMessage", messageData =>{
                     //    if(pop) setpopContacts(true);
@@ -130,12 +158,8 @@ function Header() {
                 }
             }, []);
 
-            // useEffect(() => {
-               
-            // }, []); 
 
             const notifications = useSelector((state) => state.notificationsReducer);
-            //console.log(notifications);
             const unreadMessages = notifications.filter(notification => notification.read === false && notification.type ==='message');
             const unreadNotifications = notifications.filter(notification => notification.read === false && notification.type !=='message');
             console.log(unreadNotifications)
