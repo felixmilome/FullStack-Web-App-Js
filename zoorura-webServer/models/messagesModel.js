@@ -26,7 +26,8 @@ const messagesSchema = mongoose.Schema({
         dateRank:{
                 type: Number,
                 default: Date.now()
-        }
+        },
+        tipsArray:[Number]
 
 });
 

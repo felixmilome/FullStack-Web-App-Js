@@ -5,7 +5,7 @@ const tipsSchema = mongoose.Schema({
 
     tipperId:{
         type:String,
-    }
+    },
     tipperMiniProfile: {
         type: Schema.Types.ObjectId,
         ref: 'UsersModel'
@@ -16,6 +16,9 @@ const tipsSchema = mongoose.Schema({
     },
     tippedPostId: {
         type: String,
+    },
+    type:{
+        type:String,
     },
     time: {
         type: Date,

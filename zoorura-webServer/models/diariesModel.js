@@ -51,7 +51,7 @@ const diariesSchema = mongoose.Schema({
         type:String,
         default: 'Public'
     },
-    tips: [Number],  
+    tipsArray: [Number],  
     
     diaryMiniProfile: { 
             type: Schema.Types.ObjectId,

@@ -8,7 +8,9 @@ import {systemRouter} from './routes/systemRouter.js';
 import {convosRouter} from './routes/convosRouter.js';
 import {messagesRouter} from './routes/messagesRouter.js';
 import {notificationsRouter} from './routes/notificationsRouter.js';
-//import diaryFilesRouter from './routes/diaryFilesRouter';
+import {tipsRouter} from './routes/tipsRouter.js';
+import {reviewsRouter} from './routes/reviewsRouter.js';
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -23,6 +25,8 @@ app.use('/users', usersRouter);
 app.use('/convos', convosRouter);
 app.use('/messages', messagesRouter);
 app.use('/notifications/', notificationsRouter);
+app.use('/reviews/', reviewsRouter);
+app.use('/tips/', tipsRouter);
 
 //app.use('/diaryfiles', diaryFilesRouter);
 

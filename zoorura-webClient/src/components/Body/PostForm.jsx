@@ -427,6 +427,7 @@ function readFile(file, type) {
 
              
         } else {
+            setProgress(90);
             uploadLinkPost();
         }
             

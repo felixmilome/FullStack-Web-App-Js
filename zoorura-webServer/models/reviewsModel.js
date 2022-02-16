@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const reviewSchema = mongoose.Schema({
+const reviewsSchema = mongoose.Schema({
     reviewerId:{
         type:String
     },
@@ -23,10 +23,7 @@ const reviewSchema = mongoose.Schema({
         type: Date,
         default: new Date()
     },
-    tips: {
-        type:Number,
-        default: null,
-    }
+    tipsArray: [Number]
 });
 
-export const ReviewsModel = mongoose.model("ReviewsModel", tipsSchema, "ReviewsModel");
+export const ReviewsModel = mongoose.model("ReviewsModel", reviewsSchema, "ReviewsModel");

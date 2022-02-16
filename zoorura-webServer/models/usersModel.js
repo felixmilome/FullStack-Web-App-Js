@@ -4,10 +4,8 @@ const Schema = mongoose.Schema;
 
         const withdrawalSchema = mongoose.Schema({
                 type:{type:String},
-                receiver:{type:String},
                 receiverId:{type:String},
-                title:{type:String},
-                postId:{type:String},
+                tippedPostId:{type:String},
                 amount:{type:String},
                 time: {
                         type: Date,
@@ -17,7 +15,6 @@ const Schema = mongoose.Schema;
 
         const depositSchema = mongoose.Schema({
                 type:{type:String},
-                giver:{type:String},
                 giverId:{type:String},
                 title:{type:String},
                 diaryId:{type:String},
@@ -26,15 +23,15 @@ const Schema = mongoose.Schema;
                         type: Date,
                         default: new Date()
                 },
-        })
-        const activitiesSchema = mongoose.Schema({
+        });
+        const activityPointsSchema = mongoose.Schema({
                 type:{type:String},
                 points:{type:Number},
                 time: {
                         type: Date,
                         default: new Date()
                 },
-        })
+        });
 
     //===========MAIN USER============================
 
@@ -106,7 +103,7 @@ const usersSchema = mongoose.Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'  
             }],
-        activityRecord:[activitiesSchema],
+        activityPointsRecord:[activityPointsSchema],
         withdrawals:[withdrawalSchema],
         deposits:[depositSchema],
 

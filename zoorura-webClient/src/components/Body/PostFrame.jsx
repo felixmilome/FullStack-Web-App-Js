@@ -75,7 +75,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         function getSum(total, num) { 
             return total + num;
         }
-        const tipsArray = diary.tips;
+        const tipsArray = diary.tipsArray;
         const tips = tipsArray.reduce(getSum, 0);
         console.log(tips);
     
@@ -91,6 +91,13 @@ function PostFrame({diary, diaryId, setDiaryId}) {
             console.log(error);
         }
           
+    }
+
+    const prepareTip = (tipAmount) => {
+
+        settipperData ({receiverId:diary.creator, tippedPostId:diary._id, type:'post', amount: tipAmount});
+        setpopSure(true);
+
     }
 
     const tipDiary = () =>{
@@ -545,27 +552,27 @@ function PostFrame({diary, diaryId, setDiaryId}) {
             {/* <div className="font-mono flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-80 m-1 p-1 bg-gradient-to-r from-cyan-300 to-teal-700 font-bold text-lg text-teal-300"> */}
             <div className="flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-90 m-1 p-1 border border-gray-400 bg-gray-100 font-medium text-lg text-gray-300 shadow-md">
                
-                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 1}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(1)} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                         1
                     </div>
                 </div>
-                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 5}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(5)}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= " items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                         5
                     </div>
                 </div>
-                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 10}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(10)}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                         10
                     </div>
                 </div>
-                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 25}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(25)} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
                         25
                     </div>
                 </div>
-                <div onClick={()=> [settipperData ({tipper:user.result.userName, tipperId: user.result._id, amount: 50}), setpopSure(true)]} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(50)} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
                         50
                     </div>

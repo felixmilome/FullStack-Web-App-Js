@@ -44,3 +44,11 @@ export const postMessagesApi = (messageData) => API.post('/messages/', messageDa
 //Notifications
 export const postNotificationsApi = (notificationData) => API.post('/notifications/', notificationData); 
 export const getNotificationsApi = (id) => API.get(`/notifications/${id}`);
+//REVIEWS
+export const getReviewsApi = (postId) => API.get(`/reviews/${postId}`); 
+export const postReviewsApi = (reviewData) => API.post('/reviews/', reviewData);
+export const deleteReviewsApi = (postId) => API.delete(`/reviews/${postId}`);
+export const patchReviewsApi = (reviewData) => API.delete('/reviews/${postId}', reviewData);
+//TIPS
+export const getTipsApi = (postId) => API.get(`/tips/${postId}`); 
+export const postTipsApi = (tipData) => API.post('/tips/', tipData);

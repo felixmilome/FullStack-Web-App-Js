@@ -281,21 +281,18 @@ export const reviewDiaries = async (req,res) => {
 
     const{id} = req.params;
     const reviewData = req.body;
-    const reviewerId = req.userId;
-    const body = reviewData.body;
+
     
     if (!req.userId) return res.json({message: 'Unauthorized'})
-    //if (!req.userId && req.userId!== reviewerId){
  
    
-    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
+    if(!mongoose.Types.ObjectId.isValid(id) || reviewData.body === "") return res.status(404).send("Invalid Id");
    
    const newReview = await ReviewsModel.create({reviewerId: req.userId, reviewerMiniProfile: req.userId, reviewedMiniProfile: reviewData.reviewed, reviewedPostId: id, body: reviewData.body, time: Date.now(), tips: 0});
-   
-//    const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { $push:{"reviews": reviewData}}, { new: true })
-//    .populate('diaryMiniProfile', 'dpUrl userName');
+   const reviewedDiary = await DiariesModel.findByIdAndUpdate(id, { $push: { "reviews": newReview._id}}, { new: true })
+   .populate('diaryMiniProfile', 'dpUrl userName');
 
-    res.json(newReview); 
+    res.json(reviewedDiary); 
     
    // }
 }
