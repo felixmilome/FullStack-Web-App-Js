@@ -23,15 +23,15 @@ export const getReviews =  async (req, res)=> {
 
 export const postReview = async  (req, res) => {
 
-    const{reviewedMiniProfile, reviewedPostId, body} = req.body //receivername for Records
+    const{reviewedId, reviewedPostId, body} = req.body //receivername for Records
     
 
-        try{ 
+        try{  
                 if (body.length < 0 || body.length > 2000) {
                     res.json("error");
                 }else{
 
-                            const newReview = await ReviewsModel.create({reviewerId:req.userId, reviewerMiniProfile:req.userId, reviewedMiniProfile:reviewedMiniProfile, reviewedPostId:reviewedPostId, body:body, time:Date.now()})
+                            const newReview = await ReviewsModel.create({reviewerId:req.userId, reviewerMiniProfile:req.userId, reviewedMiniProfile:reviewedId, reviewedPostId:reviewedPostId, body:body, time:Date.now()})
                             .populate('reviewerMiniProfile', 'dpUrl userName');
                             res.json(newReview);
                 }  

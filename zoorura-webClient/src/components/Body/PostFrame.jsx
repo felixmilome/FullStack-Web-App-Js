@@ -10,8 +10,8 @@ import { MdSend,MdOutlineCancel} from "react-icons/md";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
 import { BiCommentEdit } from "react-icons/bi";
+import {BeatLoader} from "react-spinners";
 
-import {BeatLoader} from "react-spinners"; 
 
 import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, PicFrame, VideoFrame, AudioForm, VideoForm} from "./PostForms/Previews.jsx";
 
@@ -26,18 +26,21 @@ import{} from "@fortawesome/free-regular-svg-icons";
 //import{faComments, faMoneyBillWave, faMoneyBillWaveAlt, faShareSquare,} from "@fortawesome/free-solid-svg-icons";
 
 import TipModal from '../Modals/TipModal.jsx'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PostoptionsModal from "../Modals/PostoptionsModal.jsx";
 import OutsideClickHandler from 'react-outside-click-handler';
 import ReviewBubble from "./ReviewBubble.jsx";
 import { tipDiariesAction, reviewDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
-import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
+//import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
+import {postTipsAction, getTipsAction} from "../Midwares/rdx/actions/tipsAction.js"
 
 import moment from 'moment'; 
-import {useDispatch} from 'react-redux';
-import {useSelector} from 'react-redux';
+import {useDispatch,useSelector} from 'react-redux';
+import { PostFrameTips } from "./PostFrameTips.jsx";
+import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
 
-import { useEffect } from 'react';
+
+
 
 
 function PostFrame({diary, diaryId, setDiaryId}) {
@@ -45,17 +48,19 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const user = JSON.parse(localStorage.getItem('profile'));
    const dispatch = useDispatch();
     const[popTip, setpopTip] = useState(false);
-    //const[tipperData, settipperData] = useState({tipper: '', tipperId: '', amount: null, tipperObj: {tipper: '', tipperId:'', amount: null}});
-    const[tipperData, settipperData] = useState({tipper: '', tipperId: '', amount: null});
+    //const[tipData, setTipData] = useState({tipper: '', tipperId: '', amount: null, tipperObj: {tipper: '', tipperId:'', amount: null}});
+    const[tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type: '', amount: null});
     //const[reviewData, setreviewData] = useState({reviewer: user.result.userName, reviewerId:user.result._id, body: ''});
-    const[reviewData, setreviewData] = useState({reviewer:'', reviewerId:'', body: ''});
+    const[reviewData, setreviewData] = useState({reviewedId:'', reviewedPostId:'', body: ''});
     const [displayData, setDisplayData] = useState({diary: diary._id, owner:diary.creator});
     const[popSure, setpopSure] = useState(false);
     const[tip, setTip] = useState({tips:null});
-    const[popOptions, setpopOptions] = useState(false); 
+    const[popOptions, setpopOptions] = useState(false);
+    const[tipLoading, setTipLoading] = useState(false);  
     const[tipperView, seTipperview] = useState(false);
     const [miniProfile, setMiniProfile] = useState(null);
     const [displayer, setDisplayer] = useState(null);
+    const[tipDelivery, setTipDelivery] = useState(false);
 
     
     // useEffect(() => {
@@ -70,13 +75,21 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     
    // console.log(miniProfile);
     //console.log(diary);
+
+    // useEffect(() => {
+    //     dispatch(getTipsAction(diary.creator));
+    // }, [dispatch]);
+    
+    // const tippers = useSelector((state) => state.tipsReducer);
+    // console.log(tippers);
   
 
         function getSum(total, num) { 
             return total + num;
         }
         const tipsArray = diary.tipsArray;
-        const tips = tipsArray.reduce(getSum, 0);
+        const unroundedTips = tipsArray.reduce(getSum, 0);
+        const tips = Math.trunc(unroundedTips * Math.pow(10, 2)) / Math.pow(10, 2);
         console.log(tips);
     
 
@@ -93,30 +106,22 @@ function PostFrame({diary, diaryId, setDiaryId}) {
           
     }
 
-    const prepareTip = (tipAmount) => {
+    const prepareTip = (tipAmount, type) => {
 
-        settipperData ({receiverId:diary.creator, tippedPostId:diary._id, type:'post', amount: tipAmount});
+        setTipData ({receiverId:diary.creator, tippedPostId:diary._id, type:type, amount: tipAmount});
         setpopSure(true);
+        console.log(tipData); 
 
     }
 
     const tipDiary = () =>{
-       // const tipper = user.result.name;
-        const id = diary._id;
-        const userName = user.result.userName;
-        const userId = user.result._id;
-        
        
-        console.log(userName);
-        console.log(userId)
-       // console.log(tipper);
-       // console.log(amount);
-        console.log(tipperData);
-    
+        setTipLoading(true);
+
         try{
-            dispatch(tipDiariesAction(id, tipperData, setpopSure, setpopTip));
-            //setpopSure(false);
-            //setpopTip(false);
+
+           dispatch(postTipsAction(tipData, setpopSure, setpopTip, setTipLoading, setTipDelivery));
+            
         }
         catch(error){
             console.log(error);
@@ -131,8 +136,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     return (
 
         <>
-
-        
+        {tipDelivery &&
+        <DeliveryPop message='Tip Sent'/>
+        }
         <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent relative xl:w-1/2 mx-auto my-1"> 
          
 
@@ -468,7 +474,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                                 <div className="absolute text-sm text-gray-400 z-0 mt-20">
                                                     Attaching Wordpress Post...
                                                 </div>
-                                            </div>
+                                            </div> 
                                        </div> : 
                                        <>
                                        
@@ -528,16 +534,30 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         { popSure &&  <div className="flex justify-center  fixed left-0 z-40 flex w-full  bg-transparent text-base font-light text-gray-700">
                     <div className= "fixed z-40 top-80 bg-gray-100 rounded-xl p-8 text-center">
                     
-                            <p> Give <span className="font-bold">{tipperData.amount}</span> Honours to this post? No reversal</p>
+                            <p> Give <span className="font-bold">{tipData.amount}</span> Honours to this post? No reversal</p>
                             <div className="flex justify-around items-center pt-4 m-auto">
+
+                               { tipLoading === true &&
+                               
+                                    <div className= "flex items-center bg-red-300 text-white p-2 rounded-md cursor-pointer">
+                                        Verifying Tip
+                                        <BeatLoader size={7} color='pink' loading/>
+                                    </div>
+
+                                }
+
+                                { tipLoading === false &&
+                                    <>
+                                        <div onClick = {tipDiary} className= "bg-red-400 text-white p-2 rounded-md cursor-pointer hover:bg-red-500">
+                                            Yes
+                                        </div>
+                                    
+                                        <div onClick = {()=> [setpopTip(false), setpopSure(false)]} className= "bg-gray-400 text-white p-2 rounded-md cursor-pointer hover:bg-gray-500">
+                                            No
+                                        </div> 
+                                    </>
                                 
-                                <div onClick = {tipDiary} className= "bg-red-400 text-white p-2 rounded-md cursor-pointer hover:bg-red-500">
-                                    Yes
-                                </div>
-                            
-                                <div onClick = {()=> [setpopTip(false), setpopSure(false)]} className= "bg-gray-400 text-white p-2 rounded-md cursor-pointer hover:bg-gray-500">
-                                    No
-                                </div>
+                                }
                             </div>
                                     
                             
@@ -552,27 +572,27 @@ function PostFrame({diary, diaryId, setDiaryId}) {
             {/* <div className="font-mono flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-80 m-1 p-1 bg-gradient-to-r from-cyan-300 to-teal-700 font-bold text-lg text-teal-300"> */}
             <div className="flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-90 m-1 p-1 border border-gray-400 bg-gray-100 font-medium text-lg text-gray-300 shadow-md">
                
-                <div onClick={()=> prepareTip(1)} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(1, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                         1
                     </div>
                 </div>
-                <div onClick={()=> prepareTip(5)}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(5, 'post')}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= " items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                         5
                     </div>
                 </div>
-                <div onClick={()=> prepareTip(10)}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(10, 'post')}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                         10
                     </div>
                 </div>
-                <div onClick={()=> prepareTip(25)} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(25, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
                         25
                     </div>
                 </div>
-                <div onClick={()=> prepareTip(50)} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                <div onClick={()=> prepareTip(50, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
                         50
                     </div>
@@ -594,11 +614,20 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             
                         </div>  
                          {/* Tip Amount box */}
-                      <div  className= "flex p-0.5">
-                            <div onClick={() => {seTipperview(true)}} className= 'bg-gray-200 shadow-md m-auto flex justify-around p-1 bg-transparent border rounded-md border-gray-300 cursor-pointer hover:bg-gray-100'>
-                            <p className= "text-xs text-center text-cyan-500">{tips}</p>
+                         {diary.tippers.length  >0 &&
+                            <div onClick={() => {seTipperview(!tipperView)}} className='bg-gray-200 rounded-md p-0.5 cursor-pointer hover:bg-white'>
+
+                                {diary.tippers.includes(user.result._id) && <p className= 'text-xs font-bold text-cyan-500 text-center'> +You</p>}
+                            
+                                <div  className= "flex">
+                                        <div  className= 'bg-gray-200 shadow-md m-auto flex justify-around p-1 bg-transparent border rounded-md border-gray-300'>
+                                        <p className= "text-xs text-center text-gray-500">{tips}</p>                                  
+                                        </div>
+                                </div>
+                                
                             </div>
-                        </div>
+                        }
+                        
                     </div> 
                     </OutsideClickHandler>
                 {/* <OutsideClickHandler onOutsideClick={() => {setpopTip(false);}}> */}
@@ -623,18 +652,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
                  {/* ======== Like Comment Display Modals============== */}
                  <OutsideClickHandler onOutsideClick={() => {seTipperview(false);}}>
-                    { tipperView && <div className='flex text-xs text-gray-600  z-30 top-1 left-0 max-h-1/2 max-w-1/2 absolute overflow-scroll'>
-                                    <div className=" border border-gray-300 p-2 mx-auto bg-gray-200 rounded"> 
-                                    {
-                                        diary.tippers.map((tip) =>(
-                                            <div className= "p-0.5"> 
-                                                <p>@{tip.tipper} : <b> {tip.amount}</b></p>
-                                            </div>
-                                            ))
-                                        }                    
-                                        </div>
-
-                        </div>}
+                    { tipperView &&                    
+                    <PostFrameTips diaryId = {diary._id} userId= {user.result._id} />
+                    }
             </ OutsideClickHandler>
                          {/* Comment Box */}
                            
@@ -682,7 +702,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                   { reviewData.body.length > 0 &&  <MdSend onClick= {reviewDiary}/> }
                                 </div>
                                 <textarea value= {reviewData.body}
-                                onChange={(e)=> setreviewData({reviewer: user.result.userName, reviewerId:user.result._id, body: e.target.value})}
+                                onChange={(e)=> setreviewData({reviewedId: diary.creator, reviewedPostId:diary._id, body: e.target.value})}
                                 type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                             </div>
         </div>
@@ -1048,7 +1068,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                         </div> : 
                                         <>
                                         
-                                            </>
+                                            </> 
                                         }
                                         { diary.file.length && diary.file.includes('https://')
                                         && !diary.file.includes('www.youtube.com')

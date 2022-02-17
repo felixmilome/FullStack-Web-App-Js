@@ -10,18 +10,34 @@ export const getTipsAction = (postId) => async (dispatch) => {
         
 
     } catch(error) {
-        console.log(error);
+        console.log(error); 
 
         return false;
-    }
+    } 
 }
 
 
-export const postTipsAction = (tipData) => async (dispatch) => {
+export const postTipsAction = (tipData, setpopSure, setpopTip, setTipLoading, setTipDelivery) => async (dispatch) => {
     console.log("Tips Action Act");
     try{
-        const {data} = await axs.postTipsApi(tipData);  
-        dispatch ({type: 'POST_TIP', payload: data});
+        const {data} = await axs.postTipsApi(tipData); 
+        const newTip = data.newTip;
+        const tippedPost = data.tippedPost; 
+        console.log(tippedPost);
+        
+    
+        dispatch ({type: 'POST_TIP', payload: newTip});
+
+        if (newTip.type === 'post'){ 
+            dispatch ({type: 'TIP_DIARY', payload: tippedPost});
+        }  
+
+        setpopSure(false);
+        setpopTip(false);
+        setTipLoading(false);
+
+        setTipDelivery(true);
+        setTimeout( function() {setTipDelivery(false)}, 2000);
         
     } catch(error) {  
         console.log(error);

@@ -29,5 +29,5 @@ const tipsSchema = mongoose.Schema({
     },   
 });
 
-export const TipsModel = mongoose.model("TipsModel", tipsSchema, "TipssModel"); 
+export const TipsModel = mongoose.model("TipsModel", tipsSchema, "TipsModel"); 
 

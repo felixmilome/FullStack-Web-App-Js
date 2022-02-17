@@ -8,7 +8,7 @@ import {useState, useRef, useEffect} from 'react';
 import {postMessagesAction, getMessagesAction} from '../Midwares/rdx/actions/messagesAction.js';
 import {postNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js';
 
-
+ 
 function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
     const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:''});

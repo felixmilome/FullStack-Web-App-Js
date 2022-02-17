@@ -27,10 +27,12 @@ export const postTip = async  (req, res) => {
 
     const{receiverId, tippedPostId, type, amount} = req.body
     
-
+    console.log(req.body);
+    console.log(req.userId);
         try{ 
                 if (amount < 0 || amount > 200 || !mongoose.Types.ObjectId.isValid(receiverId)) {
-                    res.status(404).send({message: "error"});
+                    res.status(400).send({message: "Validation Error"});
+                    console.log('validation Error');
                 }else{
 
                     //WITHDRAW DATAS==============-----------------------------------------
@@ -43,10 +45,12 @@ export const postTip = async  (req, res) => {
                             const newActivityPointsTotal = tippersActivityPoints.activityPointsTotal + addedActivityPoints
                             
                             //RECORD TIP--------------
-
-                            const newTip = await TipsModel.create({tipperId:req.userId, tipperMiniProfile:req.userId, receiverMiniProfile:receiverId, tippedPostId:tippedPostId, type:type, time:Date.now(), amount:amount})
+                            
+                            const newTipCreated = await TipsModel.create({tipperId:req.userId, tipperMiniProfile:req.userId, receiverMiniProfile:receiverId, tippedPostId:tippedPostId, type:type, time:Date.now(), amount:amount});
+                            const newTip = await TipsModel.findById(newTipCreated._id)
                             .populate('tipperMiniProfile', 'dpUrl userName');
                             
+                            //console.log(newTip);
                             //ACTUAL WITHDRAWAL---------------
                             
                             const withdrawnTipper = await UsersModel.findByIdAndUpdate(req.userId, { $push: { "withdrawals": withdrawalData, "wallet": walletCut, "activityPointsRecord": newActivityPointsRecord}, $set: {activityPointsTotal: newActivityPointsTotal}}, { new: true });
@@ -68,8 +72,11 @@ export const postTip = async  (req, res) => {
                                const messageVerify = await MessagesModel.findById(tippedPostId, {senderId:1});
                                
                                if(messageVerify.senderId === receiverId){
-                                    await MessagesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount}}, { new: true });
-                               }
+                                   const tippedMessage = await MessagesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
+                                   res.json(newTip);
+                                }
+
+                               
 
                             }
                             else if (type === 'review'){
@@ -77,8 +84,10 @@ export const postTip = async  (req, res) => {
                                 const reviewVerify = await MessagesModel.findById(tippedPostId, {reveiwerId:1});
                                 
                                 if(reviewVerify.reveiwerId === receiverId){
-                                    await ReviewsModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount}}, { new: true });
+                                    const tippedReview = await ReviewsModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
+                                    res.json(newTip);
                                 }
+                                
 
                             }
                             else if (type === 'post'){
@@ -86,12 +95,21 @@ export const postTip = async  (req, res) => {
                                 const diaryVerify = await DiariesModel.findById(tippedPostId, {creator:1});
                                 
                                 if(diaryVerify.creator === receiverId){
-                                    await DiariesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount}}, { new: true });
+
+                                    const userId = req.userId;
+
+                                    const unpopulatedTippedDiary = await DiariesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
+                                    const tippedDiary = await DiariesModel.findById(unpopulatedTippedDiary._id)
+                                   .populate('diaryMiniProfile', 'dpUrl userName');
+
+                                    res.json({newTip:newTip, tippedPost:tippedDiary});
+                                    console.log(newTip);
                                 }
+                                
 
                             }
 
-                            res.json(newTip);
+                            
                 } 
   
             

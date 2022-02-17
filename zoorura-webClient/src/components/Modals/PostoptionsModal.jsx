@@ -7,6 +7,7 @@ import{AiOutlineEdit} from "react-icons/ai";
 import {Link} from 'react-router-dom';
 import { useState } from "react";
 import PostEdit from "../Body/PostEdit.jsx";
+import { DeliveryPop } from "./DeliveryPop.jsx";
 
 function PostoptionsModal({diary, diaryId, setpopOptions, setDiaryId}) {
 
@@ -35,11 +36,7 @@ function PostoptionsModal({diary, diaryId, setpopOptions, setDiaryId}) {
     return (
        <div>
                { popDeleted &&
-                <div className="fixed top-60 left-0 z-50 flex justify-center  w-full bg-transparent">
-                        <div className="m-auto bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40  text-center font-bold text-white">
-                           <p> Post Deleted! </p>
-                        </div>
-                </div>
+               <DeliveryPop message='Post Deleted'/>
              } 
         <div className="absolute z-20 right-4 sm:right-12 top-20 opacity-90 rounded-b-xl bg-gray-100">
 
