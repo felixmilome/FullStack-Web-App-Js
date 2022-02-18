@@ -7,7 +7,7 @@ export const tipsReducer = (tips = [], action) => {
         case 'POST_TIP':
             return [...tips, action.payload];
         default:
-            return tips; 
+            return tips;  
      }
      
  }

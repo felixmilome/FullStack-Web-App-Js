@@ -21,7 +21,7 @@ export const postTipsAction = (tipData, setpopSure, setpopTip, setTipLoading, se
     console.log("Tips Action Act");
     try{
         const {data} = await axs.postTipsApi(tipData); 
-        const newTip = data.newTip;
+        const newTip = data.newTip; 
         const tippedPost = data.tippedPost; 
         console.log(tippedPost);
         

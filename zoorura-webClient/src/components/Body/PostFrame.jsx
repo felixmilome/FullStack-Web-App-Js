@@ -9,14 +9,14 @@ import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { MdSend,MdOutlineCancel} from "react-icons/md";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
-import { BiCommentEdit } from "react-icons/bi";
+//import { BiCommentEdit } from "react-icons/bi";
 import {BeatLoader} from "react-spinners";
 
 
 import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, PicFrame, VideoFrame, AudioForm, VideoForm} from "./PostForms/Previews.jsx";
 
 
-import{GiMoneyStack, GiTakeMyMoney} from "react-icons/gi"; 
+import{GiTakeMyMoney} from "react-icons/gi"; 
 import{GoMegaphone} from "react-icons/go";
 import { RiShareForwardBoxLine  } from "react-icons/ri";
 import { AiOutlineComment  } from "react-icons/ai";
@@ -33,11 +33,13 @@ import ReviewBubble from "./ReviewBubble.jsx";
 import { tipDiariesAction, reviewDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
 //import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
 import {postTipsAction, getTipsAction} from "../Midwares/rdx/actions/tipsAction.js"
+import {postReviewsAction, getReviewsAction} from "../Midwares/rdx/actions/reviewsAction.js"
 
 import moment from 'moment'; 
 import {useDispatch,useSelector} from 'react-redux';
 import { PostFrameTips } from "./PostFrameTips.jsx";
 import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
+import { PostFrameReviews } from "./PostFrameReviews.jsx";
 
 
 
@@ -56,11 +58,16 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[popSure, setpopSure] = useState(false);
     const[tip, setTip] = useState({tips:null});
     const[popOptions, setpopOptions] = useState(false);
-    const[tipLoading, setTipLoading] = useState(false);  
+    const[tipLoading, setTipLoading] = useState(false);
+     
     const[tipperView, seTipperview] = useState(false);
     const [miniProfile, setMiniProfile] = useState(null);
     const [displayer, setDisplayer] = useState(null);
     const[tipDelivery, setTipDelivery] = useState(false);
+
+    const[reviewLoading, setReviewLoading] = useState(false); 
+    const[reviewDelivery, setReviewDelivery] = useState(false); 
+    const[reviewDisplay, setReviewDisplay] = useState(false); 
 
     
     // useEffect(() => {
@@ -94,11 +101,12 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     
 
     const reviewDiary = () =>{
-        const id = diary._id;
-        console.log(id);
-        console.log(reviewData);
+
+        setReviewLoading(true);
+       
         try{
-            dispatch(reviewDiariesAction(id, reviewData, setreviewData));
+            dispatch(postReviewsAction(reviewData, setreviewData, setReviewLoading, setReviewDelivery));
+            console.log(reviewData);
         }
         catch(error){
             console.log(error);
@@ -138,6 +146,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         <>
         {tipDelivery &&
         <DeliveryPop message='Tip Sent'/>
+        }
+        {reviewDelivery &&
+        <DeliveryPop message='Review Sent'/>
         }
         <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent relative xl:w-1/2 mx-auto my-1"> 
          
@@ -539,16 +550,16 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
                                { tipLoading === true &&
                                
-                                    <div className= "flex items-center bg-red-300 text-white p-2 rounded-md cursor-pointer">
+                                    <div className= "flex items-center bg-green-300 text-white p-2 rounded-md cursor-pointer">
                                         Verifying Tip
-                                        <BeatLoader size={7} color='pink' loading/>
+                                        <BeatLoader size={7} color='white' loading/>
                                     </div>
 
                                 }
 
                                 { tipLoading === false &&
                                     <>
-                                        <div onClick = {tipDiary} className= "bg-red-400 text-white p-2 rounded-md cursor-pointer hover:bg-red-500">
+                                        <div onClick = {tipDiary} className= "bg-green-400 text-white p-2 rounded-md cursor-pointer hover:bg-green-500">
                                             Yes
                                         </div>
                                     
@@ -606,24 +617,24 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {/*========== ENDTIPZZZZZZZZ======================== */}
                     <div className='flex'>
 
-                        <div className="relative flex items-center rounded-full p-1 cursor-pointer bg-gradient-to-r hover:bg-cyan-100 hover:from-blue-100 hover:to-green-100"
+                        <div className="relative flex items-center rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
                             onClick={ () => {setpopTip(!popTip)}}>
                             
                             <GiTakeMyMoney  size ={29} className="text-gray-600"/>
-                            <p className="font-light text-xs m-1 text-gray-800">Honours</p>
+                            <p className="font-light hidden sm:inline-flex text-xs m-1 text-gray-800">Honours</p>
                             
                         </div>  
                          {/* Tip Amount box */}
                          {diary.tippers.length  >0 &&
-                            <div onClick={() => {seTipperview(!tipperView)}} className='bg-gray-200 rounded-md p-0.5 cursor-pointer hover:bg-white'>
+                            <div onClick={() => {seTipperview(!tipperView)}} className="font-bold bg-gray-200 p-1  h-10 rounded-md text-xs items-center text-center text-gray-500">
 
-                                {diary.tippers.includes(user.result._id) && <p className= 'text-xs font-bold text-cyan-500 text-center'> +You</p>}
+                                {diary.tippers.includes(user.result._id) && <p className= 'text-xs font-bold text-cyan-500 text-center'> +you</p>}
                             
-                                <div  className= "flex">
-                                        <div  className= 'bg-gray-200 shadow-md m-auto flex justify-around p-1 bg-transparent border rounded-md border-gray-300'>
+                              
+                                        <div  className= 'shadow-md m-auto flex justify-around bg-transparent rounded-md '>
                                         <p className= "text-xs text-center text-gray-500">{tips}</p>                                  
                                         </div>
-                                </div>
+                               
                                 
                             </div>
                         }
@@ -635,12 +646,27 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 {/* </OutsideClickHandler> */}
 
                 {/* Other Icon */}
-                <div className="flex items-center rounded-full p-1 cursor-pointer hover:bg-blue-100">
-                                <AiOutlineComment  size ={22} className="text-gray-500"/>
-                    <p className="font-light text-xs m-1 text-gray-800">Reviews: {diary.reviews.length}</p>
+                <div className ='flex '>
+                    
+                    <div onClick={()=>setReviewDisplay(!reviewDisplay)} className="flex items-center rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
+                                    <AiOutlineComment  size ={22} className="text-gray-500"/>
+                                    <p className="font-light hidden sm:inline-flex text-xs text-gray-800">Reviews:</p>
+                    </div>
+                    
+                    {diary.reviewers.length && 
+                    <div onClick={()=> setReviewDisplay(!reviewDisplay)} className="font-bold bg-gray-200 p-1  h-10 rounded-md text-xs items-center text-center text-gray-500">
+                        
+                            <p className='text-cyan-500'>{diary.reviewers.includes(user.result._id) && '+you'}</p>
+                           <div className= 'shadow-md m-auto flex justify-around bg-transparent rounded-md '>
+                                <p>{diary.reviewers.length}</p>
+                            </div>
+                    
+                    </div>
+                    }
                 </div>
+                
 
-                <div onClick= {()=> setDisplayer(true)} className="flex items-center p-1 rounded-full cursor-pointer hover:bg-green-100">
+                <div onClick= {()=> setDisplayer(true)} className="flex items-center p-0.5 bg-white h-10 rounded cursor-pointer hover:bg-green-100">
                                  <GoMegaphone size ={22} className="text-gray-500"/>
                     <p className="font-light text-xs m-1 text-gray-800">Hype: {diary.displays}</p>
                 </div>
@@ -653,58 +679,46 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                  {/* ======== Like Comment Display Modals============== */}
                  <OutsideClickHandler onOutsideClick={() => {seTipperview(false);}}>
                     { tipperView &&                    
-                    <PostFrameTips diaryId = {diary._id} userId= {user.result._id} />
+                        <PostFrameTips diaryId = {diary._id} userId= {user.result._id} />
                     }
-            </ OutsideClickHandler>
-                         {/* Comment Box */}
-                           
-                         {diary.reviews.length > 0  && diary.reviews.map((reviewmap) =>(
-                            
-                              <div key={reviewmap._id}  className='bg-gray-100 border-gray-300 rounded-md max-h-64 overflow-y-auto'>
-                           
-                               
-                                    <div className="p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
-                                        
-                                        {/* EMoji & Pic */}
-                                            <div className="space-y-3 items-center inline-block p-1">
-                                                {/* <img src={Src} alt="DP" className="rounded-full object-cover h-8 w-8"/> */}
-                                                
-                                            </div>
-                                            {/* Name and Comment*/}
-                                            <div className="flex items-center m-1 bg-transparent w-5/6">  
-                                            <div className="bg-gray-100 border  border-gray-300 p-3 rounded-2xl max-w-3/4">
-                                                    <div className= 'bg-transpparent rounded-md'>
-                                                    <p className='text-xs font-light'> @{reviewmap.reviewer}:</p>
-                                                     {/* <p className='font-light'>{moment (reviewmap.time).fromNow()}</p></p> */}
-                                                     </div>
-                                                    
-                                                <div className= "font-normal text-xs break-words">{reviewmap.body}</div>
-                                                </div>
-                                                <div className="bg-transparent rounded-full flex justify-center cursor-pointer h-7 w-7 items-center hover:bg-white group m-3">
-                                                    <GiTakeMyMoney size ={24} className="text-gray-400"/>
-                                                </div>
-                                                  <div className="bg-transparent rounded-full flex justify-center cursor-pointer h-7 w-7 items-center hover:bg-white group m-3">
-                                                    <BiCommentEdit  size ={20} className="text-gray-400"/>
-                                                </div>
-                                            </div>
-                                                
-                                    </div>
-                                
-                               
-                            </div>
-                            ))
-                            
-                        } 
-                        
+                </ OutsideClickHandler>
 
-                        <div className="relative w-full items-center">
-                                <div className='absolute bottom-2 right-2'>
-                                  { reviewData.body.length > 0 &&  <MdSend onClick= {reviewDiary}/> }
-                                </div>
-                                <textarea value= {reviewData.body}
-                                onChange={(e)=> setreviewData({reviewedId: diary.creator, reviewedPostId:diary._id, body: e.target.value})}
-                                type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                {/* Comment Box */}
+                <div>
+                    {reviewDisplay &&
+                    <>
+                    <div className='bg-gray-200 w-16 m-auto text-center rounded-md cursor-pointer'>
+                        <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-400'>Hide</p>
+                     </div>   
+                     <div  className= 'bg-transparent max-h-60 overflow-scroll'>
+                        <PostFrameReviews diaryId={diary._id} userId={user.result._id}/>
+                    </div>
+                    </>
+                    }
+                
+
+                    <div className="relative w-full items-center">
+                            
+                           <div  className='absolute bottom-3 right-3'>
+                                { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
+                                <>
+                                    {!reviewLoading && <MdSend onClick= {reviewDiary}/> }
+                                    {reviewLoading && 
+                                    <>
+                                    {/* <p className= 'text-xs font-extralight'>sending review</p> */}
+                                    <BeatLoader size={7} color='black' loading/>
+                                    </> }
+                                </>
+                                } 
                             </div>
+                            
+
+                            <textarea value= {reviewData.body}
+                            onChange={(e)=> setreviewData({reviewedId:diary.creator, reviewedPostId:diary._id, body: e.target.value})}
+                            type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                    
+                    </div>
+                </div>
         </div>
 
         </div>

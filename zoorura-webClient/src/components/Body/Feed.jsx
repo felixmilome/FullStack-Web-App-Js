@@ -41,8 +41,10 @@ function Feed(diaryId, setDiaryId, setNavbars) {
                                 items-center cursor-pointer 
                                 font-bold rounded-full shadow-xl"
                                     >
-                                    <LinkIcon className="p-0.5 h-6 text-white"/>
-                                    <p className="text-white">Attach Post</p>
+                                    
+                                    <PlusIcon className=" h-6 text-white"/>  
+                                    <p className="text-white"> Post</p>
+                                    <LinkIcon className=" h-6 text-white"/>
                                 </div>
                             </Link> : <></>
                         }

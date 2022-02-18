@@ -30,7 +30,7 @@ export const postTip = async  (req, res) => {
     console.log(req.body);
     console.log(req.userId);
         try{ 
-                if (amount < 0 || amount > 200 || !mongoose.Types.ObjectId.isValid(receiverId)) {
+                if (amount < 0 || amount > 200 || !mongoose.Types.ObjectId.isValid(receiverId) || !mongoose.Types.ObjectId.isValid(tippedPostId)) {
                     res.status(400).send({message: "Validation Error"});
                     console.log('validation Error');
                 }else{

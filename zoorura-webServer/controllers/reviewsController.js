@@ -1,13 +1,14 @@
 import {TipsModel} from "../models/tipsModel.js";
 import {UsersModel} from "../models/usersModel.js";
 import {ReviewsModel} from "../models/reviewsModel.js";
+import {DiariesModel} from "../models/diariesModel.js";
 import  mongoose  from "mongoose";
 
 
 export const getReviews =  async (req, res)=> {
 
     const{postId} = req.params
- 
+  
         try{ 
            
                 const reviews = await ReviewsModel.find({reviewedPostId: { $in: [ postId ] } })
@@ -22,18 +23,29 @@ export const getReviews =  async (req, res)=> {
 }
 
 export const postReview = async  (req, res) => {
-
+ 
     const{reviewedId, reviewedPostId, body} = req.body //receivername for Records
+    const userId = req.userId
     
-
+    console.log(req.body);
         try{  
-                if (body.length < 0 || body.length > 2000) {
-                    res.json("error");
+                if (body.length < 1 || body.length > 2000 || !mongoose.Types.ObjectId.isValid(reviewedId) || !mongoose.Types.ObjectId.isValid(reviewedPostId)) {
+                    res.json("Validation Error");
                 }else{
 
-                            const newReview = await ReviewsModel.create({reviewerId:req.userId, reviewerMiniProfile:req.userId, reviewedMiniProfile:reviewedId, reviewedPostId:reviewedPostId, body:body, time:Date.now()})
+                            const unpopulatedNewReview = await ReviewsModel.create({reviewerId:req.userId, reviewerMiniProfile:req.userId, reviewedMiniProfile:reviewedId, reviewedPostId:reviewedPostId, body:body, time:Date.now()})
+                            const newReview = await ReviewsModel.findById(unpopulatedNewReview._id)
                             .populate('reviewerMiniProfile', 'dpUrl userName');
-                            res.json(newReview);
+                            
+                            console.log(newReview);
+
+                            const unpopulatedReviewedDiary = await DiariesModel.findByIdAndUpdate(reviewedPostId, { $push: { "reviewers": userId}}, { new: true });
+                            const reviewedDiary = await DiariesModel.findById(unpopulatedReviewedDiary._id)
+                            .populate('diaryMiniProfile', 'dpUrl userName');
+                            res.json({newReview:newReview, reviewedPost:reviewedDiary});
+                            
+                            console.log(newReview);
+                            
                 }  
             
         } catch(error){

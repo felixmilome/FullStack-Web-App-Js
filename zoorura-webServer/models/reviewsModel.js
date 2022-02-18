@@ -14,8 +14,8 @@ const reviewsSchema = mongoose.Schema({
         ref: 'UsersModel'
     }, 
     reviewedPostId: {
-        type: String,
-    }, 
+        type: String, 
+    },  
     body:{
         type:String
     },

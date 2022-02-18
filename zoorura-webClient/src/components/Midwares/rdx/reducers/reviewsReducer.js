@@ -11,7 +11,7 @@ export const reviewsReducer = (reviews = [], action) => {
         case 'POST_REVIEW':
             return [...reviews, action.payload];
         default:
-            return reviews; 
+            return reviews;  
      }
      
  }
