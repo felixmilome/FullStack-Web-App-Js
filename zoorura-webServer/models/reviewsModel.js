@@ -23,6 +23,10 @@ const reviewsSchema = mongoose.Schema({
         type: Date,
         default: new Date()
     },
+    edited: {
+        type: Boolean,
+        default: false
+    },
     tipsArray: [Number]
 });
 

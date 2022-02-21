@@ -27,7 +27,7 @@ export const postReviewsAction = (reviewData, setreviewData, setReviewLoading, s
         const reviewedPost = data.reviewedPost;
 
         dispatch ({type: 'POST_REVIEW', payload: newReview});
-        //dispatch ({type: 'REVIEW_DIARY', payload: reviewedPost});
+        dispatch ({type: 'REVIEW_DIARY', payload: reviewedPost});
         setreviewData({reviewedId:'', reviewedPostId:'', body: ''}); 
 
         setReviewLoading(false);
@@ -40,21 +40,46 @@ export const postReviewsAction = (reviewData, setreviewData, setReviewLoading, s
         console.log(error);
     }
 }
-export const patchReviewsAction = (reviewData) => async (dispatch) => {
+export const patchReviewsAction = (reviewData, setReviewLoading, setReviewDelivery, setReviewEditor) => async (dispatch) => {
+
     console.log("patchReview Action Act");
+
     try{
         const {data} = await axs.patchReviewsApi(reviewData);  
         dispatch ({type: 'PATCH_REVIEW', payload: data});
+
+        
+
+        setReviewDelivery(true);
+        setTimeout( function() {setReviewDelivery(false)}, 2000);
+        setReviewLoading(false);
+        setReviewEditor(false)
+        
         
     } catch(error) {  
         console.log(error);
     }
 }
-export const deleteReviewsAction = (postId) => async (dispatch) => {
+export const deleteReviewsAction = (reviewId, setReviewLoading, setEditDelivery, setReviewEditor) => async (dispatch) => {
     try{
 
-         await axs.deleteReviewsApi(postId);
-         dispatch ({type: 'DELETE_REVIEW', payload: postId}); // replace with data._Id
+         const {data} = await axs.deleteReviewsApi(reviewId);
+        
+         console.log(data);
+
+        if (data.message === 'reviewDeleted'){
+
+        
+
+         dispatch ({type: 'DELETE_REVIEW', payload: reviewId}); // you can also replace with data._Id
+
+         setEditDelivery(true);
+         setTimeout(function() {setEditDelivery(false)}, 2000);
+         setReviewLoading(false);
+         setReviewEditor(false)
+        } else{
+            return;
+        }
     
     } catch(error) {
 

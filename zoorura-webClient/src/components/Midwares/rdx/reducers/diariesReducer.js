@@ -18,7 +18,7 @@ export const diariesReducer = (diaries = [], action) => {
         case 'POST_DIARY':
             return diaries;
         default:
-            return diaries; 
+            return diaries;  
      }
      
  }

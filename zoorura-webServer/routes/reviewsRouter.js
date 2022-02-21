@@ -7,5 +7,5 @@ export const reviewsRouter = express.Router();
 
 reviewsRouter.post ('/', auth, postReview); 
 reviewsRouter.get ('/:postId', auth, getReviews);
-reviewsRouter.delete ('/:postId', auth, deleteReview);
+reviewsRouter.delete ('/:reviewId', auth, deleteReview);
 reviewsRouter.patch ('/', auth, patchReview);

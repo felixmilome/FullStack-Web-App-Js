@@ -39,6 +39,7 @@ export const postReview = async  (req, res) => {
                             
                             console.log(newReview);
 
+
                             const unpopulatedReviewedDiary = await DiariesModel.findByIdAndUpdate(reviewedPostId, { $push: { "reviewers": userId}}, { new: true });
                             const reviewedDiary = await DiariesModel.findById(unpopulatedReviewedDiary._id)
                             .populate('diaryMiniProfile', 'dpUrl userName');
@@ -55,22 +56,28 @@ export const postReview = async  (req, res) => {
 
  export const patchReview = async (req, res) => {
 
-    const{postId} = req.params;
-    const {body} = req.body;
-    const reviewVerified = await ReviewsModel.findById(postId, {reviewerId:1});
+   
+    const {reviewId, body} = req.body;
+    const reviewVerified = await ReviewsModel.findById(reviewId, {reviewerId:1, edited:1});
+    console.log(reviewVerified);
+    console.log(reviewId)
+    console.log(req.userId)
     
 
         try{ 
-                if (body.length < 0 || body.length > 2000 || req.userId !== reviewVerified.reviewerId) {
+                if (body.length < 0 || body.length > 2000 || req.userId !== reviewVerified.reviewerId || reviewVerified.edited === true) {
 
                     res.json("error");
 
                 }else{
 
-                    const patchedReview = await ReviewsModel.findByIdAndUpdate(req.userId, { $set: {body:body, time: new Date()}}, { new: true })
+                    const patchedReviewUnpopulated = await ReviewsModel.findByIdAndUpdate(reviewId, { $set: {edited:true, body:body, time: new Date()}}, { new: true });
+                    const patchedReview = await ReviewsModel.findById(patchedReviewUnpopulated._id)
                     .populate('reviewerMiniProfile', 'dpUrl userName');
+
+                    console.log(patchedReview);
                             
-                    res.json({message: patchedReview});
+                    res.json(patchedReview);
                 }  
             
         } catch(error){
@@ -79,18 +86,18 @@ export const postReview = async  (req, res) => {
  }
  export const deleteReview = async (req, res) => {
 
-    const{postId} = req.params;
-    const reviewVerified = await ReviewsModel.findById(postId);
+    const{reviewId} = req.params;
+    const reviewVerified = await ReviewsModel.findById(reviewId);
     
 
         try{ 
-                if (req.userId !== reviewVerified.reviewerId) {
+                if (req.userId !== reviewVerified.reviewerId || !mongoose.Types.ObjectId.isValid(reviewId)) {
 
                     res.json("error");
 
                 }else{
 
-                    await ReviewsModel.findByIdAndRemove(id);      
+                    await ReviewsModel.findByIdAndRemove(reviewId);      
                     res.json({message: "reviewDeleted"});
                 }  
             

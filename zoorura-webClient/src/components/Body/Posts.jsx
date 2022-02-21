@@ -31,7 +31,7 @@ console.log(diaries);
             { !diaries.length ?  
 
             <div className="p-3 flex ">   
-                <div className="text-center text-sm text-gray-400 p-3 m-auto bg-transparent rounded-xl">
+                <div className="text-center text-sm text-gray-400 p-3 m-auto rounded-xl">
                     
                     <BeatLoader size={24} color='pink' loading/>
                     <p className= 'text-sm'>fetching posts..</p>

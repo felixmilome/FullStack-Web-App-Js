@@ -57,7 +57,7 @@ export const getDiaries = async  (req, res) => {
 
         { $addFields: 
             { "avgRank": 
-                { $sum: [ "$dateRank", "$displays", {$sum: ["$tips"]}] }
+                { $sum: [ "$dateRank", "$displays", {$sum: ["$tips"]} ] }
             }
         },
        

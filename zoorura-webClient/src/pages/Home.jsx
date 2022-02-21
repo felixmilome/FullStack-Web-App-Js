@@ -68,9 +68,9 @@ function Home({showProfile}) {
                                     backgroundSize: 'contain',
                                     backgroundRepeat: 'repeat',
                                     pointerEvents: 'none',
-                                    opacity: 0.03,
+                                    opacity: 0.02,
                                 }}
-                className=" fixed top-0 z-0  w-screen h-screen">  
+                className=" fixed top-0 z-50  w-screen h-screen">  
                     
             </div>
            

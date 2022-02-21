@@ -221,14 +221,14 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {/* Post Caption Invisible Parent */}
         <div className="relative flex justify-center bg-gray-100  my-0.5">
             {/* Post Mid Frame*/}
-            <div className="w-full items-center p-4 text-sm rounded-t-xl break-words"> 
+            <div onClick= {()=> {console.log(diary.reviewers)}} className="w-full items-center p-4 text-sm rounded-t-xl break-words"> 
                     <p className="leading-5 font-semibold my-1 text-gray-700">{diary.title}</p>
                     <p className="leading-5 font-light text-gray-700">{diary.caption}</p>                 
             </div>  
 
         </div>
 
-        <div className="flex p-1 justify-center bg-gray-100 rounded-b-xl ">
+        <div className="flex p-1 justify-center bg-gray-100 ">
             {/* Post Mid Frame*/}
             {diary.file && diary.file.length > 0 && <div className="max-h-screen w-full transition delay-50 flex justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
                             
@@ -572,8 +572,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             </div>
                                     
                             
-                        </div>
-                        <div className="fixed opacity-70 top-10 z-10 left-0 w-full h-full bg-gray-800"></div>
+                    </div>
+            
+            <div className="fixed opacity-70 top-10 z-10 left-0 w-full h-full bg-gray-800"></div>
                 </div> 
                 }
 
@@ -620,18 +621,18 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                         <div className="relative flex items-center rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
                             onClick={ () => {setpopTip(!popTip)}}>
                             
-                            <GiTakeMyMoney  size ={29} className="text-gray-600"/>
+                            <GiTakeMyMoney  size ={29} className="text-gray-600"/> 
                             <p className="font-light hidden sm:inline-flex text-xs m-1 text-gray-800">Honours</p>
                             
                         </div>  
                          {/* Tip Amount box */}
-                         {diary.tippers.length  >0 &&
-                            <div onClick={() => {seTipperview(!tipperView)}} className="font-bold bg-gray-200 p-1  h-10 rounded-md text-xs items-center text-center text-gray-500">
+                         {diary.tippers && diary.tippers.length  >0 &&
+                            <div onClick={() => {setpopTip(!popTip)}} className="font-bold bg-transparent p-1 cursor-pointer  h-10 rounded-md text-xs items-center text-center text-gray-500">
 
-                                {diary.tippers.includes(user.result._id) && <p className= 'text-xs font-bold text-cyan-500 text-center'> +you</p>}
+                                {user && diary.tippers.includes(user.result._id) && <p className= 'text-xs font-bold text-cyan-500 text-center'> +you</p>}
                             
                               
-                                        <div  className= 'shadow-md m-auto flex justify-around bg-transparent rounded-md '>
+                                        <div  className= ' shadow-md m-auto flex justify-around bg-transparent rounded-md '>
                                         <p className= "text-xs text-center text-gray-500">{tips}</p>                                  
                                         </div>
                                
@@ -653,10 +654,10 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                     <p className="font-light hidden sm:inline-flex text-xs text-gray-800">Reviews:</p>
                     </div>
                     
-                    {diary.reviewers.length && 
-                    <div onClick={()=> setReviewDisplay(!reviewDisplay)} className="font-bold bg-gray-200 p-1  h-10 rounded-md text-xs items-center text-center text-gray-500">
+                    {diary.reviewers && diary.reviewers.length > 0 && 
+                    <div onClick={()=> setReviewDisplay(!reviewDisplay)} className="font-bold bg-transparent p-1  h-10 rounded-md text-xs items-center text-center cursor-pointer text-gray-500">
                         
-                            <p className='text-cyan-500'>{diary.reviewers.includes(user.result._id) && '+you'}</p>
+                           {user && diary.reviewers.includes(user.result._id) && <p className='text-cyan-500'> +you</p>}
                            <div className= 'shadow-md m-auto flex justify-around bg-transparent rounded-md '>
                                 <p>{diary.reviewers.length}</p>
                             </div>
@@ -672,29 +673,35 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 </div>
             </div> 
 
-            {/* Opinion Box */}
+            {/* Opinion Box */} 
 
             <div className="relative p-3 bg-gray-100 rounded-b-md  border-gray-300">
 
+            
+
                  {/* ======== Like Comment Display Modals============== */}
-                 <OutsideClickHandler onOutsideClick={() => {seTipperview(false);}}>
-                    { tipperView &&                    
-                        <PostFrameTips diaryId = {diary._id} userId= {user.result._id} />
+                
+                    { popTip && <>  
+
+                     <div className='absolute top-0 bg-gray-200 w-16 my-1 text-center rounded-r-full cursor-pointer'>
+                        <p onClick= {()=> setpopTip(false)}className ='text-gray-500 text-xs '>hide tips</p>
+                    </div>   
+                                       
+                        <PostFrameTips diaryId = {diary._id} userId= {user.result._id} /></>
                     }
-                </ OutsideClickHandler>
+          
 
                 {/* Comment Box */}
                 <div>
                     {reviewDisplay &&
                     <>
-                    <div className='bg-gray-200 w-16 m-auto text-center rounded-md cursor-pointer'>
-                        <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-400'>Hide</p>
+                    <div className='bg-transparent ml-8 mb-1 rounded  border border-gray-300 w-1/2 text-center cursor-pointer'>
+                        <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-500 text-xs '>hide reviews</p>
                      </div>   
                      <div  className= 'bg-transparent max-h-60 overflow-scroll'>
-                        <PostFrameReviews diaryId={diary._id} userId={user.result._id}/>
+                        <PostFrameReviews diaryId={diary._id} userId={user.result._id} setpopTip={setpopTip}/>
                     </div>
-                    </>
-                    }
+                   
                 
 
                     <div className="relative w-full items-center">
@@ -718,6 +725,8 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                     
                     </div>
+                     </>
+                    }
                 </div>
         </div>
 
@@ -848,7 +857,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
             </div>
 
-            <div className="flex p-1 justify-center bg-gray-100 rounded-b-xl ">
+            <div className="flex p-1 justify-center bg-gray-600 rounded-b-xl ">
                 {/* Post Mid Frame*/}
                 <div className="max-h-screen w-full transition delay-50 flex justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
                                 
@@ -1111,7 +1120,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                                     <div className="absolute text-sm text-gray-400 z-0 mt-20">
                                                         Attaching Webpage...
                                                     </div>
-                                                </div>
+                                                </div> 
                                         </div> : 
                                         <>
                                             
@@ -1121,8 +1130,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 </div>     
             </div>
             </div> 
+            
             </div> 
-          
+        
         </div>
     }
 
