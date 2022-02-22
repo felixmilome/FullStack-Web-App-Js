@@ -684,7 +684,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                     { popTip && <>  
 
                      <div className='absolute top-0 bg-gray-200 w-16 my-1 text-center rounded-r-full cursor-pointer'>
-                        <p onClick= {()=> setpopTip(false)}className ='text-gray-500 text-xs '>hide tips</p>
+                        <p onClick= {()=> setpopTip(false)}className ='text-gray-500 text-xs '>hide</p>
                     </div>   
                                        
                         <PostFrameTips diaryId = {diary._id} userId= {user.result._id} /></>
@@ -695,8 +695,8 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 <div>
                     {reviewDisplay &&
                     <>
-                    <div className='bg-transparent ml-8 mb-1 rounded  border border-gray-300 w-1/2 text-center cursor-pointer'>
-                        <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-500 text-xs '>hide reviews</p>
+                    <div className='bg-transparent ml-8 mb-1 rounded  border border-gray-300 w-1/3 text-center cursor-pointer'>
+                        <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-500 text-xs '>hide</p>
                      </div>   
                      <div  className= 'bg-transparent max-h-60 overflow-scroll'>
                         <PostFrameReviews diaryId={diary._id} userId={user.result._id} setpopTip={setpopTip}/>

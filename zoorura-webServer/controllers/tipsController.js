@@ -71,9 +71,9 @@ export const postTip = async  (req, res) => {
 
                                const messageVerify = await MessagesModel.findById(tippedPostId, {senderId:1});
                                
-                               if(messageVerify.senderId === receiverId){
+                               if(messageVerify.senderId === receiverId){ // prevent user from post Stealing using Id
                                    const tippedMessage = await MessagesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
-                                   res.json(newTip);
+                                   res.json(newTip); //POPULate like the ones below
                                 }
 
                                
@@ -81,11 +81,18 @@ export const postTip = async  (req, res) => {
                             }
                             else if (type === 'review'){
 
-                                const reviewVerify = await MessagesModel.findById(tippedPostId, {reveiwerId:1});
+                                const reviewVerify = await ReviewsModel.findById(tippedPostId, {reviewerId:1});
+                                console.log(reviewVerify);
                                 
-                                if(reviewVerify.reveiwerId === receiverId){
-                                    const tippedReview = await ReviewsModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
-                                    res.json(newTip);
+                                if(reviewVerify.reviewerId === receiverId){ 
+
+                                    const unpopulatedTippedReview = await ReviewsModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
+                                    const tippedReview = await ReviewsModel.findById(unpopulatedTippedReview._id)
+                                    .populate('reviewerMiniProfile', 'dpUrl userName');
+ 
+                                     res.json({newTip:newTip, tippedPost:tippedReview});
+                                     console.log(newTip);
+                                    
                                 }
                                 
 
@@ -96,7 +103,7 @@ export const postTip = async  (req, res) => {
                                 
                                 if(diaryVerify.creator === receiverId){
 
-                                    const userId = req.userId;
+                                   // const userId = req.userId;
 
                                     const unpopulatedTippedDiary = await DiariesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
                                     const tippedDiary = await DiariesModel.findById(unpopulatedTippedDiary._id)

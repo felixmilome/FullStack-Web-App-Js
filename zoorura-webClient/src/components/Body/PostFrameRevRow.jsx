@@ -10,15 +10,21 @@ import {patchReviewsAction, deleteReviewsAction} from "../Midwares/rdx/actions/r
 import OutsideClickHandler from 'react-outside-click-handler';
 import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
 import { SurePop } from './SurePop';
+import {postTipsAction} from "../Midwares/rdx/actions/tipsAction.js";
+import {ReviewTipRow} from "./ReviewTipRow.jsx"
 
 export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
 
      const[reviewData, setreviewData] = useState({reviewId:'', body: ''});
-      const[reviewLoading, setReviewLoading] = useState(false);
-      const[reviewDelivery, setReviewDelivery] = useState(false); 
-      const[editDelivery, setEditDelivery] = useState(false);
+     const[tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type:'', amount:''});
+      const[loading, setLoading] = useState(false);
+      const[reviewDelivery, setReviewDelivery] = useState(false);
+      const[tipDelivery, setTipDelivery] = useState(false);  
+      const[deleteDelivery, setDeleteDelivery] = useState(false);
        const[reviewEditor, setReviewEditor] = useState(false); 
        const[deleteReviewSurePop, setDeleteReviewSurePop] = useState(false); 
+       const[tipReviewSurePop, setTipReviewSurePop] = useState(false);
+       const[popTip, setpopTip] = useState(false); 
        
 
 
@@ -29,15 +35,48 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
     const setDeleteFalse =()=> {
         setDeleteReviewSurePop(false);
     }
+    const setTipFalse =()=> {
+        setTipReviewSurePop(false);
+    }
+
+    function getSum(total, num) { 
+        return total + num;
+    }
+    const reviewTipsArray = reviewer.tipsArray;
+    const unroundedReviewTips = reviewTipsArray.reduce(getSum, 0);
+    const reviewTips = Math.trunc(unroundedReviewTips * Math.pow(10, 2)) / Math.pow(10, 2);
+    
+
+    const prepareTip = (tipAmount, type) => {
+
+        setTipData ({receiverId:reviewer.reviewerId, tippedPostId:reviewer._id, type:type, amount: tipAmount});
+        setTipReviewSurePop(true);
+        console.log(tipData); 
+
+    }
+
+    const tipReview = () =>{
+       
+        setLoading(true);
+
+        try{
+
+           dispatch(postTipsAction(tipData, setTipReviewSurePop, setpopTip, setLoading, setTipDelivery));
+            
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
   
 
     const deleteReview = () =>{
 
-        setReviewLoading(true);
+        setLoading(true);
         const reviewId = reviewer._id;
        
         try{
-            dispatch(deleteReviewsAction(reviewId, setReviewLoading, setEditDelivery, setReviewEditor));
+            dispatch(deleteReviewsAction(reviewId, setLoading, setDeleteDelivery));
             console.log(reviewId);
         }
         catch(error){
@@ -47,10 +86,10 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
     }
     const patchReview = () =>{
 
-        setReviewLoading(true);
+        setLoading(true);
        
         try{
-            dispatch(patchReviewsAction(reviewData, setReviewLoading, setReviewDelivery, setReviewEditor));
+            dispatch(patchReviewsAction(reviewData, setLoading, setReviewDelivery, setReviewEditor));
             console.log(reviewData);
         }
         catch(error){
@@ -64,36 +103,42 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
 
 
         <>
-                    {reviewDelivery &&
-                        <DeliveryPop message='Review Edited'/>
-                        }
-
-                    {editDelivery &&
-                        <DeliveryPop message='Review Deleted'/>
-                        }
-                    { deleteReviewSurePop &&
                     
-                        <SurePop action={'Delete'} message={'Your Review'} loadingFunction={reviewLoading} loadingMessage ={'DeletingReview'} yesFunction= {deleteReview} noFunction = {setDeleteFalse} /> 
-
-                    }
         
             
                 <div key={reviewer._id}  className='relative bg-gray-100 border-gray-300 rounded-md '>
 
-                 <OutsideClickHandler     
+         
+                {reviewDelivery &&
+                        <DeliveryPop message='Review Edited'/>
+                        }
+
+                    {deleteDelivery &&
+                        <DeliveryPop message='Review Deleted'/>
+                        }
+                        
+                    {tipDelivery &&
+                        <DeliveryPop message='Tip Sent'/>
+                        }
+                    { deleteReviewSurePop &&    
+                        <SurePop action={'Permanently Delete'} message={'Your Review?'} loadingFunction={loading} loadingMessage ={'DeletingReview'} yesFunction= {deleteReview} noFunction = {setDeleteFalse} /> 
+                    }
+                     { tipReviewSurePop &&    
+                        <SurePop action={'Tip'} token={tipData.amount} message={'On this Review. No Reversal'} loadingFunction={loading} loadingMessage ={'Verifying Tip'} yesFunction= {tipReview} noFunction = {setTipFalse} /> 
+                    }
+        
+
+                    {/* EDITOR */}
+                    {reviewEditor && <div className="absolute bottom-2 z-20 w-2/3 bg-gray-100 py-1 items-center">
+                            
+                    <OutsideClickHandler     
                             onOutsideClick={() => {
                                 setReviewEditor(false);
                             }}
                             >
-
-
-                    {/* EDITOR */}
-                    {reviewEditor && <div className="absolute bottom-2 w-2/3 bg-gray-100 py-1 items-center">
-                            
-                       
                     
                             
-                            <div className='bg-transparent rounded-md p-0.5'>
+                            <div className='bg-transparent border border-gray-300 rounded-md p-1'>
                                 <textarea value= {reviewData.body}
                                 onChange={(e)=> setreviewData({reviewId:reviewer._id, body: e.target.value})}
                                 type="text" placeholder="Edit Review Here..." className="h-16 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
@@ -106,13 +151,13 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
                                     <div >
                                             {reviewData && reviewData.body.length > 0 && reviewData.body.length < 2000 &&
                                             <>
-                                                {!reviewLoading &&
+                                                {!loading &&
                                                 <div className='flex bg-gray-100 px-3 rounded-t-md cursor-pointer justify-center'>
                                                 <p className= 'text-xs'>Edit </p>
                                                 <MdSend onClick= {patchReview}/> 
                                                 </div>
                                                 }
-                                                {reviewLoading && 
+                                                {loading && 
                                                 <>
                                                 {/* <p className= 'text-xs font-extralight'>sending review</p> */}
                                                 <BeatLoader size={7} color='black' loading/>
@@ -123,11 +168,12 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
                                 </div>
 
                             </div>
+                            </OutsideClickHandler>
                     </div>
                     }
             
                 
-                    <div className="p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
+                    <div className=" relative p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
                         
                             {/* EMoji & Pic */}
                             <div className="space-y-3 mb-7 items-center inline-block items-center p-1">
@@ -155,19 +201,59 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
 
                             </div>
 
-                            {reviewLoading === false ? <div className='ml-2 pt-1 flex space-x-8 items-center'>
-                                        <div className="bg-transparent rounded-full flex justify-center cursor-pointer h-5 w-5 items-center hover:bg-teal-100 group">
+                            {loading === false ? <div className='ml-2 pt-1 flex justify-left space-x-2 items-center'>
+
+                                        <OutsideClickHandler     
+                                        onOutsideClick={() => {
+                                            setpopTip(false);
+                                        }}
+                                        >
+                                        <div onClick = {()=> setpopTip(!popTip)} className="bg-transparent rounded-full flex justify-center cursor-pointer items-center hover:bg-gray-200 px-2 group">
                                             {/* <GiTakeMyMoney size ={24} className="text-gray-400"/> */}
-                                            <p>tip</p>
+                                            <div className= 'flex items-center'>
+                                                <p>tips</p>
+                                               {reviewTips>0 && <p>({reviewTips})</p>}
+                                               {reviewTips>0 && <p>+ujjb</p>}
+                                            </div>
+
+                                            {popTip && 
+                                            <div className='flex  space-x-0.5'>
+                                                <div className= 'flex absolute bottom-6 left-0 justify-right space-x-2 font-bold bg-gray-200 border border-gray-300 p-1'>
+                                                
+                                                        <div onClick={()=> prepareTip(1, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                            <p>1</p>
+                                                        </div>
+                                                        <div onClick={()=> prepareTip(5, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                            <p>5</p>
+                                                        </div>
+                                                        <div onClick={()=> prepareTip(10, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                            <p>10</p>
+                                                        </div>
+                                                        <div onClick={()=> prepareTip(25, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                            <p>25</p>
+                                                        </div>
+                                                        <div onClick={()=> prepareTip(50, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                            <p>50</p>
+                                                        </div>
+                                                </div>
+                                                <div className= 'w-1/2 text-xs justify-around absolute bottom-6 right-0 font-bold bg-gray-200 '>
+                                                      <ReviewTipRow reviewId={reviewer._id}/>                 
+                                                </div>
+
+                                            </div>
+                                            }
+
                                         </div>
+                                        </OutsideClickHandler>
+
                                         { reviewer.reviewerId === userId && reviewer.edited===false && <div onClick= {()=>{
                                             setreviewData({...reviewData, body:reviewer.body});
                                             setReviewEditor(true);
-                                            }} className="bg-transparent rounded-full flex justify-center cursor-pointer h-5 w-5 items-center hover:bg-yellow-100 group">
+                                            }} className="bg-transparent rounded-full flex justify-center cursor-pointer hover:bg-gray-200 px-2 items-center  group">
                                             {/* <BiCommentEdit  size ={20} className="text-gray-400"/> */}
                                             <p>edit</p>
                                         </div>}
-                                        {reviewer.reviewerId === userId && <div onClick = {() => setDeleteReviewSurePop(true)}className="bg-transparent rounded-full flex justify-center cursor-pointer h-5 w-5 items-center hover:bg-red-100 group ">
+                                        {reviewer.reviewerId === userId && <div onClick = {() => setDeleteReviewSurePop(true)}className="bg-transparent rounded-full flex justify-center cursor-pointer hover:bg-gray-200 px-2 items-center  group ">
                                             {/* <GiTakeMyMoney size ={24} className="text-gray-400"/> */}
                                             <p>delete</p>
                                         </div>}
@@ -180,7 +266,7 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
                         </div>
                                 
                     </div>
-                </OutsideClickHandler>
+                
                 
             </div>
 

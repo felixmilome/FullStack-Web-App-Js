@@ -60,23 +60,25 @@ export const patchReviewsAction = (reviewData, setReviewLoading, setReviewDelive
         console.log(error);
     }
 }
-export const deleteReviewsAction = (reviewId, setReviewLoading, setEditDelivery, setReviewEditor) => async (dispatch) => {
+export const deleteReviewsAction = (reviewId, setReviewLoading, setDeleteDelivery) => async (dispatch) => {
     try{
-
-         const {data} = await axs.deleteReviewsApi(reviewId);
         
+        
+        setDeleteDelivery(true);
+         const {data} = await axs.deleteReviewsApi(reviewId);
+
+        // setDeleteDelivery (true); // its disturbing coz when it deletes map it deletes surePop with it also during dispatch
+     
          console.log(data);
 
         if (data.message === 'reviewDeleted'){
 
-        
-
-         dispatch ({type: 'DELETE_REVIEW', payload: reviewId}); // you can also replace with data._Id
-
-         setEditDelivery(true);
-         setTimeout(function() {setEditDelivery(false)}, 2000);
-         setReviewLoading(false);
-         setReviewEditor(false)
+         
+        setDeleteDelivery (true);
+        setTimeout (function () {dispatch ({type: 'DELETE_REVIEW', payload: reviewId})},2000); 
+       
+        //setReviewLoading(false); //Also disturbin
+         
         } else{
             return;
         }

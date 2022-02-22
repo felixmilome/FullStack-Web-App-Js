@@ -9,7 +9,7 @@ export const getTipsAction = (postId) => async (dispatch) => {
 
         
 
-    } catch(error) {
+    } catch(error) { 
         console.log(error); 
 
         return false;
@@ -24,13 +24,15 @@ export const postTipsAction = (tipData, setpopSure, setpopTip, setTipLoading, se
         const newTip = data.newTip; 
         const tippedPost = data.tippedPost; 
         console.log(tippedPost);
-        
+         
     
         dispatch ({type: 'POST_TIP', payload: newTip});
 
         if (newTip.type === 'post'){ 
-            dispatch ({type: 'TIP_DIARY', payload: tippedPost});
-        }  
+            dispatch ({type: 'TIP_DIARY', payload: tippedPost}); 
+        }  else if (newTip.type === 'review'){ 
+            dispatch ({type: 'TIP_REVIEW', payload: tippedPost});
+        }
 
         setpopSure(false);
         setpopTip(false);
