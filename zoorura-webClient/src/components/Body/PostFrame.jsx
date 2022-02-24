@@ -11,6 +11,7 @@ import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
 //import { BiCommentEdit } from "react-icons/bi";
 import {BeatLoader} from "react-spinners";
+import {useNavigate} from 'react-router-dom';
 
 
 import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, PicFrame, VideoFrame, AudioForm, VideoForm} from "./PostForms/Previews.jsx";
@@ -19,10 +20,10 @@ import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm,
 import{GiTakeMyMoney} from "react-icons/gi"; 
 import{GoMegaphone} from "react-icons/go";
 import { RiShareForwardBoxLine  } from "react-icons/ri";
-import { AiOutlineComment  } from "react-icons/ai";
+import { AiOutlineComment, AiOutlineFolderView  } from "react-icons/ai";
 import { FaHandshake } from "react-icons/fa";
 //import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import{} from "@fortawesome/free-regular-svg-icons";
+//import{} from "@fortawesome/free-regular-svg-icons";
 //import{faComments, faMoneyBillWave, faMoneyBillWaveAlt, faShareSquare,} from "@fortawesome/free-solid-svg-icons";
 
 import TipModal from '../Modals/TipModal.jsx'
@@ -34,13 +35,14 @@ import { tipDiariesAction, reviewDiariesAction } from "../Midwares/rdx/actions/d
 //import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
 import {postTipsAction, getTipsAction} from "../Midwares/rdx/actions/tipsAction.js"
 import {postReviewsAction, getReviewsAction} from "../Midwares/rdx/actions/reviewsAction.js"
+import {postDisplayDiariesAction} from "../Midwares/rdx/actions/diariesAction.js";
 
 import moment from 'moment'; 
 import {useDispatch,useSelector} from 'react-redux';
 import { PostFrameTips } from "./PostFrameTips.jsx";
 import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
 import { PostFrameReviews } from "./PostFrameReviews.jsx";
-
+import {Link} from 'react-router-dom';
 
 
 
@@ -54,7 +56,10 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type: '', amount: null});
     //const[reviewData, setreviewData] = useState({reviewer: user.result.userName, reviewerId:user.result._id, body: ''});
     const[reviewData, setreviewData] = useState({reviewedId:'', reviewedPostId:'', body: ''});
-    const [displayData, setDisplayData] = useState({diary: diary._id, owner:diary.creator});
+    const [displayerData, setDisplayerData] = useState({diary: diary._id, owner:diary.creator});
+    const [displayData, setDisplayData] = useState({
+        title:diary.title, caption:diary.caption, media:diary.media, creator:diary.creator, file: diary.file, type: 'display', originalId:diary._id
+    }); 
     const[popSure, setpopSure] = useState(false);
     const[tip, setTip] = useState({tips:null});
     const[popOptions, setpopOptions] = useState(false);
@@ -68,6 +73,8 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[reviewLoading, setReviewLoading] = useState(false); 
     const[reviewDelivery, setReviewDelivery] = useState(false); 
     const[reviewDisplay, setReviewDisplay] = useState(false); 
+    const[popDisplayPosted, setPopDisplayPosted] = useState(false); 
+    const navigate = useNavigate();
 
     
     // useEffect(() => {
@@ -137,6 +144,8 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     }
 
     const handleDisplay = () => {
+
+        dispatch(postDisplayDiariesAction(displayData, setPopDisplayPosted, navigate, setDisplayer));
         console.log(displayData);
     }
   
@@ -167,7 +176,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             </div> 
                            
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile[0].userName} #3</p>
+                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile[0].userName}</p>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                             
                             </div>
@@ -180,7 +189,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             </div> 
                            
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName} #3</p>
+                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName}</p>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                             
                             </div>
@@ -188,6 +197,35 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             } 
                         </div>
                     {/* Top-Menu */}
+
+                    {diary.postType === 'display' &&
+                    <div className=" items-center bg-transparent ">
+                              
+                              <div className=" m-auto bg-gray-200 p-0.5 w-10/12 sm:px-3 rounded-full w-full">
+                              {/* <div className="flex justify-start bg-white w-1/3 rounded-full">
+                                  <img src={user.result.dpUrl} alt="DP" className=" rounded-full object-cover h-6 w-6 m-0.5"/>
+                                  <div className= 'flex justify-center bg-transparent p-1 rounded-full items-center'>
+                                      <GoMegaphone size ={15} className="text-gray-400"/>    
+                                  </div> 
+
+                              </div>  */}
+                              
+                                  <div className=" items-center"> 
+                                      <div className='flex items-center justify-center space-x-2 w-full'>
+                                          <GoMegaphone size ={20} className="text-yellow-500"/> 
+                                          <p className="leading-3 text-xs text-gray-700 font-medium my-1 ">@{diary.displayerMiniProfile[0].userName}</p>
+                                      </div>
+                                  
+                                  
+                                  </div>
+                              
+                              </div>
+                                  
+                              <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>Endorsed: {moment (diary.displayTime).fromNow()}</p>
+
+                    </div>}
+
+
                     <div>
                     
                     </div>
@@ -536,6 +574,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {/*Bottom Icon invisible Parent*/}
         <div className="">
             {/* Post Bottom Icons*/}
+         {diary.postType !== 'display' && <>
             <div className="w-full  justify-around transition delay-50 flex items-center  bg-gray-100 border-b border-t border-gray-300 font-bold p-3">
             <OutsideClickHandler onOutsideClick={() => {setpopTip(false);}}>
             {/* {popTip && <TipModal />} */}
@@ -616,28 +655,31 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         </div> 
         }
         {/*========== ENDTIPZZZZZZZZ======================== */}
-                    <div className='flex'>
+                    <div className='sm:flex'>
 
                         <div className="relative flex items-center rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
                             onClick={ () => {setpopTip(!popTip)}}>
                             
                             <GiTakeMyMoney  size ={29} className="text-gray-600"/> 
-                            <p className="font-light hidden sm:inline-flex text-xs m-1 text-gray-800">Honours</p>
+                            <p className="font-light text-xs m-1 text-gray-800">Promote</p>
                             
-                        </div>  
+                        </div>   
                          {/* Tip Amount box */}
                          {diary.tippers && diary.tippers.length  >0 &&
-                            <div onClick={() => {setpopTip(!popTip)}} className="font-bold bg-transparent p-1 cursor-pointer  h-10 rounded-md text-xs items-center text-center text-gray-500">
 
-                                {user && diary.tippers.includes(user.result._id) && <p className= 'text-xs font-bold text-cyan-500 text-center'> +you</p>}
-                            
-                              
-                                        <div  className= ' shadow-md m-auto flex justify-around bg-transparent rounded-md '>
-                                        <p className= "text-xs text-center text-gray-500">{tips}</p>                                  
-                                        </div>
-                               
+                          
+                                <div onClick={() => {setpopTip(!popTip)}} className="font-bold bg-transparent p-1 cursor-pointer  h-10 rounded-md text-xs items-center text-center text-gray-500">
+
+                                    {user && diary.tippers.includes(user.result._id) && <p className= 'text-xs font-bold text-cyan-500 text-center'> +you</p>}
                                 
-                            </div>
+                                
+                                            <div  className= ' shadow-md m-auto flex justify-around bg-transparent rounded-md '>
+                                            <p className= "text-xs text-center text-gray-500">{tips}</p>                                  
+                                            </div>
+                                
+                                    
+                                </div>
+                        
                         }
                         
                     </div> 
@@ -647,11 +689,11 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 {/* </OutsideClickHandler> */}
 
                 {/* Other Icon */}
-                <div className ='flex '>
+                <div className ='sm:flex '>
                     
                     <div onClick={()=>setReviewDisplay(!reviewDisplay)} className="flex items-center rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
                                     <AiOutlineComment  size ={22} className="text-gray-500"/>
-                                    <p className="font-light hidden sm:inline-flex text-xs text-gray-800">Reviews:</p>
+                                    <p className="font-light  text-xs text-gray-800">Reviews:</p>
                     </div>
                     
                     {diary.reviewers && diary.reviewers.length > 0 && 
@@ -666,12 +708,25 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                     }
                 </div>
                 
+                    <div className ='flex'>
 
-                <div onClick= {()=> setDisplayer(true)} className="flex items-center p-0.5 bg-white h-10 rounded cursor-pointer hover:bg-green-100">
-                                 <GoMegaphone size ={22} className="text-gray-500"/>
-                    <p className="font-light text-xs m-1 text-gray-800">Hype: {diary.displays}</p>
-                </div>
-            </div> 
+                            <div onClick= {()=> setDisplayer(true)} className="flex items-center rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
+                                    <GoMegaphone size ={22} className="text-gray-500"/>
+                                    <p className="font-light text-xs m-1 text-gray-800">Endorse</p>  
+                            </div>
+
+                            {diary.displays && diary.displays.length>0 && 
+                                <div onClick={()=> setReviewDisplay(!reviewDisplay)} className="font-bold bg-transparent p-1  h-10 rounded-md text-xs items-center text-center cursor-pointer text-gray-500">
+                                    
+                                    {user && diary.displays.includes(user.result._id) && <p className='text-cyan-500'> +you</p>}
+                                        <div className= 'shadow-md m-auto flex justify-around bg-transparent rounded-md '>
+                                             <p>{diary.displays.length}</p>
+                                        </div>
+                                
+                                </div>
+                            }
+                    </div> 
+            </div>
 
             {/* Opinion Box */} 
 
@@ -728,7 +783,20 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                      </>
                     }
                 </div>
-        </div>
+        </div></>}
+        {diary.postType === 'display' &&
+            <div className="w-full  justify-around transition delay-50 flex items-center  bg-gray-100 rounded-b-lg border-t border-gray-300 font-bold p-3">
+              <Link to={'/DiaryLink/'+diary._id}>
+                <div className="relative flex items-center rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
+                                onClick={ () => {setpopTip(!popTip)}}>
+                                
+                                <AiOutlineFolderView  size ={24} className="text-gray-600"/> 
+                                <p className="font-light text-xs m-1 text-gray-800">See Original</p>
+                                
+                </div> 
+            </Link> 
+            </div>
+        }
 
         </div>
     </div>
@@ -751,7 +819,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                 <div className="w-full bg-transparent flex justify-center">
                                 <div onClick= {handleDisplay} className= 'flex bg-cyan-500 hover:bg-teal-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
                                     <GoMegaphone size ={20} className="text-gray-100"/>
-                                    <p className= 'text-lg'>Post Hype</p>                                
+                                    <p className= 'text-lg'>Endorse</p>                                
                                 </div>
                                 <div onClick= {()=> setDisplayer(false)}className= 'flex bg-red-500 hover:bg-red-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
                                     <MdOutlineCancel size ={22} className="text-gray-100"/>
@@ -773,7 +841,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                 {/* Top-Mid Img*/}
                                 {diary.miniProfile &&
                                 <>
-                                <div className="ml-3 bg-white rounded-full">
+                                <div className="ml-3 bg-white rounded-full"> 
                                     <img src={diary.miniProfile[0].dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
                                 </div> 
                             
@@ -792,7 +860,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                 </div> 
                             
                                 <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                    <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName} #3</p>
+                                    <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName}</p>
                                     <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                                 
                                 </div>
@@ -804,7 +872,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                         {/* Top-Menu */}
                         <div className=" items-center ">
                               
-                              <div className=" m-auto bg-gray-200 p-0.5 w-10/12 sm:px-3 rounded-md">
+                                <div className=" m-auto bg-gray-200 p-0.5 w-10/12 sm:px-3 rounded-md">
                                 {/* <div className="flex justify-start bg-white w-1/3 rounded-full">
                                     <img src={user.result.dpUrl} alt="DP" className=" rounded-full object-cover h-6 w-6 m-0.5"/>
                                     <div className= 'flex justify-center bg-transparent p-1 rounded-full items-center'>
@@ -812,19 +880,19 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                     </div> 
 
                                 </div>  */}
-
-                                <div className=" items-center"> 
-                                    <div className='flex items-center justify-center space-x-2'>
-                                        <GoMegaphone size ={20} className="text-yellow-500"/> 
-                                        <p className="leading-3 text-xs text-gray-700 font-medium my-1 ">@{user.result.userName}</p>
-                                   </div>
-                                   
+                                
+                                    <div className=" items-center"> 
+                                        <div className='flex items-center justify-center space-x-2'>
+                                            <GoMegaphone size ={20} className="text-yellow-500"/> 
+                                            <p className="leading-3 text-xs text-gray-700 font-medium my-1 ">@{user.result.userName}</p>
+                                        </div>
+                                    
+                                    
+                                    </div>
                                 
                                 </div>
-                                
-                            </div>
-                                
-                            <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>Hyped: {moment (Date.now()).fromNow()}</p>
+                                    
+                                <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>Endorsed: {moment (Date.now()).fromNow()}</p>
 
                         </div>
                      

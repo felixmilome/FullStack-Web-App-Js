@@ -518,7 +518,7 @@ function Portfolio({diary, diaryId, setDiaryId}) {
                 {/* Other Icon */}
                 <div className="flex items-center rounded-full p-1 cursor-pointer hover:bg-blue-100">
                                 <AiOutlineComment  size ={22} className="text-gray-500"/>
-                    <p className="font-light text-xs m-1 text-gray-800">Reviews: {diary.reviews.length}</p>
+                    <p className="font-light text-xs m-1 text-gray-800">Reviews: {diary.reviewers.length}</p>
                 </div>
                 <div className="flex items-center p-1 rounded-full cursor-pointer hover:bg-green-100">
                                  <RiShareForwardBoxLine size ={22} className="text-gray-500"/>
@@ -550,7 +550,7 @@ function Portfolio({diary, diaryId, setDiaryId}) {
                             
                             
                               <div className='bg-gray-200 border border-gray-300 rounded-md max-h-64 overflow-y-auto'>
-                            {diary.reviews.length > 0  && diary.reviews.map((reviewmap) =>(
+                            {diary.reviewers.length > 0  && diary.reviewers.map((reviewmap) =>(
                                
                                     <div key={reviewmap._id} className="p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
                                         

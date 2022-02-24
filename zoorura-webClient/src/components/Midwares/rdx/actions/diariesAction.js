@@ -7,20 +7,52 @@ export const getDiariesAction = () => async (dispatch) => {
 
         dispatch ({type: 'GET_ALL_DIARIES', payload: data});
     } catch(error) {
+        console.log(error); 
+    }
+}
+export const postDiariesAction = (diary, setpopPosted, navigate, setDisplayer) => async (dispatch) => {
+    try{
+        
+       
+
+        
+
+            const {data} = await axs.postDiariesApi(diary);
+            setpopPosted(true);
+
+            dispatch ({type: 'POST_DIARY', payload: data});            
+            navigate ('/');
+            window.location.reload(true); 
+
+        
+    } catch(error) {
         console.log(error);
     }
 }
-export const postDiariesAction = (diary, setpopPosted, navigate, getDiaries) => async (dispatch) => {
+export const postDisplayDiariesAction = (diary, setPopDisplayed, navigate, setDisplayer) => async (dispatch) => {
     try{
-        const {data} = await axs.postDiariesApi(diary);
-        dispatch ({type: 'POST_DIARY', payload: data});
-        setpopPosted(true);
-        getDiaries();
-       
-        navigate ('/');
-        window.location.reload(true);
+        
 
-        //setTimeout( function() {navigate ('/')}, 1000);
+
+            const {data} = await axs.postDiariesApi(diary);
+            
+            console.log(data._id);
+            setPopDisplayed(true);
+            navigate ('/');
+            window.location.reload(true); 
+
+
+
+            // const newDisplay = data.newDisplay;
+            // const displayedDiary = data.displayedDiary;
+
+            // dispatch ({type: 'POST_DIARY', payload: newDisplay});
+            // dispatch ({type: 'DIARY_DISPLAY', payload: displayedDiary});
+            // setDisplayer(true);
+            // setTimeout( function() {setDisplayer (false)}, 2000); 
+      
+
+        
     } catch(error) {
         console.log(error);
     }

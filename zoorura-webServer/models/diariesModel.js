@@ -47,29 +47,50 @@ const diariesSchema = mongoose.Schema({
     caption: String,
     file: String,
     media:String,
+    diaryMiniProfile: { 
+        type: Schema.Types.ObjectId,
+        ref: 'UsersModel'
+    
+    },
+    postType:{
+        type:String,
+    },
     publicity: {
         type:String,
-        default: 'Public'
+        default: 'public'
     },
-    tipsArray: [Number],  
-    
-    diaryMiniProfile: { 
-            type: Schema.Types.ObjectId,
-            ref: 'UsersModel'
-        
-        },
-    
-    displays:{
-        type: Number,
-        default: 0
+    tipsArray: [Number],
+
+    originalId:{ //for displays
+        type:String,
+        default:null
     },
-    time : {
+    displayerMiniProfile:{
+        type: Schema.Types.ObjectId,
+        ref: 'UsersModel'
+    },
+
+    displayTime: {
         type: Date,
+        default: new Date()
+    }, 
+
+    displayable: {
+        type:Boolean,
+        default: true
+    }, 
+    
+    displaysArray:[{ 
+        type: Schema.Types.ObjectId,
+        ref: 'UsersModel'
+    }],
+    time : {
+        type: Date, 
         default: new Date()
     }, 
     dateRank:{
         type: Number,
-        default: (Date.now())/360000, //We will sum so that an extra point gains you 6 ahead minutes to shine.
+        default: (Date.now())/360000, //We will sum so that an extra point gains you 6 minutes ahead to shine.
     },
     tippers: [String],
     reviewers: [String],

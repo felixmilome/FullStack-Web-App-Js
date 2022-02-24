@@ -37,7 +37,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 function PostForm() {
 
     const [diariesData, setdiariesData] = useState({
-        title:'', caption:'', file: '', media: '',  publicity:'',
+        title:'', caption:'', file: '', media: '', type: 'diary',  publicity:'',
     }); 
    const[imageBlob, setImageBlob] = useState('');
    const[mediaType, setMediaType] = useState('');
@@ -353,7 +353,7 @@ function readFile(file, type) {
                     publicity: diariesData.publicity};
 
                 return diariesDataConstruct;
-
+ 
             }
 
            try{ 
@@ -361,7 +361,7 @@ function readFile(file, type) {
                 const diariesData = await constructor (url);
                 console.log(diariesData);
 
-              dispatch(postDiariesAction (diariesData, setpopPosted, navigate, getDiaries)); 
+              dispatch(postDiariesAction (diariesData, setpopPosted, navigate)); 
 
             }
             catch(err){
