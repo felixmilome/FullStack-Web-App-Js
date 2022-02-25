@@ -695,7 +695,7 @@ export const getMiniProfile = async(req,res) => {
     console.log(req.params);
     try{
   
-    const miniProfile = await UsersModel.findOne ({userName: { $in: [ profileName ] } },  {userName:1, dpUrl:1, follows:1, followers:1});
+    const miniProfile = await UsersModel.findOne ({userName: { $in: [ profileName ] } },  {userName:1, dpUrl:1, follows:1, followers:1, bio:1, postTotal:1, convoTip:1});
     
     if (!miniProfile){  
 

@@ -13,6 +13,7 @@ import {getHallFameAction} from '../components/Midwares/rdx/actions/hallFameActi
 import { useEffect } from 'react';
 import {useDispatch} from 'react-redux';
 import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx'
+import {Settings} from '../components/Body/Settings.jsx'
 
 
 
@@ -41,11 +42,12 @@ function Home({showProfile}) {
                     <Routes>
                         <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
-                        <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>
+                        <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>                   
                         <Route exact path ="*" element ={<NoPage/>}/>
                         {user &&
                         <>
                         <Route exact path ="/PostForm" element ={<PostForm />}/>
+                        <Route exact path ="/Settings" element = {<Settings/>}/>
                         <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         </>
                         }

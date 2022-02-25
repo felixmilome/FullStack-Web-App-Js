@@ -16,6 +16,7 @@ import { useState } from 'react';
 
 
 
+
 function ProfileModal({setpopProfile}) { 
     
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -60,7 +61,13 @@ function ProfileModal({setpopProfile}) {
             
                 <div className= "mb-60 border-gray-200 border-t">
                 <ProfilemodalRow Icon = {CreditCardIcon} title ="Wallet"/>
-                <ProfilemodalRow Icon = {AdjustmentsIcon} title ="Settings"/>
+
+                <Link to= '/Settings'>
+                    <div onClick= {()=>setpopProfile(false)}>
+                        <ProfilemodalRow Icon = {AdjustmentsIcon} title ="Settings"/>
+                    </div>
+                </Link>
+
                 <ProfilemodalRow Icon = {QuestionMarkCircleIcon} title ="Help"/>
                 
                 <div onClick={logout}>

@@ -69,6 +69,18 @@ const usersSchema = mongoose.Schema({
         verCode: {
                 type: String,
         },
+        bio: {
+                type: String,
+                default: 'Hello. I am on Zoorura.'
+        },
+        convoTip: {
+                type:Number,
+                default: 0
+        },
+        postTotal: {
+                type:Number,
+                default: 0
+        },
         verTime: {
                 type: Number,
                 required: parseInt(Date.now()),

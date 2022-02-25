@@ -26,7 +26,8 @@ export const googleauthReducer = (state ={googleauthData: null}, action) => {
             }
         case "LOGOUT":
             localStorage.clear();
-            return {...state, googleauthData: null }
+            return {...state, googleauthData: null } ///create an action for logout so that one can refresh get messages etc
+
             default:
             return state;
     } 

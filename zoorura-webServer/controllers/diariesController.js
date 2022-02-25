@@ -34,6 +34,9 @@ export const getDiaries = async  (req, res) => {
         
         { 
             $project: {
+                // "miniProfile.userName": 1,
+                // "miniProfile.dpUrl": 1,
+                
                 "miniProfile.name": 0, 
                  "miniProfile.email": 0, 
                  "miniProfile.password": 0, 
@@ -52,6 +55,10 @@ export const getDiaries = async  (req, res) => {
                  "miniProfile.activityPointsRecord": 0, 
                  "miniProfile.withdrawals": 0,
                  "miniProfile.deposits": 0,
+                 "miniProfile.postTotal": 0,
+                 "miniProfile.convoTip": 0,
+                 "miniProfile.bio": 0,
+
                 } 
         },
         { 
@@ -70,6 +77,8 @@ export const getDiaries = async  (req, res) => {
         
         { 
             $project: {
+                // "displayerMiniProfile.userName": 1,
+                // "displayerMiniProfile.dpUrl": 1,
                 "displayerMiniProfile.name": 0,
                 "displayerMiniProfile.dpUrl": 0, 
                  "displayerMiniProfile.email": 0, 
@@ -89,6 +98,9 @@ export const getDiaries = async  (req, res) => {
                  "displayerMiniProfile.activityPointsRecord": 0, 
                  "displayerMiniProfile.withdrawals": 0,
                  "displayerMiniProfile.deposits": 0,
+                 "displayerMiniProfile.postTotal": 0,
+                 "displayerMiniProfile.convoTip": 0,
+                 "displayerMiniProfile.bio": 0,
                 } 
         },
 

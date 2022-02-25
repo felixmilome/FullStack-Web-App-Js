@@ -365,7 +365,8 @@ function Header() {
                         <span className="hidden md:inline-flex w-full mx-2 font-light text-sm">{user.result.name}</span>
                         </div>
 
-                     {popProfile && <ProfileModal setpopProfile= {setpopProfile}/>}
+                     {popProfile && 
+                     <ProfileModal setpopProfile= {setpopProfile}/>}
                     
                     </OutsideClickHandler>
                     

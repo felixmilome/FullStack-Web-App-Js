@@ -130,7 +130,7 @@ function Portfolios(diaryId, setDiaryId) {
                                                         <img onClick={()=>{setdpCropper(true)}} src={miniProfile.dpUrl} alt="" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
                                                         <p className= "text-gray-600 leading-3 text-center text-base font-bold ">@{miniProfile.userName}</p>
                                                     <div className="bg-gray-100 rounded-md items-center">
-                                                        <p className= "w-1/2 m-auto text-gray-600 leading-4 text-center font-light break-words ">The Journey to Being a Billionaire is possible and exciting. Work smart and stay motivated </p> 
+                                                        <p className= "w-1/2 m-auto text-gray-600 leading-4 text-center font-light break-words ">@{miniProfile.bio} </p> 
                                                         
                                                         {user && miniProfile.follows.includes(user.result._id) &&  
                                                                 <p className= "text-gray-600 leading-3 text-center font-semibold">I follow @{user.result.userName}</p>
@@ -177,11 +177,11 @@ function Portfolios(diaryId, setDiaryId) {
                                             
                                                 <div className='text-base flex justify-around items-center py-2'>
                                                     <div className='leading-4'>
-                                                        <p className= 'font-bold '>30 tips</p>
+                                                        <p className= 'font-bold '>{miniProfile.convoTip}</p>
                                                         <p className= 'font-light text-sm'>Convo Request</p>
                                                     </div>
                                                     <div className='leading-4'>
-                                                        <p className= 'font-bold '>3000</p>
+                                                        <p className= 'font-bold '>{miniProfile.postTotal}</p>
                                                         <p className= 'font-light text-sm'>Posts</p>
                                                     </div>
                                                     <div className='leading-4'>
