@@ -38,7 +38,15 @@ export const DpCropper = ({dpCropper, setdpCropper}) => {
     const dpUploader = async (croppedDp, id) =>{
         
         if (!dpPreview) return;
-        const storageRef = ref (storage, `/diaryfiles/${dpPreview.name}`);
+        console.log(dpPreview);
+        // const storageRef = ref (storage, `/files/${dpPreview.name}`);
+        // const uploadTask=uploadBytesResumable(storageRef,croppedDp);
+
+        const uploadDate = Date.now();
+        const fileOwner = user.result._id;
+        const fileType = 'DP';
+        
+        const storageRef = ref (storage, `/profilePics/${fileType}-${uploadDate}-${fileOwner}`);
         const uploadTask=uploadBytesResumable(storageRef,croppedDp);
     
         return new Promise((resolve, reject) => {
@@ -90,12 +98,34 @@ export const DpCropper = ({dpCropper, setdpCropper}) => {
         
             
     };
+     const handleRemove = async()=>{
+
+        try {
+
+            setLoader(true);
+
+            const dpData = {id:user.result._id, dp:"./assets/images/avatar.png"};
+
+            console.log(dpData);
+
+
+            dispatch(changeDpAction (dpData, navigate));
+          
+
+
+        } catch (e) {
+        console.error(e)
+        }       
+            
+    };
 
     const handleSubmit = async()=>{
 
         try {
 
             setLoader(true);
+
+            if (dpPreview.name.includes('.jpeg') || dpPreview.name.includes('.jpg') || dpPreview.name.includes('.png')){
             
             const croppedDp = await getCroppedImg(dpPreviewUrl, dpCroppedArea);
             const id = user.result._id
@@ -109,6 +139,9 @@ export const DpCropper = ({dpCropper, setdpCropper}) => {
 
             dispatch(changeDpAction (dpData, navigate));
             // console.log(user.result);
+            } else{
+                setdpCropper(false);
+            }
 
 
         } catch (e) {
@@ -148,14 +181,14 @@ export const DpCropper = ({dpCropper, setdpCropper}) => {
                                 <>
          
                                     {user.result.dpUrl != "./assets/images/avatar.png" && dpPreview =='none'?
-                                        <div className="p-1 text-white rounded bg-red-700 items-center flex cursor-pointer hover:bg-red-600">
+                                        <div onClick= {handleRemove} className="p-1 text-white rounded bg-red-700 items-center flex cursor-pointer hover:bg-red-600">
                                             <div className="px-0.5"> Empty </div>
                                             <TiDocumentDelete/>
                                         </div>:<></>
                                     }
 
 
-                                    <input onChange={handleImage} className= "hidden" id='dpUpload' type="file"/> 
+                                    <input onChange={handleImage} className= "hidden" id='dpUpload' type="file"  accept="image/png, image/jpeg, image/jpg"/> 
                                     <label htmlFor= 'dpUpload'>
                                         <div className="p-1 text-white rounded bg-blue-700 items-center flex cursor-pointer hover:bg-blue-500">
                                         <div className="px-0.5">Change</div>
@@ -167,7 +200,7 @@ export const DpCropper = ({dpCropper, setdpCropper}) => {
                                         <div onClick= {handleSubmit} className="p-1 text-white rounded bg-teal-700 items-center flex cursor-pointer hover:bg-teal-500">
                                         <div className="px-0.5">  Approve </div>
                                             <IoIosImages/>      
-                                        </div> : <></>}
+                                        </div> : <></>} 
 
                                     <div onClick= {()=>setdpCropper(!dpCropper)} className="p-1 text-white rounded bg-transparent border border-white items-center flex cursor-pointer hover:bg-gray-800">
                                     <div className="px-0.5">  Cancel</div>
@@ -180,7 +213,7 @@ export const DpCropper = ({dpCropper, setdpCropper}) => {
                                 <div  className="p-1 text-white bg-transparent items-center flex">
                                         <div>
                                             <div className= "flex justify-center"> <BeatLoader size={24} color='white' loading/></div>
-                                            <p className= 'text-sm text-xs'> Updating: <b>{progress}%</b></p>     
+                                            {progress>0 && <p className= 'text-sm text-xs'> Updating: <b>{progress}%</b></p>}     
                                         </div>        
                                 </div>  
                             }       

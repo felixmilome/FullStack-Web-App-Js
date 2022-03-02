@@ -31,6 +31,11 @@ export const changeDpApi = (dp) => API.patch ('/users/changeDp', dp);
 export const getMiniProfileApi = (profileName) => API.get (`/users/getMiniProfile/${profileName}`, profileName);
 export const followApi = (followData) => API.post (`/users/follow/`, followData);
 export const dailyPointsApi =(id) => API.patch (`/users/dailyPoints/${id}`, id);
+    
+    //Edit PROFILE
+    export const editProfileApi = (profileFormData) => API.patch ('/users/editProfile', profileFormData);
+    export const editSecurityApi = (securityFormData) => API.patch ('/users/editSecurity', securityFormData);
+
 //System
 export const getHallFameApi = () => API.get('/system/hallFame');
 //Convo
@@ -52,3 +57,5 @@ export const patchReviewsApi = (reviewData) => API.patch('/reviews/', reviewData
 //TIPS
 export const getTipsApi = (postId) => API.get(`/tips/${postId}`); 
 export const postTipsApi = (tipData) => API.post('/tips/', tipData);
+
+

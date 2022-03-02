@@ -40,7 +40,7 @@ const logInSchema = yup.object().shape({
 const verifySchema = yup.object().shape({
     otp: yup.string().strict(false).trim().required('OTP required').matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/, "no spaces"),
 });
-
+ 
 
 function emailIsValid (email) {
   return (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length > 3 && email.length <41); 
@@ -88,7 +88,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                 console.log(data); 
             }catch(error){
                 console.log(error);
-            } 
+            }  
         } else{
             return;
         } 
@@ -194,15 +194,15 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                         </div>
 
                         { loggedUser && visibleError &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-md bg-red-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
                                 <p>{loggedUser}</p>
                            </div>
                         </div>
                         }
                         { loggedUser && visibleSuccess &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-md bg-green-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-green-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-green-100 text-xs' > 
                                 <p>{loggedUser}</p>
                            </div>
                         </div>
@@ -437,15 +437,15 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                         </div>
 
                        { loggedUser ==='LoginError' && visibleError &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-md bg-red-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
                                 <p>Incorrect Email or Password! Try Again!</p>
                            </div>
                         </div>
                         }
                         { loggedUser ==='Registry Success' && visibleError &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-md bg-green-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-green-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-green-100 text-xs' > 
                                 <p>Log in Successful</p>
                            </div>
                         </div>
@@ -531,7 +531,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
 export const VerifyForm = ({setpopSignup, setpopLogin}) => {
     const dispatch = useDispatch();
     //const initialState ={email: '', otp: ''}
-    const [formData, setFormData] = useState({email: '', otp: ''});
+    const [formData, setFormData] = useState({otp: '', userId:user.result._id, type:'typed'});
     const navigate = useNavigate();
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const[visibleError, setVisibleError] = useState (false);
@@ -541,7 +541,7 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
      const loggedUser = useSelector((state) => state.googleauthReducer);
 
     const handleChange = (e) =>{
-        setFormData({email:user.result.email, otp: e.target.value.trim()});
+        setFormData({otp: e.target.value.trim(), userId:user.result._id, type:'typed'});
     };
     const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: yupResolver(verifySchema),
@@ -586,15 +586,15 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                         </div>
 
                          {loggedUser !=='Registry Success' && visibleError &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-md bg-red-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
                                 <p>{loggedUser}</p>
                            </div>
                         </div>
                         }
                         { loggedUser ==='Registry Success' && visibleError &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-md bg-green-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-green-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-green-100 text-xs' > 
                                 <p>Verification Successful</p>
                            </div>
                         </div>
@@ -609,7 +609,7 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                             <div onClick={(e)=>setVisibleError(false)} className= "flex items-center justify-center">
                                 <input 
                                  {...register('otp',{
-                                    onChange: (e) => {setFormData({email: user.result.email, otp: e.target.value.trim()})}
+                                    onChange: (e) => {setFormData({otp: e.target.value.trim(), userId:user.result._id, type:'typed'})}
                                    })} name='otp' className= "text-center w-1/2 font-semibold text-lg bg-gray-100 border border-gray-300 m-1 p-2 rounded-md" type="text" placeholder= "Enter OTP"/>
                                     
                             </div>

@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import {useDispatch} from 'react-redux';
 import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx'
 import {Settings} from '../components/Body/Settings.jsx'
+import{SecureVerify} from '../components/Body/SecureVerify.jsx'
 
 
 
@@ -40,6 +41,7 @@ function Home({showProfile}) {
                
            
                     <Routes>
+                        <Route exact path ="/securityChange/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
                         <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>                   

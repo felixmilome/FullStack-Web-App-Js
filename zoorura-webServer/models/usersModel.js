@@ -49,6 +49,10 @@ const usersSchema = mongoose.Schema({
                 type: String,
                 required: true
                 },
+        tempEmail: {
+                type: String,
+                default: null
+                },
         dpUrl: {
                 type: String,
                 default: "./assets/images/avatar.png"
@@ -56,6 +60,10 @@ const usersSchema = mongoose.Schema({
         password: {
                 type: String,
                 required: true
+                },
+        tempPassword: {
+                type: String,
+                default:null
                 },
         wallet: [Number],
         time: {

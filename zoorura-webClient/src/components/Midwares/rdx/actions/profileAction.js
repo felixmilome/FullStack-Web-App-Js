@@ -5,12 +5,65 @@ export const changeDpAction = (dp) => async (dispatch, navigate) => {
         const {data} = await axs.changeDpApi(dp); 
         dispatch ({type: 'CHANGE_DP', data});
      
-        navigate('/Portfolios');
+        //navigate('/Portfolios');
         window.location.reload(true);
     } catch(error) {
         console.log(error);
     }
 }
+
+export const editProfileAction = (profileFormData, setVisibleErrorProfile, setVisibleSuccessProfile, setLoadingProfile) => async (dispatch) => {
+    console.log(profileFormData);
+    try{
+        const {data} = await axs.editProfileApi(profileFormData);
+        console.log(data); 
+        
+        if (data.message === 'UsernameTaken' 
+            || data.message === 'error'){
+
+            dispatch ({type: 'EDIT_PROFILE', data});
+            setVisibleErrorProfile(true); 
+            setLoadingProfile(false); 
+
+        } else if (data.message === 'editedProfile'){
+
+            console.log(data.message);  
+            dispatch({type: 'EDIT_PROFILE', data});        
+            setVisibleSuccessProfile(true);
+            window.location.reload(true);
+
+        } 
+     
+    } catch(error) {
+        console.log(error);
+    }
+}
+export const editSecurityAction = (securityFormData, setVisibleErrorSecurity, setVisibleSuccessSecurity, setLoadingSecurity) => async (dispatch) => {
+    try{
+        const {data} = await axs.editSecurityApi(securityFormData); 
+        dispatch ({type: 'EDIT_SECURITY', data});
+     
+        if (data.message === 'error'
+        || data.message === 'WrongPassword'
+        || data.message === 'EmailTaken'
+        || data.message === 'PasswordSame' 
+        ){
+            dispatch ({type: 'EDIT_SECURITY', data});
+             setVisibleErrorSecurity(true); 
+            setLoadingSecurity(false);  
+        } else if (data.message === 'PasswordEdited'
+        ||data.message === 'EmailPasswordEdited'
+        || data.message === 'EmailEdited'){
+            console.log(data.message);  
+            dispatch({type: 'EDIT_SECURITY', data});        
+            setVisibleSuccessSecurity(true);
+            //window.location.reload(true);
+        }
+    } catch(error) {
+        console.log(error);
+    }
+}
+
 export const getMiniProfileAction = (profileName) => async (dispatch) => {
 
         try{
