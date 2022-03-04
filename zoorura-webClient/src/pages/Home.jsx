@@ -41,7 +41,7 @@ function Home({showProfile}) {
                
            
                     <Routes>
-                        <Route exact path ="/securityChange/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
+                        <Route exact path ="/securityChange/:change/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
                         <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>                   

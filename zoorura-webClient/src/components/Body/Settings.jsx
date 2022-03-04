@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdOutlineCancel, MdSecurity } from "react-icons/md";
 import {CgProfile} from "react-icons/cg";
 import {BsEyeFill,BsEyeSlashFill} from "react-icons/bs";
+import {BeatLoader} from "react-spinners";
 
 import {BsCheck2Circle} from "react-icons/bs";
 import { DpCropper } from "./DpCropper.jsx";
@@ -139,11 +140,13 @@ export const Settings = () => {
 
     const submitProfile = (e) =>{ 
        
-
+        setLoadingProfile(true);
        
         dispatch(editProfileAction (profileFormData, setVisibleErrorProfile, setVisibleSuccessProfile, setLoadingProfile)); 
     } 
     const submitSecurity = (e) =>{ 
+
+        setLoadingSecurity(true);
         
        dispatch(editSecurityAction (securityFormData, setVisibleErrorSecurity, setVisibleSuccessSecurity, setLoadingSecurity)); 
     } 
@@ -284,7 +287,7 @@ export const Settings = () => {
                     <div className='flex justify-between'>
                             {profileChanged ===true && 
                             <button 
-                            type='submit' className=" flex items-center px-4 py-2 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                            type= {loadingProfile===false ? 'submit' : 'button'} className=" flex items-center px-4 py-2 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                                 bg-gradient-to-r hover:from-pink-500
                                 hover:to-yellow-500 flex
                                 mx-auto rounded-full
@@ -293,7 +296,7 @@ export const Settings = () => {
                                     font-semibold p-1 mb-4 space-x-1">
                                      <CgProfile size={20} className= "text-gray-100"/>
                                 
-                                <p>Submit Profile Changes</p> 
+                                     {loadingProfile === false ? <p>Submit Profile Changes</p> : <BeatLoader size={10} color='white' loading/>}
 
                             </button>}
 
@@ -463,7 +466,7 @@ export const Settings = () => {
                            {securityChanged ===true && <button 
                             
                             
-                            type='submit' className=" flex items-center px-4 py-2 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                            type= {loadingSecurity === false ? 'submit' : 'button'} className=" flex items-center px-4 py-2 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                                 bg-gradient-to-r hover:from-pink-500
                                 hover:to-yellow-500 flex
                                 mx-auto rounded-full
@@ -472,7 +475,7 @@ export const Settings = () => {
                                     font-semibold p-1 mb-4 space-x-1">
                                      <MdSecurity size={20} className= "text-gray-100"/>
                                 
-                                <p>Submit Security Changes</p> 
+                                {loadingSecurity === false ? <p>Submit Security Changes</p> : <BeatLoader size={10} color='white' loading/>}
 
                             </button>}
 

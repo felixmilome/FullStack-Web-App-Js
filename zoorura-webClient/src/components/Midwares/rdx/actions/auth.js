@@ -21,10 +21,17 @@ export const registerAction = (formData, navigate, setVisibleError,setVisibleSuc
             dispatch({type: 'GOOGLE_SIGNUP', data});
              setVisibleError(true); 
             setLoading(false);  
+        }else if (data.message === 'RegistrySuccess'){
+           
+            
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+             setVisibleError(true); 
+            setLoading(false); 
+            window.location.reload();     
+
         }else{  
             dispatch({type: 'GOOGLE_SIGNUP', data});
-        // navigate('/');
-            window.location.reload(true);
+        
             setVisibleSuccess(true);
         }
     } catch (error){
@@ -44,11 +51,14 @@ export const loginAction = (formData, navigate, setVisibleError, setLoading) => 
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 
             setLoading(false);                 
-        } else {
+        } else if (data.message === 'RegistrySuccess'){
+           // console.log('RegLogin');
             dispatch({type: 'GOOGLE_SIGNUP', data});
-            //navigate('/');
-             
-            window.location.reload(true);
+            setVisibleError(true); 
+            setLoading(false);  
+            window.location.reload();               
+        }else {
+            dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); //shares ui with success
            
         }
@@ -60,13 +70,23 @@ export const loginAction = (formData, navigate, setVisibleError, setLoading) => 
 
 export const verifyAction = (formData, navigate, setVisibleError, setLoading) => async (dispatch) => {
     try{
-        const {data} = await axs.verifyApi(formData);
-         if (data.message === 'OtpError'){
+        const {data} = await axs.verifyApi(formData); //shares reducer with auth
+        console.log(data.message);
+        if (data.message === 'AlreadyVerified'){
+           
+           dispatch({type: 'GOOGLE_SIGNUP', data});
+           setVisibleError(true); 
+           setLoading(false);                 
+       } else if (data.message === 'OtpError'){
              console.log(data.message);
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 
             setLoading(false);                 
-        } else if (data.message === 'OtpExpired'){
+        } else if (data.message === 'ChangeOtpExpired'){
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+            setVisibleError(true); 
+            setLoading(false);                 
+        }else if (data.message === 'RegisterOtpExpired'){
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 
             setLoading(false);                 
@@ -74,11 +94,19 @@ export const verifyAction = (formData, navigate, setVisibleError, setLoading) =>
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 
             setLoading(false);                 
-        }else{
+        }else if(data.message === 'RegistrySuccess'){
             dispatch({type: 'GOOGLE_SIGNUP', data});
-            navigate('/');
-            window.location.reload(true);
-            setVisibleError(true); //shares ui with success
+            setLoading(false); 
+            setVisibleError(true); //shares ui with success conditions set in UI
+            window.location.reload();
+        }else if(data.message === 'SecuritySuccess'){
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+            setLoading(false); 
+            setVisibleError(true); //shares ui with success conditions set in UI
+        }else {
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+            setVisibleError(true);      
+
         }
     } catch (error){
         console.log(error);

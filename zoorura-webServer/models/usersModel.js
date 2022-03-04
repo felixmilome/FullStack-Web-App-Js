@@ -74,6 +74,10 @@ const usersSchema = mongoose.Schema({
                 type: Boolean,
                 default: false,
         },
+        profileVerified:{
+                type: Boolean,
+                default: true,
+        },
         verCode: {
                 type: String,
         },

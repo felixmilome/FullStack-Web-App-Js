@@ -18,7 +18,7 @@ import CartModal from '../Modals/CartModal.jsx';
 import LeftbarMob from '../Sidebars/LeftbarMob.jsx';
 import RightbarMob from '../Sidebars/RightbarMob.jsx';
 import {Link} from 'react-router-dom';
-
+ 
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from 'react';
 

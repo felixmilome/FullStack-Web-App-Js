@@ -531,12 +531,13 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
 export const VerifyForm = ({setpopSignup, setpopLogin}) => {
     const dispatch = useDispatch();
     //const initialState ={email: '', otp: ''}
-    const [formData, setFormData] = useState({otp: '', userId:user.result._id, type:'typed'});
+    
     const navigate = useNavigate();
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const[visibleError, setVisibleError] = useState (false);
     const[loading, setLoading] = useState (false);
     const[sendOtpReply, setsendOtpReply] = useState ('fresh');
+    const [formData, setFormData] = useState({otp: '', userId:user.result._id, type:'typed'});
 
      const loggedUser = useSelector((state) => state.googleauthReducer);
 

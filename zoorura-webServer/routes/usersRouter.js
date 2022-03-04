@@ -7,7 +7,7 @@ export const usersRouter = express.Router();
 
 usersRouter.post ('/register', register);
 usersRouter.post ('/login', login);
-usersRouter.patch ('/verify', auth, verify);
+usersRouter.patch ('/verify', verify);
 usersRouter.get ('/sendOtp/:email', auth, sendOtp);
 usersRouter.get ('/checkEmail/:email', checkEmail);
 usersRouter.get ('/checkUsername/:username', checkUsername);

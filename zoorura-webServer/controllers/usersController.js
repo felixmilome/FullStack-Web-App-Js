@@ -796,9 +796,11 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
                           <tr>
                             <td>
                               
-                              <p>Helo @<b>${userName}</b>, You changed your ${change}. If you did, Click link below. If not, IGNORE or REPORT on our platform</p>
+                              <p>Helo @<b>${userName}</b>, You changed your ${change}. If you did, CLICK BELOW.</p>
                               
-                              <h1>http://localhost:3000/securityChange/${userId}/${uniqueStr}</h1>
+                              <a href= "http://localhost:3000/securityChange/${change}/${userId}/${uniqueStr}"> <h1>CHANGE MY ${change}</h1> </a>
+
+                              <p>If did not request this change, Ignore or Report on our platform</p>
                               
                             </td>
                           </tr>
@@ -1010,21 +1012,21 @@ export const editProfile = async (req,res) => {
           console.log(uniqueStr);
           const uniqueStrEncrypted = await bcrypt.hash (uniqueStr, 12);
           const hashedPassword = await bcrypt.hash (password, 12);
-          const editedUser_Detailed = await UsersModel.findByIdAndUpdate(req.userId, {$set:{"tempEmail":email, "tempPassword":hashedPassword, "verCode":uniqueStrEncrypted, "verTime":Date.now(), "verExpiry":Date.now() + 172800000 }}, { new: true });
+          const editedUser_Detailed = await UsersModel.findByIdAndUpdate(req.userId, {$set:{"tempEmail":email, "tempPassword":hashedPassword, "profileVerified": false, "verCode":uniqueStrEncrypted, "verTime":Date.now(), "verExpiry":Date.now() + 172800000 }}, { new: true });
           
-          if (editedUser_Detailed.email === remail){ //if same emails
-            
+          if (editedUser_Detailed.email === remail){ //if same emails PASS EDIT
+             
             const change = 'Password'
             sendSecurityEmail (remail,uniqueStr, editedUser_Detailed.userName, editedUser_Detailed._id, change);  
             return res.json({message:"PasswordEdited", remail:remail});
-          } else if (editedUser_Detailed.email !==remail){ //if a different email
+          } else if (editedUser_Detailed.email !==remail){ //if a different email and added pass EMAIL AND PASS
             
             const change = 'Email and Password'
             sendSecurityEmail (remail,uniqueStr, editedUser_Detailed.userName, editedUser_Detailed._id, change);  
             return res.json({message:"EmailPasswordEdited", remail:remail});
           }
           
-         //If password empty       
+         //If changepassword empty  EMAIL EDIT     
       } else if (!existingEmail && email.length > 4 && email.length < 41 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) == true
                && password.length === 0){ 
         
@@ -1073,7 +1075,7 @@ export const login = async (req,res) => {
       console.log(loggedUser);
       const token = jwt.sign({email: loggedUser.email, id: loggedUser._id}, JWT_SECRET, {expiresIn: autologout});
    
-      res. status(200).json({result:loggedUser, token});
+      res. status(200).json({result:loggedUser, token, message:'RegistrySuccess'});
 
     }
      
@@ -1133,7 +1135,7 @@ export const register = async (req,res) => {
                     const remail = result.email;
                     sendVerifyEmail (remail,uniqueStr, userName, firstName, lastName);    
                     const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
-                    res.status(200).json({result, token});
+                    res.status(200).json({result, token, message:'RegistrySuccess'});
                 }
 
             }else{
@@ -1151,43 +1153,112 @@ export const register = async (req,res) => {
 export const verify = async(req,res) => {
     const {otp, userId, type} = req.body
     //const user = await UsersModel.findOne ({email: { $in: [ email ] } });
-     
-    const id = req.userId;
-    console.log(id);
-   
-    const user = await UsersModel.findById (id);
-     console.log(user);
-     const codeMatch = await bcrypt.compare(otp,user.verCode);
-     console.log(codeMatch);
-    
-    if (codeMatch && user.verExpiry > Date.now ()){
-        try {
-        const verifiedUser = await UsersModel.findByIdAndUpdate (id, {verified: true, dailyLogin: Date.now()}, { new: true });
-        
 
-        const result = await UsersModel.findById(verifiedUser._id, {password:0, verCode:0});
+        if (type === 'typed'){ 
+                  const id = userId;
+                  console.log(id);
+                
+                  const user = await UsersModel.findById (id);
+                  console.log(user);
+                  const codeMatch = await bcrypt.compare(otp,user.verCode);
+                  console.log(codeMatch);
 
-        const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
-        res.status(200).json({result, token});
-        console.log (result);
-        console.log('verified');
+                  if (user.verified == true){
+                    try {
+      
+                    
+                    res.json({message: 'AlreadyVerified'});
+                    
+                    console.log('already verified');
+                    
+                    }
+                    catch(error){
+                        console.log(error.message);
+                    }
+      
+                  } else if (codeMatch && user.verExpiry > Date.now () && user.verified == false){
+                      try {
+                      const verifiedUser = await UsersModel.findByIdAndUpdate (id, {verified: true, dailyLogin: Date.now()}, { new: true });
+                      
+
+                      const result = await UsersModel.findById(verifiedUser._id, {password:0, verCode:0});
+
+                      const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
+                      res.status(200).json({result, token, message:'RegistrySuccess'});
+                      console.log (result);
+                      console.log('verified');
+                      }
+                      catch(error){
+                          console.log(error.message);
+                      }
+
+                  }  else if (!codeMatch && user.verExpiry > Date.now() && user.verified == false){
+                    res.json({message: "OtpError"});
+                  }else if (user.verExpiry < Date.now() && user.verified == false){
+
+                      console.log ("expired");
+                      await UsersModel.findByIdAndRemove(id);
+                      res.json({message: "RegisterOtpExpired"});
+
+                  }else{
+                    res.json({message: "UnknownError"});
+                  }
+          }else if (type === 'linked'){ 
+            
+            const id = userId;
+            console.log(id);
+          
+            const user = await UsersModel.findById (id);
+           // console.log(user);
+            const codeMatch = await bcrypt.compare(otp,user.verCode);
+            console.log(codeMatch);
+            
+            if (user.profileVerified == true){
+              try {
+
+              
+              res.json({message: 'AlreadyVerified'});
+              
+              console.log('linked already verified');
+              
+              }
+              catch(error){
+                  console.log(error.message);
+              }
+
+            } else if (codeMatch && user.verExpiry > Date.now () && user.profileVerified == false){
+                try {
+
+                const verifiedUser = await UsersModel.findByIdAndUpdate (id, {profileVerified:true, verified:true, password: user.tempPassword, email: user.tempEmail}, { new: true });
+                const result = await UsersModel.findById(verifiedUser._id, {password:0, verCode:0});
+                const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
+                res.status(200).json({result, token, message:'SecuritySuccess'});
+                console.log (result);
+                console.log('verified');
+
+                }
+                catch(error){
+                    console.log(error.message);
+                }
+
+            }  else if (!codeMatch && user.verExpiry > Date.now() && user.profileVerified == false){
+
+              res.json({message: "OtpError"});
+
+            }else if (codeMatch && user.verExpiry < Date.now () && user.profileVerified == false){
+
+                console.log ("expired");
+                await UsersModel.findByIdAndRemove(id);
+                res.json({message: "ChangeOtpExpired"});
+
+            }else{
+              res.json({message: "UnknownError"});
+            }
+        }else{
+          res.json({message: "UnknownError"});
         }
-        catch(error){
-            console.log(error.message);
-        }
-
-     }  else if (!codeMatch && user.verExpiry > Date.now()){
-      res.json({message: "OtpError"});
-    }else if (user.verExpiry < Date.now()){
-
-         console.log ("expired");
-         await UsersModel.findByIdAndRemove(id);
-         res.json({message: "OtpExpired"});
-
-    }else{
-      res.json({message: "UnknownError"});
-    }
 }
+
 
 export const changeDp = async(req,res) => {
  const {id, dp} = req.body;
