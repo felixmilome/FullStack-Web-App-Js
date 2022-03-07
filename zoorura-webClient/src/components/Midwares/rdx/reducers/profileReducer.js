@@ -22,6 +22,28 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
      }
      
  }
+
+ export const forgotPasswordReducer = (state ={googleauthData: null}, action) => { //other user editings also
+     
+    switch(action.type) {
+        case 'FORGOT_PASSWORD':
+            console.log(action?.data); 
+            if (action.data.message === "error"){
+                return "Something went wrong. Please try again later";
+            } else if (action.data.message === "NoEmail"){
+                return "Email's Account doesn't exist";
+            }else if (action.data.message === "PasswordSame"){
+                return "Password is Same";
+            }else if (action.data.message === "Success"){
+                return `Password Reset Link Sent to ${action.data.remail} inbox`;
+            }
+        default:
+            return state; 
+            
+     }
+     
+ }
+
  export const securityResetReducer = (state ={googleauthData: null}, action) => { //other user editings also
      
     switch(action.type) {
@@ -34,7 +56,7 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
             }else if (action.data.message === "EmailTaken"){
                 return "Email Already In Use";
             }else if (action.data.message === "PasswordSame"){
-                return "New Password is Same as Old one";
+                return "New Password is Same as Old one. Leave Empty is you dont want to change it.";
             }else if (action.data.message === "PasswordEdited"){                  
                     return  `Password Edit Link Sent to ${action.data.remail} Inbox`;
             }else if (action.data.message === "EmailPasswordEdited"){                         

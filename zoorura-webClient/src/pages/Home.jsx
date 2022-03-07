@@ -15,6 +15,7 @@ import {useDispatch} from 'react-redux';
 import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx'
 import {Settings} from '../components/Body/Settings.jsx'
 import{SecureVerify} from '../components/Body/SecureVerify.jsx'
+import{ForgotPassword} from '../components/Body/ForgotPassword.jsx'
 
 
 
@@ -30,7 +31,7 @@ function Home({showProfile}) {
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
     return (
-        <div className="bg-transparent h-full min-h-screen pb-40">
+        <div className="bg-gray-300 text-gray-700 h-full min-h-screen pb-40">
 
        
     
@@ -44,7 +45,8 @@ function Home({showProfile}) {
                         <Route exact path ="/securityChange/:change/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
                         <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
-                        <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>                   
+                        <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>  
+                        <Route exact path ="/ForgotPassword" element = {<ForgotPassword/>}/>                 
                         <Route exact path ="*" element ={<NoPage/>}/>
                         {user &&
                         <>

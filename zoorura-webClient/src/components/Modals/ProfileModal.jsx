@@ -51,15 +51,15 @@ function ProfileModal({setpopProfile}) {
       
                 <div onClick={ profileLoader} className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl hover:bg-gray-100  bg-transparent items-center mt-4 mb-3 group">
                 <img src={user.result.dpUrl} alt="DP" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
-                    <p className= "text-gray-500 leading-3 text-center text-sm font-bold">Visit Portfolio</p> 
+                    <p className= " leading-3 text-center text-sm font-bold">Visit Portfolio</p> 
                    <div className="bg-gray-100 rounded-md py-1 items-center"> 
-                    <p className= "text-gray-500 leading-4 text-center text-xs font-light">Rank: #3</p> 
-                    <p className= "text-gray-500 leading-3 text-center text-xs font-semibold">30b aps</p>
+                    <p className= " leading-4 text-center text-xs font-light">Rank: #3</p> 
+                    <p className= " leading-3 text-center text-xs font-semibold">30b aps</p>
                     </div>
                     
                 </div>  
             
-                <div className= "mb-60 border-gray-200 border-t">
+                <div className= "mb-60 border-gray-300 border-t">
                 <ProfilemodalRow Icon = {CreditCardIcon} title ="Wallet"/>
 
                 <Link to= '/Settings'>

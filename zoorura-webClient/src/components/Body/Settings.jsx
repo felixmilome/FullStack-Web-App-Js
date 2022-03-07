@@ -14,6 +14,7 @@ import {useForm} from "react-hook-form";
 
 import { editProfileAction, editSecurityAction} from "../Midwares/rdx/actions/profileAction.js";
 import * as axs from "../Midwares/rdx/actions/axs.js"
+import {Link} from 'react-router-dom';
 
 const profileSchema = yup.object().shape({
    
@@ -29,7 +30,7 @@ const profileSchema = yup.object().shape({
 const securitySchema = yup.object().shape({
    
     email: yup.string().strict(false).trim().email("email must be valid").required('email required').min(3).max(40),
-    currentPassword: yup.string().required('password required'),
+    currentPassword: yup.string().required('current password required'),
     
     password:yup.string().nullable().notRequired().when('password', {
         is: (value) => value?.length,
@@ -60,6 +61,7 @@ export const Settings = () => {
 
     const[visible, setVisible] = useState (false);
     const[visibleErrorProfile, setVisibleErrorProfile] = useState (false);
+    const[passwordInput, setPasswordInput] = useState (false);
     const[visibleSuccessProfile, setVisibleSuccessProfile] = useState (false);
     const[loadingProfile, setLoadingProfile] = useState (false);
 
@@ -165,7 +167,7 @@ export const Settings = () => {
         <DpCropper dpCropper={dpCropper} setdpCropper ={setdpCropper}/>
         }
         
-    <div className="fixed text-gray-600 font-bold top-12 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-20 max-h-screen overflow-y-scroll">
+    <div className="fixed text-gray-400 font-bold top-12 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-20 max-h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
 
@@ -173,7 +175,7 @@ export const Settings = () => {
 
             <div className="w-full lg:w-2/5 bg-gray-100 rounded-md shadow-xl m-2 h-full">
             
-            <form onSubmit={handleSubmit(submitProfile)}>
+            <form onSubmit={handleSubmit(submitProfile)} className='border-b border-gray-300 m-1'>
   
                       
                     
@@ -184,18 +186,18 @@ export const Settings = () => {
                            </div>
                         </div>
                         } */}
-                        <div className ='flex p-3 justify-center items-center'>
+                        <div className ='flex p-3 bg-gray-200 justify-center items-center'>
                                               
-                             {/*========= Security Settings=============== */}
+                             {/*========= Profile & Security Settings=============== */}
                             <div className= "flex items-center justify-around">
-                                <CgProfile size={20} className= "text-gray-500"/>
+                                <CgProfile size={20} className= "text-gray-400"/>
                             </div> 
                             <div className="p-1 text-center bg-transparent">
                                     <p>Profile Settings</p>                        
                             </div>
                            
                         </div>
-
+ 
          
 
 
@@ -322,21 +324,19 @@ export const Settings = () => {
                     
             </form>
 
-            <form onSubmit={handleSubmit(submitSecurity)}>
+            <form onSubmit={handleSubmit(submitSecurity)} className='border-b border-gray-300 m-1'>
 
 
 
                      {/*========= Security Settings=============== */}
-                       <div className ='pt-3 justify-center items-center'>
+                       <div className ='p-3 bg-gray-200 justify-center items-center'>
                                               
                              {/*========= Security Settings=============== */}
-                            <div className= "flex items-center justify-around">
-                                <MdSecurity size={20} className= "text-gray-500"/>
+                            <div className= "flex items-center text-center justify-center space-x-1">
+                                <MdSecurity size={20} className= "text-gray-400"/>
+                                <p>Security Settings</p>    
                             </div> 
-                            <div className="p-1 text-center bg-transparent">
-                                    <p>Security Settings</p>                         
-                                    <p className ='text-sm font-light'>Current Password is required for any Security Change</p>                                              
-                            </div>
+                         
 
                             { securityFeedback && visibleErrorSecurity && 
                         
@@ -363,7 +363,7 @@ export const Settings = () => {
                            <div className= "flex mb-4 justify-between  w-full">
                                 <div className='m-auto bg-transparent items-center w-2/3 sm:w-1/2'>
 
-                                        
+                                
                                   
                                             {/* <p className='text-sm font-semibold text-red-400'>Current Password Required</p> */}
                                             <input   {...register('currentPassword',{       
@@ -372,15 +372,23 @@ export const Settings = () => {
                                                 setVisibleErrorSecurity(false);
                                             }
                                             })}
-                                            name='currentPassword' className= "w-full  bg-gray-100 border border-gray-300 p-2 rounded-md"
-                                             type={visible ? "text" : "password"} placeholder= "Enter Current Password"/>
+                                            name='currentPassword' className= "w-full  bg-gray-100 border border-gray-300 p-2 m-1 rounded-md"
+                                             type={visible ? "text" : "password"} placeholder= "Current Password First"/>
+                                             
                                              <p className='text-xs text-red-700 font-light' >{errors.currentPassword?.message}</p>
-                                            <div onClick = {(e)=>setVisible (!visible)} className='flex justify-center bg-transparent 
+                                            <Link to= '/forgotPassword'>
+                                             <div className= 'bg-gray-100 flex justify-center text-xs font-light cursor-pointer hover:bg-gray-200'>
+                                            <p>Forgot Password?</p>
+                                            </div>
+                                            </Link>
+
+                                            <div onClick = {(e)=>setVisible (!visible)} className='flex items-center space-x-1 justify-center bg-transparent 
                                             text-gray-400 cursor-pointer hover:text-cyan-500 text-xs
                                             text-center font-light m-1 '>{visible ? 
-                                            <BsEyeSlashFill size={20}/> 
-                                            : <BsEyeFill size={20}/>}
-                                        </div>
+                                            <><BsEyeSlashFill size={20}/> <p>view passwords</p> </>
+                                            : <><BsEyeFill size={20}/><p>hide passwords</p> </>}
+                                            </div>
+                                       
                                 </div>
                                     
                             </div>
@@ -416,10 +424,34 @@ export const Settings = () => {
                                 </div>
                             </div>
 
+
+
+                    <div className='flex items-center bg-transparent justify-between'>
+
+                    <p className='text-sm font-semibold text-gray-600'>Change Password?</p>
+                            <button onClick= {()=>setPasswordInput(!passwordInput)}
+                            type= "button" className=" flex items-center px-4 py-2 mx-auto bg-transparent
+                                
+                                hover:bg-gray-200 flex
+                                mx-auto rounded-md
+                                    justify-center 
+                                    text-gray-500 text-xs border border-gray-300 cursor-pointer
+                                    font-semibold p-1 space-x-1">
+                                     <MdSecurity size={20} />
+                                
+                                     {passwordInput === false ? <p>Click for Yes </p> :<p> Click for No</p> }
+
+                            </button>
+                        
+                        
+                            
+                    </div>
+                    {passwordInput === true &&
+                    <>
                             {/* Password*/}
                             <div className= "flex justify-between relative w-full">
                                 <div className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold text-gray-600'>Change Password:</p>
+                                <p className='text-sm font-semibold text-gray-600'>New Password:</p>
                                 <div className='items-center w-1/2 bg-transparent'>
                                     <input  {...register('password',{ 
                                         onChange: (e)=>{
@@ -453,6 +485,8 @@ export const Settings = () => {
                                 </div>
                                 </div>
                             </div>
+                            </>
+                    }
                           
 
                       

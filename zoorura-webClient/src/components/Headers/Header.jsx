@@ -191,7 +191,7 @@ function Header() {
         
 
           
-
+// text
        
    
     
@@ -223,7 +223,7 @@ function Header() {
 
                             
                             <>
-                                <h1 className= "m-1 pr-2 inline-flex font-bold text-sm text-gray-500">Go Home</h1>
+                                <h1 className= "m-1 pr-2 inline-flex font-light text-sm ">Go Home</h1>
                                
                             </>
                        
@@ -241,21 +241,26 @@ function Header() {
                 </>
        
        :
-           
-           <div onClick ={logout} className="cursor-pointer  rounded-full hover:bg-gray-200 bg-transparent flex items-center justify-between">
-                       
-                       <div className= 'rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
-                           <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
-                       </div>
+       
+           <div onClick ={logout} className='bg-transparent'>
+                <Link to='/'>
+                    <div  className="cursor-pointer  rounded-full hover:bg-gray-200 bg-transparent flex items-center justify-between">
+                                
+                                <div className= 'rounded-full items-center  bg-gray-100 object-cover'>
+                                    <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
+                                </div>
 
-                   
-                   
-                      <> 
-                           <h1 className= "m-1 inline-flex text-sm font-bold text-gray-700 p-1">{user && !user.result.verified && <>Go Back to  </>} Log In/Sign Up</h1> 
-                           
-                       </>
-                       
+                            
+                            
+                                <> 
+                                    <h1 className= "m-1 inline-flex text-sm font-light  p-1">{user && !user.result.verified && <>Go Back to  </>} Log In/Sign Up</h1> 
+                                    
+                                </>
+                                
+                    </div>
+                </Link>
            </div>
+       
 
    
         }
@@ -327,7 +332,7 @@ function Header() {
                         {/* </OutsideClickHandler>      */}
 
                         {/* Cart Modal */}
-                        <OutsideClickHandler     
+                        {/* <OutsideClickHandler     
                             onOutsideClick={() => {
                                 setpopCart(false);
                             }}
@@ -343,7 +348,7 @@ function Header() {
                         </div>
                         {popCart && <CartModal setshowCart={setpopCart}/>}
                             
-                        </OutsideClickHandler>
+                        </OutsideClickHandler> */}
 
                     {/*Profile Pic Modal && Button*/}
                   
@@ -352,7 +357,7 @@ function Header() {
                             setpopProfile(false); 
                         }}
                         >
-                        <div className="cursor-pointer inline-flex items-center justify-center p-1 rounded-full bg-gray-300 sm:bg-teal-300 sm:hover:bg-cyan-300 mx-1"
+                        <div className="cursor-pointer inline-flex items-center justify-center p-1 rounded-full bg-transparent  sm:hover:bg-cyan-300 mx-1"
                      onClick={ () => 
                          {
                             setpopProfile(!popProfile);
@@ -360,9 +365,9 @@ function Header() {
                         }
                      }>
                      
-                        <img src={user.result.dpUrl}  className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
+                        <img src={user.result.dpUrl}  className="rounded-full group-hover:text-white h-8 w-8"/>
                                              
-                        <span className="hidden md:inline-flex w-full mx-2 font-light text-sm">{user.result.name}</span>
+                        <span className="hidden md:inline-flex w-full text-sm">@{user.result.userName}</span>
                         </div>
 
                      {popProfile && 
@@ -397,7 +402,7 @@ function Header() {
                             {
                             popRankings &&
 
-                             <LeftbarMob setshowRankings={setpopRankings}/>  // HALL OF FAME=========================
+                             <LeftbarMob setpopRankings={setpopRankings}/>  // HALL OF FAME=========================
                              
                              }
                             
@@ -421,7 +426,7 @@ function Header() {
                               <OutsideClickHandler     
                             onOutsideClick={() => {
                                 setpopContacts(false);
-                            }}
+                            }} // text
                             >
                             <div className="bg-transparent hover:bg-cyan-400 rounded-full p-2 group"
                             onClick={ () => 

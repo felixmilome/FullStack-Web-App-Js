@@ -159,7 +159,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {reviewDelivery &&
         <DeliveryPop message='Review Sent'/>
         }
-        <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent relative xl:w-1/2 mx-auto my-1"> 
+        <div className="text-black p-2 sm:px-12 py-4 rounded-xl bg-gray-100 relative xl:w-2/5 mx-auto my-1"> 
          
 
             {/* Post-Top-Cyan Invisible Parent*/}

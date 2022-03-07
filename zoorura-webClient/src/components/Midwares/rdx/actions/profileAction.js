@@ -41,7 +41,7 @@ export const editProfileAction = (profileFormData, setVisibleErrorProfile, setVi
 export const editSecurityAction = (securityFormData, setVisibleErrorSecurity, setVisibleSuccessSecurity, setLoadingSecurity) => async (dispatch) => {
     try{
         const {data} = await axs.editSecurityApi(securityFormData); 
-        dispatch ({type: 'EDIT_SECURITY', data});
+      //  dispatch ({type: 'EDIT_SECURITY', data});
      
         if (data.message === 'error'
         || data.message === 'WrongPassword'
@@ -58,6 +58,31 @@ export const editSecurityAction = (securityFormData, setVisibleErrorSecurity, se
             dispatch({type: 'EDIT_SECURITY', data});        
             setVisibleSuccessSecurity(true);
             //window.location.reload(true);
+        }
+    } catch(error) {
+        console.log(error);
+    }
+}
+export const forgotPasswordAction = (forgotPassFormData, setVisibleError, setVisibleSuccess, setLoading) => async (dispatch) => {
+    try{
+        const {data} = await axs.forgotPasswordApi(forgotPassFormData); 
+       
+     
+        if (data.message === 'error'
+        || data.message === 'NoEmail'
+        || data.message === 'PasswordSame' 
+        ){
+            dispatch ({type: 'FORGOT_PASSWORD', data});
+             setVisibleError(true); 
+            setLoading(false); 
+
+        } else if (data.message === 'Success'){
+
+            console.log(data.message);  
+            dispatch({type: 'FORGOT_PASSWORD', data});        
+            setVisibleError(false);
+            setVisibleSuccess(true);
+
         }
     } catch(error) {
         console.log(error);

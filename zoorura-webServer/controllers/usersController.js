@@ -393,6 +393,8 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
                                 <p>An account called @<b>${userName}</b> was created using this email in Zoorura. Enter the OTP Verification code below in your Zoorura App/Website to verify it's you. Expiry in 48hrs:</p>
                                 
                                 <h1>${uniqueStr}</h1>
+
+                                <p>ALL PREVIOUS OTPS ARE INVALID</p>
                                 
                               </td>
                             </tr>
@@ -800,7 +802,7 @@ const filterItemOut = (key, { [key]: deletedKey, ...others }) => others;
                               
                               <a href= "http://localhost:3000/securityChange/${change}/${userId}/${uniqueStr}"> <h1>CHANGE MY ${change}</h1> </a>
 
-                              <p>If did not request this change, Ignore or Report on our platform</p>
+                              <p>ALL PREVIOUS VERIFY LINKS HAVE EXPIRED. If did not request this change, Ignore or Report on our platform</p>
                               
                             </td>
                           </tr>
@@ -998,7 +1000,8 @@ export const editProfile = async (req,res) => {
       
       if(password.length > 0 
         && passwordSame
-        && passwordCorrect){
+        && passwordCorrect
+        ){
         return res.json({message:"PasswordSame"});
       }
       //If password Present
@@ -1033,7 +1036,7 @@ export const editProfile = async (req,res) => {
               const uniqueStr = getCodec ();      
               console.log(uniqueStr);
               const uniqueStrEncrypted = await bcrypt.hash (uniqueStr, 12);
-              const editedUser_Detailed = await UsersModel.findByIdAndUpdate(req.userId, {$set:{"tempEmail":email, "verCode":uniqueStrEncrypted, "verTime":Date.now(), "verExpiry":Date.now() + 172800000 }}, { new: true });
+              const editedUser_Detailed = await UsersModel.findByIdAndUpdate(req.userId, {$set:{"tempEmail":email, "verCode":uniqueStrEncrypted, "profileVerified": false, "verTime":Date.now(), "verExpiry":Date.now() + 172800000 }}, { new: true });
               const change = 'Email'
               sendSecurityEmail (remail,uniqueStr, editedUser_Detailed.userName, editedUser_Detailed._id, change); //add verified true after clicking verify link.
               
@@ -1050,6 +1053,57 @@ export const editProfile = async (req,res) => {
     } catch (error){
       return res.json({message:"error"});
     }
+
+  }
+
+
+  export const forgotPassword = async (req,res) => {
+
+      try{
+          const {email, password} = req.body;
+          const remail = email;
+
+          
+          const thisUser = await UsersModel.findOne ({email: { $in: [ email ] } });
+        
+      
+        
+            if(!thisUser){
+
+              return res.json({message:"NoEmail"});
+              
+            }
+            else if(thisUser){
+
+                const passwordSame = await bcrypt.compare(password, thisUser.password);
+
+                if(thisUser &&  passwordSame){
+                  return res.json({message:"PasswordSame"});
+                }else if (thisUser && !passwordSame  //no need to validate email if its in db
+                  && password.length > 4 && password.length < 24 && /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/.test(password) == true
+                  ){
+
+                    const uniqueStr = getCodec ();      
+                    const uniqueStrEncrypted = await bcrypt.hash (uniqueStr, 12);
+                    const hashedPassword = await bcrypt.hash (password, 12);
+                    const editedUser = await UsersModel.findByIdAndUpdate(thisUser._id, {$set:{"tempEmail":email, "tempPassword":hashedPassword, "profileVerified": false, "verCode":uniqueStrEncrypted, "verTime":Date.now(), "verExpiry":Date.now() + 172800000 }}, { new: true });
+                      
+                      const change = 'Password'
+                      sendSecurityEmail (remail,uniqueStr, editedUser.userName, editedUser._id, change);  
+                      return res.json({message:"Success", remail:remail});
+              
+                } else {
+                  console.log(error.message);
+                  return res.json({message:"error"});
+                } 
+
+          }   
+    
+      } catch (error){
+
+        return res.json({message:"error"});
+        
+      }
 
   }
 

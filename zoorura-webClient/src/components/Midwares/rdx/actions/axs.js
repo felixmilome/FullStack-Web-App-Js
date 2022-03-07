@@ -35,6 +35,7 @@ export const dailyPointsApi =(id) => API.patch (`/users/dailyPoints/${id}`, id);
     //Edit PROFILE
     export const editProfileApi = (profileFormData) => API.patch ('/users/editProfile', profileFormData);
     export const editSecurityApi = (securityFormData) => API.patch ('/users/editSecurity', securityFormData);
+    export const forgotPasswordApi = (forgotPassFormData) => API.patch ('/users/forgotPassword', forgotPassFormData);
 
 //System
 export const getHallFameApi = () => API.get('/system/hallFame');

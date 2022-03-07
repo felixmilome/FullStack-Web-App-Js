@@ -9,16 +9,17 @@ function Leftbar(){
     const hallFame = useSelector((state) => state.hallFameReducer);
     console.log(hallFame); 
     
+    
 return (
-    <div className="invisible xl:visible p-4 my-1 w-1/4 m-x-4 bg-transparent border-r border-gray-100 z-30 fixed left-0 top-10 h-screen  overflow-y-auto overflow-x-hidden">
+    <div className="invisible xl:visible p-4 my-1 w-1/4 m-x-4 bg-transparent  z-30 fixed left-0 top-10 h-screen  overflow-y-auto overflow-x-hidden">
         <div className="overflow-scroll">
             {/* space */}
         <div className= "h-16">
             <p></p>
         </div>
             {/* Heading */}
-            <div className="bg-gray-100  shadow-md hover:from-pink-500 hover:to-yellow-500 fixed top-16 left-0 my-2 p-3 cursor-pointer  w-1/4 flex justify-center">
-                <p className= "text-gray-400 text- text-sm font-semibold"># Hall of Fame Ranking</p>
+            <div className="bg-transparent border-b  fixed top-16 left-0 my-2 p-3 cursor-pointer  w-1/4 flex justify-center">
+                <p className= "text-sm"># Hall of Fame Ranking</p>
                 
             </div> 
 

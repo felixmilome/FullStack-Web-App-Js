@@ -1,5 +1,5 @@
 import express from 'express';
-import{register, login, verify,sendOtp, changeDp,getMiniProfile,follow, dailyPoints, checkEmail,checkUsername, editProfile, editSecurity} from '../controllers/usersController.js';
+import{register, login, verify,sendOtp, changeDp,getMiniProfile,follow, dailyPoints, checkEmail,checkUsername, editProfile, editSecurity, forgotPassword} from '../controllers/usersController.js';
 import { auth } from '../middleware/authMiddleware.js';
 
 
@@ -19,6 +19,7 @@ usersRouter.patch ('/dailyPoints/:id', auth, dailyPoints);
 usersRouter.post ('/follow/', auth, follow);
 usersRouter.patch ('/editProfile', auth, editProfile);
 usersRouter.patch ('/editSecurity', auth, editSecurity);
+usersRouter.patch ('/forgotPassword', forgotPassword);
 
 //connfirm auth usage
 //create get entire UserProfile Separate.
