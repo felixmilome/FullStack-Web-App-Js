@@ -58,5 +58,9 @@ export const patchReviewsApi = (reviewData) => API.patch('/reviews/', reviewData
 //TIPS
 export const getTipsApi = (postId) => API.get(`/tips/${postId}`); 
 export const postTipsApi = (tipData) => API.post('/tips/', tipData);
+//SAVED DIARY
+export const saveDiariesApi = (savedDiaryData) => API.post('/savedDiaries/', savedDiaryData); 
+export const deleteSavedDiariesApi = (savedId) => API.delete('/savedDiaries/', savedId);
+export const getSavedDiariesApi = () => API.get('/savedDiaries/');
 
 

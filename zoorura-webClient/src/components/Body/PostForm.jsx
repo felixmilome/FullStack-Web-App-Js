@@ -350,6 +350,7 @@ function readFile(file, type) {
                     caption: diariesData.caption,
                     file: url,
                     media: diariesData.media,
+                    type:'diary',
                     publicity: diariesData.publicity};
 
                 return diariesDataConstruct;

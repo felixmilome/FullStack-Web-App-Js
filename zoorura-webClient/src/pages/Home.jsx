@@ -16,12 +16,21 @@ import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx'
 import {Settings} from '../components/Body/Settings.jsx'
 import{SecureVerify} from '../components/Body/SecureVerify.jsx'
 import{ForgotPassword} from '../components/Body/ForgotPassword.jsx'
+import computerName from 'computer-name';
+
 
 
 
 function Home({showProfile}) {
 
     const dispatch = useDispatch();
+
+    // console.log(computerName());
+
+    // const agent = navigator.userAgent;
+
+    // console.log(agent)
+
 
     useEffect(() => {
         dispatch(getHallFameAction());
@@ -78,7 +87,7 @@ function Home({showProfile}) {
                                     pointerEvents: 'none',
                                     opacity: 0.02,
                                 }}
-                className=" fixed top-0 z-50  w-screen h-screen">  
+                className=" fixed top-0 z-20  w-screen h-screen">  
                     
             </div>
            

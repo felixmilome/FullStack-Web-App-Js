@@ -4,6 +4,7 @@ import {
     CreditCardIcon,
     LogoutIcon,
     QuestionMarkCircleIcon,
+    BookmarkIcon
    
     } from '@heroicons/react/outline'
 import { useDispatch } from "react-redux";
@@ -17,7 +18,7 @@ import { useState } from 'react';
 
 
 
-function ProfileModal({setpopProfile}) { 
+function ProfileModal({setpopProfile, setPopSaved}) { 
     
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
@@ -70,9 +71,18 @@ function ProfileModal({setpopProfile}) {
 
                 <ProfilemodalRow Icon = {QuestionMarkCircleIcon} title ="Help"/>
                 
-                <div onClick={logout}>
+               
+                 <div onClick={()=>{
+                     setPopSaved(true);
+                     setpopProfile(false);
+                     }}>
+                    <ProfilemodalRow Icon = {BookmarkIcon} title ="Saved Posts"/>
+                </div>
+
+                 <div onClick={logout}>
                     <ProfilemodalRow Icon = {LogoutIcon} title ="Logout"/>
                 </div>
+
        
             </div>
             </div>

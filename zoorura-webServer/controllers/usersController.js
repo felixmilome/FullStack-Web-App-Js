@@ -1111,6 +1111,7 @@ export const editProfile = async (req,res) => {
 export const login = async (req,res) => {
  const {email, password, autologout} = req.body;
  console.log(req.body);
+ 
  try{ 
   
      const existingEmail = await UsersModel.findOne({email: { $in: [ email ] } });

@@ -1,5 +1,6 @@
  import {combineReducers} from 'redux';
  import {diariesReducer} from './diariesReducer';
+  import {savedDiariesReducer} from './savedDiariesReducer.js';
  import {googleauthReducer} from './googleauthReducer';
  import { hallFameReducer } from './hallFameReducer';
  import {profileResetReducer, getMiniProfileReducer, securityResetReducer, forgotPasswordReducer} from './profileReducer';
@@ -11,7 +12,7 @@
  import {tipsReducer} from './tipsReducer';
 
  export default combineReducers({
-    diariesReducer, googleauthReducer, profileResetReducer, getMiniProfileReducer,
+    diariesReducer, savedDiariesReducer, googleauthReducer, profileResetReducer, getMiniProfileReducer,
      hallFameReducer, convosReducer, messagesReducer, socketReducer,
       notificationsReducer, reviewsReducer, tipsReducer, securityResetReducer, forgotPasswordReducer
  });  

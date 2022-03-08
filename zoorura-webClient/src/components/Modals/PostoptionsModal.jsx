@@ -2,19 +2,22 @@ import PostOptionsRow from "./PostOptionsRow.jsx";
 import { BookmarkIcon, ExclamationIcon, TagIcon, TrashIcon } from '@heroicons/react/outline';
 //import EditDiaryModal from "./EditDiaryModal.jsx"
 import {useDispatch} from 'react-redux';
-import { deleteDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
+import { deleteDiariesAction} from "../Midwares/rdx/actions/diariesAction.js";
+import{ saveDiariesAction } from "../Midwares/rdx/actions/savedDiariesAction.js";
 import{AiOutlineEdit} from "react-icons/ai";
 import {Link} from 'react-router-dom';
 import { useState } from "react";
 import PostEdit from "../Body/PostEdit.jsx";
 import { DeliveryPop } from "./DeliveryPop.jsx";
 
-function PostoptionsModal({diary, diaryId, setpopOptions, setDiaryId}) {
+function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
 
     const[popDeleted, setPopDeleted] = useState(false);
+     const[popSaved, setPopSaved] = useState(false);
     const[popEdit, setPopEdit] = useState(false);
     const[popDelete, setPopDelete] = useState(false);
     const[postId, setPostId] = useState(false);
+      const[savedDiaryData, setSavedDiaryData] = useState({diaryId:diary._id});
    
 
     const dispatch = useDispatch();
@@ -32,16 +35,30 @@ function PostoptionsModal({diary, diaryId, setpopOptions, setDiaryId}) {
             console.log(err);
         }
     }
+     function saveDiary(){
+        
+        try{
+
+            dispatch(saveDiariesAction(savedDiaryData, setPopSaved));
+
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
 
     return (
        <div>
                { popDeleted &&
                <DeliveryPop message='Post Deleted'/>
              } 
-        <div className="absolute z-20 right-4 sm:right-12 top-20 opacity-90 rounded-b-xl bg-gray-100">
+             { popSaved &&
+               <DeliveryPop message='Post Saved'/>
+             } 
+        <div className="absolute z-40 right-4 sm:right-12 top-20 opacity-90 rounded-b-xl bg-gray-100">
 
           
-            <div>
+            <div onClick= {saveDiary}>
             <PostOptionsRow Icon = {BookmarkIcon} title ="Save"/>
             </div>
             <div onClick = {()=> {console.log("matumbo")}}>

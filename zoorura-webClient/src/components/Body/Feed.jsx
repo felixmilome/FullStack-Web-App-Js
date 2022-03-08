@@ -28,15 +28,15 @@ function Feed(diaryId, setDiaryId, setNavbars) {
             
              { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
              {popLogin && !user ? <LoginForm  popLogin = {popLogin} popSignup ={popSignup}  setpopLogin ={setpopLogin} setpopSignup = {setpopSignup} />: <></>} */}
-                <div className="m-4 flex justify-center">
+                <div className="my-4 flex justify-center">
                 {/* Button */}  
 
-                        {user && user.result.verified == true?
+                        {user && user.result.verified == true &&
                             <Link to ='/PostForm'>
                                 <div className="bg-gradient-to-r 
                                 from-pink-500 to-yellow-500 
                                 hover:from-cyan-500 hover:to-yellow-500
-                                flex justify-around mx-4  
+                                flex justify-around  
                                  py-2 text-sm px-5  
                                 items-center cursor-pointer 
                                 font-bold rounded-full shadow-xl"
@@ -46,7 +46,7 @@ function Feed(diaryId, setDiaryId, setNavbars) {
                                     <p className="text-white"> Post</p>
                                     <LinkIcon className=" h-6 text-white"/>
                                 </div>
-                            </Link> : <></>
+                            </Link>
                         }
                            
                     

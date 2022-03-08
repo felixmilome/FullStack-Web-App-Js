@@ -39,11 +39,17 @@ export const getDiaries = async  (req, res) => {
                 
                 "miniProfile.name": 0, 
                  "miniProfile.email": 0, 
+                 "miniProfile.tempEmail": 0,
+                 "miniProfile.tempPassword": 0, 
                  "miniProfile.password": 0, 
                  "miniProfile.wallet": 0, 
                  "miniProfile.time": 0, 
                  "miniProfile.verified": 0, 
-                 "miniProfile.verCode": 0, 
+                "miniProfile.profileVerified": 0,
+                "miniProfile.verCode": 0, 
+                "miniProfile.bio": 0,
+                "miniProfile.convoTip": 0,
+                "miniProfile.postTotal": 0,        
                  "miniProfile.verTime": 0, 
                  "miniProfile.verExpiry": 0,
                  "miniProfile.activityPointsTotal": 0,
@@ -55,9 +61,7 @@ export const getDiaries = async  (req, res) => {
                  "miniProfile.activityPointsRecord": 0, 
                  "miniProfile.withdrawals": 0,
                  "miniProfile.deposits": 0,
-                 "miniProfile.postTotal": 0,
-                 "miniProfile.convoTip": 0,
-                 "miniProfile.bio": 0,
+                
 
                 } 
         },

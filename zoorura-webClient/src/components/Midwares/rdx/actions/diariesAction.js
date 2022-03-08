@@ -21,8 +21,8 @@ export const postDiariesAction = (diary, setpopPosted, navigate, setDisplayer) =
             setpopPosted(true);
 
             dispatch ({type: 'POST_DIARY', payload: data});            
-            navigate ('/');
-            window.location.reload(true); 
+            //navigate ('/');
+            window.location = ('/') 
 
         
     } catch(error) {
@@ -77,6 +77,7 @@ export const deleteDiariesAction = (id) => async (dispatch) =>{
             console.log(error);
         }
 }
+
 
 export const tipDiariesAction = (id, tipperData, setpopSure, setpopTip) => async (dispatch)=>{
     try{

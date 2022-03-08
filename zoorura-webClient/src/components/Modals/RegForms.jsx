@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import{useNavigate} from 'react-router-dom';
 import{useState} from 'react';
 import {BeatLoader} from "react-spinners";
+import {Link} from "react-router-dom"
 
 import VideoPlayer from 'react-video-js-player';
 
@@ -370,7 +371,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
 
 
 
-export const LoginForm = ({setpopSignup, setpopLogin}) => {
+export const LoginForm = ({setpopSignup, setpopLogin}) => { 
     const dispatch = useDispatch();
     const[visible, setVisible] = useState (false);
     //const initialState ={email: '', password: '', autologout: '1h'}
@@ -476,6 +477,15 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                                 <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2 right-3 text-gray-400 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
                         </div>
                         </div>
+
+                        {/* Forgot Password */}
+                        
+                        <Link to= '/forgotPassword' className= 'w-full flex justify-center'>
+                                <div className= 'bg-gray-100 flex w-1/2 justify-center text-xs font-light cursor-pointer rounded-full hover:bg-gray-200'>
+                                <p>Forgot Password?</p>
+                                </div>
+                        </Link>
+
                              {/* Auto Logout Protection*/}
                     <div className= "p-1 flex items-center justify-center space-x-1">
                         <MdSecurity size={18} className= "text-gray-500"/>

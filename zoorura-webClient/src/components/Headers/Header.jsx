@@ -14,6 +14,7 @@ import ProfileModal from '../Modals/ProfileModal.jsx';
 import OutsideClickHandler from 'react-outside-click-handler';
 import SubscribersModal from '../Modals/SubscribersModal.jsx';
 import NotificationsModal from '../Modals/NotificationsModal.jsx';
+import SavedPostsModal from '../Modals/SavedPostsModal.jsx';
 import CartModal from '../Modals/CartModal.jsx';
 import LeftbarMob from '../Sidebars/LeftbarMob.jsx';
 import RightbarMob from '../Sidebars/RightbarMob.jsx';
@@ -43,6 +44,7 @@ function Header() {
    
     const[popLogin, setpopLogin] = useState(false);
     const[popSignup, setpopSignup] = useState(true);
+    const[popSaved, setPopSaved] = useState(false);
     //const [socket, setSocket] = useState(null)
   
    const socketRef = useRef();
@@ -350,6 +352,18 @@ function Header() {
                             
                         </OutsideClickHandler> */}
 
+
+                          {/* SAVED Modal */}
+                        <OutsideClickHandler     
+                            onOutsideClick={() => {
+                                setPopSaved(false);
+                            }}
+                            >
+                         
+                        {popSaved && <SavedPostsModal setPopSaved={setPopSaved}/>}
+                            
+                        </OutsideClickHandler>
+
                     {/*Profile Pic Modal && Button*/}
                   
                     <OutsideClickHandler     
@@ -371,7 +385,7 @@ function Header() {
                         </div>
 
                      {popProfile && 
-                     <ProfileModal setpopProfile= {setpopProfile}/>}
+                     <ProfileModal setpopProfile= {setpopProfile} setPopSaved ={setPopSaved}/>}
                     
                     </OutsideClickHandler>
                     

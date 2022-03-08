@@ -159,7 +159,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {reviewDelivery &&
         <DeliveryPop message='Review Sent'/>
         }
-        <div className="text-black p-2 sm:px-12 py-4 rounded-xl bg-gray-100 relative xl:w-2/5 mx-auto my-1"> 
+        <div className="text-black p-2 sm:px-12 py-4 rounded-xl bg-gray-100 relative xl:w-2/5 mx-auto mb-6"> 
          
 
             {/* Post-Top-Cyan Invisible Parent*/}
@@ -244,7 +244,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                  items-center cursor-pointer
                                   hover:text-gray-600 text-gray-300"/>
                     </div>
-                            {popOptions && <PostoptionsModal setpopOptions={setpopOptions} diary= {diary} diaryId={diaryId}  setDiaryId = {setDiaryId}/>}
+                            {popOptions && <PostoptionsModal setpopOptions={setpopOptions} diary= {diary} creator={diary.creator} setDiaryId = {setDiaryId}/>}
                             
                         </OutsideClickHandler>   
                 
@@ -268,14 +268,14 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
         <div className="flex p-1 justify-center bg-gray-100 ">
             {/* Post Mid Frame*/}
-            {diary.file && diary.file.length > 0 && <div className="max-h-screen w-full transition delay-50 flex justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
+            {diary.file && diary.file.length > 0 && <div className="max-h-screen w-full transition delay-50 flex z-30 justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
                             
             
             {/*=============================IFRAMES========================================*/}
                                    {/* ======IMAGE FILE====== */}
                                    { diary.file.length && diary.media === 'image' && diary.file.includes('zooruraweb.appspot.com') &&
                                         <div className =" w-full">
-                                            <div className="relative z-10 flex justify-center m-auto w-full lg:p-0">
+                                            <div className="relative z-50 flex justify-center m-auto w-full lg:p-0">
                                                 <PicFrame Url= {diary.file}/>
                                             </div>     
                                        </div> 
