@@ -17,6 +17,7 @@ export const SecureVerify = () => {
     const {change} = useParams();
 
     const[formData, setFormData] = useState({otp:uniqueStr, userId:userId, type:'linked'});
+    const[deleteFormData, setDeleteFormData] = useState({otp:uniqueStr, userId:userId, type:'delete'});
     const[visibleError, setVisibleError] = useState (false);
     const[loading, setLoading] = useState (true);
     const dispatch = useDispatch();
@@ -31,8 +32,16 @@ export const SecureVerify = () => {
     const verifyFeedback = useSelector((state) => state.googleauthReducer); //theyll share
 
     useEffect(() => {
-        dispatch(verifyAction(formData, navigate, setVisibleError, setLoading));   
-    }, [formData]);
+        if (change==='deleteAccount'){
+
+            dispatch(verifyAction(deleteFormData, navigate, setVisibleError, setLoading));
+
+        }else{
+
+            dispatch(verifyAction(formData, navigate, setVisibleError, setLoading));
+            
+        }   
+    }, [formData, deleteFormData]);
 
     return ( 
         <div className='flex fixed top-0 z-50 flex justify-center items-center w-full h-screen mb-40'>
@@ -58,16 +67,31 @@ export const SecureVerify = () => {
                            </div>
                         </div>
                         }
+                         { verifyFeedback ==='Zoorura Account Deleted' && visibleError &&
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-green-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-green-100 text-xs' > 
+                                <p>Hope You enjoyed your time on Zoorura. We will Miss You</p>
+                           </div>
+                        </div>
+                        }
 
 
 
                 <div className='m-2 flex justify-between'>
                         
                             <button onClick={(e)=>{
-                            setVisibleError(false);
-                            //navigate('/');
-                            //window.location.reload();
-                            window.location = "/"
+                                if(change === 'deleteAccount'){
+                                    setVisibleError(false);
+                                    localStorage.clear();
+                                    window.location = "/";
+                                   
+                                }else{
+                                     setVisibleError(false);
+                                    
+                                    //navigate('/');
+                                    //window.location.reload();
+                                    window.location = "/";
+                                }
                            
                            
                         }}  type={loading === false ? 'submit' : 'button'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 

@@ -76,14 +76,17 @@ function Header() {
                 let unloadTime = new Date(JSON.parse(window.localStorage.unloadTime));
                 let refreshTime = loadTime.getTime() - unloadTime.getTime();
 
-                if(user && user.result.jwtExpiry === "300d" && refreshTime > 10000)//10seconds
-                {   
-                    
-                    localStorage.clear();
-                    window.location.reload();
-                }
+                if(user){
+                    if(user.result.jwtExpiry === "300d" && refreshTime > 10000){//10seconds
+                              
+                                
+                                localStorage.clear();
+                                window.location.reload();
+                            }
+            }
 
             };
+            console.log(user);
 
                       
       //Sockets++++++++++++++++
@@ -379,7 +382,7 @@ function Header() {
                         }
                      }>
                      
-                        <img src={user.result.dpUrl}  className="rounded-full group-hover:text-white h-8 w-8"/>
+                        <img src={user.result.dpUrl}  className="rounded-full m-0.5 group-hover:text-white h-8 w-8"/>
                                              
                         <span className="hidden md:inline-flex w-full text-sm">@{user.result.userName}</span>
                         </div>

@@ -22,6 +22,8 @@ export const googleauthReducer = (state ={googleauthData: null}, action) => {
                 return "Link Expired! Security Change Failed";
             }else if (action.data.message === 'UnknownError'){
                 return "Unknown Error Occured. Please Try again Later";
+            }else if (action.data.message === 'NoUser'){
+                return "User No Longer Available";
             }else if (action.data.message === 'RegistrySuccess'){
                 
                 localStorage.setItem('profile', JSON.stringify({...action?.data}));
@@ -30,6 +32,12 @@ export const googleauthReducer = (state ={googleauthData: null}, action) => {
                 
                 localStorage.setItem('profile', JSON.stringify({...action?.data}));
                 return "Security Success";
+
+            }else if (action.data.message === 'DeleteSuccess'){
+                
+               // localStorage.clear();
+                return 'Zoorura Account Deleted'
+             
 
             }else {
                 

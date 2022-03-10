@@ -1,7 +1,7 @@
 import RightbarmobRow from './RightbarmobRow.jsx';
 import ContactMod from '../Modals/ContactMod.jsx';
 import { useState, useEffect } from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 //import { UserIcon } from '@heroicons/react/outline';
 import {BeatLoader} from "react-spinners";
 import{getMessagesAction} from "../Midwares/rdx/actions/messagesAction.js"
@@ -12,8 +12,22 @@ function RightbarMob({user, setpopContacts, unreadMessages}){
     const[popChatBox, setpopChatBox] = useState(false);
     const[displayed, setDisplayed] = useState(null);
     const[viewer, setViewer] = useState(null);
-    const[convoId, setConvoId] = useState(null);
+    const[convoId, setConvoId] = useState(null); 
     const convos = useSelector((state) => state.convosReducer);
+    const convoState = useSelector((state) => state.convoStateReducer);
+
+    const dispatch = useDispatch();
+
+    // useEffect(() => {
+
+    //     dispatch({type:"SEARCHING_CONVO"});
+       
+
+    // }, [dispatch]);
+
+    console.log(convoState);
+
+    
 
 
 const chatSetterDirect = (guestData, hostData, idConvo) =>{
@@ -49,7 +63,7 @@ return (
                 <ContactMod setpopChatBox={setpopChatBox} convoId={convoId} displayed={displayed} viewer={viewer}/>
             }  
               
-               {convos.length &&
+               {convoState === "YesConvo" && convos?.length >0 &&
                 <>
                     {
                         convos.map((convo) => {
@@ -121,18 +135,27 @@ return (
                     }
                     </> 
                 }
-                {convos == "NO_CONVO" &&
+                {convoState === "NoConvo" &&
                 <>
                   
-                            <RightbarmobRow popChatBox={popChatBox}   setpopChatBox={setpopChatBox} title ="NO CONVOS FOUND"/>
+                        <div> 
+                                <div className="Relative items-center space-x-2 mt-0.5 p-2 text-gray-500  rounded-l-full rounded-tr-full shadow-xl cursor-pointer  text-xs ">
+                                    <p className= "inline-flex font-bold  text-gray-500">No Convos Yet</p>
+                                </div>
+                        </div>
                  
                 </> 
                 }
-                {!convos.length &&
+                {convoState === "SearchingConvo" &&
                 <>
                   
-                            <BeatLoader size={24} color='white' loading/>
-                            <RightbarmobRow  popChatBox={popChatBox}  setpopChatBox={setpopChatBox}  title ="Fetchincg Convos" />
+                            
+                            <div> 
+                                <div className="Relative items-center space-x-2 mt-0.5 p-2 text-gray-500  rounded-l-full rounded-tr-full shadow-xl cursor-pointer  text-xs ">
+                                    {/* <p className= "inline-flex font-bold  text-gray-500">Fetching</p> */}
+                                    <BeatLoader size={22} color='white' loading/>
+                                </div>
+                        </div>
 
                 </> 
                 }

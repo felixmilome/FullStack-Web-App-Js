@@ -2,13 +2,25 @@ import * as axs from './axs';
 
 export const getConvosAction = (id) => async (dispatch) => {
     try{
+        dispatch({type:"SEARCHING_CONVO"});
+
         const {data} = await axs.getConvosApi(id);
+        console.log(data);
 
         dispatch ({type: 'GET_ALL_CONVOS', payload: data});
+        console.log(data);
+        if(data.length > 0){
+
+            dispatch({type:"YES_CONVO"});
+
+        }else if(data.length === 0){ 
+
+                dispatch({type:"NO_CONVO"});
+        }
     } catch(error) {
         console.log(error);
     }
-}
+} 
 
 
 export const postConvosAction = (convoData) => async (dispatch) => {

@@ -4,6 +4,7 @@ import {BeatLoader} from "react-spinners";
 
 
 import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
+import {getSavedDiariesAction} from "../Midwares/rdx/actions/savedDiariesAction.js"
 
 
 
@@ -20,6 +21,9 @@ function Posts(diaryId, setDiaryId) {
      const dispatch = useDispatch(); 
 
 const diaries = useSelector((state) => state.diariesReducer);
+
+
+
  
 console.log(diaries); 
 

@@ -14,6 +14,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
 
     const[popDeleted, setPopDeleted] = useState(false);
      const[popSaved, setPopSaved] = useState(false);
+      const[saver, setSaver] = useState(true);
     const[popEdit, setPopEdit] = useState(false);
     const[popDelete, setPopDelete] = useState(false);
     const[postId, setPostId] = useState(false);
@@ -38,8 +39,10 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
      function saveDiary(){
         
         try{
-
-            dispatch(saveDiariesAction(savedDiaryData, setPopSaved));
+            
+            dispatch(saveDiariesAction(savedDiaryData, setPopSaved, setpopOptions));
+            setSaver(false);
+            
 
         }
         catch(err){
@@ -58,9 +61,9 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
         <div className="absolute z-40 right-4 sm:right-12 top-20 opacity-90 rounded-b-xl bg-gray-100">
 
           
-            <div onClick= {saveDiary}>
+            {saver && <div onClick= {saveDiary}>
             <PostOptionsRow Icon = {BookmarkIcon} title ="Save"/>
-            </div>
+            </div>}
             <div onClick = {()=> {console.log("matumbo")}}>
             <PostOptionsRow Icon = {TagIcon} title ="Tag" />
             </div>

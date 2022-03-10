@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const convosSchema = mongoose.Schema({
+const convosSchema = mongoose.Schema({ 
         host: { 
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'           
@@ -37,7 +37,7 @@ const convosSchema = mongoose.Schema({
                 }, 
         pinner: {
                 type: Number,
-                default:0
+                default:0 
                 },
         type:{
                 type:String,

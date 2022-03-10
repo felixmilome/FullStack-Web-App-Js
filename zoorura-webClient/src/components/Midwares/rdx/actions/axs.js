@@ -36,6 +36,11 @@ export const dailyPointsApi =(id) => API.patch (`/users/dailyPoints/${id}`, id);
     export const editProfileApi = (profileFormData) => API.patch ('/users/editProfile', profileFormData);
     export const editSecurityApi = (securityFormData) => API.patch ('/users/editSecurity', securityFormData);
     export const forgotPasswordApi = (forgotPassFormData) => API.patch ('/users/forgotPassword', forgotPassFormData);
+    export const blockApi = (blockData) => API.patch ('/users/block', blockData);
+    export const unblockApi = (unblockData) => API.patch ('/users/unblock', unblockData); //has its own reducder
+    export const populateBlockApi = () => API.patch ('/users/populateBlock');
+    //Delete Account 
+    export const deleteAccountApi = (password) => API.post('/users/deleteAccount', password); 
 
 //System
 export const getHallFameApi = () => API.get('/system/hallFame');
@@ -60,7 +65,9 @@ export const getTipsApi = (postId) => API.get(`/tips/${postId}`);
 export const postTipsApi = (tipData) => API.post('/tips/', tipData);
 //SAVED DIARY
 export const saveDiariesApi = (savedDiaryData) => API.post('/savedDiaries/', savedDiaryData); 
-export const deleteSavedDiariesApi = (savedId) => API.delete('/savedDiaries/', savedId);
+export const deleteSavedDiariesApi = (savedId) => API.delete(`/savedDiaries/${savedId}`);
 export const getSavedDiariesApi = () => API.get('/savedDiaries/');
+
+
 
 

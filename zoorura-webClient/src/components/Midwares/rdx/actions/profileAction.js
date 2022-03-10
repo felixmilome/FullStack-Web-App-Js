@@ -123,6 +123,57 @@ export const dailyPointsAction = (id) => async (dispatch, setpopDailyPoints) => 
         setpopDailyPoints(false);
         window.location.reload(true);
     } catch(error) {
+        console.log(error); 
+    }
+}
+export const blockAction = (blockData, setBlockSurePop, setBlockError,  setLoading, setLoadingButtons,) => async (dispatch) => {
+    try{
+        const {data} = await axs.blockApi(blockData); 
+        console.log(data.message);
+        
+            dispatch ({type: 'BLOCK', data});
+            setBlockSurePop(false);
+            setBlockError(true);
+            setTimeout( function() {setBlockError(false)}, 2000);
+            setLoading(false);
+            if (data.message ==='error'){
+
+                setLoadingButtons(false);
+
+            }
+        //window.location.reload(true);
+    } catch(error) {
+        console.log(error);
+    }
+}
+export const populateBlockAction = () => async (dispatch) => {
+    try{
+        const {data} = await axs.populateBlockApi(); 
+        console.log(data);
+        
+            dispatch ({type: 'POPULATE_BLOCK', data});
+          
+    } catch(error) {
+        console.log(error);
+    }
+}
+export const unblockAction = (unblockData, setLoadingUnblock, setBlockError) => async (dispatch) => {
+    try{
+        const {data} = await axs.unblockApi(unblockData);
+        dispatch ({type: 'UNBLOCK', data});
+        console.log(data.message);
+        setBlockError(true); 
+        setTimeout( function() {setBlockError(false)}, 2000);
+
+        if(data.message==='error'){
+
+            setLoadingUnblock(false);
+
+        }
+        
+           
+          
+    } catch(error) {
         console.log(error);
     }
 }

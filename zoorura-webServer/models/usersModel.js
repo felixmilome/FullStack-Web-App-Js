@@ -127,6 +127,14 @@ const usersSchema = mongoose.Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'  
             }],
+        blocked: [{ 
+                type: Schema.Types.ObjectId,
+                ref: 'UsersModel'  
+        }],
+        blockers: [{ 
+                type: Schema.Types.ObjectId,
+                ref: 'UsersModel'  
+        }],
         activityPointsRecord:[activityPointsSchema],
         withdrawals:[withdrawalSchema],
         deposits:[depositSchema],

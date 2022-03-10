@@ -60,18 +60,26 @@ export const saveDiaries = async  (req, res) => {
  export const deleteSavedDiaries = async (req, res) => {
 
     const{savedId} = req.params;
-    const savedDiaryVerified = await SavedDiariesModel.findById(savedId);
+   
+    
     
 
         try{ 
-                if (!savedDiaryVerified || req.userId !== savedDiaryVerified.saverId) {
 
-                    res.json("error");
+                const savedDiaryVerified = await SavedDiariesModel.findById(savedId);
+                const ownerId =  await JSON.stringify(savedDiaryVerified.saverId);
+                const userId = await JSON.stringify(req.userId);
+
+                if (!savedDiaryVerified || userId !== ownerId) {
+
+                    res.json({message: "error"});
+                    console.log('error');
 
                 }else{
 
                     await SavedDiariesModel.findByIdAndRemove(savedId);      
                     res.json({message: "Deleted"});
+                    console.log('deletesaved');
                 }  
             
         } catch(error){

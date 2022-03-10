@@ -1,18 +1,19 @@
 
-
-import {BeatLoader} from "react-spinners";
 import {useDispatch, useSelector} from 'react-redux';
 import { useState } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 
 import {RiUserAddLine, RiUserUnfollowLine} from "react-icons/ri";
+import {MdOutlineBlock} from "react-icons/md";
 import {HiOutlineChatAlt2} from "react-icons/hi"
+import {BeatLoader} from "react-spinners";
 import Portfolio from "./Portfolio";
 import { DpCropper } from "./DpCropper.jsx";
 import {useParams} from "react-router-dom";
-import {getMiniProfileAction, followAction} from "../Midwares/rdx/actions/profileAction.js"
+import {getMiniProfileAction, followAction, blockAction} from "../Midwares/rdx/actions/profileAction.js"
 import { useEffect } from 'react';
-import ConvoForm from './ConvoForm.jsx' 
+import ConvoForm from './ConvoForm.jsx'; 
+import {SurePop} from "./SurePop.jsx";
 
 
 function Portfolios(diaryId, setDiaryId) { 
@@ -33,18 +34,30 @@ function Portfolios(diaryId, setDiaryId) {
     const user = JSON.parse(localStorage.getItem('profile'));
     const[dpCropper, setdpCropper] = useState(false);
     const [Ifollow, setIfollow] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [loadingButtons, setLoadingButtons] = useState(false);
+    const [blockSurePop, setBlockSurePop] = useState(false);
+   
+    const [blockError, setBlockError] = useState(false);
     const [popConvoForm, setpopConvoForm] = useState(false);
 
     const [members, setMembers] = useState([]);
     const [convoCreator, setconvoCreator] = useState(false);
 
-    const diaries = useSelector((state) => state.diariesReducer);
+    const diaries = useSelector((state) => state.diariesReducer);// fetch diaries that are of this user
+    const blockFeedback = useSelector((state) => state.blockReducer);
   
 
     const setFollowData = async()=>{
         return new Promise((resolve, reject) => {
             const folowData = {follower:user.result._id, followed:miniProfile._id};
             resolve (folowData);
+        });
+    }
+    const setBlockData = async()=>{
+        return new Promise((resolve, reject) => {
+            const blockData = {blocked:miniProfile._id};
+            resolve (blockData);
         });
     }
    const handleFollow = async() =>{
@@ -55,6 +68,16 @@ function Portfolios(diaryId, setDiaryId) {
         console.log(user.result._id);
         console.log(miniProfile._id);
    }
+   const handleBlock = async() =>{
+
+    setLoading(true);
+    setLoadingButtons(true);
+  
+    const blockData = await setBlockData();
+    dispatch(blockAction(blockData, setBlockSurePop, setBlockError, setLoading, setLoadingButtons));
+    console.log(blockData);
+
+}
    const handleConvo = async() =>{
   
     setMembers([user.result._id, miniProfile.Id]);
@@ -70,11 +93,28 @@ function Portfolios(diaryId, setDiaryId) {
 
 
 //console.log(diaries);
-
+ 
     return (
         
     
        <div className="">
+            {blockFeedback !=='Success' && blockError &&
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
+                                <p>An Error occured</p>
+                           </div>
+                        </div>
+                        }
+                        { blockFeedback ==='Success' && blockError &&
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-green-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-green-100 text-xs' > 
+                                <p>Account Blocked</p>
+                           </div>
+                        </div>
+                        }
+           { blockSurePop &&
+        <SurePop action={'Block'} token={`@${miniProfile.userName}`} loadingFunction={loading} loadingMessage={`Blocking @${miniProfile.userName}`} yesFunction ={handleBlock} noFunction= {()=>setBlockSurePop(false)}/>
+        }
            
         {user && miniProfile && miniProfile._id != user.result._id ?
             <>
@@ -142,27 +182,40 @@ function Portfolios(diaryId, setDiaryId) {
                                                     {user &&
                                                     <div className= 'flex justify-center text-sm items-center'>
                                                        
+                                                    {loadingButtons===false && 
+                                                        <>
+                                                            {miniProfile.followers.includes(user.result._id) ?
+                                                            <div onClick= {handleFollow} className=" flex text-gray-100 m-1 bg-cyan-400 rounded-md items-center p-1 cursor-pointer hover:bg-cyan-600"> 
+                                                                <p className= "p-1 leading-4 text-center font-semibold">Unfollow</p> 
+                                                                <RiUserUnfollowLine/>
+                                                            </div>
+                                                            :
+                                                            <div onClick= {handleFollow} className=" flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
+                                                                <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Follow</p> 
+                                                                <RiUserAddLine/>
+                                                            </div>
+                                                            }
+                                                            {miniProfile._id != user.result._id &&
+                                                                <>
+                                                            
+                                                                    <div onClick= {handleConvo} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
+                                                                        <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Convo/Chat</p> 
+                                                                        <HiOutlineChatAlt2 />
+                                                                    </div>
 
-                                                        {miniProfile.followers.includes(user.result._id) ?
-                                                        <div onClick= {handleFollow} className=" flex text-gray-100 m-1 bg-cyan-400 rounded-md items-center p-1 cursor-pointer hover:bg-cyan-600"> 
-                                                            <p className= "p-1 leading-4 text-center font-semibold">Unfollow</p> 
-                                                            <RiUserUnfollowLine/>
-                                                        </div>
-                                                        :
-                                                        <div onClick= {handleFollow} className=" flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
-                                                            <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Follow</p> 
-                                                            <RiUserAddLine/>
-                                                        </div>
-                                                        }
-                                                         {miniProfile._id != user.result._id &&
-                                                            <>
-                                                           
-                                                                <div onClick= {handleConvo} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
-                                                                    <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Convo/Chat</p> 
-                                                                    <HiOutlineChatAlt2 />
-                                                                </div>
-                                                            </>
-                                                        }
+                                                                <div onClick= {()=>setBlockSurePop(true)} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
+                                                                        <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Block</p> 
+                                                                        <MdOutlineBlock />
+                                                                    </div>
+                                                                </>
+                                                            }
+                                                        </>
+                                                    }
+                                                    {loadingButtons === true &&
+                                                        
+                                                        <BeatLoader size={22} color='gray' loading/>
+
+                                                    }
                                                         
                                                     </div>
                                                     }

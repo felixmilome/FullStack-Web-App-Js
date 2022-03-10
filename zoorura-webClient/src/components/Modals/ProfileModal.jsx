@@ -50,7 +50,7 @@ function ProfileModal({setpopProfile, setPopSaved}) {
 
             {/* Heading */}
       
-                <div onClick={ profileLoader} className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl hover:bg-gray-100  bg-transparent items-center mt-4 mb-3 group">
+                <div onClick={ profileLoader} className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl hover:bg-gray-300  bg-transparent items-center mt-4 mb-3 group">
                 <img src={user.result.dpUrl} alt="DP" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
                     <p className= " leading-3 text-center text-sm font-bold">Visit Portfolio</p> 
                    <div className="bg-gray-100 rounded-md py-1 items-center"> 

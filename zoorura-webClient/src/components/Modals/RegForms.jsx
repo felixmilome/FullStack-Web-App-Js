@@ -194,14 +194,14 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                             </div>
                         </div>
 
-                        { loggedUser && visibleError &&
+                        { loggedUser !== 'Registry Success' && visibleError &&
                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
                            <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
                                 <p>{loggedUser}</p>
                            </div>
                         </div>
                         }
-                        { loggedUser && visibleSuccess &&
+                        { loggedUser ==='Registry Success' && visibleError &&
                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-green-700'>
                            <div className= 'flex p-2 m-2 rounded-md bg-green-100 text-xs' > 
                                 <p>{loggedUser}</p>

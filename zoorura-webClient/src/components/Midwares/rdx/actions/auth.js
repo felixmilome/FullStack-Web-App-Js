@@ -82,7 +82,11 @@ export const verifyAction = (formData, navigate, setVisibleError, setLoading) =>
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 
             setLoading(false);                 
-        } else if (data.message === 'ChangeOtpExpired'){
+        } else if(data.message === 'NoUser'){
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+            setLoading(false); 
+            setVisibleError(true); //shares ui with success conditions set in UI
+        }else if (data.message === 'ChangeOtpExpired'){
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 
             setLoading(false);                 
@@ -100,6 +104,10 @@ export const verifyAction = (formData, navigate, setVisibleError, setLoading) =>
             setVisibleError(true); //shares ui with success conditions set in UI
             window.location.reload();
         }else if(data.message === 'SecuritySuccess'){
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+            setLoading(false); 
+            setVisibleError(true); //shares ui with success conditions set in UI
+        }else if(data.message === 'DeleteSuccess'){
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setLoading(false); 
             setVisibleError(true); //shares ui with success conditions set in UI

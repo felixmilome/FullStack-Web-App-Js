@@ -235,7 +235,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             }}
                             >
                             <div className="h-10 w-10 m-1 
-                            rounded-full flex justify-around
+                            rounded-full flex justify-around 
                              items-center bg-transparent"
                             onClick={ () => 
                             {setpopOptions(!popOptions)}

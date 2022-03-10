@@ -13,7 +13,7 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
                 return "Username Already In Use";
             }else if (action.data.message === "editedProfile"){
                
-                    localStorage.setItem('profile', JSON.stringify({...action?.data}))
+                    localStorage.setItem('profile', JSON.stringify({...action?.data}));
                     return  "Edit Success";
             }
         default:
@@ -80,6 +80,45 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
          
         default:
             return miniProfile; 
+            
+     }
+     
+ }
+
+ export const blockReducer = (feedback = {}, action) => {
+   
+    switch(action.type) {
+       
+        
+        case 'BLOCK':
+        case 'UNBLOCK':
+            if (action.data.message ==='error'){
+                return 'error'
+            }else if (action.data.message === 'Success'){
+
+                localStorage.setItem('profile', JSON.stringify({...action?.data}))
+                setTimeout( function() {window.location ='/'}, 1000);
+                return 'Success'     
+            }
+
+        default:
+            return feedback; 
+            
+     }
+}
+     
+
+ export const populateBlockReducer = (populateBlock = {}, action) => {
+   
+    switch(action.type) {
+       
+        
+        case 'POPULATE_BLOCK':
+
+            return action.data;
+
+        default:
+            return populateBlock; 
             
      }
      

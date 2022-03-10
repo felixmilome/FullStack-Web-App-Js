@@ -16,7 +16,7 @@ import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx'
 import {Settings} from '../components/Body/Settings.jsx'
 import{SecureVerify} from '../components/Body/SecureVerify.jsx'
 import{ForgotPassword} from '../components/Body/ForgotPassword.jsx'
-import computerName from 'computer-name';
+
 
 
 
@@ -25,7 +25,6 @@ function Home({showProfile}) {
 
     const dispatch = useDispatch();
 
-    // console.log(computerName());
 
     // const agent = navigator.userAgent;
 
@@ -52,13 +51,14 @@ function Home({showProfile}) {
            
                     <Routes>
                         <Route exact path ="/securityChange/:change/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
-                        <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                        
                         <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>  
                         <Route exact path ="/ForgotPassword" element = {<ForgotPassword/>}/>                 
                         <Route exact path ="*" element ={<NoPage/>}/>
                         {user &&
                         <>
+                        <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         <Route exact path ="/PostForm" element ={<PostForm />}/>
                         <Route exact path ="/Settings" element = {<Settings/>}/>
                         <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
@@ -79,13 +79,13 @@ function Home({showProfile}) {
                         
                         style={{  
                                 // backgroundImage: "url(" + "https://thumbs.dreamstime.com/z/cartoon-cute-doodles-hand-drawn-african-illustration-sketchy-picture-doodle-inscription-africa-74329506.jpg" + ")",
-                                backgroundImage: "url(" + "./assets/images/zooruraBGClean.jpg" + ")", 
+                                backgroundImage: "url(" + "./assets/images/zooruraBGquad.jpg" + ")", 
                                 backgroundPosition: 'center',
                                     //backgroundSize: 'cover',
                                     backgroundSize: 'contain',
                                     backgroundRepeat: 'repeat',
                                     pointerEvents: 'none',
-                                    opacity: 0.02,
+                                    opacity: 0.04,
                                 }}
                 className=" fixed top-0 z-20  w-screen h-screen">  
                     

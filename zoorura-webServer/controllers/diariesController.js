@@ -58,6 +58,8 @@ export const getDiaries = async  (req, res) => {
                  "miniProfile.lastLogin": 0,
                  "miniProfile.follows": 0, 
                  "miniProfile.followers": 0,
+                 "miniProfile.blocked": 0, 
+                 "miniProfile.blockers": 0,
                  "miniProfile.activityPointsRecord": 0, 
                  "miniProfile.withdrawals": 0,
                  "miniProfile.deposits": 0,
@@ -83,28 +85,32 @@ export const getDiaries = async  (req, res) => {
             $project: {
                 // "displayerMiniProfile.userName": 1,
                 // "displayerMiniProfile.dpUrl": 1,
-                "displayerMiniProfile.name": 0,
-                "displayerMiniProfile.dpUrl": 0, 
-                 "displayerMiniProfile.email": 0, 
-                 "displayerMiniProfile.password": 0, 
-                 "displayerMiniProfile.wallet": 0, 
-                 "displayerMiniProfile.time": 0, 
-                 "displayerMiniProfile.verified": 0, 
-                 "displayerMiniProfile.verCode": 0, 
-                 "displayerMiniProfile.verTime": 0, 
-                 "displayerMiniProfile.verExpiry": 0,
-                 "displayerMiniProfile.activityPointsTotal": 0,
-                 "displayerMiniProfile.dailyLogin": 0,
-                 "displayerMiniProfile.jwtExpiry": 0,  
-                 "displayerMiniProfile.lastLogin": 0,
-                 "displayerMiniProfile.follows": 0, 
-                 "displayerMiniProfile.followers": 0,
-                 "displayerMiniProfile.activityPointsRecord": 0, 
-                 "displayerMiniProfile.withdrawals": 0,
-                 "displayerMiniProfile.deposits": 0,
-                 "displayerMiniProfile.postTotal": 0,
-                 "displayerMiniProfile.convoTip": 0,
-                 "displayerMiniProfile.bio": 0,
+                "miniProfile.name": 0, 
+                 "miniProfile.email": 0, 
+                 "miniProfile.tempEmail": 0,
+                 "miniProfile.tempPassword": 0, 
+                 "miniProfile.password": 0, 
+                 "miniProfile.wallet": 0, 
+                 "miniProfile.time": 0, 
+                 "miniProfile.verified": 0, 
+                "miniProfile.profileVerified": 0,
+                "miniProfile.verCode": 0, 
+                "miniProfile.bio": 0,
+                "miniProfile.convoTip": 0,
+                "miniProfile.postTotal": 0,        
+                 "miniProfile.verTime": 0, 
+                 "miniProfile.verExpiry": 0,
+                 "miniProfile.activityPointsTotal": 0,
+                 "miniProfile.dailyLogin": 0,
+                 "miniProfile.jwtExpiry": 0,  
+                 "miniProfile.lastLogin": 0,
+                 "miniProfile.follows": 0, 
+                 "miniProfile.followers": 0,
+                 "miniProfile.blocked": 0, 
+                 "miniProfile.blockers": 0,
+                 "miniProfile.activityPointsRecord": 0, 
+                 "miniProfile.withdrawals": 0,
+                 "miniProfile.deposits": 0,
                 } 
         },
 
@@ -160,10 +166,12 @@ export const postDiaries =  async (req, res)=> {
                         const newDisplay = new DiariesModel({creator:displayedDiary.creator, title:displayedDiary.title, caption:displayedDiary.caption, file:displayedDiary.file, media:displayedDiary.media,
                            diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
                              displaysArray: [], time: displayedDiary.time, dateRank: (Date.now()/360000),tippers:[], reviewers:[], displaysArray:[]});   
-                        console.log(newDisplay);
+                        
+                             console.log(newDisplay);
                     
                             await newDisplay.save();
                             res.json(newDisplay);
+
                             //res.status(201).json({newDisplay:newDisplay, displayedDiary:displayedDiary});
                             //console.log(newDisplay);
 

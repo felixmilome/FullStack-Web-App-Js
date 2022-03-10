@@ -7,4 +7,4 @@ export const savedDiariesRouter = express.Router();
 
 savedDiariesRouter.post ('/', auth, saveDiaries); 
 savedDiariesRouter.get ('/', auth,  getSavedDiaries);
-savedDiariesRouter.delete ('/', auth, deleteSavedDiaries);
+savedDiariesRouter.delete ('/:savedId', auth, deleteSavedDiaries);
