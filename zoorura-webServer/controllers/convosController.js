@@ -29,7 +29,7 @@ export const getConvos = async  (req, res) => {
 
             const{host, guest, members, type, tip, intro} = req.body;
             
-            const newConvo = await ConvosModel.create({members:members, guest:guest, host: host, createdOn: new Date(), dateRank: Date.now(), type: type, tip:tip});
+            const newConvo = await ConvosModel.create({members:members, guest:guest, host: req.userId, createdOn: new Date(), dateRank: Date.now(), type: type, tip:tip});
 
             console.log("CONVO MEM: "+ newConvo);
             

@@ -98,6 +98,81 @@ io.on("connection", (socket)=> {
 
         }
     });
+
+    //Typing
+     socket.on("sendTypingMessage", ({typingMessageData})=>{
+        try{
+
+        console.log(users);
+        console.log(typingMessageData);
+        console.log(typingMessageData.receiverId);
+        const receiver = getUser(typingMessageData.receiverId);
+        console.log(receiver);
+
+            io.to(receiver.socketId).emit("getTypingMessage", {
+                
+                convoId:typingMessageData.convoId,
+                senderId:typingMessageData.senderId,
+                receiverId:typingMessageData.receiverId,
+
+            });
+        }catch(error){
+
+            console.log(error);
+
+        }
+    });
+
+     //User Online
+     socket.on("checkUserOnline", ({checkData})=>{
+        try{
+
+        console.log(users);
+        console.log(checkData);
+        const checked = getUser(checkData.checkedId);
+        const checker = getUser(checkData.checkerId);
+        console.log(checker);
+
+                if(checked){
+                    if(checked.socketId.length>0){
+
+                        io.to(checker.socketId).emit("checkedUserOnline", {
+                            
+                            checkedId: checkData.checkedId,
+                            checkerId: checkData.checkerId
+
+                        });
+                        console.log('online')
+
+                    }else{
+                        io.to(checker.socketId).emit("checkedUserOflline", {
+                            
+                            checkedId: checkData.checkedId,
+                            checkerId: checkData.checkerId
+
+                        });
+                    }
+                }else{
+                    if(checker){
+
+                            io.to(checker.socketId).emit("checkedUserOffline", {
+                            
+                            checkedId: checkData.checkedId,
+                            checkerId: checkData.checkerId
+
+                        
+                        });
+                    }
+                    console.log('offline')
+                }
+           
+
+        }catch(error){
+
+            console.log(error);
+
+        }
+    });
     
     
     

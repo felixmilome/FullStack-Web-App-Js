@@ -12,6 +12,7 @@ function RightbarMob({user, setpopContacts, unreadMessages}){
     const[popChatBox, setpopChatBox] = useState(false);
     const[displayed, setDisplayed] = useState(null);
     const[viewer, setViewer] = useState(null);
+    
     const[convoId, setConvoId] = useState(null); 
     const convos = useSelector((state) => state.convosReducer);
     const convoState = useSelector((state) => state.convoStateReducer);
@@ -86,7 +87,7 @@ return (
                                             }} >
 
                                             <RightbarmobRow popChatBox={popChatBox}  setpopChatBox={setpopChatBox} 
-                                            Src = {convo.guest.dpUrl} title ={unreadConvoMessage.length} GuestName= {convo.guest.userName} Points= {convo.tip} /> 
+                                            Src = {convo.guest.dpUrl} guestId={convo.guest._id} title ={unreadConvoMessage.length} GuestName= {convo.guest.userName} Points= {convo.tip} /> 
                                            
                                             {/* {popChatBox && 
                                                 <ContactMod setpopChatBox={setpopChatBox} convoId={convo._id} guest={JSON.parse(guest)} host={JSON.parse(host)}/>
@@ -113,15 +114,15 @@ return (
                                         
                                             onClick ={()=>{
                                                 chatSetterInverse(convo.guest, convo.host, convo._id)
-                                            }
+                                            } 
                                             }>
                                                 {unreadConvoMessage.length &&
                                                         <RightbarmobRow key={convo._id} popChatBox={popChatBox} setpopChatBox={setpopChatBox} 
-                                                         Src = {convo.host.dpUrl} title ={unreadConvoMessage.length} GuestName= {convo.host.userName} Points= {convo.tip} />
+                                                         Src = {convo.host.dpUrl} guestId={convo.host._id} title ={unreadConvoMessage.length} GuestName= {convo.host.userName} Points= {convo.tip} />
                                                 }
                                                 {unreadConvoMessage.length === 0 &&
                                                         <RightbarmobRow key={convo._id} popChatBox={popChatBox} setpopChatBox={setpopChatBox} 
-                                                        Src = {convo.host.dpUrl} title ={unreadConvoMessage.length} GuestName= {convo.host.userName} Points= {convo.tip} />
+                                                        Src = {convo.host.dpUrl} guestId={convo.host._id} title ={unreadConvoMessage.length} GuestName= {convo.host.userName} Points= {convo.tip} />
                                                 }
                                             {/* {popChatBox && 
                                                 <ContactMod setpopChatBox={setpopChatBox} convoId={convo._id} guest={host} host={guest}/>

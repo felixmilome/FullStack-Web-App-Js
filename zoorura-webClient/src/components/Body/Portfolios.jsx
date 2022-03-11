@@ -14,16 +14,17 @@ import {getMiniProfileAction, followAction, blockAction} from "../Midwares/rdx/a
 import { useEffect } from 'react';
 import ConvoForm from './ConvoForm.jsx'; 
 import {SurePop} from "./SurePop.jsx";
+import ContactModIndi from "../Modals/ContactModIndi.jsx";
 
 
-function Portfolios(diaryId, setDiaryId) { 
+function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) { 
 
         const {profileName} = useParams();
         console.log(profileName);
 
         const dispatch = useDispatch();
 
-        useEffect(() => {
+        useEffect(() => { 
             dispatch(getMiniProfileAction(profileName));   
         }, [profileName]);
     
@@ -35,6 +36,7 @@ function Portfolios(diaryId, setDiaryId) {
     const[dpCropper, setdpCropper] = useState(false);
     const [Ifollow, setIfollow] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [contactsIndi, setContactsIndi] = useState(false);
     const [loadingButtons, setLoadingButtons] = useState(false);
     const [blockSurePop, setBlockSurePop] = useState(false);
    
@@ -44,9 +46,17 @@ function Portfolios(diaryId, setDiaryId) {
     const [members, setMembers] = useState([]);
     const [convoCreator, setconvoCreator] = useState(false);
 
-    const diaries = useSelector((state) => state.diariesReducer);// fetch diaries that are of this user
+    const diaries = useSelector((state) => state.diariesReducer);// remove this code and fetch diaries that are of this user
     const blockFeedback = useSelector((state) => state.blockReducer);
-  
+    const convosAll = useSelector((state) => state.convosReducer);
+    const convoState = useSelector((state) => state.convoStateReducer); 
+    
+
+    const convo = convosAll.filter(convo =>
+     (convo.guest._id == user.result._id && convo.host._id === miniProfile._id)
+     ||(convo.host._id == user.result._id && convo.guest._id === miniProfile._id)
+     );
+    
 
     const setFollowData = async()=>{
         return new Promise((resolve, reject) => {
@@ -79,9 +89,16 @@ function Portfolios(diaryId, setDiaryId) {
 
 }
    const handleConvo = async() =>{
-  
-    setMembers([user.result._id, miniProfile.Id]);
-    setpopConvoForm(true);
+       console.log (convo[0]._id);
+       console.log(convosAll);
+       console.log (convoState);
+    if(convo.length < 1 && convoState !== 'SearchingConvo'){  
+        setMembers([user.result._id, miniProfile.Id]);
+        setpopConvoForm(true);
+    }else if (convo.length > 0 && convoState === 'YesConvo'){
+       setpopContacts(false);
+       setContactsIndi(true);
+    }
 
     // dispatch(createConvoAction(followData));
     // console.log(followData);
@@ -98,6 +115,7 @@ function Portfolios(diaryId, setDiaryId) {
         
     
        <div className="">
+        {contactsIndi && <ContactModIndi convoId={convo[0]._id} setContactsIndi={setContactsIndi} displayed= {miniProfile} viewer = {user.result}/>}
             {blockFeedback !=='Success' && blockError &&
                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
                            <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
@@ -201,7 +219,12 @@ function Portfolios(diaryId, setDiaryId) {
                                                                     <div onClick= {handleConvo} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
                                                                         <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Convo/Chat</p> 
                                                                         <HiOutlineChatAlt2 />
-                                                                    </div>
+                                                                      
+                                                                       
+                                                                     
+                                                               </div>
+
+                                
 
                                                                 <div onClick= {()=>setBlockSurePop(true)} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
                                                                         <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Block</p> 

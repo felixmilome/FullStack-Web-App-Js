@@ -12,8 +12,12 @@ import {postNotificationsAction} from '../Midwares/rdx/actions/notificationsActi
 function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
     const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:''});
+    const[online, setOnline] = useState(false);
+    const[checkData, setCheckData] = useState({checkedId: displayed._id, checkerId: viewer._id});
+     const[typingMessageData, setTypingMessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id});
     const[notificationData, setnotificationData] = useState({sender:viewer._id, receiver:displayed._id, body:'', type: ''});
     const[socketNotificationData, setsocketNotificationData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiver:displayed._id, body:'', type: ''});
+     const[typingNotifier, setTypingNotifier] = useState(false);
     const dispatch = useDispatch(); 
 
     const diaries = useSelector((state) => state.diariesReducer);
@@ -62,6 +66,62 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         })
     }, []);
 
+    //  useEffect(() => {
+    //       socket.current.emit("checkUserOnline", {
+    //        checkData
+    //     });
+    //   }, []);
+
+      var intervalId = window.setInterval(function(){
+
+           socket.current.emit("checkUserOnline", {
+           checkData
+        });
+        
+      }, 120000);
+
+      useEffect(() => {
+        socket.current.on("checkedUserOnline", checkDataResponse =>{
+            console.log(checkDataResponse);
+            console.log("User Online");
+
+            if (checkDataResponse.checkedId === displayed._id){
+              setOnline(true);
+            }
+
+        })
+    }, []);
+
+     useEffect(() => {
+        socket.current.on("checkedUserOffline", checkDataResponse =>{
+            console.log(checkDataResponse);
+            console.log("User Offline");
+
+            if (checkDataResponse.checkedId === displayed._id){
+              setOnline(false);
+            }
+
+        })
+    }, []);
+
+   
+    
+     useEffect(() => {
+        socket.current.on("getTypingMessage", typingMessageData =>{
+            console.log(typingMessageData);
+            console.log("Typing Message Gotten");
+
+            if(typingMessageData.convoId === convoId && typingNotifier== false ){
+                
+                setTypingNotifier(true);
+                setTimeout( function() {setTypingNotifier(false)}, 5000);
+                
+            }
+            
+            
+        })
+    }, []);
+ 
     const notifier = () =>{
         dispatch(postNotificationsAction(notificationData, socketNotificationData, socket));
     }
@@ -78,7 +138,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     }
 
     return (
-        <div className="border-gray-300 fixed top-24 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
+        <div className="z-20 border-gray-300 fixed top-24 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
             {/* Top Part */}
             <div className="fixed z-20 
             border-b-2 border-gray-200
@@ -86,16 +146,28 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
              w-full xl:w-1/4  flex  
              justify-between items-center">
 
-                <div className="flex items-center space-x-2
+                <div style={{wordBreak: 'break-word'}} className="flex items-center space-x-2
                  bg-transparent justify-around 
                  p-0.5 px-2 rounded-full 
                  text-xs
-                  font-bold
+                  font-bold 
                    text-gray-500">
-                    <img src={displayed.dpUrl} alt="DP" className="rounded-full object-cover h-8 w-8 m-0.5"/>    
+                    <div className='relative'>
+                        <img src={displayed.dpUrl} alt="DP" className="rounded-full object-cover h-8 w-8 m-0.5"/>    
+                         {online ===true && <div className= 'absolute top-0 right-0 w-3 h-3 justify-center text-white items-center p-1 rounded-full border-2 border-white bg-cyan-400'>
+                        {/* dot */}
+                        </div>}
+                         {online ===false && <div className= 'absolute top-0 right-0 w-3 h-3 justify-center text-white items-center p-1 rounded-full border-2 border-white bg-gray-400'>
+                        {/* dot */}
+                        </div>}
+                    </div>
+                    <div className='items-center '>
                     <p>@{displayed.userName}</p>
+                    {typingNotifier && <p className='text-cyan-500' >Typing...</p>}
+                    </div>
+                    
                 </div>
-                <div className="mx-5 space-x-4 sm:space-x-2 bg-transparent flex items-center justify-around">
+                <div className="mx-1 space-x-2 sm:space-x-2 bg-transparent flex items-center justify-around">
                     <div className="hover:bg-cyan-400
                      p-1 rounded-full cursor-pointer group">
                         <VideoCameraIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
@@ -152,14 +224,27 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                 }
 
                     <div className="w-full items-center">
-                               
+                                  {/* <div className='w-full h-8 flex justify-center'>
+                                     {typingNotifier && <div className='flex font-semibold text-gray-500 items-center space-x-1 py-1 px-3  bg-gray-300 rounded-full'>
+                                        <p>{displayed.userName} is Typing</p>
+                                       <BeatLoader size={10} color='white' loading/>
+                                        
+                                    </div>}
+                                  </div> */}
                                 <div className='flex justify-end'>
+                                
                                     <div className=' m-1 p-1 rounded-full flex bg-cyan-200 w-3/4'>
                                         <div className='p-2 bg-gray-100 rounded-xl w-full'>
                                         
                                         <textarea 
                                         value={messageData.body}
                                         onChange={(e)=>{
+                                            socket.current.emit("sendTypingMessage", {
+                                                    typingMessageData
+                                                });
+                                                socket.current.emit("checkUserOnline", {
+                                                  checkData
+                                                });
                                              setmessageData({...messageData, body: e.target.value});
                                             setnotificationData({...notificationData, body: e.target.value, type:'message'});
                                             setsocketNotificationData({...socketNotificationData, body: e.target.value, type:'message'});
@@ -184,6 +269,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                         }
                                   
                                          <div ref={messagesEndRef} />
+                                      
                                 </div>
                                   
                                 

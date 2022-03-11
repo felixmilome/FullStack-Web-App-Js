@@ -23,13 +23,15 @@ import{ForgotPassword} from '../components/Body/ForgotPassword.jsx'
 
 function Home({showProfile}) {
 
+     const[popContacts, setpopContacts] = useState(false);
+
     const dispatch = useDispatch();
 
 
     // const agent = navigator.userAgent;
 
     // console.log(agent)
-
+ 
 
     useEffect(() => {
         dispatch(getHallFameAction());
@@ -44,15 +46,15 @@ function Home({showProfile}) {
        
     
             
-                <Header/> 
+                <Header setpopContacts= {setpopContacts} popContacts={popContacts}/>  
                 <Leftbar/>  
              
                
            
                     <Routes>
                         <Route exact path ="/securityChange/:change/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
-                        
-                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                         
+                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} setpopContacts={setpopContacts} popContacts={popContacts} />}/>
                         <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>  
                         <Route exact path ="/ForgotPassword" element = {<ForgotPassword/>}/>                 
                         <Route exact path ="*" element ={<NoPage/>}/>

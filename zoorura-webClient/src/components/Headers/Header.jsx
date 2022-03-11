@@ -30,7 +30,7 @@ import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {io} from 'socket.io-client'
 
-function Header() {
+function Header({popContacts, setpopContacts}) {
 
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     //console.log(user);
@@ -39,7 +39,7 @@ function Header() {
     const[popNotifications, setpopNotifications] = useState(false);
     const[popCart, setpopCart] = useState(false);
     const[popRankings, setpopRankings] = useState(false);
-    const[popContacts, setpopContacts] = useState(false);
+   
     const[popDailyPoints, setpopDailyPoints] = useState(false);
    
     const[popLogin, setpopLogin] = useState(false);
@@ -114,10 +114,10 @@ function Header() {
                 if(user){
 
                     socketRef.current.emit("addUser",  user.result._id);
-                    socketRef.current.on("getUsers", users=>{
-                        console.log(users)
-                        console.log(user.result._id)
-                    }); 
+                    // socketRef.current.on("getUsers", users=>{
+                    //     console.log(users)
+                    //     console.log(user.result._id)
+                    // }); 
 
                 }
 
@@ -155,12 +155,12 @@ function Header() {
 
                     socketRef.current.on("getNotification", socketNotificationData =>{
                     console.log(socketNotificationData);
-                    console.log("Notification Gotten");
-                    dispatch ({type: 'SOCKET_GOT_NOTIFICATION', payload: socketNotificationData});
+                    console.log("Notification Gotten"); 
+                    dispatch ({type: 'SOCKET_GOT_MESSAGE_NOTIFICATION', payload: socketNotificationData});
                     console.log(notifications);
         
-                 })
-                }
+                 }) 
+                }   
             }, []);
 
 
