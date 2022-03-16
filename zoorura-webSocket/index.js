@@ -59,6 +59,8 @@ io.on("connection", (socket)=> {
                 senderId:messageData.senderId,
                 receiverId:messageData.receiverId,
                 body:messageData.body,
+                file:messageData.file,
+                type:messageData.type,
                 createdOn:new Date(),
                 dateRank:Date.now(),
 

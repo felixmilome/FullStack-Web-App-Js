@@ -89,9 +89,9 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
 
 }
    const handleConvo = async() =>{
-       console.log (convo[0]._id);
-       console.log(convosAll);
-       console.log (convoState);
+    //    console.log (convo[0]._id);
+    //    console.log(convosAll);
+    //    console.log (convoState);
     if(convo.length < 1 && convoState !== 'SearchingConvo'){  
         setMembers([user.result._id, miniProfile.Id]);
         setpopConvoForm(true);
@@ -185,7 +185,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                         <>
                                             <div className='rounded-md'>
                                                     <div className= "mx-3 space-y-2 rounded-xl text-xs  bg-transparent items-center mt-4 mb-3 group">
-                                                        <img onClick={()=>{setdpCropper(true)}} src={miniProfile.dpUrl} alt="" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
+                                                        <img onClick={()=>{setdpCropper(true)}} src={miniProfile.dpUrl} alt="" className="mx-auto rounded-full group-hover:text-white h-32 w-32"/>
                                                         <p className= "text-gray-600 leading-3 text-center text-base font-bold ">@{miniProfile.userName}</p>
                                                     <div className="bg-gray-100 rounded-md items-center">
                                                         <p className= "w-1/2 m-auto text-gray-600 leading-4 text-center font-light break-words ">{miniProfile.bio} </p> 

@@ -15,7 +15,7 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
     const[freeConvoData, setfreeConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: 0, intro:''});
     const[tipConvoData, settipConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: 30, intro:''}); //miniProfile.convoTip
 
-    const[messageData, setmessageData] = useState({convoId: user.result._id, senderId: user.result._id, receiverId: miniProfile._id, body:''});
+    const[messageData, setmessageData] = useState({convoId: user.result._id, senderId: user.result._id, receiverId: miniProfile._id, body:'', type:'text'});
 
     const dispatch = useDispatch();
 

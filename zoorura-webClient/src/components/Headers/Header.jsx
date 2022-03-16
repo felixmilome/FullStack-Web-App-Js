@@ -252,7 +252,7 @@ function Header({popContacts, setpopContacts}) {
                     <div  className="cursor-pointer  rounded-full hover:bg-gray-200 bg-transparent flex items-center justify-between">
                                 
                                 <div className= 'rounded-full items-center  bg-gray-100 object-cover'>
-                                    <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
+                                    <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-16 sm:w-16"/>
                                 </div>
 
                             

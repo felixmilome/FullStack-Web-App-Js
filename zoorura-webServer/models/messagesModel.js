@@ -17,7 +17,14 @@ const messagesSchema = mongoose.Schema({
         body: {
                 type: String,
                 default: null,
-                required:true
+                }, 
+        file: {
+                type: String,
+                default: null,
+                },
+        type: {
+                type: String,
+                default: null,
                 },       
         createdOn: {
                 type: Date,
