@@ -13,18 +13,32 @@ export const getReviewsAction = (postId) => async (dispatch) => {
         console.log(error);
 
         return false; 
-    }
+    } 
 }
 
 
-export const postReviewsAction = (reviewData, setreviewData, setReviewLoading, setReviewDelivery) => async (dispatch) => {
+export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, setReviewDelivery, socket) => async (dispatch) => {
     console.log("postReview Action Act");
     try{
-        const {data} = await axs.postReviewsApi(reviewData);  
+        const {data} = await axs.postReviewsApi(reviewData1);  
         // dispatch ({type: 'POST_REVIEW', payload: data});
         console.log(data);
         const newReview = data.newReview;
+        const newNotification = data.newNotification;
         const reviewedPost = data.reviewedPost;
+
+        const socketNotificationData = data.newNotification;
+        const reviewData = data.newReview;
+
+        //reviewNotifier(data.newNotification, data.newReview);
+
+        socket.current.emit("sendNotification", {
+            socketNotificationData        
+        });
+        
+        socket.current.emit("sendReview", {
+            reviewData
+        });  
 
         dispatch ({type: 'POST_REVIEW', payload: newReview});
         dispatch ({type: 'REVIEW_DIARY', payload: reviewedPost});
@@ -54,6 +68,7 @@ export const patchReviewsAction = (reviewData, setReviewLoading, setReviewDelive
         setTimeout( function() {setReviewDelivery(false)}, 2000);
         setReviewLoading(false);
         setReviewEditor(false)
+        
         
         
     } catch(error) {  

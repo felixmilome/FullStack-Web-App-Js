@@ -24,8 +24,8 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     const[progress,setProgress]= useState(0);
     const[checkData, setCheckData] = useState({checkedId: displayed._id, checkerId: viewer._id});
      const[typingMessageData, setTypingMessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id});
-    const[notificationData, setnotificationData] = useState({sender:viewer._id, receiver:displayed._id, body:'', type: ''});
-    const[socketNotificationData, setsocketNotificationData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiver:displayed._id, body:'', type: ''});
+    const[notificationData, setnotificationData] = useState({sender:viewer._id, receiver:displayed._id, body:'', postId:convoId, type: ''});
+    const[socketNotificationData, setsocketNotificationData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiver:displayed._id, body:'',postId:convoId, type: ''});
      const[typingNotifier, setTypingNotifier] = useState(false);
      const[fileData, setFileData] = useState('');
      const[imageBlob, setImageBlob] = useState(''); 
@@ -66,7 +66,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     }
 
     useEffect(() => {
-        scrollToBottom()
+        scrollToBottom() 
     }, [messages]);
 
     useEffect(() => {
@@ -79,13 +79,14 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         })
     }, []);
 
-    //  useEffect(() => {
-    //       socket.current.emit("checkUserOnline", {
-    //        checkData
-    //     });
-    //   }, []);
+     useEffect(() => {
+          socket.current.emit("checkUserOnline", {
+           checkData
+        });
+      }, []);
 
-      var intervalId = window.setInterval(function(){
+    //   var intervalId = 
+      setInterval(function(){
 
            socket.current.emit("checkUserOnline", {
            checkData
@@ -132,7 +133,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
             }
             
             
-        })
+        }) 
     }, []);
  
     const notifier = () =>{

@@ -148,18 +148,37 @@ function Header({popContacts, setpopContacts}) {
                 }
             }, [dispatch]);
 
+            //GETSOCKETS========================
+
+
             useEffect(() => {
                 if(user){
 
                     dispatch(getNotificationsAction(user.result._id));
+ 
+                        socketRef.current.on("getNotification", socketNotificationData =>{
+                        console.log(socketNotificationData);
+                        console.log("Notification Gotten"); 
+                    
+                        dispatch ({type: 'SOCKET_GOT_NOTIFICATION', payload: socketNotificationData});
+                        console.log(notifications);
+                        })
+                        
+                        //ReviewSocket
+                        socketRef.current.on("getReview", reviewData =>{
+                        console.log(reviewData);
+                        console.log("review Gotten");
 
-                    socketRef.current.on("getNotification", socketNotificationData =>{
-                    console.log(socketNotificationData);
-                    console.log("Notification Gotten"); 
-                    dispatch ({type: 'SOCKET_GOT_MESSAGE_NOTIFICATION', payload: socketNotificationData});
-                    console.log(notifications);
-        
-                 }) 
+                            if(reviewData.reviewData.reviewerId !== user.result.Id){  //prevent spam since already posted when posting  
+                            dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData.reviewData}); //double since hasnt been dismantled
+                            console.log('now posting review');
+                            }
+
+                        }) 
+ 
+
+
+
                 }   
             }, []);
 

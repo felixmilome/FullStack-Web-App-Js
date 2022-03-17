@@ -2,6 +2,7 @@ import {TipsModel} from "../models/tipsModel.js";
 import {UsersModel} from "../models/usersModel.js";
 import {ReviewsModel} from "../models/reviewsModel.js";
 import {DiariesModel} from "../models/diariesModel.js";
+import {NotificationsModel} from "../models/notificationsModel.js";
 import  mongoose  from "mongoose";
 
 
@@ -27,7 +28,7 @@ export const postReview = async  (req, res) => {
     const{reviewedId, reviewedPostId, body} = req.body //receivername for Records
     const userId = req.userId
     
-    console.log(req.body);
+ //console.log(req.body);
         try{  
                 if (body.length < 1 || body.length > 2000 || !mongoose.Types.ObjectId.isValid(reviewedId) || !mongoose.Types.ObjectId.isValid(reviewedPostId)) {
                     res.json("Validation Error");
@@ -37,15 +38,21 @@ export const postReview = async  (req, res) => {
                             const newReview = await ReviewsModel.findById(unpopulatedNewReview._id)
                             .populate('reviewerMiniProfile', 'dpUrl userName');
                             
-                            console.log(newReview);
+                           // console.log(newReview);
 
-
+ 
                             const unpopulatedReviewedDiary = await DiariesModel.findByIdAndUpdate(reviewedPostId, { $push: { "reviewers": userId}}, { new: true });
                             const reviewedDiary = await DiariesModel.findById(unpopulatedReviewedDiary._id)
                             .populate('diaryMiniProfile', 'dpUrl userName');
-                            res.json({newReview:newReview, reviewedPost:reviewedDiary});
-                            
+                           
+                            const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:'', postId:reviewedPostId, read: false,  type: 'review', createdOn: new Date(), dateRank: Date.now()});
+                            const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+                            .populate('sender', 'dpUrl userName'); 
+
+                            res.json({newReview:newReview, newNotification:newNotification, reviewedPost:reviewedDiary});
+
                             console.log(newReview);
+                            console.log(newNotification);
                             
                 }  
             

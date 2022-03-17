@@ -7,9 +7,8 @@ export const postNotificationsAction = (notificationData, socketNotificationData
     dispatch({type:'POST_NOTIFICATIONS', payload: data});
 
     socket.current.emit("sendNotification", {
-        socketNotificationData 
-       
-     });
+        socketNotificationData    
+     }); 
      console.log('socketpostnotify');
      
     }

@@ -721,7 +721,7 @@ export const getMiniProfile = async(req,res) => {
 export const follow =  async (req, res)=> {
 
   const {follower, followed} = req.body;
-     
+      
     try{
       const followerUser = await UsersModel.findById (follower);
       console.log(followerUser.follows);
@@ -731,7 +731,7 @@ export const follow =  async (req, res)=> {
         const updatedFollower= await UsersModel.findByIdAndUpdate (follower, { $pull: { "follows": followed }}, { new: true });
         const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $pull: { "followers": updatedFollower._id }}, { new: true });
         const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
-        res.json(miniProfile);
+        res.json({miniProfile});
         console.log("followed");
 
     
@@ -740,7 +740,13 @@ export const follow =  async (req, res)=> {
         const updatedFollower = await UsersModel.findByIdAndUpdate (follower, { $push: { "follows": followed }}, { new: true });
         const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $push: { "followers": updatedFollower._id }}, { new: true });
         const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
-        res.json(miniProfile);
+        
+        const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:followed, body:'', postId:followed, read: false,  type: 'follow', createdOn: new Date(), dateRank: Date.now()});
+        const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+        .populate('sender', 'dpUrl userName');
+        
+        
+        res.json({miniProfile:miniProfile, newNotification:newNotification});
         console.log("unfollowed");
     }
   

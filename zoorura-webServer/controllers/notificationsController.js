@@ -7,7 +7,6 @@ export const getNotifications = async  (req, res) => {
 
     try{ 
         const notifications = await NotificationsModel.find({receiver: { $in: [ id ] } }).sort({"dateRank":-1})
-        .populate('receiver', 'dpUrl userName')
         .populate('sender', 'dpUrl userName');
         console.log(notifications);
         res.status(200).json(notifications);

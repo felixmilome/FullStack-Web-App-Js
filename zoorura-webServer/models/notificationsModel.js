@@ -5,27 +5,38 @@ const notificationsSchema = mongoose.Schema({
  
         sender: { 
                 type: Schema.Types.ObjectId,
-                ref: 'UsersModel',        
+                ref: 'UsersModel',
+                required:true       
                  },
         receiver: { 
                 type: Schema.Types.ObjectId,
-                ref: 'UsersModel'           
+                ref: 'UsersModel',
+                required:true          
                 }, 
+        receiverId: {
+                type: String,
+                default: null,
+        },
         body: {
                 type: String,
                 default: null,
-                required:true
                 }, 
+        postId: {
+                type: String,
+                required:true,
+                default: null
+        },
         read: {
                 type: Boolean,
                 default: false,
         }, 
         type: {
                 type: String,
+                required:true
         },  
         link: {
                 type: String,
-                default: ''
+                default: null
         },      
         createdOn: {
                 type: Date,

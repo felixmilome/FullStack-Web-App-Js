@@ -102,13 +102,22 @@ export const getMiniProfileAction = (profileName) => async (dispatch) => {
         }
           
 }
-export const followAction = (followData) => async (dispatch) => {
+export const followAction = (followData, setLoadingButtons, socket) => async (dispatch) => {
 
     try{
-        const {data} = await axs.followApi(followData); 
-        dispatch ({type: 'FOLLOW', data});
+        const {data} = await axs.followApi(followData);
+        const miniProfile= data.miniProfile;
+
+        dispatch ({type: 'FOLLOW', data:miniProfile}); 
         console.log('followed');
-        console.log(data);
+        console.log(data); 
+
+        setLoadingButtons(false);
+
+       const socketNotificationData = data.newNotification;
+        socket.current.emit("sendNotification", {
+            socketNotificationData        
+        });
     
     } catch(error) { 
         console.log(error);

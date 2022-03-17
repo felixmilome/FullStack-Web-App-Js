@@ -47,6 +47,7 @@ import {Link} from 'react-router-dom';
 
 
 
+
 function PostFrame({diary, diaryId, setDiaryId}) {
 
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -56,7 +57,8 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type: '', amount: null});
     //const[reviewData, setreviewData] = useState({reviewer: user.result.userName, reviewerId:user.result._id, body: ''});
     const[reviewData, setreviewData] = useState({reviewedId:'', reviewedPostId:'', body: ''});
-    const [displayerData, setDisplayerData] = useState({diary: diary._id, owner:diary.creator});
+    const[socketReviewData, setSocketReviewData] = useState({reviewerId:user.result._id, reviewerMiniProfile:{_id: user.result._id, dpUrl: user.result.dpUrl, userName:user.result.userName}, reviewedMiniProfile:diary.creator, reviewedPostId:diary._id, body: ''});
+    const [socketReviewNotification, setSocketReviewNotification] = useState({sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiver:diary.creator, body:'',postId:diary._id, type: 'review'});
     const [displayData, setDisplayData] = useState({
         title:diary.title, caption:diary.caption, media:diary.media, creator:diary.creator, file: diary.file, type: 'display', originalId:diary._id
     }); 
@@ -74,6 +76,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[reviewDelivery, setReviewDelivery] = useState(false); 
     const[reviewDisplay, setReviewDisplay] = useState(false); 
     const[popDisplayPosted, setPopDisplayPosted] = useState(false); 
+
+    const socket = useSelector((state) => state.socketReducer);
+
     const navigate = useNavigate();
 
     
@@ -107,12 +112,27 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         console.log(tips);
     
 
+
+
+    // const reviewNotifier= (notificationRes, reviewRes) =>{
+ 
+    //     socket.current.emit("sendNotification", {
+    //         notificationRes            
+    //      });
+
+    //      socket.current.emit("sendReview", {
+    //         reviewRes  
+    //      });  
+    //      console.log(notificationRes);    
+    //      console.log(reviewRes);
+
+    // }    
     const reviewDiary = () =>{
 
         setReviewLoading(true);
        
         try{
-            dispatch(postReviewsAction(reviewData, setreviewData, setReviewLoading, setReviewDelivery));
+            dispatch(postReviewsAction(reviewData, setreviewData, setReviewLoading, setReviewDelivery, socket));
             console.log(reviewData);
         }
         catch(error){
@@ -776,7 +796,12 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             
 
                             <textarea value= {reviewData.body}
-                            onChange={(e)=> setreviewData({reviewedId:diary.creator, reviewedPostId:diary._id, body: e.target.value})}
+                            onChange={(e)=> {
+                                
+                                setreviewData({reviewedId:diary.creator, reviewedPostId:diary._id, body: e.target.value});
+                                setSocketReviewData({...socketReviewData, body: e.target.value});
+
+                            }}
                             type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                     
                     </div>

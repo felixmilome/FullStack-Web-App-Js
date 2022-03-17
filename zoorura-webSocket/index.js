@@ -19,7 +19,7 @@ const getUser = (userId) => {
     return users.find(user => user.userId === userId);
     
 
-}
+} 
 
 const removeUser = (socketId) =>{
     users = users.filter(user=>user.socketId !== socketId)
@@ -88,7 +88,8 @@ io.on("connection", (socket)=> {
                 sender:socketNotificationData.sender,
                 receiver:socketNotificationData.receiver,
                 body:socketNotificationData.body,
-                read:false,
+                postId:socketNotificationData.postId,
+                read:false, 
                 type:socketNotificationData.type,
                 createdOn:new Date(),
                 dateRank:Date.now(), 
@@ -170,6 +171,28 @@ io.on("connection", (socket)=> {
            
 
         }catch(error){
+
+            console.log(error);
+
+        }
+    });
+
+    //Review
+    socket.on("sendReview", ({reviewData})=>{
+        try{
+
+  
+        console.log(reviewData);
+       
+        const receiver = getUser(reviewData.reviewedMiniProfile);
+        console.log(receiver);
+
+            io.to(receiver.socketId).emit("getReview", {
+                
+                reviewData
+ 
+            });
+        }catch(error){ 
 
             console.log(error);
 

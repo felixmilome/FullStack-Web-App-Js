@@ -11,13 +11,13 @@ function RightbarmobRow({Src, guestId, title, GuestName, Points, setpopChatBox})
    const socket = useSelector((state) => state.socketReducer);
   console.log(socket);
  
-    // useEffect(() => {
-    //       socket.current.emit("checkUserOnline", {
-    //        checkData
-    //     });
-    //   }, []);
+    useEffect(() => {
+          socket.current.emit("checkUserOnline", {
+           checkData
+        });
+      }, []);
 
-      var intervalId = window.setInterval(function(){
+      setInterval(function(){
 
            socket.current.emit("checkUserOnline", {
            checkData

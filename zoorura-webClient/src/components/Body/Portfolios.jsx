@@ -51,6 +51,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
     const convosAll = useSelector((state) => state.convosReducer);
     const convoState = useSelector((state) => state.convoStateReducer); 
     
+    const socket = useSelector((state) => state.socketReducer);
 
     const convo = convosAll.filter(convo =>
      (convo.guest._id == user.result._id && convo.host._id === miniProfile._id)
@@ -71,9 +72,9 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
         });
     }
    const handleFollow = async() =>{
-  
+        setLoadingButtons(true);
         const followData = await setFollowData();
-        dispatch(followAction(followData));
+        dispatch(followAction(followData, setLoadingButtons, socket));
         console.log(followData);
         console.log(user.result._id);
         console.log(miniProfile._id);
