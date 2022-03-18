@@ -9,17 +9,20 @@ import { urIg, urTk, urYt, urSn, urPn, urRd, urFb, urDr, urTch } from "../Midwar
 import{BsInstagram, BsTwitch, BsFileEarmarkImageFill, BsLink45Deg, BsFileEarmarkMinus} from "react-icons/bs";
 import{RiSoundcloudLine, RiPinterestLine, RiRedditFill} from "react-icons/ri";
 import {BiUnlink} from 'react-icons/bi';
+import {BeatLoader} from "react-spinners";
+
 import{ImReddit, ImWordpress, ImYoutube2} from "react-icons/im";
 import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
-import {MdFileUpload, MdOutlineUploadFile, MdVideoLibrary,MdLibraryMusic, MdPictureAsPdf } from "react-icons/md";
+import {MdFileUpload, MdOutlineUploadFile, MdVideoLibrary,MdSearch, MdLibraryMusic, MdPictureAsPdf } from "react-icons/md";
 import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, AudioForm, VideoForm, PdfForm} from "./PostForms/Previews.jsx";
 
 
-import {useDispatch} from 'react-redux'; 
+import {useDispatch, useSelector} from 'react-redux'; 
 import { postDiariesAction, getDiariesAction } from "../Midwares/rdx/actions/diariesAction.js";
-import PostFRow from "./PostFRow.jsx";
+import { searchMiniProfileAction } from "../Midwares/rdx/actions/profileAction.js";
+import PostFRow from "./PostFRow.jsx"; 
 
 import VideoPlayer from 'react-video-js-player'
 
@@ -31,16 +34,20 @@ import {yupResolver} from "@hookform/resolvers/yup";
 //firebase
 import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
+import { PostFormTagSearch } from './PostFormTagSearch.jsx';
+import { GiDiamondTrophy } from 'react-icons/gi';
 
 
 
 function PostForm() {
-
+    const [tagObjArray, setTagObjArray] = useState([])
+    const [tagArray, setTagArray] = useState([])
     const [diariesData, setdiariesData] = useState({
-        title:'', caption:'', file: '', media: '', type: 'diary',  publicity:'',
+        title:'', caption:'', file: '', media: '', type: 'diary',  publicity:'', tags:[]
     }); 
    const[imageBlob, setImageBlob] = useState('');
    const[mediaType, setMediaType] = useState('');
+  
    const[fileData, setFileData] = useState('');
     const dispatch = useDispatch();
 
@@ -51,7 +58,14 @@ function PostForm() {
 
     const [progress, setProgress] = useState(0);
     const[attachment, setAttachment] = useState('link');
+
+    const [searchingName, setSearchingName] = useState(false);
+    const [searchedName, setSearchedName] = useState('');
+    const [searchError, setSearchError] = useState(false);
+
     const[types, setTypes] = useState({image:'image', audio:'audio', video:'video', pdf:'pdf' });
+
+    const searchedMiniProfile = useSelector((state) => state.getMiniProfileReducer);
 
     const postSchema = yup.object().shape({
         title: yup.string().strict(false).trim().required('Title required').max(50),
@@ -112,7 +126,6 @@ function PostForm() {
     });
 
     
-    
    
 
     // const handleImage = async (e)=>{
@@ -138,11 +151,19 @@ const clearUrl_NoSwitch = ()=> {
 }
 
 
-useEffect(() => {
-    if(attachment==='link'){
-        document.getElementById('url').value = '';
-    }
-}, [attachment]);
+    useEffect(() => {
+        if(attachment==='link'){
+            document.getElementById('url').value = '';
+        }
+    }, [attachment]);
+
+    // useEffect(() => {
+    //     if(searchedMiniProfile.userName?.length>0){
+    //     setSearchError(false);
+    //     }
+    // }, []);
+
+
 
 
 
@@ -339,6 +360,10 @@ function readFile(file, type) {
     const getDiaries = async()=>{
         dispatch(getDiariesAction()); 
     }
+    const searchName = async()=>{
+        setSearchingName(true);
+        dispatch(searchMiniProfileAction(searchedName,setSearchingName, setSearchError));  
+    }
 
     const uploadLink = async (url)=>{
 
@@ -443,7 +468,7 @@ function readFile(file, type) {
                         </div>
                 }
                
-                <div className="space-y-5 w-full xl:w-2/5 bg-transparent items-center  z-30  m-4">
+                <div className="space-y-5 w-full xl:w-2/5 bg-gray-200 items-center  z-30  m-4 rounded-md">
                         
                        
                        
@@ -474,7 +499,7 @@ function readFile(file, type) {
                     {/*----- FORM------------------------- */}
                     <form onSubmit={handleSubmit(post)}>
                         <div className= "flex justify-center items-center p-0.5">
-                            <img src="./assets/images/milome.jpeg" alt="DP" className="rounded-full h-7 w-7"/>
+                            <img src={user.result.dpUrl} alt="DP" className="rounded-full h-7 w-7"/>
                         
                         <select 
                         name= "publicity"
@@ -494,7 +519,7 @@ function readFile(file, type) {
 
                                    { attachment === 'link' &&
                                         <>
-                                            <div className= ' items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-500 text-white' >
+                                            <div className= ' items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-400 text-white' >
                                              <div className= 'items-center flex'>
                                               <BsLink45Deg size={20}/> 
                                                link Site
@@ -527,7 +552,7 @@ function readFile(file, type) {
                                             </div>
 
                         
-                                            <div className= 'items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-500 text-white'>
+                                            <div className= 'items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-400 text-white'>
                                                <div className= 'items-center flex'>
                                                     <MdFileUpload size={20}/>
                                                         Upload File
@@ -1019,6 +1044,68 @@ function readFile(file, type) {
                                         <p className='text-xs text-red-700 font-light' >{errors.caption?.message}</p>
                                         </div>
                                     </div>
+                                {/* Endorsement------------- */}
+                                    <div className="m-auto w-3/4">
+                                        <div className='flex bg-transparent h-10'>
+                                        <input name= "endorsement" onChange={(e)=>{
+                                            setSearchedName(e.target.value);
+                                            setSearchError(false);
+                                            console.log(diariesData);
+                                        }}
+                                        placeholder="Tag Endorsers(Optional)" className="text-gray-700 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100"/>
+                                        {/* <p className='mx-3 text-xs text-red-700 font-light' >error</p> */}  
+                                            {searchingName===false && <div onClick={searchName} className="flex justify-center items-center p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
+                                            <MdSearch size={24}/>
+                                            </div> }
+                                            {searchingName===true &&
+                                             <div onClick={searchName} className=" flex justify-center w-16 p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
+                                            <BeatLoader size={7} color='white' loading/>
+                                            </div> 
+                                            }
+                                        </div>
+                                      {searchedMiniProfile.userName?.length > 0 && searchedName != user.result.userName &&
+                                        <div className='flex  justify-center text-xs items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
+                                        <img src={searchedMiniProfile.dpUrl} alt="DP" className="rounded-full h-7 w-7"/>
+                                            <p>@{searchedMiniProfile.userName}</p>
+                                            <div onClick={()=>{
+                                                if(!tagArray.includes(searchedMiniProfile._id) 
+                                                && !tagObjArray.includes(searchedMiniProfile) 
+                                                && tagArray.length < 21 
+                                                ){
+
+                                                  tagObjArray.push(searchedMiniProfile);
+                                                   
+                                                  setdiariesData({
+                                                    ...diariesData,
+                                                     tags:diariesData.tags.concat(searchedMiniProfile._id)
+                                                    });
+                                                    
+                                                }
+                                            }} className="p-0.5 bg-gray-400 cursor-pointer text-gray-100 rounded-md hover:bg-gray-400 items-center">
+                                                <p>add</p>
+                                            </div>
+                                        </div>}
+                                        {searchError===true && searchedMiniProfile ==="NO_USER" && 
+                                        <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
+                                            <p>@{searchedName} Not Found. Ensure they exist</p>
+                                        </div>}
+                                        {searchedName == user.result.userName && 
+                                        <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
+                                            <p>You cant Endorse yourself!</p>
+                                        </div>}
+                                    </div>
+
+                                    {diariesData.tags.length>0 && tagObjArray.length>0 &&
+                                    <div className="flex p-1 flex-wrap w-full bg-transparent rounded-md text-xs space-x-1 justify-center">
+                                            {
+                                                tagObjArray.map((tag) =>(
+                                                    <div key={tag._id} >
+                                                        <PostFormTagSearch diariesData= {diariesData} setdiariesData={setdiariesData} tag={tag} tagArray={tagArray} tagObjArray={tagObjArray} setTagObjArray={setTagObjArray} setTagArray={setTagArray} />
+                                                    </div>
+                                                ))
+                                            }
+                                    </div>}
+                                    
                                     
                                 {/* Button------------- */}
                                     <button type= {progress > 0 ? 'button' : 'submit'} className="items-center mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 

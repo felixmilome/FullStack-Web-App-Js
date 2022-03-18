@@ -102,6 +102,27 @@ export const getMiniProfileAction = (profileName) => async (dispatch) => {
         }
           
 }
+export const searchMiniProfileAction = (searchedName, setSearchingName, setSearchError) => async (dispatch) => {
+
+    try{
+        const {data} = await axs.getMiniProfileApi(searchedName);
+       
+        dispatch ({type: 'GET_MINI_PROFILE', data});
+        console.log('miniprofile fetched');
+
+        if(data === 'NO_USER'){
+            setSearchError(true);
+        } else if(data.userName?.length > 0){
+            setSearchError(false);
+        }
+        setSearchingName(false);
+        
+    
+    } catch(error) { 
+        console.log(error);
+    }
+      
+}
 export const followAction = (followData, setLoadingButtons, socket) => async (dispatch) => {
 
     try{

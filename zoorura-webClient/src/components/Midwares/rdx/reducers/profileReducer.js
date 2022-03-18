@@ -79,7 +79,7 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
             return action?.data;
          
         default:
-            return miniProfile; 
+            return miniProfile;   
             
      }
      
