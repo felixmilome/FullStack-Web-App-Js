@@ -35,6 +35,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
     const user = JSON.parse(localStorage.getItem('profile'));
     const[dpCropper, setdpCropper] = useState(false);
     const [Ifollow, setIfollow] = useState(false);
+    const [followSpam, setFollowSpam] = useState(false);
     const [loading, setLoading] = useState(false);
     const [contactsIndi, setContactsIndi] = useState(false);
     const [loadingButtons, setLoadingButtons] = useState(false);
@@ -74,7 +75,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
    const handleFollow = async() =>{
         setLoadingButtons(true);
         const followData = await setFollowData();
-        dispatch(followAction(followData, setLoadingButtons, socket));
+        dispatch(followAction(followData, setLoadingButtons, socket, setFollowSpam));
         console.log(followData);
         console.log(user.result._id);
         console.log(miniProfile._id);
@@ -113,9 +114,10 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
 //console.log(diaries);
  
     return (
-        
+         
     
        <div className="">
+          
         {contactsIndi && <ContactModIndi convoId={convo[0]._id} setContactsIndi={setContactsIndi} displayed= {miniProfile} viewer = {user.result}/>}
             {blockFeedback !=='Success' && blockError &&
                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
@@ -166,6 +168,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                     }
                     
                         <div className='w-full opacity-90  m-auto  bg-transparent'>
+                  
                             <div className= 'flex m-auto bg-transparent'>
                             <div className="bg-gray-100 w-full lg:w-2/5 rounded-lg  text-gray-700 m-auto justify-around text-center items-center p-2 ">
                                 
@@ -200,6 +203,11 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                                     
                                                     {user &&
                                                     <div className= 'flex justify-center text-sm items-center'>
+                                                    { followSpam == true &&
+                                                            <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
+                                                            <p> Todays Follow Limit(100) reached! Try Tomorrow </p>
+                                                            </div>
+                                                     } 
                                                        
                                                     {loadingButtons===false && 
                                                         <>

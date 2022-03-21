@@ -123,22 +123,28 @@ export const searchMiniProfileAction = (searchedName, setSearchingName, setSearc
     }
       
 }
-export const followAction = (followData, setLoadingButtons, socket) => async (dispatch) => {
+export const followAction = (followData, setLoadingButtons, socket, setFollowSpam) => async (dispatch) => {
 
     try{
         const {data} = await axs.followApi(followData);
-        const miniProfile= data.miniProfile;
+        if(data==='Spam'){
+            setFollowSpam(true);
+            setTimeout( function() {setFollowSpam(false)}, 3000);
+            setLoadingButtons(false);
+        }else{
+            const miniProfile= data.miniProfile;
 
-        dispatch ({type: 'FOLLOW', data:miniProfile}); 
-        console.log('followed');
-        console.log(data); 
+            dispatch ({type: 'FOLLOW', data:miniProfile}); 
+            console.log('followed');
+            console.log(data); 
 
-        setLoadingButtons(false);
+            setLoadingButtons(false);
 
-       const socketNotificationData = data.newNotification;
-        socket.current.emit("sendNotification", {
-            socketNotificationData        
-        });
+        const socketNotificationData = data.newNotification;
+            socket.current.emit("sendNotification", {
+                socketNotificationData        
+            });
+        }
     
     } catch(error) { 
         console.log(error);

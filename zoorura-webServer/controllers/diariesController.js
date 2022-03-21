@@ -140,53 +140,71 @@ export const postDiaries =  async (req, res)=> {
         const diary = req.body; 
         console.log(req.body);
         console.log(diary.type);
-        console.log(diary.originalId);  
-        //const user = await UsersModel.findById(req.userId);
-        if (diary.type === 'diary'){
-            const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
-            try{
-                await newDiary.save();
-                res.status(201).json(newDiary);
-               console.log(newDiary);
-           } catch(error){
-               res.status(409).json({message:error.message});
-           } 
-        } else if (diary.type === 'display'){
-            
-                if(mongoose.Types.ObjectId.isValid(diary.originalId)){
-                    
+        console.log(diary.originalId); 
+        
+    try{
+        const user = await UsersModel.findById(req.userId);
+        const  newPostSpam = user.postSpam + 1;
+        if(newPostSpam > 10){
+
+            res.json('Spam');
+
+        }else { 
+
+                if (diary.type === 'diary'){
+                    const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
                     try{
+                        await newDiary.save();
 
-                        const displayedDiary = await DiariesModel.findByIdAndUpdate(diary.originalId, { $push: { "displaysArray": req.userId }}, { new: true });
-                        console.log(displayedDiary);
+                       const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {postSpam:newPostSpam}}, { new: true });
                         
-                        // const displayedDiary = await DiariesModel.findById(unpopulatedDisplayedDiary._id)
-                        // .populate('displaysArray', 'userName');
+                        res.status(201).json(newDiary);
 
-                        const newDisplay = new DiariesModel({creator:displayedDiary.creator, title:displayedDiary.title, caption:displayedDiary.caption, file:displayedDiary.file, media:displayedDiary.media,
-                           diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
-                             displaysArray: [], time: displayedDiary.time, dateRank: (Date.now()/360000),tippers:[], reviewers:[], displaysArray:[]});   
-                        
-                             console.log(newDisplay);
+                    console.log(newDiary);
+                    console.log(updatedUser);
+                } catch(error){
+                    res.status(409).json({message:error.message});
+                } 
+                } else if (diary.type === 'display'){
                     
-                            await newDisplay.save();
-                            res.json(newDisplay);
+                        if(mongoose.Types.ObjectId.isValid(diary.originalId)){
+                            
+                            try{
 
-                            //res.status(201).json({newDisplay:newDisplay, displayedDiary:displayedDiary});
-                            //console.log(newDisplay);
+                                const displayedDiary = await DiariesModel.findByIdAndUpdate(diary.originalId, { $push: { "displaysArray": req.userId }}, { new: true });
+                                console.log(displayedDiary);
+                                
+                                // const displayedDiary = await DiariesModel.findById(unpopulatedDisplayedDiary._id)
+                                // .populate('displaysArray', 'userName');
 
-                   } catch(error){
+                                const newDisplay = new DiariesModel({creator:displayedDiary.creator, title:displayedDiary.title, caption:displayedDiary.caption, file:displayedDiary.file, media:displayedDiary.media,
+                                diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
+                                    displaysArray: [], time: displayedDiary.time, dateRank: (Date.now()/360000),tippers:[], reviewers:[], displaysArray:[]});   
+                                
+                                    console.log(newDisplay);
+                            
+                                    await newDisplay.save();
+                                    res.json(newDisplay);
 
-                       res.status(409).json({message:error.message});
+                                    //res.status(201).json({newDisplay:newDisplay, displayedDiary:displayedDiary});
+                                    //console.log(newDisplay);
 
-                   }
+                        } catch(error){
 
-                } else  {
-                        console.log('error');
+                            res.status(409).json({message:error.message});
+
+                        }
+
+                        } else  {
+                                console.log('error');
+                        }
+                
+                
                 }
-           
-           
         }
+    }catch(error){
+        res.status(409).json({message:error.message});
+    }
 
 }
 
@@ -197,11 +215,27 @@ export const patchDiaries = async (req, res) =>{
     const{id} = req.params;
     const newDiary=req.body;
 
-   if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
-    const patchedDiary = await DiariesModel.findByIdAndUpdate(id, newDiary, { new: true })
-    .populate('miniProfile', 'dpUrl userName'); //change things populate cant happen on update also Use set to set only FILE CAP TITLE ONLY
+    try{
 
-    res.json(patchedDiary);
+        const user = await UsersModel.findById(req.userId);
+        const  newPostSpam = user.postSpam + 1;
+        if(newPostSpam > 10){
+
+            res.json('Spam');
+
+        }else{
+
+            if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
+                const patchedDiary = await DiariesModel.findByIdAndUpdate(id, newDiary, { new: true })
+                .populate('miniProfile', 'dpUrl userName'); //change things populate cant happen on update also Use set to set only FILE CAP TITLE ONLY
+               const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {postSpam:newPostSpam}}, { new: true });
+                res.json(patchedDiary);
+                console.log(updatedUser);
+        }
+            
+    }catch(error){
+        res.status(409).json({message:error.message});
+    }
 
 }
 

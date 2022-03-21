@@ -42,6 +42,7 @@ import { GiDiamondTrophy } from 'react-icons/gi';
 function PostForm() {
     const [tagObjArray, setTagObjArray] = useState([])
     const [tagArray, setTagArray] = useState([])
+    const [spam, setSpam] = useState(false)
     const [diariesData, setdiariesData] = useState({
         title:'', caption:'', file: '', media: '', type: 'diary',  publicity:'', tags:[]
     }); 
@@ -402,7 +403,7 @@ function readFile(file, type) {
             
                  console.log(diariesData);
  
-               dispatch(postDiariesAction (diariesData, setpopPosted, navigate, getDiaries)); 
+               dispatch(postDiariesAction (diariesData, setpopPosted, navigate, getDiaries, setSpam)); 
  
              }
              catch(err){
@@ -462,11 +463,17 @@ function readFile(file, type) {
         <div className="flex items-center justify-center">
        
 
-                { popPosted &&
+                { popPosted == true &&
                         <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
                            <p> Post Added! </p>
                         </div>
                 }
+
+            { spam == true &&
+                        <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
+                           <p> Todays Posting Limit(10) reached! Try Tomorrow </p>
+                        </div>
+                 } 
                
                 <div className="space-y-5 w-full xl:w-2/5 bg-gray-200 items-center  z-30  m-4 rounded-md">
                         

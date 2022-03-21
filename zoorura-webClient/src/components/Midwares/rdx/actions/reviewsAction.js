@@ -17,11 +17,16 @@ export const getReviewsAction = (postId) => async (dispatch) => {
 }
 
 
-export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, setReviewDelivery, socket) => async (dispatch) => {
+export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, setReviewDelivery, socket, setSpam) => async (dispatch) => {
     console.log("postReview Action Act");
     try{
         const {data} = await axs.postReviewsApi(reviewData1);  
         // dispatch ({type: 'POST_REVIEW', payload: data});
+
+        if(data==='Spam'){
+            setSpam(true);
+            setTimeout( function() {setSpam(false)}, 3000);
+        }else {
         console.log(data);
         const newReview = data.newReview;
         const newNotification = data.newNotification;
@@ -48,26 +53,34 @@ export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, 
 
         setReviewDelivery(true);
         setTimeout( function() {setReviewDelivery(false)}, 2000);
+        }
         
         
     } catch(error) {  
         console.log(error);
     }
 }
-export const patchReviewsAction = (reviewData, setReviewLoading, setReviewDelivery, setReviewEditor) => async (dispatch) => {
+export const patchReviewsAction = (reviewData, setReviewLoading, setReviewDelivery, setReviewEditor, setSpam) => async (dispatch) => {
 
     console.log("patchReview Action Act");
 
     try{
         const {data} = await axs.patchReviewsApi(reviewData);  
-        dispatch ({type: 'PATCH_REVIEW', payload: data});
 
-        
+        if(data==='Spam'){
+            setSpam(true);
+            setTimeout( function() {setSpam(false)}, 3000);
+        }else {
+            
+            dispatch ({type: 'PATCH_REVIEW', payload: data});
 
-        setReviewDelivery(true);
-        setTimeout( function() {setReviewDelivery(false)}, 2000);
-        setReviewLoading(false);
-        setReviewEditor(false)
+            
+
+            setReviewDelivery(true);
+            setTimeout( function() {setReviewDelivery(false)}, 2000);
+            setReviewLoading(false);
+            setReviewEditor(false)
+        } 
         
         
         

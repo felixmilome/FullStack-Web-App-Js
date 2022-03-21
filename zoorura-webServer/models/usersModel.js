@@ -93,9 +93,32 @@ const usersSchema = mongoose.Schema({
                 type:Number,
                 default: 0
         },
+        postSpam: {
+                type:Number,
+                default: 0
+        },
+       
+        commentSpam: {
+                type:Number,
+                default: 0
+        },
+        
+        followSpam: {
+                type:Number,
+                default: 0
+        },
+       
+        loginSpam: {
+                type:Number,
+                default: 0
+        },
+        loginTimer:{
+                type: Number,
+                default: 0
+        },
         verTime: {
                 type: Number,
-                required: parseInt(Date.now()),
+                default: parseInt(Date.now()),
         },
         verExpiry: {
                 type: Date,
@@ -138,6 +161,7 @@ const usersSchema = mongoose.Schema({
         activityPointsRecord:[activityPointsSchema],
         withdrawals:[withdrawalSchema],
         deposits:[depositSchema],
+       
 
 
 

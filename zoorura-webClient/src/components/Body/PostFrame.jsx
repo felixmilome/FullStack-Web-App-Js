@@ -63,6 +63,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         title:diary.title, caption:diary.caption, media:diary.media, creator:diary.creator, file: diary.file, type: 'display', originalId:diary._id
     }); 
     const[popSure, setpopSure] = useState(false);
+    const[spam, setSpam] = useState(false);
     const[tip, setTip] = useState({tips:null});
     const[popOptions, setpopOptions] = useState(false);
     const[tipLoading, setTipLoading] = useState(false);
@@ -165,7 +166,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
     const handleDisplay = () => {
 
-        dispatch(postDisplayDiariesAction(displayData, setPopDisplayPosted, navigate, setDisplayer));
+        dispatch(postDisplayDiariesAction(displayData, setPopDisplayPosted, navigate, setDisplayer, setSpam));
         console.log(displayData);
     }
   
@@ -179,6 +180,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {reviewDelivery &&
         <DeliveryPop message='Review Sent'/>
         }
+        {spam ==true &&
+        <DeliveryPop message='Todays Review Limit(25) reached! Try Tomorrow '/>
+         } 
         <div className="text-black p-2 sm:px-12 py-4 rounded-xl bg-gray-100 relative xl:w-2/5 mx-auto mb-6"> 
          
 

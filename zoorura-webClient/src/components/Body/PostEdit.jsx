@@ -34,6 +34,7 @@ function PostEdit({diaryId, setDiaryId, postId, setpopOptions, setPostId}) {
     const navigate = useNavigate();
 
     const[popPosted, setpopPosted] = useState(false);
+    const[spam, setSpam] = useState(false);
 
     useEffect(()=>{
        if(diary) setdiariesData(diary);
@@ -155,12 +156,9 @@ function PostEdit({diaryId, setDiaryId, postId, setpopOptions, setPostId}) {
             try{
                 console.log(diariesData);
 
-                dispatch(patchDiariesAction(postId, diariesData)); 
+                dispatch(patchDiariesAction(postId, diariesData, setpopPosted, setpopOptions, setSpam)); 
                
-                setpopPosted(true);
                 
-
-                setTimeout( function() {setpopOptions(false)}, 1000);
 
             }
             catch(err){
@@ -176,6 +174,11 @@ function PostEdit({diaryId, setDiaryId, postId, setpopOptions, setPostId}) {
                 { popPosted &&
                         <div className=" bg-gray-700 py-4 top-28 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
                            <p> Post Updated! </p>
+                        </div>
+                    }
+                    { spam ==true &&
+                        <div className=" bg-gray-700 py-4 top-28 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
+                           <p> Posting Limit reached(10)! Try Tomorrow </p>
                         </div>
                     }
                

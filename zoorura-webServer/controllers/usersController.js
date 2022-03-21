@@ -721,37 +721,53 @@ export const getMiniProfile = async(req,res) => {
 export const follow =  async (req, res)=> {
 
   const {follower, followed} = req.body;
+  
       
     try{
-      const followerUser = await UsersModel.findById (follower);
-      console.log(followerUser.follows);
 
-      if (followerUser.follows.includes(followed)){
-        
-        const updatedFollower= await UsersModel.findByIdAndUpdate (follower, { $pull: { "follows": followed }}, { new: true });
-        const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $pull: { "followers": updatedFollower._id }}, { new: true });
-        const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
-        res.json({miniProfile});
-        console.log("followed");
+      const user = await UsersModel.findById(req.userId);
+      const  newFollowSpam = user.followSpam + 1;
+      
+      if(newFollowSpam > 100){
 
-    
-    } else {
+          res.json('Spam');
 
-        const updatedFollower = await UsersModel.findByIdAndUpdate (follower, { $push: { "follows": followed }}, { new: true });
-        const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $push: { "followers": updatedFollower._id }}, { new: true });
-        const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
+      }else{
+          const followerUser = await UsersModel.findById (follower);
+          console.log(followerUser.follows);
+
+          if (followerUser.follows.includes(followed)){
+            
+            const updatedFollower= await UsersModel.findByIdAndUpdate (follower, { $pull: { "follows": followed }}, { new: true });
+            const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $pull: { "followers": updatedFollower._id }}, { new: true });
+            const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
+            res.json({miniProfile}); 
+            const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {followSpam:newFollowSpam}}, { new: true });
+            console.log(updatedUser);
+            console.log('followed')
+
         
-        const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:followed, body:'', postId:followed, read: false,  type: 'follow', createdOn: new Date(), dateRank: Date.now()});
-        const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
-        .populate('sender', 'dpUrl userName');
-        
-        
-        res.json({miniProfile:miniProfile, newNotification:newNotification});
-        console.log("unfollowed");
+        } else {
+
+            const updatedFollower = await UsersModel.findByIdAndUpdate (follower, { $push: { "follows": followed }}, { new: true });
+            const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $push: { "followers": updatedFollower._id }}, { new: true });
+            const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
+            
+            const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:followed, body:'', postId:followed, read: false,  type: 'follow', createdOn: new Date(), dateRank: Date.now()});
+            const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+            .populate('sender', 'dpUrl userName');
+            
+            
+            res.json({miniProfile:miniProfile, newNotification:newNotification});
+            const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {followSpam:newFollowSpam}}, { new: true });
+            console.log(updatedUser);
+            console.log("unfollowed");
+        }
     }
   
   } catch(error){
       res.status(409).json({message:error.message});
+      console.log(error.message);
   }
 
 }
@@ -770,7 +786,7 @@ export const dailyPoints = async(req,res) => {
 
     if (Date.now() > (userTime.dailyLogin + 86400000)){
                                                                         
-      const awarded_User_Profile = await UsersModel.findByIdAndUpdate (id,{ $push:{"activityRecord": loginRecord}, $set: {dailyLogin: Date.now(), activityPointsTotal: addedTotalPoints}}, { new: true });
+      const awarded_User_Profile = await UsersModel.findByIdAndUpdate (id,{ $push:{"activityRecord": loginRecord}, $set: {followSpam:0, postSpam:0, reviewSpam:0, dailyLogin: Date.now(), activityPointsTotal: addedTotalPoints}}, { new: true });
       
       const result = await UsersModel.findById(awarded_User_Profile._id, {password:0, verCode:0});
 

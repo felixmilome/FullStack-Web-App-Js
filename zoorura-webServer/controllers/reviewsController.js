@@ -28,38 +28,53 @@ export const postReview = async  (req, res) => {
     const{reviewedId, reviewedPostId, body} = req.body //receivername for Records
     const userId = req.userId
     
- //console.log(req.body);
+ //console.log(req.body); 
+  
         try{  
+            const user = await UsersModel.findById(req.userId);
+            const  newReviewSpam = user.reviewSpam + 1;
+            
+            if(newPostSpam > 25){
+
+                res.json('Spam');
+
+            }else{
+
+            
                 if (body.length < 1 || body.length > 2000 || !mongoose.Types.ObjectId.isValid(reviewedId) || !mongoose.Types.ObjectId.isValid(reviewedPostId)) {
-                    res.json("Validation Error");
+                    res.json("ValidationError");
                 }else{
 
                             const unpopulatedNewReview = await ReviewsModel.create({reviewerId:req.userId, reviewerMiniProfile:req.userId, reviewedMiniProfile:reviewedId, reviewedPostId:reviewedPostId, body:body, time:Date.now()})
                             const newReview = await ReviewsModel.findById(unpopulatedNewReview._id)
                             .populate('reviewerMiniProfile', 'dpUrl userName');
                             
-                           // console.log(newReview);
+                        // console.log(newReview);
 
- 
+
                             const unpopulatedReviewedDiary = await DiariesModel.findByIdAndUpdate(reviewedPostId, { $push: { "reviewers": userId}}, { new: true });
                             const reviewedDiary = await DiariesModel.findById(unpopulatedReviewedDiary._id)
                             .populate('diaryMiniProfile', 'dpUrl userName');
-                           
+                        
                             const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:'', postId:reviewedPostId, read: false,  type: 'review', createdOn: new Date(), dateRank: Date.now()});
                             const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                             .populate('sender', 'dpUrl userName'); 
 
                             res.json({newReview:newReview, newNotification:newNotification, reviewedPost:reviewedDiary});
 
+                            const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {reviewSpam:newReviewSpam}}, { new: true });
+
                             console.log(newReview);
                             console.log(newNotification);
+                            console.log(updatedUser);
                             
-                }  
+                } 
+            } 
             
         } catch(error){
             res.status(404).send({message: error.message});
         } 
- }
+    }
 
  export const patchReview = async (req, res) => {
 
@@ -72,6 +87,16 @@ export const postReview = async  (req, res) => {
     
 
         try{ 
+
+
+            const user = await UsersModel.findById(req.userId);
+            const  newReviewSpam = user.reviewSpam + 1;
+            
+            if(newPostSpam > 25){
+
+                res.json('Spam');
+
+            }else{
                 if (body.length < 0 || body.length > 2000 || req.userId !== reviewVerified.reviewerId || reviewVerified.edited === true) {
 
                     res.json("error");
@@ -81,11 +106,14 @@ export const postReview = async  (req, res) => {
                     const patchedReviewUnpopulated = await ReviewsModel.findByIdAndUpdate(reviewId, { $set: {edited:true, body:body, time: new Date()}}, { new: true });
                     const patchedReview = await ReviewsModel.findById(patchedReviewUnpopulated._id)
                     .populate('reviewerMiniProfile', 'dpUrl userName');
+                    const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {reviewSpam:newReviewSpam}}, { new: true });
 
                     console.log(patchedReview);
+                    console.log(updatedUser);
                             
                     res.json(patchedReview);
                 }  
+            }
             
         } catch(error){
             res.status(404).send({message: error.message});

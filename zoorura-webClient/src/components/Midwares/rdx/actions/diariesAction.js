@@ -10,36 +10,44 @@ export const getDiariesAction = () => async (dispatch) => {
         console.log(error); 
     }
 }
-export const postDiariesAction = (diary, setpopPosted, navigate, setDisplayer) => async (dispatch) => {
+export const postDiariesAction = (diary, setpopPosted, navigate, setDisplayer, setSpam) => async (dispatch) => {
     try{
-        
-       
-
         
 
             const {data} = await axs.postDiariesApi(diary);
-            setpopPosted(true);
 
-            dispatch ({type: 'POST_DIARY', payload: data});            
-            //navigate ('/');
-            window.location = ('/') 
+            if (data === 'Spam'){
+                setSpam (true);
+                
+            }else{
+                setpopPosted(true);
+
+                dispatch ({type: 'POST_DIARY', payload: data});            
+                //navigate ('/');
+                window.location = ('/') 
+            }
 
         
     } catch(error) {
         console.log(error);
     }
 }
-export const postDisplayDiariesAction = (diary, setPopDisplayed, navigate, setDisplayer) => async (dispatch) => {
+export const postDisplayDiariesAction = (diary, setPopDisplayed, navigate, setDisplayer, setSpam) => async (dispatch) => {
     try{
         
 
 
             const {data} = await axs.postDiariesApi(diary);
+
+            if (data === 'Spam'){
+                setSpam (true);
+                setTimeout( function() {setSpam (false)}, 2000); 
+            }else{
             
-            console.log(data._id);
             setPopDisplayed(true);
             navigate ('/');
             window.location.reload(true); 
+            }
 
 
 
@@ -57,10 +65,17 @@ export const postDisplayDiariesAction = (diary, setPopDisplayed, navigate, setDi
         console.log(error);
     }
 }
-export const patchDiariesAction = (id, diariesEditData) => async (dispatch)=>{
+export const patchDiariesAction = (id, diariesEditData, setpopPosted, setpopOptions, setSpam) => async (dispatch)=>{
     try{
         const {data} = await axs.patchDiariesApi(id, diariesEditData); 
-        dispatch ({type: 'PATCH_DIARY', payload: data});
+        if (data === 'Spam'){
+            setSpam (true);
+            setTimeout( function() {setSpam (false)}, 2000); 
+        }else{
+            dispatch ({type: 'PATCH_DIARY', payload: data});
+            setpopPosted(true);
+            setTimeout( function() {setpopOptions(false)}, 2000);
+        }
     } catch(error){
         console.log(error);
         // console.log(diariesEditData);
