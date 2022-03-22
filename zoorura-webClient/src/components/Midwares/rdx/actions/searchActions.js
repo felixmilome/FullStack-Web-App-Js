@@ -6,7 +6,7 @@ export const headSearchAction = (searchData, setLoading, setError) => async (dis
         console.log(searchData);
         const{data}= await axs.headSearchApi(searchData);
         const {diaryResult, peopleResult, message} = data;
-            const allResults = peopleResult.concat(diaryResult);
+            
             console.log(data);
             console.log(data.message);
 

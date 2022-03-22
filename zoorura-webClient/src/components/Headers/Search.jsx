@@ -163,7 +163,7 @@ export const Search = () => {
                     
                         </>}  
                          {/* All error Message */}
-                         {searchResults.message==='NoTerm' &&
+                         {searchResults.message==='NoTerm' && loading ===false &&
 
                             <div  className='cursor-pointer p-1  hover:text-gray-700'>
                             <p>No Results found for {searchData.term}</p>  
