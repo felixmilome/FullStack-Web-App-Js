@@ -67,6 +67,8 @@ export const postTipsApi = (tipData) => API.post('/tips/', tipData);
 export const saveDiariesApi = (savedDiaryData) => API.post('/savedDiaries/', savedDiaryData); 
 export const deleteSavedDiariesApi = (savedId) => API.delete(`/savedDiaries/${savedId}`);
 export const getSavedDiariesApi = () => API.get('/savedDiaries/');
+//Search
+export const headSearchApi = (searchData) => API.post('/search/headSearch', searchData);
 
 
 

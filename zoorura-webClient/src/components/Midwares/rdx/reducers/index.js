@@ -12,9 +12,18 @@
  import {reviewsReducer} from './reviewsReducer';
  import {tipsReducer} from './tipsReducer';
   import {deleteAccountReducer} from './deleteAccountReducer';
+  import {headSearchReducer} from './searchReducer';
 
  export default combineReducers({
-    diariesReducer, savedDiariesReducer, convoStateReducer, googleauthReducer, profileResetReducer, getMiniProfileReducer,
-     hallFameReducer, convosReducer, messagesReducer, socketReducer, deleteAccountReducer,
-      notificationsReducer, reviewsReducer, tipsReducer, blockReducer, populateBlockReducer, securityResetReducer, forgotPasswordReducer
+
+    diariesReducer, savedDiariesReducer,
+     convoStateReducer, googleauthReducer,
+     profileResetReducer, getMiniProfileReducer,
+     hallFameReducer, convosReducer, messagesReducer,
+      socketReducer, deleteAccountReducer,
+      notificationsReducer, reviewsReducer, tipsReducer,
+       blockReducer, populateBlockReducer, securityResetReducer,
+        forgotPasswordReducer,
+       headSearchReducer
+       
  });  

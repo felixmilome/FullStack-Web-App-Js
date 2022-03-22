@@ -10,6 +10,7 @@ import {    SearchIcon,
 
 import HeaderRightIcon from './HeaderRightIcon.jsx'
 import { useState } from 'react';
+import{Search} from './Search.jsx';
 import ProfileModal from '../Modals/ProfileModal.jsx';
 import OutsideClickHandler from 'react-outside-click-handler';
 import SubscribersModal from '../Modals/SubscribersModal.jsx';
@@ -256,10 +257,8 @@ function Header({popContacts, setpopContacts}) {
         
             {/* MID SEARCH COMP */}
                 <div className="hidden sm:flex items-center rounded-full w-1/3 mx-1 bg-gray-100 sm:pr-4">
-                    <div className="p-2 sm:p-3 bg-gray-400 hover:bg-cyan-400 rounded-full items:center"> <SearchIcon className= 'h-6 text-white'/></div>
-                    <input className ="hidden sm:w-full bg-transparent sm:pr-1 h-10 md:inline-flex ml-1 bg-transparent items-center outline-none font-light placeholder-gray-400"
-                        type="text"
-                    placeholder="Search Zoorura"/>
+                 
+                 <Search/>
             
                 </div>
                 </>
@@ -445,18 +444,12 @@ function Header({popContacts, setpopContacts}) {
                         </OutsideClickHandler> 
                     </div>
                 
-                    <div className="sm:hidden flex justify-center items-center rounded-full w-full mx-2 my-1 bg-gray-100">
 
-                        
-                        <div className="p-1 bg-gray-400 hover:bg-cyan-400 rounded-full items:center">
-                             <SearchIcon className= 'h-6 text-white'/>
-                            
-                        </div>
-                        <input className ="bg-transarent w-full h-7 md:inline-flex pl-2 pr-4 bg-transparent items-center outline-none font-light placeholder-gray-400"
-                        type="text"
-                        placeholder="Search Zoorura"/>
-                       
-                    </div>
+                {/* // SEARCH============ */}
+                
+                <div className="sm:hidden flex justify-center items-center rounded-full w-full mx-2 my-1 bg-gray-100">
+                    <Search/>
+                </div>
 
                     {/* <div>
                               <OutsideClickHandler     

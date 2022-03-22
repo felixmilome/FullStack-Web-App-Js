@@ -11,6 +11,7 @@ import {notificationsRouter} from './routes/notificationsRouter.js';
 import {tipsRouter} from './routes/tipsRouter.js';
 import {reviewsRouter} from './routes/reviewsRouter.js';
 import {savedDiariesRouter} from './routes/savedDiariesRouter.js';
+import {searchRouter} from './routes/searchRouter.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -29,6 +30,7 @@ app.use('/notifications/', notificationsRouter);
 app.use('/reviews/', reviewsRouter);
 app.use('/tips/', tipsRouter);
 app.use('/savedDiaries/', savedDiariesRouter);
+app.use('/search/', searchRouter);
 
 
 //app.use('/diaryfiles', diaryFilesRouter);
