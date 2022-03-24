@@ -238,7 +238,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                          <div onBlur= {checkUsername} onChange={(e)=>setUserNameCheck(null)} className="bg-transparent w-full relative">
                             <input  name='userName'
                              {...register('userName',{
-                                 onChange: (e) => {setFormData({...formData, userName: e.target.value.trim()})}
+                                 onChange: (e) => {setFormData({...formData, userName: e.target.value.trim().toLowerCase()})}
                                 })} 
                                  className= "w-full bg-gray-100 border border-gray-300  p-2 rounded-md" type="text" placeholder= "Username" />
                             <p className='text-xs text-red-700 text-center font-light' >{errors.userName?.message}</p>
@@ -256,7 +256,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                         <div className="bg-transparent w-full relative">
                             <input 
                              {...register('email',{
-                                 onChange: (e) => {setFormData({...formData, email: e.target.value.trim()})}
+                                 onChange: (e) => {setFormData({...formData, email: e.target.value.trim().toLowerCase()})}
                                 })} 
                                 name='email' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md" type="text" placeholder= "Email"  />
                             <p className='text-xs text-red-700 text-center font-light' >{errors.email?.message}</p>

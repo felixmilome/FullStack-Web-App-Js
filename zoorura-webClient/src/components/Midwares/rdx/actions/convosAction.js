@@ -23,11 +23,13 @@ export const getConvosAction = (id) => async (dispatch) => {
 } 
 
 
-export const postConvosAction = (convoData) => async (dispatch) => {
+export const postConvosAction = (convoData, setLoading, setpopConvoForm) => async (dispatch) => {
     try{
         const {data} = await axs.postConvosApi(convoData);
  
-        dispatch ({type: 'POST_CONVO', payload: data});
+        dispatch ({type: 'EDIT_MINI_PROFILE', data});
+        setLoading(false);
+        setpopConvoForm(false)
     } catch(error) { 
         console.log(error);
     }

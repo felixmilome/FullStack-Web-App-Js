@@ -24,7 +24,7 @@ export const getReviews =  async (req, res)=> {
 }
 
 export const postReview = async  (req, res) => {
- 
+    console.log(req.body);
     const{reviewedId, reviewedPostId, body} = req.body //receivername for Records
     const userId = req.userId
     
@@ -34,9 +34,9 @@ export const postReview = async  (req, res) => {
             const user = await UsersModel.findById(req.userId);
             const  newReviewSpam = user.reviewSpam + 1;
             
-            if(newPostSpam > 25){
+            if(newReviewSpam > 25){
 
-                res.json('Spam');
+                res.json('Spam'); 
 
             }else{
 
@@ -73,6 +73,7 @@ export const postReview = async  (req, res) => {
             
         } catch(error){
             res.status(404).send({message: error.message});
+            console.log(error.message);
         } 
     }
 

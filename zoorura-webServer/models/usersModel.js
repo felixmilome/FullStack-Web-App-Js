@@ -154,7 +154,12 @@ const usersSchema = mongoose.Schema({
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'  
         }],
+        
         blockers: [{ 
+                type: Schema.Types.ObjectId,
+                ref: 'UsersModel'  
+        }],
+        convoRequesters: [{ 
                 type: Schema.Types.ObjectId,
                 ref: 'UsersModel'  
         }],

@@ -6,6 +6,7 @@ import { postConvosAction } from "../Midwares/rdx/actions/convosAction.js";
 import {HiOutlineChatAlt2} from "react-icons/hi"
 //import {BsLightningCharge} from "react-icons/bs"
 import { XCircleIcon } from "@heroicons/react/outline"
+import {BeatLoader, DotLoader} from "react-spinners";
 
  
 
@@ -16,7 +17,7 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
     const[tipConvoData, settipConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: 30, intro:''}); //miniProfile.convoTip
 
     const[messageData, setmessageData] = useState({convoId: user.result._id, senderId: user.result._id, receiverId: miniProfile._id, body:'', type:'text'});
-
+    const [loading,setLoading] = useState(false);
     const dispatch = useDispatch();
 
   
@@ -25,7 +26,8 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
       
 
             try{
-                dispatch(postConvosAction (freeConvoData)); 
+                setLoading(true);
+                dispatch(postConvosAction (freeConvoData, setLoading, setpopConvoForm)); 
                 console.log(freeConvoData); 
             }
             catch(err){    
@@ -37,7 +39,8 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
        
 
             try{
-                dispatch(postConvosAction (tipConvoData)); 
+                setLoading(true);
+                dispatch(postConvosAction (tipConvoData, setLoading, setpopConvoForm)); 
                 console.log(tipConvoData);
             }
             catch(err){
@@ -72,7 +75,12 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                             </div>
                             <div className="text-center p-3 font-light text-sm text-gray-500">
                             <p className="">Request Private Convo with: </p>
+                           
                             <p className="font-bold">@{miniProfile.userName}</p>
+                            
+                            {miniProfile?.convoRequesters.includes(user.result._id) && 
+                            <p className="">Again</p> 
+                            }
                             </div>
                            
                         </div>
@@ -124,6 +132,8 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                         font-semibold text-xs p-2">
                                        Request Room
                                     </button> */}
+                                      {loading === false &&
+                                      <>
                                       <button onClick={requestFree}
                                       
                                       type='submit' className="items-center mx-auto bg-transparent border border-gray-300 
@@ -132,8 +142,11 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                         my-2 justify-center 
                                         text-gray-400 cursor-pointer
                                         font-semibold text-xs p-3">
-                                       Request with No Tip
+                                      
+                                       {miniProfile?.convoRequesters.includes(user.result._id) ? "Request Again Without Tip" : " Request with No Tip"}
                                     </button>
+                                  
+                                   {miniProfile.convoTip > 0 &&
                                     <button onClick={requestWithTip} type='submit' className="items-center mx-auto bg-gradient-to-r from-cyan-400 to-cyan-500 
                                     bg-gradient-to-r hover:from-pink-500
                                     hover:to-yellow-500 my-3 flex
@@ -141,8 +154,19 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                         my-2 justify-center 
                                         text-white cursor-pointer
                                         font-semibold text-xs p-3">
-                                       Request with 30 Tips
-                                    </button>
+                                      
+                                       {miniProfile?.convoRequesters.includes(user.result._id) ? "Request Again With " + miniProfile.convoTip + " Tip" : "Request With " + miniProfile.convoTip + " Tips"}
+                                    </button>}
+
+                                    </>
+                                    }
+                                    {loading === true &&
+                                      <div className='flex space-x-3 items-center text-cyan-600 justify-center w-full text-sm'>
+                                      
+                                         <BeatLoader size={15} color='gray' loading/>
+                                    </div>
+                                    }
+
                                 </div>
 
                             

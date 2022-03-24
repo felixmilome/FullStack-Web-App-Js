@@ -75,6 +75,7 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
      
     switch(action.type) {
         case 'GET_MINI_PROFILE': 
+        case 'EDIT_MINI_PROFILE':
         case 'FOLLOW':
             return action?.data;
          

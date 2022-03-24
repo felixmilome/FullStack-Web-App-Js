@@ -226,7 +226,9 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                                                 <>
                                                             
                                                                     <div onClick= {handleConvo} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
-                                                                        <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Convo/Chat</p> 
+                                                                        <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">
+                                                                            {miniProfile?.convoRequesters.includes(user.result._id) ? "Requested" : "Convo/Chat"}
+                                                                            </p> 
                                                                         <HiOutlineChatAlt2 />
                                                                       
                                                                        
@@ -263,7 +265,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                                 <div className='text-base flex justify-around items-center py-2'>
                                                     <div className='leading-4'>
                                                         <p className= 'font-bold '>{miniProfile.convoTip}</p>
-                                                        <p className= 'font-light text-sm'>Convo Request</p>
+                                                        <p className= 'font-light text-sm'>Convo Request Charge</p>
                                                     </div>
                                                     <div className='leading-4'>
                                                         <p className= 'font-bold '>{miniProfile.postTotal}</p>

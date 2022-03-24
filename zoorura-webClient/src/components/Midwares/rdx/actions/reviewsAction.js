@@ -19,8 +19,10 @@ export const getReviewsAction = (postId) => async (dispatch) => {
 
 export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, setReviewDelivery, socket, setSpam) => async (dispatch) => {
     console.log("postReview Action Act");
+    console.log(reviewData1); 
     try{
-        const {data} = await axs.postReviewsApi(reviewData1);  
+        const {data} = await axs.postReviewsApi(reviewData1); 
+        
         // dispatch ({type: 'POST_REVIEW', payload: data});
 
         if(data==='Spam'){

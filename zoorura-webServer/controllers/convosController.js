@@ -1,12 +1,13 @@
 import {ConvosModel} from "../models/convosModel.js";
 import {MessagesModel} from "../models/messagesModel.js";
 import  mongoose  from "mongoose"; 
+import { UsersModel } from "../models/usersModel.js";
 
 export const getConvos = async  (req, res) => {
     const{id} = req.params;
     console.log(id);
     try{ 
-        const convos = await ConvosModel.find({members: { $in: [ id ] } }).sort({"dateRank":-1})
+        const convos = await ConvosModel.find({$and: [{members: { $in: [ id ] }}, {approved: { $in: [ true ] }}] }).sort({"dateRank":-1})
         .populate('host', 'dpUrl userName')
         .populate('guest', 'dpUrl userName')
         .populate('members', 'dpUrl userName');
@@ -31,18 +32,18 @@ export const getConvos = async  (req, res) => {
             
             const newConvo = await ConvosModel.create({members:members, guest:guest, host: req.userId, createdOn: new Date(), dateRank: Date.now(), type: type, tip:tip});
 
-            console.log("CONVO MEM: "+ newConvo);
+            // console.log("CONVO MEM: "+ newConvo);
             
             const introMessage = await MessagesModel.create({convoId:newConvo._id, senderId: newConvo.host, receiverId:newConvo.guest, body: intro });
-            
-            const newConvoPopulated = await ConvosModel.findById(newConvo._id)
-            .populate('host', 'dpUrl userName')
-            .populate('guest', 'dpUrl userName')
-            .populate('members', 'dpUrl userName');
+            const editedGuest = await UsersModel.findByIdAndUpdate(guest, { $push: { "convoRequesters": req.userId }});
+            const guestMiniProfile = await UsersModel.findById(editedGuest._id, {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
+            // const newConvoPopulated = await ConvosModel.findById(newConvo._id)
+            // .populate('host', 'dpUrl userName')
+            // .populate('guest', 'dpUrl userName')
+            // .populate('members', 'dpUrl userName');
 
-            res.status(200).json(newConvoPopulated);
-            console.log("CONVO MEM: "+ newConvoPopulated);
-            console.log('INTROMSG DATABASE:' +introMessage);
+            res.status(200).json(guestMiniProfile);
+           
             
 
          } else if(type === 'many') {

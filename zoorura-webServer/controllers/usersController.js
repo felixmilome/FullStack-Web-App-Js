@@ -88,7 +88,8 @@ function getCodec() {
       
           const user = await UsersModel.findById(id);
           console.log(user);
-          const {userName, email, firstName, lastName} = user;
+          const {email, firstName, lastName} = user;
+          const userName = user.userName.toLowerCase();
   
             const uniqueStr = getCodec ();
             
@@ -141,7 +142,8 @@ function getCodec() {
   }
   
    export const checkUsername = async (req,res) => {
-    const {username} = req.params;
+    //const {username} = req.params;
+    const username = req.params.username.toLowerCase();
     console.log(req.body);
     
    
@@ -166,7 +168,8 @@ function getCodec() {
 
 export const editProfile = async (req,res) => {
   console.log(req.body);
-  const {userName, bio, convoTip} = req.body;
+  const {bio, convoTip} = req.body;
+  const userName = req.body.userName.toLowerCase();
   const thisUser = await UsersModel.findById(req.userId);
   const existingUser = await UsersModel.findOne ({userName: { $in: [ userName ] } });;
 
@@ -363,7 +366,9 @@ export const login = async (req,res) => {
 }
 export const register = async (req,res) => {
     
-    const {firstName, lastName, userName, email, password, confirmPassword} = req.body;
+    const {firstName, lastName, password, confirmPassword} = req.body;
+    const userName = req.body.userName.toLowerCase();
+    const email = req.body.email.toLowerCase();
     try {
         const existingUser = await UsersModel.findOne ({userName: { $in: [ userName ] } });
         const existingEmail = await UsersModel.findOne ({email: { $in: [ email ] } });
@@ -693,12 +698,13 @@ export const populateBlock = async(req,res) => {
 
 export const getMiniProfile = async(req,res) => {
 
-    const {profileName} = req.params;
+   
+    const profileName = req.params.profileName.toLowerCase();
     console.log(req.params);
     
     try{
   
-    const miniProfile = await UsersModel.findOne ({userName: { $in: [ profileName ] } },  {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1});
+    const miniProfile = await UsersModel.findOne ({userName: { $in: [ profileName ] } },  {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
     
     if (!miniProfile || miniProfile.blocked.includes(req.userId) || miniProfile.blockers.includes(req.userId)){  
 
@@ -740,18 +746,18 @@ export const follow =  async (req, res)=> {
             
             const updatedFollower= await UsersModel.findByIdAndUpdate (follower, { $pull: { "follows": followed }}, { new: true });
             const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $pull: { "followers": updatedFollower._id }}, { new: true });
-            const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
+            const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
             res.json({miniProfile}); 
             const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {followSpam:newFollowSpam}}, { new: true });
-            console.log(updatedUser);
+            console.log(updatedUser); 
             console.log('followed')
-
+ 
         
         } else {
 
             const updatedFollower = await UsersModel.findByIdAndUpdate (follower, { $push: { "follows": followed }}, { new: true });
             const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $push: { "followers": updatedFollower._id }}, { new: true });
-            const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1});
+            const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
             
             const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:followed, body:'', postId:followed, read: false,  type: 'follow', createdOn: new Date(), dateRank: Date.now()});
             const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
