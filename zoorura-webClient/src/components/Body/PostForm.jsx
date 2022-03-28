@@ -27,6 +27,7 @@ import PostFRow from "./PostFRow.jsx";
 import VideoPlayer from 'react-video-js-player'
 
 import * as yup from "yup";
+import axios from 'axios';
 
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
@@ -36,6 +37,8 @@ import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 import { PostFormTagSearch } from './PostFormTagSearch.jsx';
 import { GiDiamondTrophy } from 'react-icons/gi';
+
+
 
 
 
@@ -67,7 +70,9 @@ function PostForm() {
     const[types, setTypes] = useState({image:'image', audio:'audio', video:'video', pdf:'pdf' });
 
     const searchedMiniProfile = useSelector((state) => state.getMiniProfileReducer);
-
+   
+  
+    
     const postSchema = yup.object().shape({
         title: yup.string().strict(false).trim().required('Title required').max(50),
         caption: yup.string().strict(false).trim().required('Caption required').max(500),
@@ -77,9 +82,9 @@ function PostForm() {
                 }),
         ImageUpload: yup.mixed().nullable().notRequired().when('ImageUpload', {
             is: (value) => value?.length,
-            then:(rule)=> rule.test("fileSize", "Image Size is too large. (Must be below 20MB)", (value) => {
+            then:(rule)=> rule.test("fileSize", "Image Size is too large. (Must be below 10MB)", (value) => {
                 console.log(value[0].size);
-                return value[0].size <= 20000000;
+                return value[0].size <= 10000000;
               })
               .test("fileType", "Unsupported Image Format (Must be png/jpeg/jpg)", (value) =>{
                 console.log(value[0].type);
@@ -88,14 +93,14 @@ function PostForm() {
             }),
         VideoUpload: yup.mixed().nullable().notRequired().when('VideoUpload', {
             is: (value) => value?.length,
-            then:(rule)=> rule.test("fileSize", "Video Size too large. (Must be below 500MB)", (value) => {
+            then:(rule)=> rule.test("fileSize", "Video Size too large. (Must be below 150MB)", (value) => {
                 console.log(value[0].size);
-                return value[0].size <= 500000000;
+                return value[0].size <= 150000000;
                 })
                 .test("fileType", "Unsupported Image Format (Must be png/jpeg/jpg)", (value) =>{
                     console.log(value[0].type);
                     return ["video/mp4","video/mpeg", "video/ogg", "video/webm"].includes(value[0].type);
-                }),
+                }), 
             }),
         AudioUpload: yup.mixed().nullable().notRequired().when('AudioUpload', {
             is: (value) => value?.length,
@@ -413,6 +418,7 @@ function readFile(file, type) {
              }
      }
     
+//FIREBASE=====================
 
     const uploadFile = async (image) =>{
             if (!image) return;
@@ -445,6 +451,23 @@ function readFile(file, type) {
        
     };
 
+
+// //CLOUDINARY +++++++++++++++++++++
+//     const uploadFile = async (image) =>{
+//         const formData =  new FormData();
+//         formData.append ("file", fileData);
+//         formData.append("upload_preset", "")
+//         try{
+//         axios.post("https://api.cloudinary.com/v1_1/zoorura/image/upload",
+//          formData).then((response))=>{
+//              console.log(response);
+//          });
+//          }catch(error){
+//              console.log(error.message);
+//          }
+
+//     };
+
     const post = (data)=>{
         
 
@@ -475,7 +498,7 @@ function readFile(file, type) {
                         </div>
                  } 
                
-                <div className="space-y-5 w-full xl:w-2/5 bg-gray-200 items-center  z-30  m-4 rounded-md">
+                <div className="p-5 space-y-5 w-full xl:w-2/5 bg-gray-100 items-center  z-30  m-4 rounded-xl">
                         
                        
                        
@@ -533,7 +556,7 @@ function readFile(file, type) {
                                               </div>
                                             </div>
                                            
-                                                <div onClick ={clearUrl} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
+                                                <div onClick ={clearUrl} className= ' items-center bg-transparent border border-gray-300 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
                                                 <div className= 'items-center flex'>
                                                     <MdFileUpload size={20}/>
                                                         Upload File Instead
@@ -551,7 +574,7 @@ function readFile(file, type) {
                                                
                                               
         
-                                        }} className= ' items-center bg-transparent border border-gray-400 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
+                                        }} className= ' items-center bg-transparent border border-gray-300 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
                                                 <div className= 'items-center flex'>
                                               <BsLink45Deg size={20}/> 
                                                link Site Instead
@@ -597,7 +620,7 @@ function readFile(file, type) {
                                     {attachment === 'link' &&
                                     
                                     <div className="flex justify-center">
-                                        <div className='m-auto bg-transparent p-3'>
+                                        <div className='m-auto bg-transparent w-full p-3'>
                                         <input id= "url"
                                         //value= {diariesData.file}
                                         //onChange={(e)=> setdiariesData({...diariesData, file: e.target.value})}
@@ -1024,8 +1047,8 @@ function readFile(file, type) {
 
 
                                         {/*-- Title------------ */}
-                                    <div className="flex justify-center">
-                                        <div className='w-4/5'>
+                                    <div className="px-3 flex justify-center">
+                                        <div className='w-full'>
                                         <input name= "title"
                                         value= {diariesData.title} 
 
@@ -1055,7 +1078,7 @@ function readFile(file, type) {
                                     <div className="m-auto w-3/4">
                                         <div className='flex bg-transparent h-10'>
                                         <input name= "endorsement" onChange={(e)=>{
-                                            setSearchedName(e.target.value);
+                                            setSearchedName(e.target.value.toLocaleLowerCase());
                                             setSearchError(false);
                                             console.log(diariesData);
                                         }}

@@ -54,7 +54,7 @@ export const Search = () => {
             
         </div>
         }
-        <input onChange={(e)=> setSearchData({...searchData, term:e.target.value.trim()})} className ="bg-transarent w-full h-7 md:inline-flex pl-2 pr-4 bg-transparent items-center outline-none font-light placeholder-gray-400"
+        <input onChange={(e)=> setSearchData({...searchData, term:e.target.value.trim()})} className ="bg-transarent w-64 rounded-full m-1 h-7 md:inline-flex p-4 bg-gray items-center outline-none font-light placeholder-gray-400"
         type="text"
         placeholder="Search Zoorura"/>
 
@@ -62,7 +62,7 @@ export const Search = () => {
         <>
         
             
-                <div className= 'items-center fixed  top-24 sm:top-16 text-sm text-gray-400 bg-gray-100 z-40 shadow-md h-fit w-fit rounded-b-md p-5'>
+                <div className= 'items-center fixed  top-24 sm:top-16 text-sm text-gray-400 bg-gray-100 z-40 shadow-md h-fit lg:w-1/4 w-fit rounded-b-md p-5'>
                 
                 
 
@@ -105,7 +105,7 @@ export const Search = () => {
                         </button>
                         
                     </div>
-                    <div className='flex max-h-screen text-gray-400 overflow-scroll justify-center'>
+                    <div style={{wordBreak: 'break-word'}} className='flex max-h-screen  max-w-full  text-gray-400 overflow-scroll justify-center'>
                        {loading ===true &&
                        <div>
                            <BeatLoader size={20} color='white' loading/>
@@ -121,7 +121,7 @@ export const Search = () => {
                        
                                 searchResults?.diaryResult.map((diary) =>(
 
-                                        <div key={diary._id} className='cursor-pointer p-1  hover:text-gray-700'>
+                                        <div   key={diary._id} className='cursor-pointer p-1  hover:text-gray-700'>
                                             <p>{diary.title}</p>  
                                         </div>
 
@@ -131,11 +131,11 @@ export const Search = () => {
                                   {/* Post error Message */}
                                   {searchResults.message==='NoPost' && searchDisplay ==='posts' &&
 
-                                        <div  className='cursor-pointer p-1  hover:text-gray-700'>
+                                        <div  className=' p-1'>
                                         <p>No Posts found for {searchData.term}</p>  
                                         </div>
 
-                                    }
+                                    } 
                     
                         </>}
 
@@ -155,7 +155,7 @@ export const Search = () => {
                                   {/* Person error Message */}
                                   {searchResults.message==='NoPerson' && searchDisplay ==='people' &&
 
-                                    <div  className='cursor-pointer p-1  hover:text-gray-700'>
+                                    <div  className='p-1  '>
                                         <p>No People found for {searchData.term}</p>  
                                     </div>
 
@@ -165,7 +165,7 @@ export const Search = () => {
                          {/* All error Message */}
                          {searchResults.message==='NoTerm' && loading ===false &&
 
-                            <div  className='cursor-pointer p-1  hover:text-gray-700'>
+                            <div  className='p-1'>
                             <p>No Results found for {searchData.term}</p>  
                             </div>
 

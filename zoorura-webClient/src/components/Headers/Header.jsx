@@ -6,7 +6,7 @@ import {    SearchIcon,
             ShoppingCartIcon,
             HashtagIcon,
             UserAddIcon} from '@heroicons/react/outline'
-
+import {GiTakeMyMoney, GiMoneyStack} from 'react-icons/gi';
 
 import HeaderRightIcon from './HeaderRightIcon.jsx'
 import { useState } from 'react';
@@ -31,6 +31,7 @@ import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {io} from 'socket.io-client'
 
+
 function Header({popContacts, setpopContacts}) {
 
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -48,6 +49,8 @@ function Header({popContacts, setpopContacts}) {
     const[popSaved, setPopSaved] = useState(false);
     //const [socket, setSocket] = useState(null)
   
+ 
+    
    const socketRef = useRef();
 
     const dispatch= useDispatch();
@@ -72,13 +75,14 @@ function Header({popContacts, setpopContacts}) {
             };
 
             window.onload = function () {
+                 if(user){
 
                 let loadTime = new Date();
-                let unloadTime = new Date(JSON.parse(window.localStorage.unloadTime));
-                let refreshTime = loadTime.getTime() - unloadTime.getTime();
+                let unloadTime = new Date(JSON.parse(window?.localStorage?.unloadTime));
+                let refreshTime = loadTime?.getTime() - unloadTime?.getTime();
 
-                if(user){
-                    if(user.result.jwtExpiry === "300d" && refreshTime > 10000){//10seconds
+               
+                    if(user?.result?.jwtExpiry === "300d" && refreshTime > 10000){//10seconds
                               
                                 
                                 localStorage.clear();
@@ -87,7 +91,7 @@ function Header({popContacts, setpopContacts}) {
             }
 
             };
-            console.log(user);
+           
 
                       
       //Sockets++++++++++++++++
@@ -125,13 +129,16 @@ function Header({popContacts, setpopContacts}) {
             }, [user]); 
            
             
-            // useEffect(() => {
-            //     if(user && socket){
-            //         socket.on("Welcome", message => {
-            //             console.log(message);
-            //         })
-            //     }
-            // }, [socket]); 
+            useEffect(() => {
+                if(user){
+                    socketRef.current.on("getConvo", socketConvoData => {
+                        console.log(socketConvoData);
+                        console.log('convoGotten') 
+                        dispatch ({type: 'POST_CONVO', payload: socketConvoData}); 
+                        dispatch ({type: 'YES_CONVO'}); 
+                    })
+                }
+            }, []); 
 
 
             useEffect(() => {
@@ -162,7 +169,7 @@ function Header({popContacts, setpopContacts}) {
                         console.log("Notification Gotten"); 
                     
                         dispatch ({type: 'SOCKET_GOT_NOTIFICATION', payload: socketNotificationData});
-                        console.log(notifications);
+                        console.log(notifications); 
                         })
                         
                         //ReviewSocket
@@ -188,6 +195,7 @@ function Header({popContacts, setpopContacts}) {
             const unreadMessages = notifications.filter(notification => notification.read === false && notification.type ==='message');
             const unreadNotifications = notifications.filter(notification => notification.read === false && notification.type !=='message');
             console.log(unreadNotifications)
+            const  unreadTipNotifications = unreadNotifications.filter(notification => notification?.read ===false && notification?.class === 'tip');
        
             if (user) {
                 const decodedJwt = parseJwt(user.token);
@@ -256,7 +264,7 @@ function Header({popContacts, setpopContacts}) {
            </Link> 
         
             {/* MID SEARCH COMP */}
-                <div className="hidden sm:flex items-center rounded-full w-1/3 mx-1 bg-gray-100 sm:pr-4">
+                <div className="hidden lg:flex items-center rounded-full w-1/3 mx-1 bg-gray-100 sm:pr-4">
                  
                  <Search/>
             
@@ -309,7 +317,7 @@ function Header({popContacts, setpopContacts}) {
                                 setpopContacts(false);
                             }
                             }>
-                            <HeaderRightIcon Icon = {UserAddIcon} badge="1"/>
+                            <HeaderRightIcon LgIcon = {GiMoneyStack} badge={unreadTipNotifications?.length} />
                             </div>
                             {popSubscribers && <SubscribersModal setshowSubscribers={setpopSubscribers}/>}
                             
@@ -402,7 +410,7 @@ function Header({popContacts, setpopContacts}) {
                      
                         <img src={user.result.dpUrl}  className="rounded-full m-0.5 group-hover:text-white h-8 w-8"/>
                                              
-                        <span className="hidden md:inline-flex w-full text-sm">@{user.result.userName}</span>
+                        <span className="hidden md:inline-flex w-full text-sm mr-2">@{user.result.userName}</span>
                         </div>
 
                      {popProfile && 
@@ -447,7 +455,7 @@ function Header({popContacts, setpopContacts}) {
 
                 {/* // SEARCH============ */}
                 
-                <div className="sm:hidden flex justify-center items-center rounded-full w-full mx-2 my-1 bg-gray-100">
+                <div className="lg:hidden flex justify-center items-center rounded-full w-full mx-2 my-1 bg-gray-100">
                     <Search/>
                 </div>
 

@@ -76,12 +76,12 @@ io.on("connection", (socket)=> {
     socket.on("sendNotification", ({socketNotificationData})=>{
         try{
 
-            console.log(users);
+            //console.log(users);
             console.log('socket notified');
-            console.log(socketNotificationData);
-            console.log(socketNotificationData.receiver);
+            //console.log(socketNotificationData);
+            //console.log(socketNotificationData.receiver);
             const receiver = getUser(socketNotificationData.receiver);
-            console.log(receiver);
+           // console.log(receiver);
 
             io.to(receiver.socketId).emit("getNotification", {
               
@@ -89,6 +89,7 @@ io.on("connection", (socket)=> {
                 receiver:socketNotificationData.receiver,
                 body:socketNotificationData.body,
                 postId:socketNotificationData.postId,
+                tipAmount:socketNotificationData?.tipAmount,
                 read:false, 
                 type:socketNotificationData.type,
                 createdOn:new Date(),
@@ -185,7 +186,7 @@ io.on("connection", (socket)=> {
         console.log(reviewData);
        
         const receiver = getUser(reviewData.reviewedMiniProfile);
-        console.log(receiver);
+       // console.log(receiver);
 
             io.to(receiver.socketId).emit("getReview", {
                 
@@ -195,6 +196,27 @@ io.on("connection", (socket)=> {
         }catch(error){ 
 
             console.log(error);
+
+        }
+    });
+     //Convo
+     socket.on("sendConvo", ({socketConvoData})=>{
+        try{
+
+  
+        console.log(socketConvoData);
+        console.log('convoreqsent')
+       
+        const receiver = getUser(socketConvoData.guest._id);
+
+            io.to(receiver.socketId).emit("getConvo", {
+                
+                ...socketConvoData
+ 
+            });
+        }catch(error){ 
+
+            console.log(error.message);
 
         }
     });

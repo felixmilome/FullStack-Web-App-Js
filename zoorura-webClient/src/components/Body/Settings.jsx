@@ -23,7 +23,7 @@ const profileSchema = yup.object().shape({
    
     userName: yup.string().strict(false).trim().required('username required').matches(/^\d*[a-zA-Z][a-zA-Z\d]*$/, "letters or letters+number for username").min(2).max(30),
     bio: yup.string().strict(false).trim().required('Bio required').min(1).max(150),
-    convoTip: yup.number().required('Convo Charge cant be empty. Set between 0-100').typeError('must be a number').min(0, "no negative numbers").max(100, "set below 100").test(
+    convoTip: yup.number().required('Convo Charge cant be empty. Set between 0-100').typeError('must be a number').min(0, "no negative numbers").max(100, "set  100").test(
         'no decimals',
         'no decimals allowed',
         value => (value + "").match(/^(0|[1-9]\d*)$/),
@@ -33,7 +33,7 @@ const profileSchema = yup.object().shape({
 const securitySchema = yup.object().shape({
    
     email: yup.string().strict(false).trim().email("email must be valid").required('email required').min(3).max(40),
-    currentPassword: yup.string().required('current password required'),
+    currentPassword: yup.string().required('fill current password field first'),
     
     password:yup.string().nullable().notRequired().when('password', {
         is: (value) => value?.length,
@@ -305,7 +305,7 @@ export const Settings = () => {
                             </div>
                              {/*ConvoTip*/}
                             <div className= "flex justify-between relative w-full pb-2">
-                                <div className='flex justify-left space-x-2 items-center w-full'>
+                                <div className='flex justify-left space-x-2 items-center w-full'> 
                                     <div>
                                     <p className='text-sm font-semibold text-gray-600'>Convo Request Tip Charge</p>
                                     <p>(0-999):</p>
@@ -322,7 +322,7 @@ export const Settings = () => {
                             </div>
                     </div>
 
-                    <div className='flex justify-between'>
+                    <div className='m-auto'>
                             {profileChanged ===true && 
                             <button 
                             type= {loadingProfile===false ? 'submit' : 'button'} className=" flex items-center px-4 py-2 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
@@ -352,7 +352,8 @@ export const Settings = () => {
                                 
                                 <p>Submit Profile Changes</p> 
 
-                            </button>}
+                            </button>} 
+                            <p className='text-center text-xs text-red-700 font-light' >{errors.currentPassword?.message}</p>
                         
                         
                             

@@ -49,7 +49,7 @@ export const postReview = async  (req, res) => {
                             const newReview = await ReviewsModel.findById(unpopulatedNewReview._id)
                             .populate('reviewerMiniProfile', 'dpUrl userName');
                             
-                        // console.log(newReview);
+                        // console.log(newReview); 
 
 
                             const unpopulatedReviewedDiary = await DiariesModel.findByIdAndUpdate(reviewedPostId, { $push: { "reviewers": userId}}, { new: true });
@@ -66,7 +66,7 @@ export const postReview = async  (req, res) => {
 
                             console.log(newReview);
                             console.log(newNotification);
-                            console.log(updatedUser);
+                            console.log(updatedUser); 
                             
                 } 
             } 

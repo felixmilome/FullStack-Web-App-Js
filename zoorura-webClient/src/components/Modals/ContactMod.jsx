@@ -33,13 +33,12 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
     const dispatch = useDispatch(); 
 
-    const diaries = useSelector((state) => state.diariesReducer);
-
-    console.log(diaries); 
+   
 
     const socket = useSelector((state) => state.socketReducer);
 
     const messagesAll = useSelector((state) => state.messagesReducer);
+   
 
  
     /// THIS ONLY RUNS WHEN NO MESSAGES+++++
@@ -55,6 +54,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     //const messages = useSelector((state) => state.messagesReducer);
 
      const messages = messagesAll.filter(message => message.convoId === convoId);
+     console.log(messages);
 
     
 

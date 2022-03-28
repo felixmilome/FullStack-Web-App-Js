@@ -19,19 +19,34 @@ export const getConvosAction = (id) => async (dispatch) => {
         }
     } catch(error) {
         console.log(error);
-    }
+    } 
 } 
 
 
-export const postConvosAction = (convoData, setLoading, setpopConvoForm) => async (dispatch) => {
+export const postConvosAction = (convoData, setLoading, setpopConvoForm, socket) => async (dispatch) => {
     try{
         const {data} = await axs.postConvosApi(convoData);
- 
-        dispatch ({type: 'EDIT_MINI_PROFILE', data});
+        dispatch ({type: 'EDIT_MINI_PROFILE', data: data?.miniProfile});
         setLoading(false);
-        setpopConvoForm(false)
+        setpopConvoForm(false);
+        const socketNotificationData = data?.newNotification;
+        const socketConvoData = data?.newConvo;
+        const newConvo = data?.newConvo;
+        console.log(data);
+        dispatch ({type: 'POST_CONVO', payload: newConvo}); 
+        dispatch ({type: 'YES_CONVO'}); 
+
+        socket.current.emit("sendNotification", {
+            socketNotificationData        
+        });
+        socket.current.emit("sendConvo", { 
+            socketConvoData        
+        });
+        
+        
+
     } catch(error) { 
-        console.log(error);
+        console.log(error?.message);
     }
 }
 

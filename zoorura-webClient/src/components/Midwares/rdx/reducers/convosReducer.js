@@ -11,9 +11,11 @@ export const convosReducer = (convos = [], action) => {
                 return action.payload;         
              
         case 'POST_CONVO': 
-            return convos;
+      
+            return [...convos, action.payload]
+            
         default:
             return convos; 
      }
      
- }
+ } 

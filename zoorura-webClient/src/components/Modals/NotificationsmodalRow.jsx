@@ -14,7 +14,7 @@ function NotificationsmodalRow ({notification}) {
             
 
                 <p className= "sm:text-center font-bold ">
-                {notification.type ==='review' && 'reviewed your post'}
+                {notification.type ==='review' && 'reviewed your post '}
                 {notification.type ==='display' && 'endorsed your post'}
                 {notification.type ==='follow' && 'subscribed to you'}
                 

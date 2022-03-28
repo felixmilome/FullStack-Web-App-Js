@@ -213,7 +213,7 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
                                             <div className= 'flex items-center'>
                                                 <p>tips</p>
                                                {reviewTips>0 && <p>({reviewTips})</p>}
-                                               {reviewTips>0 && <p>+ujjb</p>}
+                                               {reviewTips>0 && <p>+you</p>}
                                             </div>
 
                                             {popTip && 

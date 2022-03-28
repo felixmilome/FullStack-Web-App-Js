@@ -170,25 +170,28 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-        <div className="fixed text-gray-600 font-bold top-10 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+        <div className="fixed text-gray-600 font-bold top-16 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
              
         {/* ============Floating FORM BOX ======== */}
     {/* <iframe src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"
      allow="fullscreen" width="100%" height="700" >
     </iframe> */}
     {/* <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"/> */}
-            <div className="w-full lg:w-2/5 bg-gray-100 rounded-md shadow-xl m-2 h-full">
+            <div className="rounded-xl p-2 sm:p-6 w-full lg:w-2/5 bg-gray-100
+              shadow-md m-2 h-full">
+
                  <form onSubmit={handleSubmit(signUp)}>
-                        <div className= "pt-3 pb-1 flex items-center justify-around">
-                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
+                        <div className= "pt-3 pb-1 flex items-center bg-transparent justify-around">
+                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-md bg-transparent h-20 w-20 "/>
                         </div>  
                         <div className="p-1 text-center bg-transparent">
+                            
                             <p>Register to Join Zoorura</p>
                             <div className="p-1 font-light text-xs flex justify-center items-center space-x-1"> 
                                <div>
                                    Already have an account?
                                </div>
-                                <div onClick={switchLogin} className="bg-gray-100 border border-gray-400 text-gray-500 cursor-ponter hover:bg-white font-semibold p-1 rounded">
+                                <div onClick={switchLogin} className="bg-gray-100 border border-gray-300 text-gray-500 cursor-ponter hover:bg-white font-semibold p-1 rounded">
                                 <p className="cursor-pointer"> Log In </p>
                                 </div>
                             </div>
@@ -214,7 +217,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                         <div className="p-3 text-sm m-1">
                     {/* First and LastNames */}
                     
-                        <div className= "p-1 flex items-center justify-around">
+                        <div className= "p-1 space-x-1 flex items-center justify-around">
                             <div className="w-full relative">
                              <input {...register('firstName',{
                                  onChange: (e) => {setFormData({...formData, firstName: e.target.value.trim()})}
@@ -223,7 +226,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.firstName?.message}</p>
                                 {formData.firstName.length >0 && <p className='absolute top-1 right-2 text-gray-400 text-xs text-center font-light'>First Name:</p>}
                             </div> 
-                            <div className= 'w-full m-1 relative'>
+                            <div className= 'w-full relative'>
                                 <input  {...register('lastName',{
                                  onChange: (e) => {setFormData({...formData, lastName: e.target.value.trim()})}
                                  })} 
@@ -413,11 +416,11 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-         <div className="fixed text-gray-600 font-bold top-10 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+         <div className="fixed text-gray-600 font-bold top-16 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
 
-            <div className="w-full lg:w-2/5 bg-gray-100 rounded-md shadow-xl m-2 h-full">
+            <div className="w-full lg:w-2/5 bg-gray-100 rounded-xl shadow-xl m-2 h-full">
             
             <form onSubmit={handleSubmit(logIn)}>
                         <div className= "pt-3 pb-1 flex items-center justify-around">
@@ -430,7 +433,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                                <div>
                                    Don't have an account?
                                </div>
-                                <div onClick={switchSignup} className="bg-gray-100 border border-gray-400 text-gray-500 cursor-ponter hover:bg-white font-semibold p-1 rounded">
+                                <div onClick={switchSignup} className="bg-gray-100 border border-gray-300 text-gray-500 cursor-ponter hover:bg-white font-semibold p-1 rounded">
                                    <p className="cursor-pointer"> Register</p>
                                 </div>
                             </div>

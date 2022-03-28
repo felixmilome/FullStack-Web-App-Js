@@ -13,34 +13,21 @@ import {BeatLoader, DotLoader} from "react-spinners";
 
 function ConvoForm({miniProfile, user, setpopConvoForm}) {
     
-    const[freeConvoData, setfreeConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: 0, intro:''});
-    const[tipConvoData, settipConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: 30, intro:''}); //miniProfile.convoTip
+  
+    const[tipConvoData, settipConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: miniProfile.convoTip, intro:''}); 
 
     const[messageData, setmessageData] = useState({convoId: user.result._id, senderId: user.result._id, receiverId: miniProfile._id, body:'', type:'text'});
     const [loading,setLoading] = useState(false);
     const dispatch = useDispatch();
 
-  
+    const socket = useSelector((state) => state.socketReducer);
 
-    const requestFree = async ()=>{
-      
+    const requestConvo = async ()=>{
+        
 
-            try{
+            try{ 
                 setLoading(true);
-                dispatch(postConvosAction (freeConvoData, setLoading, setpopConvoForm)); 
-                console.log(freeConvoData); 
-            }
-            catch(err){    
-                console.log(err);
-            }
-            
-    }
-    const requestWithTip = async ()=>{
-       
-
-            try{
-                setLoading(true);
-                dispatch(postConvosAction (tipConvoData, setLoading, setpopConvoForm)); 
+                dispatch(postConvosAction (tipConvoData, setLoading, setpopConvoForm, socket)); 
                 console.log(tipConvoData);
             }
             catch(err){
@@ -108,7 +95,7 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                     <div className="px-3 items-center flex justify-center">
                                         <textarea name= "body"
                                          onChange={(e)=> {
-                                            setfreeConvoData({...freeConvoData, intro: e.target.value});
+                            
                                             settipConvoData({...tipConvoData, intro: e.target.value});
                                          }}
                                         
@@ -134,7 +121,7 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                     </button> */}
                                       {loading === false &&
                                       <>
-                                      <button onClick={requestFree}
+                                      <button onClick={requestConvo}
                                       
                                       type='submit' className="items-center mx-auto bg-transparent border border-gray-300 
                                         my-3 flex hover:bg-gray-100
@@ -147,7 +134,7 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                     </button>
                                   
                                    {miniProfile.convoTip > 0 &&
-                                    <button onClick={requestWithTip} type='submit' className="items-center mx-auto bg-gradient-to-r from-cyan-400 to-cyan-500 
+                                    <button onClick={requestConvo} type='submit' className="items-center mx-auto bg-gradient-to-r from-cyan-400 to-cyan-500 
                                     bg-gradient-to-r hover:from-pink-500
                                     hover:to-yellow-500 my-3 flex
                                     mx-auto w-auto rounded
