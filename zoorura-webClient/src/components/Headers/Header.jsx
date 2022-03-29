@@ -134,8 +134,14 @@ function Header({popContacts, setpopContacts}) {
                     socketRef.current.on("getConvo", socketConvoData => {
                         console.log(socketConvoData);
                         console.log('convoGotten') 
-                        dispatch ({type: 'POST_CONVO', payload: socketConvoData}); 
-                        dispatch ({type: 'YES_CONVO'}); 
+                        dispatch ({type: 'PATCH_MESSAGE', payload: socketConvoData});
+                     
+                    })
+                    socketRef.current.on("getPatchedMessage", socketMessageData => {
+                        console.log(socketMessageData);
+                        console.log('messagePatchGotten') 
+                        dispatch ({type: 'PATCH_MESSAGE', payload: socketMessageData});
+                       
                     })
                 }
             }, []); 

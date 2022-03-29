@@ -1,17 +1,35 @@
 import { DotsVerticalIcon} from "@heroicons/react/outline";
 import {PicForm, AudioForm, VideoForm} from "../Body/PostForms/Previews.jsx";
+import { SurePop } from "../Body/SurePop.jsx";
 
-function SentBubble({SentMessage, Type, File}) {
+
+function SentBubble({SentMessage, message, Type, File}) {
     return (
-        <div className="py-1 bg-transparent space-x-1 flex justify-end items-center">
+        <div className="relative py-1 bg-transparent space-x-1 flex justify-end items-center">
+                    {/* <div className="absolute right-0 top-0 flex justify-center items-center bg-gray-100 rounded-full h-7 w-7 hover:bg-cyan-400 group cursor-pointer">
+                        <DotsVerticalIcon className="group-hover:text-white text-gray-300 p-1.5"/>
+                    </div>
+                    <div className="absolute text-xs font-bold w-fit p-1 left-4 top-0 flex justify-center items-center bg-gray-100 rounded-full  hover:bg-cyan-400 group cursor-pointer">
+                        <div>Tip (30)</div>
+                    </div>
+                    <div className="absolute text-xs font-bold w-fit p-1 left-4 bottom-0 flex justify-center items-center bg-gray-100 rounded-full  hover:bg-cyan-400 group cursor-pointer">
+                        <div>Delete</div>
+                    </div> */}
+           
 {/*                 
                 <div className="flex justify-center items-center bg-gray-100 rounded-full h-10 w-10 hover:bg-cyan-400 group cursor-pointer">
                     <FontAwesomeIcon icon={faPrayingHands} size ={'2x'} className="group-hover:text-white text-gray-300 p-1.5"/>
                 </div> */}
                 
-                    <div className="flex justify-center items-center bg-gray-100 rounded-full h-9 w-9 hover:bg-cyan-400 group cursor-pointer">
+                    {/* <div className="flex justify-center items-center bg-gray-100 rounded-full h-9 w-9 hover:bg-cyan-400 group cursor-pointer">
                         <DotsVerticalIcon className="group-hover:text-white text-gray-300 p-1.5"/>
+                    </div> */}
+                    {message.tipAmount > 0 &&
+                     <div className="absolute text-xs text-cyan-400 right-4 top-0 flex justify-center items-center bg-gray-700 rounded p-0.5 w-fit">
+                       <p>got:</p>
+                       <p className='font-bold'>{message.tipAmount}</p>
                     </div>
+                    }
                 
            {Type === 'text' &&
             <div className="flex max-w-3/4 justify-end py-1 px-3 text-sm font-light">
@@ -46,7 +64,7 @@ function SentBubble({SentMessage, Type, File}) {
                                          {Type ==='image' &&
                                             <PicForm Url={File}/>
                                         }
-                                    
+                                     
                                 
                             
                             </div>
@@ -55,9 +73,9 @@ function SentBubble({SentMessage, Type, File}) {
                             </div>
             
                         </div>
-                    
+                       
 
-                    </div>}
+                    </div>} 
 
             
 

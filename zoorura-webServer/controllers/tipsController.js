@@ -3,6 +3,7 @@ import {UsersModel} from "../models/usersModel.js";
 import {MessagesModel} from "../models/messagesModel.js";
 import {ReviewsModel} from "../models/reviewsModel.js";
 import {DiariesModel} from "../models/diariesModel.js";
+import {NotificationsModel} from "../models/notificationsModel.js";
 import  mongoose  from "mongoose";
 
 
@@ -54,29 +55,37 @@ export const postTip = async  (req, res) => {
                             //ACTUAL WITHDRAWAL---------------
                             
                             const withdrawnTipper = await UsersModel.findByIdAndUpdate(req.userId, { $push: { "withdrawals": withdrawalData, "wallet": walletCut, "activityPointsRecord": newActivityPointsRecord}, $set: {activityPointsTotal: newActivityPointsTotal}}, { new: true });
-
+                            console.log(withdrawnTipper._id);
                      
                     //DEPOSIT DATAS===============-------------------------------
 
-                            const walletAdd = amount;
-                            const depositData = {type:`(${amount}) Tip on ${type}`, giverId: req.userId, postId: tippedPostId, amount:amount};
+                           
+                            
                             const unroundedTaxedAmount = amount - (amount/10);
-                            const taxedAmount = Math.trunc(unroundedTaxedAmount * Math.pow(10, 2)) / Math.pow(10, 2);
+                            const walletPush = Math.trunc(unroundedTaxedAmount * Math.pow(10, 2)) / Math.pow(10, 2);
+                            const depositData = {type:`(${amount}) Tip on ${type}`, giverId: req.userId, postId: tippedPostId, amount:walletPush};
                             
                             //ACTUAL DEPOSIT---------------
                             
-                            const depositedReceiver = await UsersModel.findByIdAndUpdate(receiverId, { $push: { "deposits": depositData, "wallet": walletAdd}}, { new: true });
-                            
+                            const depositedReceiver = await UsersModel.findByIdAndUpdate(receiverId, { $push: { "deposits": depositData, "wallet":walletPush}}, { new: true });
+                            console.log(depositedReceiver._id); 
                             if (type === 'message'){
+ 
 
-                               const messageVerify = await MessagesModel.findById(tippedPostId, {senderId:1});
+                           
+                                
                                
-                               if(messageVerify.senderId === receiverId){ // prevent user from post Stealing using Id
-                                   const tippedMessage = await MessagesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
-                                   res.json(newTip); //POPULate like the ones below
-                                }
+                                   const tippedMessage = await MessagesModel.findByIdAndUpdate(tippedPostId, {$set: {"tipAmount": walletPush}}, { new: true });
+                                   //{ $push: { "tipsArray": walletPush, "tippers": req.userId}},
+                                   
+                                   const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedMessage._id, body:tippedMessage.body, read: false,  type:  'messageTip', createdOn: new Date(), dateRank: Date.now()});
+                                   const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+                                   .populate('sender', 'dpUrl userName');
+                                   
+                                   res.json({newTip:newTip, tippedMessage:tippedMessage, newNotification:newNotification}); //POPULate like the ones below
+                                
 
-                               
+                                
 
                             }
                             else if (type === 'review'){
@@ -86,7 +95,7 @@ export const postTip = async  (req, res) => {
                                 
                                 if(reviewVerify.reviewerId === receiverId){ 
 
-                                    const unpopulatedTippedReview = await ReviewsModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
+                                    const unpopulatedTippedReview = await ReviewsModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": walletPush, "tippers": req.userId}}, { new: true });
                                     const tippedReview = await ReviewsModel.findById(unpopulatedTippedReview._id)
                                     .populate('reviewerMiniProfile', 'dpUrl userName');
  
@@ -105,7 +114,7 @@ export const postTip = async  (req, res) => {
 
                                    // const userId = req.userId;
 
-                                    const unpopulatedTippedDiary = await DiariesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": taxedAmount, "tippers": req.userId}}, { new: true });
+                                    const unpopulatedTippedDiary = await DiariesModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": walletPush, "tippers": req.userId}}, { new: true });
                                     const tippedDiary = await DiariesModel.findById(unpopulatedTippedDiary._id)
                                    .populate('diaryMiniProfile', 'dpUrl userName');
 
@@ -121,6 +130,6 @@ export const postTip = async  (req, res) => {
   
             
         } catch(error){
-            res.status(404).send({message: error.message});
+            console.log(error.message);
         } 
  }

@@ -4,11 +4,12 @@ export const messagesReducer = (messages = [], action) => {
         case 'DELETE_MESSAGE':
             return messages.filter((message)=> message._id !== action.payload);
         case 'PATCH_MESSAGE':
+        case 'TIP_MESSAGE':
             return messages.map((message) => message._id === action.payload._id ? action.payload : message);
         case 'GET_ALL_MESSAGES':
            
              return messages.concat(action.payload);
-          
+           
         case 'SOCKET_GOT_MESSAGE':    
         case 'POST_MESSAGE':
             return [...messages, action.payload];

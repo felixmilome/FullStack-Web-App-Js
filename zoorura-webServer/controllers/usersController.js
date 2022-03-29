@@ -373,7 +373,7 @@ export const register = async (req,res) => {
         const existingUser = await UsersModel.findOne ({userName: { $in: [ userName ] } });
         const existingEmail = await UsersModel.findOne ({email: { $in: [ email ] } });
 
-        // console.log(existingEmail);
+        // console.log(existingEmail); 
 
         //  if(existingUser) return res.status(400).json({message:"Username Taken."});
          

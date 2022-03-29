@@ -53,7 +53,7 @@ io.on("connection", (socket)=> {
         const receiver = getUser(messageData.receiverId);
         console.log(receiver);
 
-            io.to(receiver.socketId).emit("getMessage", {
+            io.to(receiver.socketId).emit("getMessage", { //Perfect
                 
                 convoId:messageData.convoId,
                 senderId:messageData.senderId,
@@ -68,6 +68,27 @@ io.on("connection", (socket)=> {
         }catch(error){
 
             console.log(error);
+
+        }
+    });
+
+      //Send and Tip Message
+      socket.on("patchMessage", ({socketMessageData})=>{
+        try{
+
+        console.log(socketMessageData);
+       
+        const receiver = getUser(socketMessageData.senderId); //Because Message Sender owns the Message to be Patched
+        console.log(receiver);
+
+            io.to(receiver.socketId).emit("getPatchedMessage", {
+                
+                ...socketMessageData
+
+            });
+        }catch(error){
+
+            console.log(error.message);
 
         }
     });

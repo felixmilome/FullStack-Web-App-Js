@@ -20,7 +20,7 @@ const messagesSchema = mongoose.Schema({
                 }, 
         file: {
                 type: String,
-                default: null,
+                default: null, 
                 },
         type: {
                 type: String,
@@ -34,7 +34,13 @@ const messagesSchema = mongoose.Schema({
                 type: Number,
                 default: Date.now()
         },
+        tipAmount:{
+                type: Number,
+                default: 0
+        },
+   
         tipsArray:[Number]
+
 
 });
 

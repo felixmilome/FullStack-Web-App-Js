@@ -14,6 +14,7 @@ import {PicForm, AudioForm, VideoForm} from "../Body/PostForms/Previews.jsx";
 
 import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
+import { SurePop } from "../Body/SurePop.jsx";
 
 function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
@@ -250,6 +251,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
              w-full xl:w-1/4  flex  
              justify-between items-center">
                  
+                 
 
                 <div style={{wordBreak: 'break-word'}} className="flex items-center space-x-2
                  bg-transparent justify-around 
@@ -296,7 +298,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                 */}
                 {messages.length ?
 
-                    <>
+                    <> 
                         {
                         messages.map((message) =>{
                             
@@ -304,13 +306,13 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                             if (viewer._id === message.senderId){ //BELONGS TO ME(VIEWER)
                               
                                 return(
-                                    <SentBubble key={message._id} SentMessage={message.body} File={message.file} Type={message.type}/>
+                                    <SentBubble key={message._id} message={message} SentMessage={message.body} File={message.file} Type={message.type}/>
                                 )
                             }
-                            if (displayed._id === message.senderId){ //BELONGS TO THEM(DISPLAYED)
+                            if (displayed._id === message.senderId){//BELONGS TO THEM(DISPLAYED)
                              
                                 return(
-                                    <ReceivedBubble key={message._id} ReceivedMessage={message.body} File={message.file} Type={message.type}/>
+                                    <ReceivedBubble key={message._id} message={message} ReceivedMessage={message.body} File={message.file} displayed={displayed} Type={message.type}/>
                                 )
                             }
                         }
