@@ -42,10 +42,22 @@ export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, 
         socket.current.emit("sendNotification", {
             socketNotificationData        
         });
-        
         socket.current.emit("sendReview", {
             reviewData
-        });  
+        });                                             ///SEND TO POST OWNNER AND REVIEW REPLIED ALSO
+        
+       
+            if(reviewData.reply === true){
+
+                const socketNotificationData = data.newNotification2;
+                socket.current.emit("sendNotification", {
+                    socketNotificationData        
+                });
+                socket.current.emit("replyReview", {
+                    reviewData
+                }); 
+                console.log ('reply review sent');
+            }
 
         dispatch ({type: 'POST_REVIEW', payload: newReview});
         dispatch ({type: 'REVIEW_DIARY', payload: reviewedPost});
@@ -59,7 +71,7 @@ export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, 
         
         
     } catch(error) {  
-        console.log(error);
+        console.log(error.message);
     }
 }
 export const patchReviewsAction = (reviewData, setReviewLoading, setReviewDelivery, setReviewEditor, setSpam) => async (dispatch) => {

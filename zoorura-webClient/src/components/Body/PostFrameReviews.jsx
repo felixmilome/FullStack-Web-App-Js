@@ -10,15 +10,17 @@ import {patchReviewsAction} from "../Midwares/rdx/actions/reviewsAction.js"
 import{PostFrameRevRow} from "./PostFrameRevRow.jsx"
 
 
-export const PostFrameReviews = ({diaryId, userId}) => {
+export const PostFrameReviews = ({diaryId, diaryCreator, userId}) => {
 
-       
+        
 
     const reviewersAll = useSelector((state) => state.reviewsReducer);
    
     const dispatch = useDispatch(); 
 
-    const availableReviewers = reviewersAll.filter(reviewer => reviewer.reviewedPostId === diaryId);
+    const availableReviewers = reviewersAll.filter(reviewer => reviewer.reviewedPostId === diaryId && reviewer.reply === false);
+    const availableRepliers = reviewersAll.filter(reviewer => reviewer.reviewedPostId === diaryId && reviewer.reply === true);
+    
    
     useEffect(() => {     
        
@@ -37,11 +39,22 @@ export const PostFrameReviews = ({diaryId, userId}) => {
             
                 <div key={reviewer._id}  className='ml-5 bg-gray-100 border-gray-300 rounded-md '>
             
-              <PostFrameRevRow diaryId={diaryId} userId= {userId} reviewer= {reviewer}/>
+                     <PostFrameRevRow diaryId={diaryId} diaryCreator={diaryCreator} userId= {userId} reviewer= {reviewer}/>
                     
+                    <>  
+                        {availableRepliers.length > 0 && availableRepliers.map((replier) =>(
+                            <> 
+                                {replier.repliedPostId === reviewer._id && 
+                                <div key={replier._id}  className='ml-8 bg-gray-100'>            
+                                    <PostFrameRevRow diaryId={diaryId} diaryCreator={diaryCreator} userId= {userId} reviewer= {replier}/>
+                                </div>
+                                } 
+                            </>
+                            ))
+                        }
+                    </>
                 
-                
-                 </div>
+                 </div> 
             ))
             
         }                       

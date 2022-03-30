@@ -183,17 +183,36 @@ function Header({popContacts, setpopContacts}) {
                         console.log(reviewData);
                         console.log("review Gotten");
 
-                            if(reviewData.reviewData.reviewerId !== user.result.Id){  //prevent spam since already posted when posting  
-                            dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData.reviewData}); //double since hasnt been dismantled
+                            if(reviewData.reviewerId != user.result._id){  //prevent spam since already posted when posting  
+                            dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData}); //double since hasnt been dismantled
                             console.log('now posting review');
                             }
 
-                        }) 
+                        })
+                        
  
 
 
 
                 }   
+            }, []);
+
+            useEffect(() => {
+                if(user){
+                 //ReviewReplySocket
+                 socketRef.current.on("getReplyReview", reviewData =>{
+                    console.log(reviewData);
+                    console.log("review Reply Gotten");
+
+                        if(reviewData.reviewerId != user.result._id 
+                            && reviewData.reviewedMiniProfile !== reviewData.repliedMiniProfile  //prevent also double reply and org later
+                            ){  //prevent spam since already posted when posting  
+                        dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData}); //double since hasnt been dismantled
+                        console.log('now posting reviewreply');
+                        }
+
+                    }) 
+                } 
             }, []);
 
 

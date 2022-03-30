@@ -56,7 +56,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     //const[tipData, setTipData] = useState({tipper: '', tipperId: '', amount: null, tipperObj: {tipper: '', tipperId:'', amount: null}});
     const[tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type: '', amount: null});
     //const[reviewData, setreviewData] = useState({reviewer: user.result.userName, reviewerId:user.result._id, body: ''});
-    const[reviewData, setreviewData] = useState({reviewedId:'', reviewedPostId:'', body: ''});
+    const[reviewData, setreviewData] = useState({reviewedId:'', reviewedPostId:'', body: '', replied:null, repliedPostId:null, reply:false});
     const[socketReviewData, setSocketReviewData] = useState({reviewerId:user.result._id, reviewerMiniProfile:{_id: user.result._id, dpUrl: user.result.dpUrl, userName:user.result.userName}, reviewedMiniProfile:diary.creator, reviewedPostId:diary._id, body: ''});
     const [socketReviewNotification, setSocketReviewNotification] = useState({sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiver:diary.creator, body:'',postId:diary._id, type: 'review'});
     const [displayData, setDisplayData] = useState({
@@ -778,7 +778,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                         <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-500 text-xs '>hide</p>
                      </div>   
                      <div  className= 'bg-transparent max-h-60 overflow-scroll'>
-                        <PostFrameReviews diaryId={diary._id} userId={user.result._id} setpopTip={setpopTip}/>
+                        <PostFrameReviews diaryId={diary._id} diaryCreator={diary.creator} userId={user.result._id} setpopTip={setpopTip}/>
                     </div>
                    
                 
@@ -802,7 +802,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             <textarea value= {reviewData.body}
                             onChange={(e)=> {
                                 
-                                setreviewData({reviewedId:diary.creator, reviewedPostId:diary._id, body: e.target.value});
+                                setreviewData({reviewedId:diary.creator, reviewedPostId:diary._id, body: e.target.value, replied:null, repliedPostId:null, reply:false});
                                 setSocketReviewData({...socketReviewData, body: e.target.value});
 
                             }}

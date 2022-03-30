@@ -25,7 +25,7 @@ export const getReviews =  async (req, res)=> {
 
 export const postReview = async  (req, res) => {
     console.log(req.body);
-    const{reviewedId, reviewedPostId, body} = req.body //receivername for Records
+    const{reviewedId, reviewedPostId, body, replied, repliedPostId, reply} = req.body //receivername for Records
     const userId = req.userId
     
  //console.log(req.body); 
@@ -45,7 +45,7 @@ export const postReview = async  (req, res) => {
                     res.json("ValidationError");
                 }else{
 
-                            const unpopulatedNewReview = await ReviewsModel.create({reviewerId:req.userId, reviewerMiniProfile:req.userId, reviewedMiniProfile:reviewedId, reviewedPostId:reviewedPostId, body:body, time:Date.now()})
+                            const unpopulatedNewReview = await ReviewsModel.create({reviewerId:req.userId, reviewerMiniProfile:req.userId, reviewedMiniProfile:reviewedId, repliedMiniProfile:replied, repliedPostId:repliedPostId, reply:reply, reviewedPostId:reviewedPostId, body:body, time:Date.now()})
                             const newReview = await ReviewsModel.findById(unpopulatedNewReview._id)
                             .populate('reviewerMiniProfile', 'dpUrl userName');
                             
@@ -55,18 +55,40 @@ export const postReview = async  (req, res) => {
                             const unpopulatedReviewedDiary = await DiariesModel.findByIdAndUpdate(reviewedPostId, { $push: { "reviewers": userId}}, { new: true });
                             const reviewedDiary = await DiariesModel.findById(unpopulatedReviewedDiary._id)
                             .populate('diaryMiniProfile', 'dpUrl userName');
-                        
-                            const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:'', postId:reviewedPostId, read: false,  type: 'review', createdOn: new Date(), dateRank: Date.now()});
-                            const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
-                            .populate('sender', 'dpUrl userName'); 
 
-                            res.json({newReview:newReview, newNotification:newNotification, reviewedPost:reviewedDiary});
+                            if (reply === false){
 
-                            const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {reviewSpam:newReviewSpam}}, { new: true });
+                                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:'', postId:reviewedPostId, read: false,  type: 'review', createdOn: new Date(), dateRank: Date.now()});
+                                const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+                                .populate('sender', 'dpUrl userName'); 
 
-                            console.log(newReview);
-                            console.log(newNotification);
-                            console.log(updatedUser); 
+                                res.json({newReview:newReview, newNotification:newNotification, reviewedPost:reviewedDiary});
+
+                                const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {reviewSpam:newReviewSpam}}, { new: true });
+
+                                console.log(newReview);
+                                console.log(newNotification);
+                                console.log(updatedUser);
+
+                            } else if (reply === true){
+
+                                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:body, postId:reviewedPostId, read: false,  type: 'review', createdOn: new Date(), dateRank: Date.now()});
+                                const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+                                .populate('sender', 'dpUrl userName');
+
+                                const unpopulatedNewNotification2 = await NotificationsModel.create({sender:req.userId, receiver:replied, receiverId:reviewedId, body:body, postId:reviewedPostId, read: false,  type: 'reviewReply', createdOn: new Date(), dateRank: Date.now()});
+                                const newNotification2 = await NotificationsModel.findById(unpopulatedNewNotification2._id)
+                                .populate('sender', 'dpUrl userName'); 
+    
+                                res.json({newReview:newReview, newNotification:newNotification, newNotification2:newNotification2, reviewedPost:reviewedDiary});
+    
+                                const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {reviewSpam:newReviewSpam}}, { new: true });
+    
+                                console.log(newReview);
+                                console.log(newNotification2);
+                                console.log(updatedUser);
+
+                            } 
                             
                 } 
             } 
@@ -117,7 +139,7 @@ export const postReview = async  (req, res) => {
             }
             
         } catch(error){
-            res.status(404).send({message: error.message});
+            console.log(error.message);
         } 
  }
  export const deleteReview = async (req, res) => {

@@ -6,25 +6,28 @@ import{GiMoneyStack, GiTakeMyMoney} from "react-icons/gi";
 import { BiCommentEdit } from "react-icons/bi";
 import { MdSend,MdOutlineCancel} from "react-icons/md";
 import {BeatLoader} from "react-spinners";
-import {patchReviewsAction, deleteReviewsAction} from "../Midwares/rdx/actions/reviewsAction.js"
+import {patchReviewsAction, postReviewsAction, deleteReviewsAction} from "../Midwares/rdx/actions/reviewsAction.js"
 import OutsideClickHandler from 'react-outside-click-handler';
 import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
 import { SurePop } from './SurePop';
 import {postTipsAction} from "../Midwares/rdx/actions/tipsAction.js";
 import {ReviewTipRow} from "./ReviewTipRow.jsx"
 
-export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
+export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
 
-     const[reviewData, setreviewData] = useState({reviewId:'', body: ''});
+     const[reviewData, setreviewData] = useState({reviewedId:diaryCreator, reviewedPostId:diaryId, body:'', replied:null, repliedPostId:null, reply:null});
      const[tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type:'', amount:''});
       const[loading, setLoading] = useState(false);
-      const[reviewDelivery, setReviewDelivery] = useState(false);
+      const[replyInput, setReplyInput] = useState(false);
+      const[reviewDelivery, setReviewDelivery] = useState(false); 
       const[tipDelivery, setTipDelivery] = useState(false);  
       const[deleteDelivery, setDeleteDelivery] = useState(false);
        const[reviewEditor, setReviewEditor] = useState(false); 
        const[deleteReviewSurePop, setDeleteReviewSurePop] = useState(false); 
        const[tipReviewSurePop, setTipReviewSurePop] = useState(false);
        const[popTip, setpopTip] = useState(false); 
+
+       const socket = useSelector((state) => state.socketReducer);
        
 
 
@@ -68,6 +71,8 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
             console.log(error);
         }
     }
+
+  
   
 
     const deleteReview = () =>{
@@ -97,7 +102,22 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
         }
           
     }
+    const reviewDiary = () =>{
 
+        setLoading(true);
+        setReplyInput(false);
+       
+        try{
+            dispatch(postReviewsAction(reviewData, setreviewData, setLoading, setReviewDelivery, socket));
+            console.log(reviewData);
+        }
+        catch(error){
+            console.log(error);
+        }
+          
+    }
+    const allReviews = useSelector((state) => state.reviewsReducer);
+    const thisReplies = allReviews.filter(review => review.repliedPostId === reviewer._id && review.reply === true);
 
     return (
 
@@ -110,7 +130,7 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
 
          
                 {reviewDelivery &&
-                        <DeliveryPop message='Review Edited'/>
+                        <DeliveryPop message='Review Posted'/>
                         }
 
                     {deleteDelivery &&
@@ -178,7 +198,8 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
                             {/* EMoji & Pic */}
                             <div className="space-y-3 mb-7 items-center inline-block items-center p-1">
                                 
-                                <img src={reviewer.reviewerMiniProfile.dpUrl} alt="DP" className="rounded-full object-cover h-8 w-8"/>
+                               {reviewer.reply===false && <img src={reviewer.reviewerMiniProfile.dpUrl} alt="DP" className="rounded-full object-cover h-8 w-8"/>}
+                               {reviewer.reply===true && <img src={reviewer.reviewerMiniProfile.dpUrl} alt="DP" className="rounded-full object-cover h-6 w-6"/>}
                                 
                             </div>
 
@@ -215,7 +236,7 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
                                                {reviewTips>0 && <p>({reviewTips})</p>}
                                                {reviewTips>0 && <p>+you</p>}
                                             </div>
-
+                                 
                                             {popTip && 
                                             <div className='flex  space-x-0.5'>
                                                 <div className= 'flex absolute bottom-6 left-0 justify-right space-x-2 font-bold bg-gray-200 border border-gray-300 p-1'>
@@ -239,14 +260,30 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
                                                 <div className= 'w-1/2 text-xs justify-around absolute bottom-6 right-0 font-bold bg-gray-200 '>
                                                       <ReviewTipRow reviewId={reviewer._id}/>                 
                                                 </div>
+                                               
+
 
                                             </div>
                                             }
 
                                         </div>
+                                        
                                         </OutsideClickHandler>
+                                        { reviewer.reply === false &&
+                                            <div onClick= {()=>{
+                                                setReplyInput(true);
+                                                setreviewData({...reviewData, replied:reviewer.reviewerId});
+                                                }}className= 'inline-flex items-center'>
+                                                        <p>replies({thisReplies.length})</p>
+                                            </div>
+                                        }
+                                      
+                                        
+                                       
+                                      
 
-                                        { reviewer.reviewerId === userId && reviewer.edited===false && <div onClick= {()=>{
+                                        { reviewer.reviewerId === userId && reviewer.edited===false && 
+                                        <div onClick= {()=>{
                                             setreviewData({...reviewData, body:reviewer.body});
                                             setReviewEditor(true);
                                             }} className="bg-transparent rounded-full flex justify-center cursor-pointer hover:bg-gray-200 px-2 items-center  group">
@@ -264,9 +301,40 @@ export const PostFrameRevRow = ({diaryId, userId, reviewer}) => {
                                     }
 
                         </div>
+                        
                                 
                     </div>
-                
+                   
+                    
+                    {/* INPUT */}
+                    {replyInput===true  && 
+                        <div className="relative w-full items-center">
+                            
+                            <div  className='absolute bottom-3 right-12'>
+                                 { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
+                                 <>
+                                     {!loading && <MdSend onClick= {reviewDiary}/> }
+                                     {loading && 
+                                     <>
+                                     {/* <p className= 'text-xs font-extralight'>sending review</p> */}
+                                     <BeatLoader size={7} color='black' loading/>
+                                     </> }
+                                 </> 
+                                 } 
+                             </div>
+                                <textarea value= {reviewData.body}
+                                        onChange={(e)=> {
+                                            
+                                            setreviewData({...reviewData, reviewedId:diaryCreator, reviewedPostId:diaryId, body:e.target.value, replied:reviewer.reviewerId, repliedPostId:reviewer._id, reply:true});
+                                            
+
+                                        }}
+                                        type="text" placeholder="Write Review Here..." className="max-h-screen
+                                        w-3/4 text-gray-700 font-light outline-none bg-gray-100
+                                        text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                        </div>
+                        }
+                         
                 
             </div>
 

@@ -204,19 +204,41 @@ io.on("connection", (socket)=> {
         try{
 
   
-        console.log(reviewData);
+       // console.log(reviewData);
        
         const receiver = getUser(reviewData.reviewedMiniProfile);
        // console.log(receiver);
 
             io.to(receiver.socketId).emit("getReview", {
                 
-                reviewData
+                ...reviewData
  
             });
         }catch(error){ 
 
             console.log(error);
+ 
+        }
+    });
+     //ReviewReply
+     socket.on("replyReview", ({reviewData})=>{
+        try{
+
+  
+        console.log(reviewData.repliedMiniProfile);
+        console.log('reply review');
+       
+        const receiver = getUser(reviewData.repliedMiniProfile);
+       console.log('REPLYRECEIVER:' + receiver);
+
+            io.to(receiver.socketId).emit("getReplyReview", {
+                
+                ...reviewData
+ 
+            });
+        }catch(error){ 
+
+            console.log(error.message);
 
         }
     });

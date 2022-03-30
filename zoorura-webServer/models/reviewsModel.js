@@ -13,9 +13,21 @@ const reviewsSchema = mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'UsersModel'
     }, 
+    repliedMiniProfile: {
+        type: Schema.Types.ObjectId,
+        ref: 'UsersModel'
+    }, 
+    reply: {
+        type: Boolean,
+        default: false
+    },
+    repliedPostId: {
+        type: String,  
+    }, 
     reviewedPostId: {
         type: String,  
-    },  
+    }, 
+    
     body:{
         type:String
     },
