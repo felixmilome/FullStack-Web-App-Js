@@ -274,7 +274,7 @@ export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
                                                 setReplyInput(true);
                                                 setreviewData({...reviewData, replied:reviewer.reviewerId});
                                                 }}className= 'inline-flex items-center'>
-                                                        <p>replies({thisReplies.length})</p>
+                                                        <p>replies {thisReplies.length>0 && (thisReplies.length)}</p>
                                             </div>
                                         }
                                       
@@ -307,8 +307,9 @@ export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
                    
                     
                     {/* INPUT */}
-                    {replyInput===true  && 
-                        <div className="relative w-full items-center">
+                  
+                       { reviewer.reply ===false &&
+                       <div className="relative w-full rounded-xl items-center">
                             
                             <div  className='absolute bottom-3 right-12'>
                                  { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
@@ -329,11 +330,12 @@ export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
                                             
 
                                         }}
-                                        type="text" placeholder="Write Review Here..." className="max-h-screen
-                                        w-3/4 text-gray-700 font-light outline-none bg-gray-100
-                                        text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                                        type="text" placeholder={`reply @${reviewer.reviewerMiniProfile.userName}`} className="max-h-screen
+                                        w-1/2 ml-8 text-gray-700 outline-none bg-gray-100
+                                        text-xs  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                         </div>
                         }
+                        
                          
                 
             </div>
