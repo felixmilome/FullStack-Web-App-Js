@@ -44,35 +44,28 @@ io.on("connection", (socket)=> {
     });
     
     //Send and Get Message
-    socket.on("sendMessage", ({messageData})=>{
+    socket.on("sendMessage", ({socketMessageData})=>{
         try{
 
         console.log(users);
-        console.log(messageData);
-        console.log(messageData.receiverId);
-        const receiver = getUser(messageData.receiverId);
+        console.log(socketMessageData);
+        console.log(socketMessageData.receiverId);
+        const receiver = getUser(socketMessageData.receiverId);
         console.log(receiver);
 
-            io.to(receiver.socketId).emit("getMessage", { //Perfect
+            io.to(receiver.socketId).emit("getMessage", { 
                 
-                convoId:messageData.convoId,
-                senderId:messageData.senderId,
-                receiverId:messageData.receiverId,
-                body:messageData.body,
-                file:messageData.file,
-                type:messageData.type,
-                createdOn:new Date(),
-                dateRank:Date.now(),
+                ...socketMessageData
 
             });
         }catch(error){
 
-            console.log(error);
+            console.log(error.message);
 
         }
     });
 
-      //Send and Tip Message
+      //Send and Tip Message NOT ACTUAL PATCH ONLY
       socket.on("patchMessage", ({socketMessageData})=>{
         try{
 
@@ -119,7 +112,7 @@ io.on("connection", (socket)=> {
         });
         }catch(error){
 
-            console.log(error);
+            console.log(error.message);
 
         }
     });
@@ -143,7 +136,7 @@ io.on("connection", (socket)=> {
             });
         }catch(error){
 
-            console.log(error);
+            console.log(error.message);
 
         }
     });
@@ -194,7 +187,7 @@ io.on("connection", (socket)=> {
 
         }catch(error){
 
-            console.log(error);
+            console.log(error.message);
 
         }
     });
@@ -246,7 +239,6 @@ io.on("connection", (socket)=> {
      socket.on("sendConvo", ({socketConvoData})=>{
         try{
 
-  
         console.log(socketConvoData);
         console.log('convoreqsent')
        

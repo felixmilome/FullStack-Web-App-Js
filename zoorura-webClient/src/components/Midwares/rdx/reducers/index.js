@@ -11,10 +11,13 @@
  import {notificationsReducer} from './notificationsReducer';
  import {reviewsReducer} from './reviewsReducer';
  import {tipsReducer} from './tipsReducer';
-  import {deleteAccountReducer} from './deleteAccountReducer';
-  import {headSearchReducer} from './searchReducer';
-
- export default combineReducers({
+ import {deleteAccountReducer} from './deleteAccountReducer';
+ import {headSearchReducer} from './searchReducer';
+ import { messagesOpenedReducer,
+       reviewsOpenedReducer, tipDiaryOpenedReducer,
+         tipReviewOpenedReducer} from './openedCheckReducer';
+ 
+         export default combineReducers({
 
     diariesReducer, savedDiariesReducer,
      convoStateReducer, googleauthReducer,
@@ -24,6 +27,9 @@
       notificationsReducer, reviewsReducer, tipsReducer,
        blockReducer, populateBlockReducer, securityResetReducer,
         forgotPasswordReducer,
-       headSearchReducer
+       headSearchReducer,
+       messagesOpenedReducer, 
+       reviewsOpenedReducer, tipDiaryOpenedReducer, 
+        tipReviewOpenedReducer
        
  });  

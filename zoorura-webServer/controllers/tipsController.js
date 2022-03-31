@@ -98,10 +98,14 @@ export const postTip = async  (req, res) => {
                                     const unpopulatedTippedReview = await ReviewsModel.findByIdAndUpdate(tippedPostId, { $push: { "tipsArray": walletPush, "tippers": req.userId}}, { new: true });
                                     const tippedReview = await ReviewsModel.findById(unpopulatedTippedReview._id)
                                     .populate('reviewerMiniProfile', 'dpUrl userName');
+
+                                    const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedReview._id, body:tippedReview.body, read: false,  type:  'reviewTip', createdOn: new Date(), dateRank: Date.now()});
+                                   const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+                                   .populate('sender', 'dpUrl userName');
  
-                                     res.json({newTip:newTip, tippedPost:tippedReview});
+                                     res.json({newTip:newTip, tippedPost:tippedReview, newNotification:newNotification});
                                      console.log(newTip);
-                                    
+                                     
                                 }
                                 
 
@@ -118,7 +122,11 @@ export const postTip = async  (req, res) => {
                                     const tippedDiary = await DiariesModel.findById(unpopulatedTippedDiary._id)
                                    .populate('diaryMiniProfile', 'dpUrl userName');
 
-                                    res.json({newTip:newTip, tippedPost:tippedDiary});
+                                   const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedDiary._id, body:tippedDiary.body, read: false,  type:  'reviewTip', createdOn: new Date(), dateRank: Date.now()});
+                                   const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+                                   .populate('sender', 'dpUrl userName');
+
+                                    res.json({newTip:newTip, tippedPost:tippedDiary, newNotification:newNotification});
                                     console.log(newTip);
                                 }
                                 

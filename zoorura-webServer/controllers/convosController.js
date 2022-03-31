@@ -1,5 +1,6 @@
 import {ConvosModel} from "../models/convosModel.js";
 import {MessagesModel} from "../models/messagesModel.js";
+import {TipsModel} from "../models/tipsModel.js";
 import {NotificationsModel} from "../models/notificationsModel.js";
 import  mongoose  from "mongoose"; 
 import { UsersModel } from "../models/usersModel.js";
@@ -24,14 +25,14 @@ export const getConvos = async  (req, res) => {
     const{type, members,tip} = req.body;
     // console.log('TYPE: ' + type);
     // console.log('MEMBERS: ' + members);
-    // console.log("tip: "+ tip);
+    // console.log("tip: "+ tip); 
     try{  
 
         if (type === '2'){
 
             const{host, guest, members, type, tip, intro} = req.body;
 
-            const amount = tip
+            const amount = tip 
 
             const editedGuest = await UsersModel.findByIdAndUpdate(guest, { $push: { "convoRequesters": req.userId }});
             const guestMiniProfile = await UsersModel.findById(editedGuest._id, {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
@@ -78,7 +79,7 @@ export const getConvos = async  (req, res) => {
                 
                 //ACTUAL DEPOSIT---------------
                 
-                const depositedReceiver = await UsersModel.findByIdAndUpdate(receiverId, { $push: { "deposits": depositData, "wallet": walletPush}}, { new: true });
+                const depositedReceiver = await UsersModel.findByIdAndUpdate(guest, { $push: { "deposits": depositData, "wallet": walletPush}}, { new: true });
                 console.log(depositedReceiver._id);
 
                 const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:guest, receiverId:guest, tipAmount:walletPush, body:intro, postId:newConvo._id, read: false,  type: 'tipConvo' , createdOn: new Date(), dateRank: Date.now()});

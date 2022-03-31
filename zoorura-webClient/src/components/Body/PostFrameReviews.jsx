@@ -33,30 +33,20 @@ export const PostFrameReviews = ({diaryId, diaryCreator, userId}) => {
 
 
     return (
+      
      
         <>
             {availableReviewers.length > 0  && availableReviewers.map((reviewer) =>(
-            
+              
                 <div key={reviewer._id}  className='ml-5 bg-gray-100  rounded-md '>
             
                      <PostFrameRevRow diaryId={diaryId} diaryCreator={diaryCreator} userId= {userId} reviewer= {reviewer}/>
-                    <div className='max-h-80 overflow-scroll bg-gray-200 w-fit rounded-xl'>  
-                        {availableRepliers.length > 0 && availableRepliers.map((replier) =>(
-                            <> 
-                                {replier.repliedPostId === reviewer._id && 
-                                <div key={replier._id}  className='ml-20 bg-gray-100'>            
-                                    <PostFrameRevRow diaryId={diaryId} diaryCreator={diaryCreator} userId= {userId} reviewer= {replier}/>
-                                </div>
-                                } 
-                            </>
-                            ))
-                        }
-                    </div>
-                
+                   
                  </div> 
             ))
             
-        }                       
+        }   
+                       
         </>
     )
 }

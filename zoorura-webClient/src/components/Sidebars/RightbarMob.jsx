@@ -2,6 +2,7 @@ import RightbarmobRow from './RightbarmobRow.jsx';
 import ContactMod from '../Modals/ContactMod.jsx';
 import { useState, useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import{MdOutlineCancel} from 'react-icons/md';
 //import { UserIcon } from '@heroicons/react/outline';
 import {BeatLoader} from "react-spinners";
 import{getMessagesAction} from "../Midwares/rdx/actions/messagesAction.js"
@@ -14,7 +15,7 @@ function RightbarMob({user, setpopContacts, unreadMessages}){
     const[viewer, setViewer] = useState(null);
     
     const[convoId, setConvoId] = useState(null); 
-    const convos = useSelector((state) => state.convosReducer);
+    const convos = useSelector((state) => state.convosReducer); 
     const convoState = useSelector((state) => state.convoStateReducer);
 
     const dispatch = useDispatch();
@@ -25,6 +26,8 @@ function RightbarMob({user, setpopContacts, unreadMessages}){
        
 
     // }, [dispatch]);
+
+  
 
     console.log(convoState);
     console.log(convos);
@@ -51,11 +54,15 @@ const chatSetterInverse = (guestData, hostData, idConvo) =>{
 
 return (
     
-    <div className=" p-7 w-full sm:w-1/4 m-x-4 bg-gray-100 z-10 fixed right-0 sm:right-1.5 top-24 sm:top-20 rounded-md h-screen overflow-y-auto overflow-x-hidden">
+    <div className=" p-7 w-full sm:w-1/4 m-x-4 bg-gray-100 z-10 fixed right-0 sm:right-1.5 top-0 sm:top-20 rounded-md h-screen overflow-y-auto overflow-x-hidden">
         <div className="overflow-scroll">
-
-        <div className="ml-1 font-bold text-gray-500 p-1">
-        Contacts
+          <div className='flex justify-between p-3 items-center'>
+                <div className="ml-1 font-bold text-gray-500 p-1">
+                Contacts 
+                </div>
+                <div onClick={()=>setpopContacts(false)} className="ml-1 hover:bg-gray-400 rounded-full font-bold text-gray-400 p-1 cursor-pointer group">
+                 <MdOutlineCancel size={20} className='group-hover:text-gray-100'/>
+                </div>
         </div>
           
             {/* Contacts People */}

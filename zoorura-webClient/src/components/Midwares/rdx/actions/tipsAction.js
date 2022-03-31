@@ -27,10 +27,14 @@ export const messageTipsAction = (tipData, setPopTip, setTipLoading, setTipDeliv
          
     
         dispatch ({type: 'POST_TIP', payload: newTip});
-        
-        if (newTip.type === 'message'){ 
-            dispatch ({type: 'TIP_MESSAGE', payload: socketMessageData});
+        dispatch ({type: 'TIP_MESSAGE', payload: socketMessageData});
 
+
+        setPopTip(false); 
+        setTipLoading(false);
+
+        setTipDelivery(true);
+        setTimeout( function() {setTipDelivery(false)}, 2000);
 
         socket.current.emit("sendNotification", {
             socketNotificationData        
@@ -39,17 +43,7 @@ export const messageTipsAction = (tipData, setPopTip, setTipLoading, setTipDeliv
             socketMessageData        
         });
 
-
-
-
-        }
-
        
-        setPopTip(false); 
-        setTipLoading(false);
-
-        setTipDelivery(true);
-        setTimeout( function() {setTipDelivery(false)}, 2000);
         
     } catch(error) {  
         console.log(error.message);
@@ -62,28 +56,39 @@ export const postTipsAction = (tipData, setpopSure, setpopTip, setTipLoading, se
     try{
         const {data} = await axs.postTipsApi(tipData); 
         const newTip = data.newTip; 
-        const tippedPost = data.tippedPost; 
+        const tippedPost = data.tippedPost;
+        const socketNotificationData  = data?.newNotification; 
         console.log(tippedPost);
          
     
         dispatch ({type: 'POST_TIP', payload: newTip});
 
-        if (newTip.type === 'post'){ 
-            dispatch ({type: 'TIP_DIARY', payload: tippedPost}); 
-        }  else if (newTip.type === 'review'){ 
-            dispatch ({type: 'TIP_REVIEW', payload: tippedPost});
-        } else if (newTip.type === 'message'){ 
-            dispatch ({type: 'TIP_MESSAGE', payload: tippedPost});
-        }
-
         setpopSure(false);
         setpopTip(false); 
-        setTipLoading(false);
+        setTipLoading(false); 
 
         setTipDelivery(true);
         setTimeout( function() {setTipDelivery(false)}, 2000);
+
+        if (newTip.type === 'post'){ 
+            dispatch ({type: 'TIP_DIARY', payload: tippedPost}); 
+
+                socket.current.emit("sendNotification", {
+                    socketNotificationData        
+                });
+       
+        }  else if (newTip.type === 'review'){
+
+            dispatch ({type: 'TIP_REVIEW', payload: tippedPost});
+
+                socket.current.emit("sendNotification", {
+                    socketNotificationData        
+                });
+        }
+ 
+       
         
     } catch(error) {  
-        console.log(error);
+        console.log(error.message);
     }
 }

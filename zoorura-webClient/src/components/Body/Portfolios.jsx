@@ -118,7 +118,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
     
        <div className="">
           
-        {contactsIndi && <ContactModIndi convoId={convo[0]._id} setContactsIndi={setContactsIndi} displayed= {miniProfile} viewer = {user.result}/>}
+        {contactsIndi && <ContactModIndi convoId={convo[0]._id} setpopChatBox={setContactsIndi} displayed= {miniProfile} viewer = {user.result}/>}
             {blockFeedback !=='Success' && blockError &&
                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
                            <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
@@ -213,12 +213,12 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                                         <>
                                                             {miniProfile.followers.includes(user.result._id) ?
                                                             <div onClick= {handleFollow} className=" flex text-gray-100 m-1 bg-cyan-400 rounded-md items-center p-1 cursor-pointer hover:bg-cyan-600"> 
-                                                                <p className= "p-1 leading-4 text-center font-semibold">Unfollow</p> 
+                                                                <p className= "p-1 leading-4 text-center font-semibold">Unsubscribe</p> 
                                                                 <RiUserUnfollowLine/>
                                                             </div>
                                                             :
                                                             <div onClick= {handleFollow} className=" flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
-                                                                <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Follow</p> 
+                                                                <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Subscribe</p> 
                                                                 <RiUserAddLine/>
                                                             </div>
                                                             }

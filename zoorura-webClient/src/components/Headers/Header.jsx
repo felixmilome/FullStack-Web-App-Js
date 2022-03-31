@@ -32,11 +32,12 @@ import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsActio
 import {io} from 'socket.io-client'
 
 
-function Header({popContacts, setpopContacts}) {
+function Header() {
 
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     //console.log(user);
     const[popProfile, setpopProfile] = useState(false);
+    const[popContacts, setpopContacts] = useState(false);
     const[popSubscribers, setpopSubscribers] = useState(false);
     const[popNotifications, setpopNotifications] = useState(false);
     const[popCart, setpopCart] = useState(false);
@@ -129,12 +130,13 @@ function Header({popContacts, setpopContacts}) {
             }, [user]); 
            
             
-            useEffect(() => {
+            useEffect(() => { 
                 if(user){
                     socketRef.current.on("getConvo", socketConvoData => {
                         console.log(socketConvoData);
                         console.log('convoGotten') 
-                        dispatch ({type: 'PATCH_MESSAGE', payload: socketConvoData});
+                        dispatch ({type: 'POST_CONVO', payload: socketConvoData}); 
+                        dispatch ({type: 'YES_CONVO'}); 
                      
                     })
                     socketRef.current.on("getPatchedMessage", socketMessageData => {
@@ -196,6 +198,16 @@ function Header({popContacts, setpopContacts}) {
 
                 }   
             }, []);
+
+            useEffect(() => { 
+                socketRef.current.on("getMessage", messageData =>{
+                    console.log(messageData);
+                    console.log("Message Gotten");
+                    dispatch ({type: 'SOCKET_GOT_MESSAGE', payload: messageData});
+                    console.log(messageData);
+
+                    })
+                }, []);
 
             useEffect(() => {
                 if(user){
@@ -383,7 +395,7 @@ function Header({popContacts, setpopContacts}) {
                             }> 
                                 <HeaderRightIcon Icon = {ChatIcon} badge={unreadMessages.length}/> 
                                 </div>
-                            {popContacts &&  <RightbarMob unreadMessages ={unreadMessages} setshowContacts={setpopContacts} user={user} socket = {socket}/>}
+                            {popContacts &&  <RightbarMob unreadMessages ={unreadMessages} setpopContacts={setpopContacts} user={user} socket = {socket}/>}
                             
                         {/* </OutsideClickHandler>      */}
 

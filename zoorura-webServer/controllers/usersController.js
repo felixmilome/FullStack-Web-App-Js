@@ -750,7 +750,7 @@ export const follow =  async (req, res)=> {
             res.json({miniProfile}); 
             const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {followSpam:newFollowSpam}}, { new: true });
             console.log(updatedUser); 
-            console.log('followed')
+            console.log('unfollowed')
  
         
         } else {
@@ -767,7 +767,7 @@ export const follow =  async (req, res)=> {
             res.json({miniProfile:miniProfile, newNotification:newNotification});
             const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {followSpam:newFollowSpam}}, { new: true });
             console.log(updatedUser);
-            console.log("unfollowed");
+            console.log("followed");
         }
     }
   

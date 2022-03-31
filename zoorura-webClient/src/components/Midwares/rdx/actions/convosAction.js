@@ -30,18 +30,37 @@ export const postConvosAction = (convoData, setLoading, setpopConvoForm, socket)
         setLoading(false);
         setpopConvoForm(false);
         const socketNotificationData = data?.newNotification;
-        const socketConvoData = data?.newConvo;
-        const newConvo = data?.newConvo;
         console.log(data);
-        dispatch ({type: 'POST_CONVO', payload: newConvo}); 
-        dispatch ({type: 'YES_CONVO'}); 
+       
 
-        socket.current.emit("sendNotification", {
-            socketNotificationData        
-        });
-        socket.current.emit("sendConvo", { 
-            socketConvoData        
-        });
+        if (socketNotificationData.type === 'tipConvo'){
+
+                
+                const socketConvoData = data?.newConvo;
+                const newConvo = data?.newConvo;
+                console.log(data);
+                dispatch ({type: 'POST_CONVO', payload: newConvo}); 
+                dispatch ({type: 'YES_CONVO'}); 
+
+                socket.current.emit("sendNotification", { 
+                    socketNotificationData        
+                }); 
+                socket.current.emit("sendConvo", { 
+                    socketConvoData        
+                });
+                console.log('tipConvo Sent');
+
+        } else if (socketNotificationData.type === 'freeConvo'){
+
+
+                console.log(data);
+
+                socket.current.emit("sendNotification", { 
+                    socketNotificationData        
+                });
+          
+        }
+        
         
         
 

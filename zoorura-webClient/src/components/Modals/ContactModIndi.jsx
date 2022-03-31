@@ -2,198 +2,30 @@ import { PhoneIcon, VideoCameraIcon, XCircleIcon } from "@heroicons/react/outlin
 import ReceivedBubble from "./ReceivedBubble.jsx"
 import SentBubble from "./SentBubble.jsx";
 import {BeatLoader} from "react-spinners";
+import{BsFileEarmarkImageFill} from 'react-icons/bs';
+import{MdLibraryMusic, MdVideoLibrary} from 'react-icons/md';
 import {useSelector, useDispatch} from 'react-redux';
 import { MdSend} from "react-icons/md";
-import {useState, useRef, useEffect} from 'react'; 
+import {useState, useRef, useEffect} from 'react';
 import {postMessagesAction, getMessagesAction} from '../Midwares/rdx/actions/messagesAction.js';
 import {postNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js';
 
- 
-function ContactModIndi({setContactsIndi, convoId, displayed, viewer}) {
+import {PicForm, AudioForm, VideoForm} from "../Body/PostForms/Previews.jsx";
 
-    // PERFECT AFTER PERFECTING ORIGINAL CONTACTMOD
-
-    const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:''});
-    const[notificationData, setnotificationData] = useState({sender:viewer._id, receiver:displayed._id, body:'', type: ''});
-    const[socketNotificationData, setsocketNotificationData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiver:displayed._id, body:'', type: ''});
-    const dispatch = useDispatch(); 
-
-    const diaries = useSelector((state) => state.diariesReducer);
-
-    console.log(diaries); 
-
-    const socket = useSelector((state) => state.socketReducer);
-
-    const messagesAll = useSelector((state) => state.messagesReducer);
+import {storage} from "../Midwares/firebase/config";
+import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
+import { SurePop } from "../Body/SurePop.jsx";
+import ContactMod from "./ContactMod.jsx";
 
  
-    /// THIS ONLY RUNS WHEN NO MESSAGES+++++
-    useEffect(() => { 
-        const availableMessages = messagesAll.filter(message => message.convoId === convoId);
-        if(!availableMessages.length){
-            console.log (availableMessages);
-            dispatch(getMessagesAction(convoId));    
-        }
-
-    }, [dispatch]); 
-
-    //const messages = useSelector((state) => state.messagesReducer);
-
-     const messages = messagesAll.filter(message => message.convoId === convoId);
-
-    
-
-
-    const messagesEndRef = useRef(null)
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView();
-    }
-
-    useEffect(() => {
-        scrollToBottom()
-    }, [messages]);
-
-    useEffect(() => {
-        socket.current.on("getMessage", messageData =>{
-            console.log(messageData);
-            console.log("Message Gotten");
-            dispatch ({type: 'SOCKET_GOT_MESSAGE', payload: messageData});
-            console.log(messages);
-
-        })
-    }, []);
- 
-    const notifier = () =>{
-        dispatch(postNotificationsAction(notificationData, socketNotificationData, socket));
-    }
-  
-    const sendMessage = () => { 
-        console.log(messageData); 
-        dispatch(postMessagesAction(messageData, socket, notifier));
-        console.log(notificationData);
-       // dispatch(postNotificationsAction(notificationData)); 
-        
-        setmessageData({...messageData, body: ''});
-        setnotificationData({...notificationData, body: ''});
-       
-    }
+function ContactModIndi({setpopChatBox, convoId, displayed, viewer}) {
 
     return (
-        <div className="border-gray-300 fixed z-40 top-24 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
-            {/* Top Part */}
-            <div className="fixed z-20 
-            border-b-2 border-gray-200
-             bg-gray-100 p-1
-             w-full xl:w-1/4  flex  
-             justify-between items-center">
-
-                <div className="flex items-center space-x-2
-                 bg-transparent justify-around 
-                 p-0.5 px-2 rounded-full 
-                 text-xs
-                  font-bold
-                   text-gray-500">
-                    <img src={displayed.dpUrl} alt="DP" className="rounded-full object-cover h-8 w-8 m-0.5"/>    
-                    <p>@{displayed.userName}</p>
-                </div>
-                <div className="mx-5 space-x-4 sm:space-x-2 bg-transparent flex items-center justify-around">
-                    <div className="hover:bg-cyan-400
-                     p-1 rounded-full cursor-pointer group">
-                        <VideoCameraIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
-                    </div>
-                    <div className="hover:bg-cyan-400
-                     p-1 rounded-full cursor-pointer group">
-                        <PhoneIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
-                    </div>
-                    <div onClick ={(e)=> setContactsIndi(false)} className="hover:bg-gray-300
-                     p-1 rounded-full cursor-pointer group">
-                        <XCircleIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
-                    </div>
-                </div>
-
-            </div>
-            
-            {/* ALL MESSAGE CHATs CONTAINER */}
-            <div className= "pb-48 mt-12 max-h-screen min-h-screen w-full overflow-y-scroll">
-                {/* <ReceivedBubble ReceivedMessage="Hello Sir Milome"/>
-                <SentBubble SentMessage="I am Fine"/>
-                */}
-                {messages.length ?
-
-                    <>
-                        {
-                        messages.map((message) =>{
-                            
-
-                            if (viewer._id === message.senderId){ //BELONGS TO ME(VIEWER)
-                              
-                                return(
-                                    <SentBubble key={message._id} SentMessage={message.body}/>
-                                )
-                            }
-                            if (displayed._id === message.senderId){ //BELONGS TO THEM(DISPLAYED)
-                             
-                                return(
-                                    <ReceivedBubble key={message._id} ReceivedMessage={message.body}/>
-                                )
-                            }
-                        }
-                       
-                        )
-
-                        }     
-                </> :
-
-                        <div className='flex justify-start p-5'>
-                            <div className=''>
-                                <BeatLoader size={15} color='white' loading/>
-                                <p className= 'text-sm text-gray-400'>fetching messages..</p>
-                            </div>
-                        </div>
-                }
-
-                    <div className="w-full items-center">
-                               
-                                <div className='flex justify-end'>
-                                    <div className=' m-1 p-1 rounded-full flex bg-cyan-200 w-3/4'>
-                                        <div className='p-2 bg-gray-100 rounded-xl w-full'>
-                                        
-                                        <textarea 
-                                        value={messageData.body}
-                                        onChange={(e)=>{
-                                             setmessageData({...messageData, body: e.target.value});
-                                            setnotificationData({...notificationData, body: e.target.value, type:'message'});
-                                            setsocketNotificationData({...socketNotificationData, body: e.target.value, type:'message'});
-                                             }
-                                            }
-                                        type="text" placeholder="TYPE MESSAGE HERE..." className=" resize-none h-36 max-h-screen w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded"/>
-                                    
-                                        </div>
-
-                                    </div>
-                                     { messageData.body.length > 0 && 
-                                        <div className='flex justify-center p-3 text-xs font-bold text-gray-400 '>
-                                            
-                                            <div className='flex rounded-full items-center justify-center space-x-1 '>
-                                              
-                                               <div onClick= {sendMessage} className='bg-cyan-400 rounded-full p-2'>
-                                                    <MdSend className='text-gray-100 text-white h-6 w-6 '/>
-                                                </div>
-                                            
-                                            </div>
-                                        </div>
-                                        }
-                                  
-                                         <div ref={messagesEndRef} />
-                                </div>
-                                  
-                                
-                    </div>
-
-            </div>
-        </div>
+        <>
+         <ContactMod setpopChatBox={setpopChatBox} convoId={convoId} displayed={displayed} viewer={viewer}/>
+        </>
     )
+   
 }
 
 export default ContactModIndi;

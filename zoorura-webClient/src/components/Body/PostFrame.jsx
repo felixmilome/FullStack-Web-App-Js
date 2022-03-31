@@ -156,7 +156,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
         try{
 
-           dispatch(postTipsAction(tipData, setpopSure, setpopTip, setTipLoading, setTipDelivery));
+           dispatch(postTipsAction(tipData, setpopSure, setpopTip, setTipLoading, setTipDelivery, socket));
             
         }
         catch(error){
@@ -600,8 +600,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
             {/* Post Bottom Icons*/}
          {diary.postType !== 'display' && <>
             <div className="w-full  justify-around transition delay-50 flex items-center  bg-gray-100 border-b border-t border-gray-300 font-bold p-3">
-            <OutsideClickHandler onOutsideClick={() => {setpopTip(false);}}>
-            {/* {popTip && <TipModal />} */}
+          
 
 {/* TIIIIPPPPZZZZZ=+===================== */}
                                     {/* are you sure */}
@@ -641,43 +640,8 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 </div> 
                 }
 
-    {popTip &&  <div className="relative bg-red-100">
-        <div className='flex w-96 bg-transparent left-2 absolute bottom-2.5 z-30 sm:p-1'>
-       <div className= "bg-transparent items-center justify-center">
-            {/* <div className="font-mono flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-80 m-1 p-1 bg-gradient-to-r from-cyan-300 to-teal-700 font-bold text-lg text-teal-300"> */}
-            <div className="flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-90 m-1 p-1 border border-gray-400 bg-gray-100 font-medium text-lg text-gray-300 shadow-md">
-               
-                <div onClick={()=> prepareTip(1, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
-                    <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
-                        1
-                    </div>
-                </div>
-                <div onClick={()=> prepareTip(5, 'post')}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
-                    <div className= " items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
-                        5
-                    </div>
-                </div>
-                <div onClick={()=> prepareTip(10, 'post')}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
-                    <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
-                        10
-                    </div>
-                </div>
-                <div onClick={()=> prepareTip(25, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
-                    <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
-                        25
-                    </div>
-                </div>
-                <div onClick={()=> prepareTip(50, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
-                    <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
-                        50
-                    </div>
-                </div>
-        
-            </div>
-        </div>
-        </div>
-        </div> 
-        }
+    {/* TIPS WEREW HERE */}
+    
         {/*========== ENDTIPZZZZZZZZ======================== */}
                     <div className='sm:flex'>
 
@@ -707,7 +671,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                         }
                         
                     </div> 
-                    </OutsideClickHandler>
+                   
                 {/* <OutsideClickHandler onOutsideClick={() => {setpopTip(false);}}> */}
                 
                 {/* </OutsideClickHandler> */}
@@ -765,6 +729,50 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                      <div className='absolute top-0 bg-gray-200 w-16 my-1 text-center rounded-r-full cursor-pointer'>
                         <p onClick= {()=> setpopTip(false)}className ='text-gray-500 text-xs '>hide</p>
                     </div>   
+
+
+                    {popTip &&  <div className="relative bg-red-100">
+                        <div className='flex w-96 bg-transparent left-2 absolute bottom-2.5 z-30 sm:p-1'>
+                    <div className= "bg-transparent items-center justify-center">
+                            {/* <div className="font-mono flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-80 m-1 p-1 bg-gradient-to-r from-cyan-300 to-teal-700 font-bold text-lg text-teal-300"> */}
+                            <div className="flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-90 m-1 p-1 border border-gray-400 bg-gray-100 font-medium text-lg text-gray-300 shadow-md">
+                            
+                                <div onClick={()=> prepareTip(1, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                    <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
+                                        1
+                                    </div>
+                                </div>
+                                <div onClick={()=> prepareTip(5, 'post')}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                    <div className= " items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
+                                        5
+                                    </div>
+                                </div>
+                                <div onClick={()=> prepareTip(10, 'post')}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                    <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
+                                        10
+                                    </div>
+                                </div>
+                                <div onClick={()=> prepareTip(25, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                    <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
+                                        25
+                                    </div>
+                                </div>
+                                <div onClick={()=> prepareTip(50, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                    <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
+                                        50
+                                    </div>
+                                </div>
+                        
+                            </div>
+                        </div>
+                        </div>
+                        </div> 
+                        }
+
+
+
+
+
                                        
                         <PostFrameTips diaryId = {diary._id} userId= {user.result._id} /></>
                     }

@@ -39,18 +39,29 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     const socket = useSelector((state) => state.socketReducer);
 
     const messagesAll = useSelector((state) => state.messagesReducer);
-   
 
- 
-    /// THIS ONLY RUNS WHEN NO MESSAGES+++++
+    const openedChats =  useSelector((state) => state.messagesOpenedReducer);
+
+    const thisOpenedChat = openedChats.filter(openedChat => openedChat?.id === convoId && openedChat.opened===true);
+    
+    console.log(openedChats);
+
     useEffect(() => { 
-        const availableMessages = messagesAll.filter(message => message.convoId === convoId);
-        if(!availableMessages.length){
-            console.log (availableMessages);
-            dispatch(getMessagesAction(convoId));    
-        }
 
-    }, [dispatch]); 
+        if(!thisOpenedChat.length){
+
+            dispatch(getMessagesAction(convoId));
+            const thisOpenedObj = {id:convoId, opened: true}
+            dispatch ({type: 'MESSAGES_OPENED', payload: thisOpenedObj});   
+             
+        }
+       
+    
+
+    }, []);
+    
+
+   
 
     //const messages = useSelector((state) => state.messagesReducer);
 
@@ -70,15 +81,15 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         scrollToBottom() 
     }, [messages]);
 
-    useEffect(() => {
-        socket.current.on("getMessage", messageData =>{
-            console.log(messageData);
-            console.log("Message Gotten");
-            dispatch ({type: 'SOCKET_GOT_MESSAGE', payload: messageData});
-            console.log(messages);
+    // useEffect(() => {
+    //     socket.current.on("getMessage", messageData =>{
+    //         console.log(messageData);
+    //         console.log("Message Gotten");
+    //         dispatch ({type: 'SOCKET_GOT_MESSAGE', payload: messageData});
+    //         console.log(messages);
 
-        })
-    }, []);
+    //     })
+    // }, []);
 
      useEffect(() => {
           socket.current.emit("checkUserOnline", {
@@ -136,10 +147,8 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
             
         }) 
     }, []);
- 
-    const notifier = () =>{
-        dispatch(postNotificationsAction(notificationData, socketNotificationData, socket));
-    }
+
+   
 
     function readFile(file, type) {
 
@@ -206,14 +215,14 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
   
     const sendMessage = () => { 
 
-       
-        console.log(messageData); 
-        dispatch(postMessagesAction(messageData, socket, notifier, setLoading));
-        console.log(notificationData);
-       // dispatch(postNotificationsAction(notificationData)); 
         
+        console.log(messageData); 
+        setLoading(true);
+        setProgress(90)
+        dispatch(postMessagesAction(messageData, socket, setLoading, setProgress));
+           
         setmessageData({...messageData, body: '', type:''});
-        setnotificationData({...notificationData, body: ''});
+        
        
     }
 
@@ -232,18 +241,17 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
 
 
-        dispatch(postMessagesAction(messageDataObj, socket, notifier, setLoading, setProgress));
+        dispatch(postMessagesAction(messageDataObj, socket, setLoading, setProgress));
         console.log(messageDataObj);
         
         setmessageData({...messageData, body: '', type:''});
         
-        setnotificationData({...notificationData, body: ''});
 
 
     }
 
     return (
-        <div className="z-20 border-gray-300 fixed top-24 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
+        <div className="z-20 border-gray-300 fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
             {/* Top Part */}
             <div className="fixed z-20 
             border-b-2 border-gray-200
@@ -309,7 +317,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                     <SentBubble key={message._id} message={message} SentMessage={message.body} File={message.file} Type={message.type}/>
                                 )
                             }
-                            if (displayed._id === message.senderId){//BELONGS TO THEM(DISPLAYED)
+                            if (displayed._id === message.senderId){//BELONGS TO THEM(DISPLAYED) 
                              
                                 return(
                                     <ReceivedBubble key={message._id} message={message} ReceivedMessage={message.body} File={message.file} displayed={displayed} Type={message.type}/>
@@ -506,12 +514,9 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                             socket.current.emit("sendTypingMessage", {
                                                     typingMessageData
                                                 });
-                                                // socket.current.emit("checkUserOnline", {
-                                                //   checkData
-                                                // }); 
+                                              
                                              setmessageData({...messageData, body: e.target.value, type:'text'});
-                                            setnotificationData({...notificationData, body: e.target.value, type:'message'});
-                                            setsocketNotificationData({...socketNotificationData, body: e.target.value, type:'message'});
+                                           
                                              }
                                             }
                                         type="text" placeholder="Type Message Here..." className=" resize-none h-36 max-h-screen w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded"/>
@@ -532,7 +537,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                         </div>
                                         }
                                          
-                                       {loading ===true && progress>0 && <div className='flex justify-center text-xs font-bold text-gray-400 '>
+                                       {loading ===true && <div className='flex justify-center text-xs font-bold text-gray-400 '>
                                             
                                             <div className='flex rounded-full items-center justify-center space-x-1 '>
                                               

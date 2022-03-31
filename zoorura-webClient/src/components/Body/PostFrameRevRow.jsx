@@ -12,8 +12,9 @@ import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
 import { SurePop } from './SurePop';
 import {postTipsAction} from "../Midwares/rdx/actions/tipsAction.js";
 import {ReviewTipRow} from "./ReviewTipRow.jsx"
+import { PostRevReply } from './PostRevReply';
 
-export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
+export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
 
      const[reviewData, setreviewData] = useState({reviewedId:diaryCreator, reviewedPostId:diaryId, body:'', replied:null, repliedPostId:null, reply:null});
      const[tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type:'', amount:''});
@@ -28,6 +29,8 @@ export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
        const[popTip, setpopTip] = useState(false); 
 
        const socket = useSelector((state) => state.socketReducer);
+       const reviewersAll = useSelector((state) => state.reviewsReducer);
+       const availableRepliers = reviewersAll.filter(reviewer => reviewer.reviewedPostId === diaryId && reviewer.reply === true);
        
 
 
@@ -64,7 +67,7 @@ export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
 
         try{
 
-           dispatch(postTipsAction(tipData, setTipReviewSurePop, setpopTip, setLoading, setTipDelivery));
+           dispatch(postTipsAction(tipData, setTipReviewSurePop, setpopTip, setLoading, setTipDelivery, socket));
             
         }
         catch(error){
@@ -269,12 +272,15 @@ export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
                                         </div>
                                         
                                         </OutsideClickHandler>
+
+
+                                        
                                         { reviewer.reply === false &&
                                             <div onClick= {()=>{
-                                                setReplyInput(true);
+                                                setReplyInput(!replyInput);
                                                 setreviewData({...reviewData, replied:reviewer.reviewerId});
-                                                }}className= 'inline-flex items-center'>
-                                                        <p>replies {thisReplies.length>0 && (thisReplies.length)}</p>
+                                                }}className= 'inline-flex items-center hover:bg-gray-200 rounded-xl px-1 cursor-pointer'>
+                                                        <p>reply {thisReplies.length>0 && (thisReplies.length)}</p>
                                             </div>
                                         }
                                       
@@ -307,8 +313,9 @@ export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
                    
                     
                     {/* INPUT */}
+                    
                   
-                       { reviewer.reply ===false &&
+                       { reviewer.reply ===false && replyInput ===true &&
                        <div className="relative w-full rounded-xl items-center">
                             
                             <div  className='absolute bottom-3 right-12'>
@@ -335,10 +342,26 @@ export const PostFrameRevRow = ({diaryId, diaryCreator, userId, reviewer}) => {
                                         text-xs  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                         </div>
                         }
+                         {replyInput===true && 
+                         <div className='max-h-80 overflow-scroll bg-gray-200 w-fit rounded-xl'>  
+                                {availableRepliers?.length > 0 && availableRepliers?.map((replier) =>(
+                                    <> 
+                                        {replier.repliedPostId === reviewer._id && 
+                                        <div key={replier._id}  className='ml-20 bg-gray-100'>            
+                                            <PostRevReply diaryId={diaryId} diaryCreator={diaryCreator} userId= {userId} reviewer= {replier}/>
+                                        </div>
+                                        } 
+                                    </>
+                                    ))
+                                }
+                                </div>
+                        }
                         
                          
                 
             </div>
+
+           
 
             </>
      

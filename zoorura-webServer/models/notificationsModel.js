@@ -23,7 +23,6 @@ const notificationsSchema = mongoose.Schema({
                 }, 
         postId: {
                 type: String,
-                required:true,
                 default: null
         },
         postTitle: {
