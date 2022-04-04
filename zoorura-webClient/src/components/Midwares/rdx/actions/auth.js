@@ -21,6 +21,10 @@ export const registerAction = (formData, navigate, setVisibleError,setVisibleSuc
             dispatch({type: 'GOOGLE_SIGNUP', data});
              setVisibleError(true); 
             setLoading(false);  
+        }else if (data.message === 'UnknownError'){
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+            setVisibleError(true); 
+            setLoading(false);                 
         }else if (data.message === 'RegistrySuccess'){
            
             
@@ -51,7 +55,11 @@ export const loginAction = (formData, navigate, setVisibleError, setLoading) => 
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 
             setLoading(false);                 
-        } else if (data.message === 'RegistrySuccess'){
+        } else if (data.message === 'UnknownError'){
+            dispatch({type: 'GOOGLE_SIGNUP', data});
+            setVisibleError(true); 
+            setLoading(false);                 
+        }else if (data.message === 'RegistrySuccess'){
            // console.log('RegLogin');
             dispatch({type: 'GOOGLE_SIGNUP', data});
             setVisibleError(true); 

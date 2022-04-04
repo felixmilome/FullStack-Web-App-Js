@@ -43,6 +43,7 @@ const notificationsSchema = mongoose.Schema({
         },
         class:{
                 type:String,
+                required:true
                 
         },
         link: {

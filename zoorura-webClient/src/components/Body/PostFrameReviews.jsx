@@ -10,7 +10,7 @@ import {patchReviewsAction} from "../Midwares/rdx/actions/reviewsAction.js"
 import{PostFrameRevRow} from "./PostFrameRevRow.jsx"
 
 
-export const PostFrameReviews = ({diaryId, diaryCreator, userId}) => {
+export const PostFrameReviews = ({diary, diaryId, diaryCreator, userId}) => {
 
         
 
@@ -36,6 +36,8 @@ export const PostFrameReviews = ({diaryId, diaryCreator, userId}) => {
       
      
         <>
+           
+           
             {availableReviewers.length > 0  && availableReviewers.map((reviewer) =>(
               
                 <div key={reviewer._id}  className='ml-5 bg-gray-100  rounded-md '>

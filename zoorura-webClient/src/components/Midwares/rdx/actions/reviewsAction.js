@@ -50,6 +50,7 @@ export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, 
             if(reviewData.reply === true){
 
                 const socketNotificationData = data.newNotification2;
+                console.log(socketNotificationData); 
                 socket.current.emit("sendNotification", {
                     socketNotificationData        
                 });

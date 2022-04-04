@@ -195,7 +195,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                                         <p className= "w-1/2 m-auto text-gray-600 leading-4 text-center font-light break-words ">{miniProfile.bio} </p> 
                                                         
                                                         {user && miniProfile.follows.includes(user.result._id) &&  
-                                                                <p className= "text-gray-600 leading-3 text-center font-semibold">I follow @{user.result.userName}</p>
+                                                                <p className= "text-gray-600 leading-3 text-center font-semibold">I Subscribe to @{user.result.userName}</p>
                                                             }
 
                                                     </div>
@@ -205,7 +205,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                                     <div className= 'flex justify-center text-sm items-center'>
                                                     { followSpam == true &&
                                                             <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
-                                                            <p> Todays Follow Limit(100) reached! Try Tomorrow </p>
+                                                            <p> Todays Subscription Limit(100) reached! Try Tomorrow </p>
                                                             </div>
                                                      } 
                                                        

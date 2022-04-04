@@ -58,7 +58,7 @@ export const postReview = async  (req, res) => {
 
                             if (reply === false){
 
-                                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:'', postId:reviewedPostId, read: false,  type: 'review', createdOn: new Date(), dateRank: Date.now()});
+                                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:reviewedDiary.title, postId:reviewedPostId, read: false, class:'normal',  type:'review', createdOn: new Date(), dateRank: Date.now()});
                                 const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                 .populate('sender', 'dpUrl userName'); 
 
@@ -72,11 +72,11 @@ export const postReview = async  (req, res) => {
 
                             } else if (reply === true){
 
-                                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:body, postId:reviewedPostId, read: false,  type: 'review', createdOn: new Date(), dateRank: Date.now()});
+                                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:reviewedId, receiverId:reviewedId, body:reviewedDiary.title, postId:reviewedPostId, read: false, class:'normal',  type: 'review', createdOn: new Date(), dateRank: Date.now()});
                                 const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                 .populate('sender', 'dpUrl userName');
 
-                                const unpopulatedNewNotification2 = await NotificationsModel.create({sender:req.userId, receiver:replied, receiverId:reviewedId, body:body, postId:reviewedPostId, read: false,  type: 'reviewReply', createdOn: new Date(), dateRank: Date.now()});
+                                const unpopulatedNewNotification2 = await NotificationsModel.create({sender:req.userId, receiver:replied, receiverId:reviewedId, body:body, postId:reviewedPostId, read: false, class:'normal',  type: 'reviewReply', createdOn: new Date(), dateRank: Date.now()});
                                 const newNotification2 = await NotificationsModel.findById(unpopulatedNewNotification2._id)
                                 .populate('sender', 'dpUrl userName'); 
     

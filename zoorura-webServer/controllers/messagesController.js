@@ -19,7 +19,7 @@ export const postMessage = async  (req, res) => {
                 console.log("Message Added to Convo: "+ newMessage);
 
                  
-                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, body:body, postId:convoId, read: false,  type: 'message', createdOn: new Date(), dateRank: Date.now()});
+                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, body:body, postId:convoId, read: false, class:'message',  type: 'message', createdOn: new Date(), dateRank: Date.now()});
                 const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                 .populate('sender', 'dpUrl userName'); 
 

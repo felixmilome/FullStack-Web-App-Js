@@ -32,21 +32,34 @@ export const postDiariesAction = (diary, setpopPosted, navigate, setDisplayer, s
         console.log(error);
     }
 }
-export const postDisplayDiariesAction = (diary, setPopDisplayed, navigate, setDisplayer, setSpam) => async (dispatch) => {
+export const postDisplayDiariesAction = (diary, setPopDisplayed, navigate, setSpam, socket) => async (dispatch) => {
     try{
         
 
 
-            const {data} = await axs.postDiariesApi(diary);
+            const {data} = await axs.postDiariesApi(diary); 
+            
+            console.log(socket);
 
-            if (data === 'Spam'){
+            if (data === 'Spam'){ 
+
                 setSpam (true);
                 setTimeout( function() {setSpam (false)}, 2000); 
+
             }else{
-            
-            setPopDisplayed(true);
-            navigate ('/');
-            window.location.reload(true); 
+                
+                const socketNotificationData = data.newNotification;
+                
+
+                setPopDisplayed(true);
+
+                socket.current.emit("sendNotification", { //put it bottom
+                    socketNotificationData        
+                });
+
+                navigate ('/');
+                window.location.reload(true); 
+
             }
 
 

@@ -99,15 +99,7 @@ io.on("connection", (socket)=> {
 
             io.to(receiver.socketId).emit("getNotification", {
               
-                sender:socketNotificationData.sender,
-                receiver:socketNotificationData.receiver,
-                body:socketNotificationData.body,
-                postId:socketNotificationData.postId,
-                tipAmount:socketNotificationData?.tipAmount,
-                read:false, 
-                type:socketNotificationData.type,
-                createdOn:new Date(),
-                dateRank:Date.now(), 
+                ...socketNotificationData
 
         });
         }catch(error){

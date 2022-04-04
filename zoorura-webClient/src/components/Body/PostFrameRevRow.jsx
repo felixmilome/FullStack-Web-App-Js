@@ -260,7 +260,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                                             <p>50</p>
                                                         </div>
                                                 </div>
-                                                <div className= 'w-1/2 text-xs justify-around absolute bottom-6 right-0 font-bold bg-gray-200 '>
+                                                <div className= 'w-1/2 text-xs justify-around absolute  bottom-6 right-0 font-bold bg-gray-200 '>
                                                       <ReviewTipRow reviewId={reviewer._id}/>                 
                                                 </div>
                                                
@@ -343,7 +343,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                         </div>
                         }
                          {replyInput===true && 
-                         <div className='max-h-80 overflow-scroll bg-gray-200 w-fit rounded-xl'>  
+                         <div className='max-h-80 mb-40 overflow-scroll bg-gray-100 border border-gray-300 w-fit rounded-xl'>  
                                 {availableRepliers?.length > 0 && availableRepliers?.map((replier) =>(
                                     <> 
                                         {replier.repliedPostId === reviewer._id && 

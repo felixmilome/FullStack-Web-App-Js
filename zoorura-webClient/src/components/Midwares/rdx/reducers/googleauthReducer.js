@@ -9,7 +9,7 @@ export const googleauthReducer = (state ={googleauthData: null}, action) => {
             }else if (action.data.message === "UsernameTaken"){
                 return "Username Already in Use";
             } else if (action.data.message === "UsernameEmailTaken"){
-                return "Username and Email Already in Use";
+                return "Username and Email Already in Use"; 
             }else if (action.data.message === "AlreadyVerified"){
                 return "Already Verified Earlier";
             } else if (action.data.message === "InputError"){
@@ -21,7 +21,8 @@ export const googleauthReducer = (state ={googleauthData: null}, action) => {
             }else if (action.data.message === "ChangeOtpExpired"){
                 return "Link Expired! Security Change Failed";
             }else if (action.data.message === 'UnknownError'){
-                return "Unknown Error Occured. Please Try again Later";
+                console.log(action.data.message);
+                return "Something went wrong. Please Try again Later";
             }else if (action.data.message === 'NoUser'){
                 return "User No Longer Available";
             }else if (action.data.message === 'RegistrySuccess'){

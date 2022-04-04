@@ -3,6 +3,7 @@ import {DiariesModel} from "../models/diariesModel.js";
 import {UsersModel} from "../models/usersModel.js";
 import {ReviewsModel} from "../models/reviewsModel.js";
 import { taxer } from "../functions.js";
+import {NotificationsModel} from '../models/notificationsModel.js';
 
 
 //Get  Diariessss===========================================
@@ -181,10 +182,15 @@ export const postDiaries =  async (req, res)=> {
                                 diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
                                     displaysArray: [], time: displayedDiary.time, dateRank: (Date.now()/360000),tippers:[], reviewers:[], displaysArray:[]});   
                                 
-                                    console.log(newDisplay);
+                                    console.log(newDisplay); 
                             
                                     await newDisplay.save();
-                                    res.json(newDisplay);
+
+                                    const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:displayedDiary.creator, receiverId:displayedDiary.creator, body:displayedDiary.title, postId:newDisplay._id, read: false, class:'normal',  type: 'display', createdOn: new Date(), dateRank: Date.now()});
+                                    const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+                                    .populate('sender', 'dpUrl userName');
+
+                                    res.json({newDisplay:newDisplay, newNotification:newNotification});
 
                                     //res.status(201).json({newDisplay:newDisplay, displayedDiary:displayedDiary});
                                     //console.log(newDisplay);

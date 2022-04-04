@@ -17,7 +17,7 @@ import {useNavigate} from 'react-router-dom';
 import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, PicFrame, VideoFrame, AudioForm, VideoForm} from "./PostForms/Previews.jsx";
 
 
-import{GiTakeMyMoney} from "react-icons/gi"; 
+import{GiDividedSquare, GiTakeMyMoney} from "react-icons/gi"; 
 import{GoMegaphone} from "react-icons/go";
 import { RiShareForwardBoxLine  } from "react-icons/ri";
 import { AiOutlineComment, AiOutlineFolderView  } from "react-icons/ai";
@@ -72,6 +72,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const [miniProfile, setMiniProfile] = useState(null);
     const [displayer, setDisplayer] = useState(null);
     const[tipDelivery, setTipDelivery] = useState(false);
+    const[loadingDisplay, setLoadingDisplay] = useState(false);
 
     const[reviewLoading, setReviewLoading] = useState(false); 
     const[reviewDelivery, setReviewDelivery] = useState(false); 
@@ -164,10 +165,14 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         }
     }
 
-    const handleDisplay = () => {
+    const handleDisplay = () =>{
 
-        dispatch(postDisplayDiariesAction(displayData, setPopDisplayPosted, navigate, setDisplayer, setSpam));
+        setLoadingDisplay(true);
+        console.log(socket);
+       
+        dispatch(postDisplayDiariesAction(displayData, setPopDisplayPosted, navigate, setSpam, socket));
         console.log(displayData);
+
     }
   
 
@@ -645,7 +650,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {/*========== ENDTIPZZZZZZZZ======================== */}
                     <div className='sm:flex'>
 
-                        <div className="relative flex items-center rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
+                        <div className="relative flex items-center border border-cyan-400 rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
                             onClick={ () => {setpopTip(!popTip)}}>
                             
                             <GiTakeMyMoney  size ={29} className="text-gray-600"/> 
@@ -679,7 +684,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 {/* Other Icon */}
                 <div className ='sm:flex '>
                     
-                    <div onClick={()=>setReviewDisplay(!reviewDisplay)} className="flex items-center rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
+                    <div onClick={()=>setReviewDisplay(!reviewDisplay)} className="flex items-center border border-cyan-400 rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
                                     <AiOutlineComment  size ={22} className="text-gray-500"/>
                                     <p className="font-light  text-xs text-gray-800">Reviews:</p>
                     </div>
@@ -698,7 +703,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 
                     <div className ='flex'>
 
-                            <div onClick= {()=> setDisplayer(true)} className="flex items-center rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
+                            <div onClick= {()=> setDisplayer(true)} className="flex items-center border border-cyan-400 rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
                                     <GoMegaphone size ={22} className="text-gray-500"/>
                                     <p className="font-light text-xs m-1 text-gray-800">Endorse</p>  
                             </div>
@@ -779,24 +784,35 @@ function PostFrame({diary, diaryId, setDiaryId}) {
           
 
                 {/* Comment Box */}
-                <div>
+                <div >
                     {reviewDisplay &&
-                    <>
-                    <div className='bg-transparent ml-8 mb-1 rounded  border border-gray-300 w-1/3 text-center cursor-pointer'>
-                        <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-500 text-xs '>hide</p>
-                     </div>   
-                     <div  className= 'bg-transparent max-h-60 overflow-scroll'>
-                        <PostFrameReviews diaryId={diary._id} diaryCreator={diary.creator} userId={user.result._id} setpopTip={setpopTip}/>
-                    </div>
+                    <div className= 'fixed top-0 bg-gray-200 left-0 w-full z-50 h-screen overflow-scroll'>
+                       
+                       <div className='flex justify-center items-center fixed top-0 z-50 bg-gray-200 w-full'>
+
+                            <div className='rounded  border border-cyan-400 bg-gray-100 w-20 hover:bg-gray-200 text-center cursor-pointer'>
+                                <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-500 text-xs '>Go back</p>
+                                
+                            </div> 
+                            <div className= 'p-3'>
+                                        <p className='font-normal'>Reviews of post: </p>
+                                        <p className='font-bold'> {diary.title} </p>
+                            </div> 
+
+                        </div>
+
+                        <div  className= 'pt-28 pb-80 bg-gray-100 h-screen overflow-scroll'>
+                            <PostFrameReviews diary ={diary} diaryId={diary._id} diaryCreator={diary.creator} userId={user.result._id} setpopTip={setpopTip}/>
+                        </div>
                    
                 
 
-                    <div className="relative w-full items-center">
+                    <div className="fixed p-4 bottom-0 w-full items-center">
                             
-                           <div  className='absolute bottom-3 right-3'>
+                           <div  className='absolute bottom-8 right-8'>
                                 { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
                                 <>
-                                    {!reviewLoading && <MdSend onClick= {reviewDiary}/> }
+                                    {!reviewLoading && <MdSend size={24} onClick= {reviewDiary}/> }
                                     {reviewLoading && 
                                     <>
                                     {/* <p className= 'text-xs font-extralight'>sending review</p> */}
@@ -814,10 +830,10 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                 setSocketReviewData({...socketReviewData, body: e.target.value});
 
                             }}
-                            type="text" placeholder="Write Review Here..." className="max-h-screen w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                            type="text" placeholder="Write Review Here..." className="h-40 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                     
                     </div>
-                     </>
+                     </div>
                     }
                 </div>
         </div></>}
@@ -854,14 +870,26 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent xl:w-1/2 mx-auto my-1"> 
 
                                 <div className="w-full bg-transparent flex justify-center">
-                                <div onClick= {handleDisplay} className= 'flex bg-cyan-500 hover:bg-teal-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
-                                    <GoMegaphone size ={20} className="text-gray-100"/>
-                                    <p className= 'text-lg'>Endorse</p>                                
-                                </div>
-                                <div onClick= {()=> setDisplayer(false)}className= 'flex bg-red-500 hover:bg-red-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
-                                    <MdOutlineCancel size ={22} className="text-gray-100"/>
-                                    <p className= 'text-lg'>Cancel</p>                                
-                                </div>
+                                {loadingDisplay ===false && 
+                                    <>
+                                    <div onClick= {handleDisplay} className= 'flex bg-cyan-500 hover:bg-teal-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
+                                        <GoMegaphone size ={20} className="text-gray-100"/>
+                                        <p className= 'text-lg'>Endorse</p>                                
+                                    </div>
+                                    
+                                    <div onClick= {()=> setDisplayer(false)}className= 'flex bg-red-500 hover:bg-red-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
+                                        <MdOutlineCancel size ={22} className="text-gray-100"/>
+                                        <p className= 'text-lg'>Cancel</p>                                
+                                    </div>
+                                    </>
+                                }
+
+                                {loadingDisplay ===true && 
+                                <div className= 'flex bg-cyan-500 hover:bg-teal-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
+                                    <p className= 'text-lg'>Endorsing</p> 
+                                    <BeatLoader size={7} color='white' loading/>                                       
+                                </div>}
+
                                 </div>   
 
                 {/* Post-Top-Cyan Invisible Parent*/}

@@ -13,7 +13,6 @@ export const getConvos = async  (req, res) => {
         .populate('host', 'dpUrl userName blocked blockers convoTip')
         .populate('guest', 'dpUrl userName blocked blockers convoTip')
         .populate('members', 'dpUrl userName blocked blockers convoTip');
-       // console.log(convos);
         res.status(200).json(convos);   
         
    } catch(error){
@@ -23,9 +22,6 @@ export const getConvos = async  (req, res) => {
 
  export const postConvo = async  (req, res) => {
     const{type, members,tip} = req.body;
-    // console.log('TYPE: ' + type);
-    // console.log('MEMBERS: ' + members);
-    // console.log("tip: "+ tip); 
     try{  
 
         if (type === '2'){
@@ -82,7 +78,7 @@ export const getConvos = async  (req, res) => {
                 const depositedReceiver = await UsersModel.findByIdAndUpdate(guest, { $push: { "deposits": depositData, "wallet": walletPush}}, { new: true });
                 console.log(depositedReceiver._id);
 
-                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:guest, receiverId:guest, tipAmount:walletPush, body:intro, postId:newConvo._id, read: false,  type: 'tipConvo' , createdOn: new Date(), dateRank: Date.now()});
+                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:guest, receiverId:guest, tipAmount:walletPush, body:intro, postId:newConvo._id, read: false, class:'tip',  type: 'tipConvo' , createdOn: new Date(), dateRank: Date.now()});
                 const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                 .populate('sender', 'dpUrl userName ');
 
@@ -90,7 +86,7 @@ export const getConvos = async  (req, res) => {
             } 
 
             else if (tip===0){
-                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:guest, receiverId:guest, tipAmount: 0, body:intro, read: false,  type:  'freeConvo', createdOn: new Date(), dateRank: Date.now()});
+                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:guest, receiverId:guest, tipAmount: 0, body:intro, read: false, class:'normal', type:  'freeConvo', createdOn: new Date(), dateRank: Date.now()});
                 const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                 .populate('sender', 'dpUrl userName');
 

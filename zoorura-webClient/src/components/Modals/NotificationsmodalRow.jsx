@@ -12,16 +12,49 @@ function NotificationsmodalRow ({notification}) {
                 @{notification.sender.userName}</p> 
 
             
-
+ 
                 <p className= "sm:text-center font-bold ">
-                {notification.type ==='review' && 'reviewed your post '}
-                {notification.type ==='display' && 'endorsed your post'}
-                {notification.type ==='follow' && 'subscribed to you'}
+
+                    {notification.type ==='review' &&  
+                        <>
+                            <p className= "font-semibold ">reviewed your post titled:</p>
+                            <p className= "font-light text-left">"{notification.body}"</p>
+                        </>
+                    }
+                    {notification.type ==='reviewReply' && 
+                        <>
+                            <p className= "font-semibold ">replied to your review on the post titled:</p>
+                            <p className= "font-light text-left">"{notification.body}"</p>
+                        </>
+                    }
+                     {notification.type ==='display' && 
+                        <>
+                            <p > endorsed your post titled:</p>
+                            <p className= "font-light text-left">"{notification.body}"</p>
+                        </>
+                    }
+                     {notification.type ==='freeConvo' && 
+                        <>
+                            <p >is requesting a Free Convo</p>
+                            <p className= "font-light text-left">"{notification.body}"</p>
+                            <div className= 'py-1 flex items-center space-x-3 font-semibold text-white'>
+                                <div className='p-2 bg-teal-400 hover:bg-teal-600 cursor-pointer rounded w-full flex justify-center'>
+                                    Approve
+                                </div>
+                            {/* <div className='p-2 bg-red-400 hover:bg-red-600 cursor-pointer rounded  w-12 flex justify-center'>
+                                    No
+                                </div> */}
+                            </div>
+                        </>
+                    }
+                    
+                    {notification.type ==='follow' && 'subscribed to you'}
+                   
                 
                 </p>
-
+        
                 <p className= "font-light text-gray-500"> 
-                {moment (notification.createdOn).fromNow()}</p>
+                    {moment (notification.createdOn).fromNow()}</p>
                 </div>
             </div>
         </div>

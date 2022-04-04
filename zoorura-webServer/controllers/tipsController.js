@@ -78,7 +78,7 @@ export const postTip = async  (req, res) => {
                                    const tippedMessage = await MessagesModel.findByIdAndUpdate(tippedPostId, {$set: {"tipAmount": walletPush}}, { new: true });
                                    //{ $push: { "tipsArray": walletPush, "tippers": req.userId}},
                                    
-                                   const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedMessage._id, body:tippedMessage.body, read: false,  type:  'messageTip', createdOn: new Date(), dateRank: Date.now()});
+                                   const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedMessage._id, body:tippedMessage.body, read: false, class:'tip',  type:  'messageTip', createdOn: new Date(), dateRank: Date.now()});
                                    const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                    .populate('sender', 'dpUrl userName');
                                    
@@ -99,7 +99,7 @@ export const postTip = async  (req, res) => {
                                     const tippedReview = await ReviewsModel.findById(unpopulatedTippedReview._id)
                                     .populate('reviewerMiniProfile', 'dpUrl userName');
 
-                                    const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedReview._id, body:tippedReview.body, read: false,  type:  'reviewTip', createdOn: new Date(), dateRank: Date.now()});
+                                    const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedReview._id, body:tippedReview.body, read: false, class:'tip',  type:  'reviewTip', createdOn: new Date(), dateRank: Date.now()});
                                    const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                    .populate('sender', 'dpUrl userName');
  
@@ -122,7 +122,7 @@ export const postTip = async  (req, res) => {
                                     const tippedDiary = await DiariesModel.findById(unpopulatedTippedDiary._id)
                                    .populate('diaryMiniProfile', 'dpUrl userName');
 
-                                   const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedDiary._id, body:tippedDiary.body, read: false,  type:  'reviewTip', createdOn: new Date(), dateRank: Date.now()});
+                                   const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedDiary._id, body:tippedDiary.body, read: false,class:'tip',  type:  'diaryTip', createdOn: new Date(), dateRank: Date.now()});
                                    const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                    .populate('sender', 'dpUrl userName');
 

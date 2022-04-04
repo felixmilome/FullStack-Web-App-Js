@@ -13,7 +13,7 @@ import { useState } from 'react';
 import{Search} from './Search.jsx';
 import ProfileModal from '../Modals/ProfileModal.jsx';
 import OutsideClickHandler from 'react-outside-click-handler';
-import SubscribersModal from '../Modals/SubscribersModal.jsx';
+import TipNotificationsModal from '../Modals/TipNotificationsModal.jsx';
 import NotificationsModal from '../Modals/NotificationsModal.jsx';
 import SavedPostsModal from '../Modals/SavedPostsModal.jsx';
 import CartModal from '../Modals/CartModal.jsx';
@@ -39,6 +39,7 @@ function Header() {
     const[popProfile, setpopProfile] = useState(false);
     const[popContacts, setpopContacts] = useState(false);
     const[popSubscribers, setpopSubscribers] = useState(false);
+    const[popTipNotifications, setPopTipNotifications] = useState(false);
     const[popNotifications, setpopNotifications] = useState(false);
     const[popCart, setpopCart] = useState(false);
     const[popRankings, setpopRankings] = useState(false);
@@ -179,25 +180,24 @@ function Header() {
                         dispatch ({type: 'SOCKET_GOT_NOTIFICATION', payload: socketNotificationData});
                         console.log(notifications); 
                         })
-                        
-                        //ReviewSocket
-                        socketRef.current.on("getReview", reviewData =>{
-                        console.log(reviewData);
-                        console.log("review Gotten");
-
-                            if(reviewData.reviewerId != user.result._id){  //prevent spam since already posted when posting  
-                            dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData}); //double since hasnt been dismantled
-                            console.log('now posting review');
-                            }
-
-                        })
-                        
- 
-
 
 
                 }   
             }, []);
+
+            // useEffect(() => { 
+            //        //ReviewSocket
+            //        socketRef.current.on("getReview", reviewData =>{
+            //         console.log(reviewData);
+            //         console.log("review Gotten");
+
+            //             if(reviewData.reviewerId != user.result._id){  //prevent spam since already posted when posting  
+            //             dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData}); //double since hasnt been dismantled
+            //             console.log('now posting review');
+            //             }
+
+            //         })
+            //     }, []);
 
             useEffect(() => { 
                 socketRef.current.on("getMessage", messageData =>{
@@ -209,30 +209,31 @@ function Header() {
                     })
                 }, []);
 
-            useEffect(() => {
-                if(user){
-                 //ReviewReplySocket
-                 socketRef.current.on("getReplyReview", reviewData =>{
-                    console.log(reviewData);
-                    console.log("review Reply Gotten");
+            // useEffect(() => {
+            //     if(user){
+            //      //ReviewReplySocket
+            //      socketRef.current.on("getReplyReview", reviewData =>{
+            //         console.log(reviewData);
+            //         console.log("review Reply Gotten");
 
-                        if(reviewData.reviewerId != user.result._id 
-                            && reviewData.reviewedMiniProfile !== reviewData.repliedMiniProfile  //prevent also double reply and org later
-                            ){  //prevent spam since already posted when posting  
-                        dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData}); //double since hasnt been dismantled
-                        console.log('now posting reviewreply');
-                        }
+            //             if(reviewData.reviewerId !== user.result._id 
+            //               //prevent also double reply and org later
+            //                 ){  //prevent spam since already posted when posting  
+            //             dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData}); //double since hasnt been dismantled
+            //             console.log('now posting reviewreply');
+            //             }
 
-                    }) 
-                } 
-            }, []);
+            //         }) 
+            //     } 
+            // }, []);
 
 
             const notifications = useSelector((state) => state.notificationsReducer);
-            const unreadMessages = notifications.filter(notification => notification.read === false && notification.type ==='message');
-            const unreadNotifications = notifications.filter(notification => notification.read === false && notification.type !=='message');
-            console.log(unreadNotifications)
-            const  unreadTipNotifications = unreadNotifications.filter(notification => notification?.read ===false && notification?.class === 'tip');
+            const unreadNotifications = notifications.filter(notification => notification.read === false);
+
+            const unreadMessages = unreadNotifications.filter(notification => notification.class ==='message');
+            const  unreadTipNotifications = unreadNotifications.filter(notification => notification?.class === 'tip');
+            const  unreadNormalNotifications = unreadNotifications.filter(notification => notification?.class === 'normal');
        
             if (user) {
                 const decodedJwt = parseJwt(user.token);
@@ -293,7 +294,7 @@ function Header() {
 
                             
                             <>
-                                <h1 className= "m-1 pr-2 inline-flex font-light text-sm ">Go Home</h1>
+                                <h1 className= "m-1 pr-2 inline-flex font-light text-xl text-sm ">Go Home</h1>
                                
                             </>
                        
@@ -321,7 +322,7 @@ function Header() {
                             
                             
                                 <> 
-                                    <h1 className= "m-1 inline-flex text-sm font-light  p-1">{user && !user.result.verified && <>Go Back to  </>} Log In/Sign Up</h1> 
+                                    <h1 className= "m-1 inline-flex text-sm font-light text-2xl p-1">{user && !user.result.verified && <>Go Back to  </>} Log In/Sign Up</h1> 
                                     
                                 </>
                                 
@@ -344,19 +345,19 @@ function Header() {
                         {/* Subscribers Modal & Button */}
                         <OutsideClickHandler     
                             onOutsideClick={() => {
-                                setpopSubscribers(false);
+                                setPopTipNotifications(false);
                             }}
                             >
                             <div 
                             onClick={ () => 
                             {
-                                setpopSubscribers(!popSubscribers);
+                                setPopTipNotifications(!popTipNotifications);
                                 setpopContacts(false);
                             }
                             }>
                             <HeaderRightIcon LgIcon = {GiMoneyStack} badge={unreadTipNotifications?.length} />
                             </div>
-                            {popSubscribers && <SubscribersModal setshowSubscribers={setpopSubscribers}/>}
+                            {popTipNotifications && <TipNotificationsModal setPopTipNotifications={setPopTipNotifications}/>}
                             
                         </OutsideClickHandler>
 
@@ -374,9 +375,9 @@ function Header() {
                                 setpopContacts(false);
                             }
                             }>
-                            <HeaderRightIcon Icon = {BellIcon} badge={unreadNotifications.length}/>
+                            <HeaderRightIcon Icon = {BellIcon} badge={unreadNormalNotifications.length}/>
                             </div>
-                            {popNotifications && <NotificationsModal unreadNotifications={unreadNotifications} setshowNotifications={setpopNotifications}/>}
+                            {popNotifications && <NotificationsModal setshowNotifications={setpopNotifications}/>}
                             
                         </OutsideClickHandler>
 

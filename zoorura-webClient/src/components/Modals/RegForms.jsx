@@ -1,6 +1,8 @@
 
 import {GoogleLogin} from 'react-google-login';
 import {FcGoogle } from "react-icons/fc";
+import {BiLogInCircle } from "react-icons/bi";
+
 import {BsEyeFill,BsEyeSlashFill, BsCheck2Circle,BsShieldCheck} from "react-icons/bs";
 import { MdOutlineCancel, MdSecurity } from "react-icons/md";
 import {useDispatch, useSelector} from 'react-redux';
@@ -75,6 +77,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
 
 
      const loggedUser = useSelector((state) => state.googleauthReducer);
+     
 
     const {register, handleSubmit, formState: {errors}} = useForm({
         resolver: yupResolver(signUpSchema),
@@ -170,7 +173,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-        <div className="fixed text-gray-600 font-bold top-16 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+        <div className="fixed text-gray-600 font-bold top-10 z-50 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
              
         {/* ============Floating FORM BOX ======== */}
     {/* <iframe src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"
@@ -178,20 +181,20 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     </iframe> */}
     {/* <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"/> */}
             <div className="rounded-xl p-2 sm:p-6 w-full lg:w-2/5 bg-gray-100
-              shadow-md m-2 h-full">
+              shadow-md m-2 h-full border border-gray-300">
 
                  <form onSubmit={handleSubmit(signUp)}>
                         <div className= "pt-3 pb-1 flex items-center bg-transparent justify-around">
-                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-md bg-transparent h-20 w-20 "/>
+                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-md bg-transparent h-16 w-16 "/>
                         </div>  
                         <div className="p-1 text-center bg-transparent">
                             
-                            <p>Register to Join Zoorura</p>
+                            <h1 className='text-3xl'>Register to Join Zoorura</h1>
                             <div className="p-1 font-light text-xs flex justify-center items-center space-x-1"> 
                                <div>
                                    Already have an account?
                                </div>
-                                <div onClick={switchLogin} className="bg-gray-100 border border-gray-300 text-gray-500 cursor-ponter hover:bg-white font-semibold p-1 rounded">
+                                <div onClick={switchLogin} className="bg-gray-100 border border-gray-400 text-gray-800 cursor-ponter hover:bg-white font-bold p-1 rounded">
                                 <p className="cursor-pointer"> Log In </p>
                                 </div>
                             </div>
@@ -222,17 +225,17 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              <input {...register('firstName',{
                                  onChange: (e) => {setFormData({...formData, firstName: e.target.value.trim()})}
                                 })} 
-                             name='firstName' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md" type="text" placeholder= "First Name" />
+                             name='firstName' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full" type="text" placeholder= "First Name" />
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.firstName?.message}</p>
-                                {formData.firstName.length >0 && <p className='absolute top-1 right-2 text-gray-400 text-xs text-center font-light'>First Name:</p>}
+                                {formData.firstName.length >0 && <p className='absolute top-1 right-2 text-gray-400 text-xs text-center font-light'>Firstname:</p>}
                             </div> 
                             <div className= 'w-full relative'>
                                 <input  {...register('lastName',{
                                  onChange: (e) => {setFormData({...formData, lastName: e.target.value.trim()})}
                                  })} 
-                                name='lastName' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md" type="text" placeholder= "Last Name"/>
+                                name='lastName' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full" type="text" placeholder= "Last Name"/>
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.lastName?.message}</p>
-                                {formData.lastName.length >0 && <p className='absolute top-1 right-2 text-gray-400 text-xs text-center font-light'>Last Name:</p>}
+                                {formData.lastName.length >0 && <p className='absolute top-1 right-2 text-gray-400 text-xs text-center font-light'>Lastname:</p>}
                             </div>
                         </div>
 
@@ -243,7 +246,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              {...register('userName',{
                                  onChange: (e) => {setFormData({...formData, userName: e.target.value.trim().toLowerCase()})}
                                 })} 
-                                 className= "w-full bg-gray-100 border border-gray-300  p-2 rounded-md" type="text" placeholder= "Username" />
+                                 className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full" type="text" placeholder= "Username" />
                             <p className='text-xs text-red-700 text-center font-light' >{errors.userName?.message}</p>
                             {formData.userName.length >0 && <p className='absolute top-2.5 right-2 text-gray-400 text-xs text-center font-light'>Username:</p>}
                             
@@ -261,7 +264,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              {...register('email',{
                                  onChange: (e) => {setFormData({...formData, email: e.target.value.trim().toLowerCase()})}
                                 })} 
-                                name='email' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md" type="text" placeholder= "Email"  />
+                                name='email' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full" type="text" placeholder= "Email"  />
                             <p className='text-xs text-red-700 text-center font-light' >{errors.email?.message}</p>
                             {formData.email.length >0 && <p className='absolute top-2.5 right-2 text-gray-400 text-xs text-center font-light'>Email:</p>}
                            
@@ -278,7 +281,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                             <input {...register('password',{
                                  onChange: (e) => {setFormData({...formData, password: e.target.value})}
                                 })}
-                            name='password' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md"
+                            name='password' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full"
                              type= {visible ? "text" : "password"} placeholder= "Password" />
                              <p className='text-xs text-red-700 text-center font-light' >{errors.password?.message}</p>
                               {formData.password.length >0 && <p className='absolute top-3 right-10 text-gray-400 text-xs text-center font-light'>Password:</p>}
@@ -293,7 +296,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              {...register('confirmPassword',{
                                  onChange: (e) => {setFormData({...formData, confirmPassword: e.target.value})}
                                 })} 
-                            name='confirmPassword' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md"
+                            name='confirmPassword' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full"
                              type= {visible ? "text" : "password"}  placeholder= "Confirm Password"/>
                              <p className='text-xs text-red-700 text-center font-light' >{errors.confirmPassword && "Passwords Should Match"}</p>
                              {formData.confirmPassword.length >0 && <p className='absolute top-3 right-10 text-gray-400 text-xs text-center font-light'>Confirm Password:</p>}
@@ -331,13 +334,12 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                             setRequired(true);
                             
                             
-                        }} type={loading === false ? 'submit' : 'button'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
-                            bg-gradient-to-r hover:from-pink-500
-                            hover:to-yellow-500 flex
-                            mx-auto rounded-md
-                                 justify-center 
-                                text-white text-sm cursor-pointer
-                                font-semibold p-1 mb-4">
+                        }} type={loading === false ? 'submit' : 'button'} className="items-center  px-4 py-2 mx-auto bg-transparent border border-cyan-400 text-cyan-500
+                        hover:bg-white flex 
+                        mx-auto rounded-full w-1/2
+                             justify-center 
+                            text-white text-sm cursor-pointer
+                            font-semibold p-1 mb-4">
                                 {loading === false ? <p>Create Account</p> : <BeatLoader size={10} color='white' loading/>}
                         </button>
                         {/* <GoogleLogin
@@ -420,20 +422,20 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                     
         {/* ============Floating Box======== */}
 
-            <div className="w-full lg:w-2/5 bg-gray-100 rounded-xl shadow-xl m-2 h-full">
+            <div className="w-full lg:w-2/5 bg-gray-100  p-1 rounded-xl shadow-xl m-2 h-full">
             
             <form onSubmit={handleSubmit(logIn)}>
                         <div className= "pt-3 pb-1 flex items-center justify-around">
-                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
+                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-md h-16 w-16 "/>
                         </div>  
                         <div className="p-1 text-center bg-transparent">
-                            <p>Log In</p>
+                            <p className='text-2xl p-1'>Log In</p>
 
                            <div className=" font-light text-xs flex justify-center items-center space-x-1"> 
                                <div>
                                    Don't have an account?
                                </div>
-                                <div onClick={switchSignup} className="bg-gray-100 border border-gray-300 text-gray-500 cursor-ponter hover:bg-white font-semibold p-1 rounded">
+                                <div onClick={switchSignup} className="bg-gray-100 border border-gray-400 text-gray-800 cursor-ponter hover:bg-white font-bold p-1 rounded">
                                    <p className="cursor-pointer"> Register</p>
                                 </div>
                             </div>
@@ -444,6 +446,13 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
                            <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
                                 <p>Incorrect Email or Password! Try Again!</p>
+                           </div>
+                        </div>
+                        }
+                        { loggedUser ==='Something went wrong. Please Try again Later' && visibleError &&
+                       <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
+                           <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
+                                <p>{loggedUser}</p>
                            </div>
                         </div>
                         }
@@ -463,7 +472,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                             <div className= "relative w-full m-2 ">
                                 <input {...register('email',{
                                     onChange: (e) => {setFormData({...formData, email: e.target.value})}
-                                    })} name='email' className= "w-full bg-gray-100 border border-gray-300  p-2 rounded-md" type="text" placeholder= "Email/Username"/>
+                                    })} name='email' className= "w-full bg-gray-200 border-b border-gray-200  px-4 py-2 rounded-full" type="text" placeholder= "Email/Username"/>
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.email?.message}</p>
                                     {formData.email.length >0 && <p className='absolute top-1 right-2 text-gray-400 text-xs text-center font-light'>Email:</p>}
                             </div>
@@ -473,7 +482,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                             <div className= "relative w-full m-2 ">
                                 <input {...register('password',{
                                     onChange: (e) => {setFormData({...formData, password: e.target.value})}
-                                    })}  name='password' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md"
+                                    })}  name='password' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full"
                                 type={visible ? "text" : "password"} placeholder= "Password"/>
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.password?.message}</p>
                                     {formData.password.length >0 && <p className='absolute top-2.5 right-9 text-gray-400 text-xs text-center font-light'>Password:</p>}
@@ -492,13 +501,13 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                              {/* Auto Logout Protection*/}
                     <div className= "p-1 flex items-center justify-center space-x-1">
                         <MdSecurity size={18} className= "text-gray-500"/>
-                        <p className="font-light">
+                        <p className="font-light text-xs">
                             Keep Me Logged In?
                         </p>
                         <select 
                         name= "autologout"
                         onChange={(e)=>setFormData({...formData, autologout: e.target.value})}   
-                        className="m-2 flex text-center justify-center items-center font-bold text-xs  outline-none bg-gray-200 rounded-md p-1 border-none">
+                        className="m-2 flex text-center justify-center items-center font-bold text-xs  outline-none bg-gray-100 rounded-full p-1 border">
                                 <option value="300d"> Never </option>
                                 <option value="365d"> Always, Until I logout </option>
                                 <option value="1h"> For 1 Hour </option>
@@ -512,19 +521,19 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                             
                 </div>
                 
-
+  {/* CREATE CLASS OF BLUE BORDER BUTTON */}
                 <div className='flex justify-between'>
                         <button onClick={(e)=>{
                             setVisibleError(false);
                            
                            
-                        }}  type={loading === false ? 'submit' : 'button'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
-                            bg-gradient-to-r hover:from-pink-500
-                            hover:to-yellow-500 flex
-                            mx-auto rounded-md
+                        }}  type={loading === false ? 'submit' : 'button'} className="items-center  px-4 py-2 mx-auto bg-transparent border border-cyan-400 text-cyan-500
+                            hover:bg-white flex 
+                            mx-auto rounded-full w-1/2
                                  justify-center 
                                 text-white text-sm cursor-pointer
-                                font-semibold p-1 mb-4">
+                                font-semibold p-1 mb-8">
+                                 
                             
                             {loading === false ? <p>Log In</p> : <BeatLoader size={10} color='white' loading/>}
 

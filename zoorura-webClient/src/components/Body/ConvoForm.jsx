@@ -14,15 +14,29 @@ import {BeatLoader, DotLoader} from "react-spinners";
 function ConvoForm({miniProfile, user, setpopConvoForm}) {
     
   
-    const[tipConvoData, settipConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: miniProfile.convoTip, intro:''}); 
-
-    const[messageData, setmessageData] = useState({convoId: user.result._id, senderId: user.result._id, receiverId: miniProfile._id, body:'', type:'text'});
+    const[tipConvoData, setTipConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip: miniProfile.convoTip, intro:''}); 
+    const[freeConvoData, setFreeConvoData] = useState({host: user.result._id, guest: miniProfile._id, members: [user.result._id, miniProfile._id], type:'2', tip:0, intro:''});
+    //const[messageData, setmessageData] = useState({convoId: user.result._id, senderId: user.result._id, receiverId: miniProfile._id, body:'', type:'text'});
     const [loading,setLoading] = useState(false);
     const dispatch = useDispatch();
 
     const socket = useSelector((state) => state.socketReducer);
 
-    const requestConvo = async ()=>{
+    const requestFreeConvo = async ()=>{
+        
+
+        try{ 
+            setLoading(true);
+            dispatch(postConvosAction (freeConvoData, setLoading, setpopConvoForm, socket)); 
+            console.log(freeConvoData);
+        }
+        catch(err){
+            console.log(err);
+        }
+        
+}
+
+    const requestTipConvo = async ()=>{
         
 
             try{ 
@@ -96,7 +110,9 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                         <textarea name= "body"
                                          onChange={(e)=> {
                             
-                                            settipConvoData({...tipConvoData, intro: e.target.value});
+                                            setTipConvoData({...tipConvoData, intro: e.target.value});
+                                            setFreeConvoData({...freeConvoData, intro: e.target.value});
+
                                          }}
                                         
                                         placeholder="Enter Intro Message" className="resize-none h-28 text-gray-700 text-sm font-light outline-none  m-1 w-full  px-4 py-2 border border-gray-300 rounded-md bg-gray-200"/>
@@ -121,7 +137,7 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                     </button> */}
                                       {loading === false &&
                                       <>
-                                      <button onClick={requestConvo}
+                                      <button onClick={requestFreeConvo}
                                       
                                       type='submit' className="items-center mx-auto bg-transparent border border-gray-300 
                                         my-3 flex hover:bg-gray-100
@@ -134,7 +150,7 @@ function ConvoForm({miniProfile, user, setpopConvoForm}) {
                                     </button>
                                   
                                    {miniProfile.convoTip > 0 &&
-                                    <button onClick={requestConvo} type='submit' className="items-center mx-auto bg-gradient-to-r from-cyan-400 to-cyan-500 
+                                    <button onClick={requestTipConvo} type='submit' className="items-center mx-auto bg-gradient-to-r from-cyan-400 to-cyan-500 
                                     bg-gradient-to-r hover:from-pink-500
                                     hover:to-yellow-500 my-3 flex
                                     mx-auto w-auto rounded

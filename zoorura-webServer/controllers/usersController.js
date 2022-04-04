@@ -340,15 +340,12 @@ export const login = async (req,res) => {
  try{ 
   
      const existingEmail = await UsersModel.findOne({email: { $in: [ email ] } });
-     
-     if(!existingEmail) return res.json({message:"LoginError"});
+     const passwordCorrect = await bcrypt.compare(password, existingEmail.password);
 
-     const isPasswordCorrectE = await bcrypt.compare(password, existingEmail.password);
-     
-     if(!isPasswordCorrectE) return res.json({message:"LoginError"});
+     if(!existingEmail || !passwordCorrect) return res.json({message:"LoginError"});
     
     
-    if (existingEmail &&  isPasswordCorrectE){
+    if (existingEmail &&  passwordCorrect){
 
       const loggedUser_Detailed = await UsersModel.findByIdAndUpdate(existingEmail._id, {jwtExpiry: autologout}, { new: true });
       const loggedUser = await UsersModel.findById(loggedUser_Detailed._id, {password:0, verCode:0});
@@ -361,7 +358,8 @@ export const login = async (req,res) => {
      
 
  } catch (error){
-     res.status(500).json({message: 'Something went wrong'});
+     res.json({message: 'UnknownError'});
+     console.log(error.message);
  }
 }
 export const register = async (req,res) => {
@@ -373,13 +371,6 @@ export const register = async (req,res) => {
         const existingUser = await UsersModel.findOne ({userName: { $in: [ userName ] } });
         const existingEmail = await UsersModel.findOne ({email: { $in: [ email ] } });
 
-        // console.log(existingEmail); 
-
-        //  if(existingUser) return res.status(400).json({message:"Username Taken."});
-         
-        //  if(existingEmail) return res.status(400).json({message:"Email Taken."});
-
-        //  if(password !== confirmPassword) return res.status(400).json({message: 'passwords dont match'});
 
          if(existingUser && !existingEmail){
 
@@ -427,14 +418,14 @@ export const register = async (req,res) => {
         
 
     } catch (error) { 
-       res.status(500).json({message: 'Something went wrong'});  
+      res.json({message: 'UnknownError'}); 
     }
   
 }
 
 export const verify = async(req,res) => {
     const {otp, userId, type} = req.body
-      // 
+      
   
         if (type === 'delete'){ 
                 
@@ -546,7 +537,7 @@ export const verify = async(req,res) => {
             console.log(id);
           
             const user = await UsersModel.findById (id);
-           // console.log(user);
+        
             const codeMatch = await bcrypt.compare(otp,user.verCode);
             console.log(codeMatch);
             
@@ -759,7 +750,7 @@ export const follow =  async (req, res)=> {
             const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $push: { "followers": updatedFollower._id }}, { new: true });
             const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
             
-            const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:followed, body:'', postId:followed, read: false,  type: 'follow', createdOn: new Date(), dateRank: Date.now()});
+            const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:followed, body:'', postId:followed, read: false, class:'normal',  type: 'follow', createdOn: new Date(), dateRank: Date.now()});
             const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
             .populate('sender', 'dpUrl userName');
             
