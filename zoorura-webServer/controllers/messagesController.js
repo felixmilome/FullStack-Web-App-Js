@@ -47,3 +47,19 @@ export const postMessage = async  (req, res) => {
             res.status(404).send({message: error.message});
         } 
  }
+ export const readMessages = async  (req, res) => {
+    const{id} = req.params
+    
+    console.log('read message');
+        try{ 
+           
+            const message = await MessagesModel.findByIdAndUpdate(id, { $set: {read:true}}, { new: true });
+                console.log("Message inCONVO: "+ message);
+                res.status(200).json(message); 
+            } 
+            
+        catch(error){
+            res.status(404).send({message: error.message});
+            console.log(error.message);
+        } 
+ }

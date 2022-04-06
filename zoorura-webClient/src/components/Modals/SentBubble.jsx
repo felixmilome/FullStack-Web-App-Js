@@ -50,9 +50,9 @@ function SentBubble({SentMessage, message, Type, File}) {
               
                     {File?.length > 0 && 
                     
-                    <div className="flex w-4/5 justify-end text-sm font-light">
-                        <div className='bg-transparent'>
-                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-l-xl rounded-tr-xl  bg-cyan-500 text-white">
+                    <div className="flex w-4/5 h-60 m-1 justify-end text-sm font-light  items-center">
+                        <div className='bg-transparent '>
+                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-l-xl rounded-tr-xl  bg-cyan-500  text-white ">
 
                             
                                         {Type ==='video' &&
@@ -61,9 +61,9 @@ function SentBubble({SentMessage, message, Type, File}) {
                                           {Type ==='audio' &&
                                             <AudioForm Url={File}/>
                                         }
-                                         {Type ==='image' &&
+                                        {Type ==='image' &&
                                             <PicForm Url={File}/>
-                                        }
+                                        } 
                                      
                                 
                             

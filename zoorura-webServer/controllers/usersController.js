@@ -17,6 +17,9 @@ import {MessagesModel} from '../models/messagesModel.js';
 import {ReviewsModel} from '../models/reviewsModel.js';
 import {NotificationsModel} from '../models/notificationsModel.js';
 
+//Search Area: follow
+
+
 import dotenv from 'dotenv';
 dotenv.config();
 

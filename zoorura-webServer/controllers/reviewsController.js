@@ -5,6 +5,7 @@ import {DiariesModel} from "../models/diariesModel.js";
 import {NotificationsModel} from "../models/notificationsModel.js";
 import  mongoose  from "mongoose";
 
+//Search Area: reviewReply
 
 export const getReviews =  async (req, res)=> {
 
@@ -76,7 +77,7 @@ export const postReview = async  (req, res) => {
                                 const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                 .populate('sender', 'dpUrl userName');
 
-                                const unpopulatedNewNotification2 = await NotificationsModel.create({sender:req.userId, receiver:replied, receiverId:reviewedId, body:body, postId:reviewedPostId, read: false, class:'normal',  type: 'reviewReply', createdOn: new Date(), dateRank: Date.now()});
+                                const unpopulatedNewNotification2 = await NotificationsModel.create({sender:req.userId, receiver:replied, receiverId:reviewedId, body:reviewedDiary.title, postId:reviewedPostId, read: false, class:'normal',  type: 'reviewReply', createdOn: new Date(), dateRank: Date.now()});
                                 const newNotification2 = await NotificationsModel.findById(unpopulatedNewNotification2._id)
                                 .populate('sender', 'dpUrl userName'); 
     

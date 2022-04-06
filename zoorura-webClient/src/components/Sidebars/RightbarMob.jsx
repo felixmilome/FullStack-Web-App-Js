@@ -8,6 +8,7 @@ import {BeatLoader} from "react-spinners";
 import{getMessagesAction} from "../Midwares/rdx/actions/messagesAction.js"
 
 
+
 function RightbarMob({user, setpopContacts, unreadMessages}){
 
     const[popChatBox, setpopChatBox] = useState(false);
@@ -30,7 +31,7 @@ function RightbarMob({user, setpopContacts, unreadMessages}){
   
 
     console.log(convoState);
-    console.log(convos);
+    console.log(convos); 
 
     
 
@@ -39,14 +40,16 @@ const chatSetterDirect = (guestData, hostData, idConvo) =>{
     setDisplayed(guestData);
     setViewer(hostData);
     setConvoId(idConvo);
-    getMessagesAction(idConvo);
+    // getMessagesAction(idConvo);
+    // readConvoNotificationsAction(idConvo);
   
 }
 const chatSetterInverse = (guestData, hostData, idConvo) =>{
     setDisplayed(hostData);
     setViewer(guestData);
     setConvoId(idConvo);
-    getMessagesAction(idConvo);
+    // getMessagesAction(idConvo);
+    // readConvoNotificationsAction(idConvo);
   
 }
 
@@ -128,7 +131,7 @@ return (
                                                         <RightbarmobRow key={convo._id} popChatBox={popChatBox} setpopChatBox={setpopChatBox} 
                                                          Src = {convo.host.dpUrl} guestId={convo.host._id} title ={unreadConvoMessage?.length} GuestName= {convo.host.userName} Points= {convo.tip} />
                                                 }
-                                                {unreadConvoMessage.length === 0 &&
+                                                {unreadConvoMessage.length === 0 && 
                                                         <RightbarmobRow key={convo._id} popChatBox={popChatBox} setpopChatBox={setpopChatBox} 
                                                         Src = {convo.host.dpUrl} guestId={convo.host._id} title ={unreadConvoMessage?.length} GuestName= {convo.host.userName} Points= {convo.tip} />
                                                 }

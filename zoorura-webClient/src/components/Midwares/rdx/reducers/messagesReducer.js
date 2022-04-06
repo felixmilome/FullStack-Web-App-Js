@@ -9,6 +9,11 @@ export const messagesReducer = (messages = [], action) => {
         case 'GET_ALL_MESSAGES':
            
              return messages.concat(action.payload);
+        case 'READ_MESSAGES':
+            
+            const markedRead = messages.map((message) => message._id === action.payload._id ? action.payload : message);
+            console.log(markedRead);
+            return markedRead; 
            
         case 'SOCKET_GOT_MESSAGE':    
         case 'POST_MESSAGE':

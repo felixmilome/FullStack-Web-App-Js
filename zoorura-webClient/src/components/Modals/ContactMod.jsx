@@ -15,6 +15,9 @@ import {PicForm, AudioForm, VideoForm} from "../Body/PostForms/Previews.jsx";
 import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 import { SurePop } from "../Body/SurePop.jsx";
+import{readConvoNotificationsAction} from "../Midwares/rdx/actions/notificationsAction.js" 
+
+//Search Area: textarea
 
 function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
@@ -29,7 +32,9 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     const[socketNotificationData, setsocketNotificationData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiver:displayed._id, body:'',postId:convoId, type: ''});
      const[typingNotifier, setTypingNotifier] = useState(false);
      const[fileData, setFileData] = useState('');
-     const[imageBlob, setImageBlob] = useState(''); 
+     const[imageBlob, setImageBlob] = useState('');
+     const[contactViewed, setContactViewed] = useState(false);
+     
 
 
     const dispatch = useDispatch(); 
@@ -46,19 +51,30 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     
     console.log(openedChats);
 
+    const allNotifications = useSelector((state) => state.notificationsReducer);
+    
+    const unreadConvoNotifications = allNotifications.filter(notification => notification.postId === convoId );
+    console.log(unreadConvoNotifications);
+   
     useEffect(() => { 
 
         if(!thisOpenedChat.length){
 
             dispatch(getMessagesAction(convoId));
             const thisOpenedObj = {id:convoId, opened: true}
-            dispatch ({type: 'MESSAGES_OPENED', payload: thisOpenedObj});   
+            dispatch ({type: 'MESSAGES_OPENED', payload: thisOpenedObj});  // for getting messages  
              
         }
-       
-    
 
     }, []);
+
+    useEffect(() => { 
+
+        if(unreadConvoNotifications.length > 0){ 
+            dispatch(readConvoNotificationsAction(convoId));
+        }
+     
+    }, [unreadConvoNotifications]);
     
 
    
@@ -66,7 +82,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     //const messages = useSelector((state) => state.messagesReducer);
 
      const messages = messagesAll.filter(message => message.convoId === convoId);
-     console.log(messages);
+     
 
     
 
@@ -157,9 +173,6 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
             setFileData(file);
             setmessageData({...messageData, type:type});
-
-            setnotificationData({...notificationData, body:'file sent', type:'message'});
-            setsocketNotificationData({...socketNotificationData, body:'file sent', type:'message'});
         
             if(file){
 
@@ -219,9 +232,10 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         console.log(messageData); 
         setLoading(true);
         setProgress(90)
-        dispatch(postMessagesAction(messageData, socket, setLoading, setProgress));
+        dispatch(postMessagesAction(messageData, socket, setLoading, setProgress, setmessageData));
+       setContactViewed(true);
            
-        setmessageData({...messageData, body: '', type:''});
+       // setmessageData({...messageData, body: '', type:''});
         
        
     }
@@ -241,17 +255,17 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
 
 
-        dispatch(postMessagesAction(messageDataObj, socket, setLoading, setProgress));
+        dispatch(postMessagesAction(messageDataObj, socket, setLoading, setProgress, setmessageData));
         console.log(messageDataObj);
+        setContactViewed(true);
         
-        setmessageData({...messageData, body: '', type:''});
         
 
 
     }
 
     return (
-        <div className="z-20 border-gray-300 fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
+        <div  className="z-20 border-gray-300 fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
             {/* Top Part */}
             <div className="fixed z-20 
             border-b-2 border-gray-200
@@ -300,7 +314,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
             </div>
             
             {/* ALL MESSAGE CHATs CONTAINER */}
-            <div className= "pb-48 mt-12 max-h-screen min-h-screen w-full overflow-y-scroll">
+            <div className= "pb-64 lg:pb-80 mt-12 max-h-screen min-h-screen w-full overflow-y-scroll">
                 {/* <ReceivedBubble ReceivedMessage="Hello Sir Milome"/>
                 <SentBubble SentMessage="I am Fine"/>
                 */}
@@ -308,27 +322,42 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
                     <> 
                         {
-                        messages.map((message) =>{
-                            
-
-                            if (viewer._id === message.senderId){ //BELONGS TO ME(VIEWER)
-                              
-                                return(
-                                    <SentBubble key={message._id} message={message} SentMessage={message.body} File={message.file} Type={message.type}/>
-                                )
-                            }
-                            if (displayed._id === message.senderId){//BELONGS TO THEM(DISPLAYED) 
+                            messages.map((message) =>{
+                                
+    
+                                if (viewer._id === message.senderId){ //BELONGS TO ME(VIEWER)
+                                
+                                    return(
+                                        <SentBubble key={message._id} message={message} SentMessage={message.body} File={message.file} Type={message.type}/>
+                                    )
+                                }
+                                if (displayed._id === message.senderId){//BELONGS TO THEM(DISPLAYED) 
+                                
+                                    return(
+                                        <ReceivedBubble key={message._id} contactViewed = {contactViewed} setContactViewed= {setContactViewed} message={message} ReceivedMessage={message.body} File={message.file} displayed={displayed} Type={message.type}/>
+                                    )
+                                }
+                                
                              
-                                return(
-                                    <ReceivedBubble key={message._id} message={message} ReceivedMessage={message.body} File={message.file} displayed={displayed} Type={message.type}/>
-                                )
                             }
-                        }
-                       
-                        )
-
-                        }     
-                </> :
+                        )}  
+                            <div className= 'w-full  bg-transparent text-xs font-light text-gray-400 flex justify-center' ref={messagesEndRef}>
+                                {/* <div className= 'p-3 border-t border-gray-300 m-3'>
+                                    <p>messages end</p>
+                                </div> */}
+                            </div>
+                         {/* {
+                            messages.map((message) =>{
+                                
+                                if (displayed._id === message.senderId && message.read === false ){//BELONGS TO THEM(DISPLAYED) 
+                                
+                                    return(
+                                        <ReceivedBubble key={message._id} message={message} ReceivedMessage={message.body} File={message.file} displayed={displayed} Type={message.type}/>
+                                    )
+                                }
+                            }
+                        )}      */}
+                    </> :
 
                         <div className='flex justify-start p-5'>
                             <div className=''>
@@ -347,115 +376,122 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                     </div>}
                                   </div> */}
 
-                                 
-                                {imageBlob.length>0 && messageData.type === 'image' &&
-                                   <div className='w-full h-full h-8 flex justify-center'>
-                                      <div className='flex justify-left font-semibold text-gray-500 items-center bg-gray-300 space-x-1 py-1 px-3 '>
-                                       
-                                        <PicForm Url={imageBlob}/>
-                                                <div>
+                                 <div className='w-full mb-40 sm:mb-32'>
+                                        {imageBlob.length>0 && messageData.type === 'image' &&
+                                        <div className='pt-3 w-full h-full h-8 flex justify-center'>
+                                            <div className='font-semibold text-gray-500 items-center bg-gray-300 space-x-1 py-1 px-3 '>
+                                            
+                                                <PicForm Url={imageBlob}/>
+                                                        <div className='flex justify-around'>
 
-                                                    {loading===false &&
-                                                        <>
-                                                        <div onClick={()=>uploadFile(fileData)}  className='bg-gray-400 my-7 hover:bg-cyan-400 rounded-full p-2'>
-                                                            <MdSend className='text-gray-100 text-white h-5 w-5 '/>
-                                                        </div>
+                                                            {loading===false &&
+                                                                <>
+                                                                <div onClick={()=>uploadFile(fileData)}  className='bg-cyan-400 my-7 hover:bg-cyan-500 rounded-full p-2'>
+                                                                    <MdSend className='text-gray-100 text-white h-5 w-5 '/>
+                                                                </div>
+                                                            
+                                                                <div onClick={()=>{
+                                                                    // setImageBlob('');
+                                                                    // setFileData('');
+                                                                    setmessageData({...messageData, type:''});
+                                                                    }}   className='bg-gray-100 my-7 hover:bg-red-400 rounded-full p-2 group'>
+                                                                    <XCircleIcon  className='text-gray-300 group-hover:text-white h-5 w-5 '/>
+                                                                </div>
+                                                                </>
+                                                            }
+
+                                                            {loading === true &&
+                                                            <div className='flex justify-center text-xs font-bold text-gray-400 '>
                                                     
-                                                        <div onClick={()=>{
-                                                            setImageBlob('');
-                                                            setmessageData({...messageData, type:''});
-                                                            }}   className='bg-gray-100 my-7 hover:bg-red-400 rounded-full p-2 group'>
-                                                            <XCircleIcon  className='text-gray-300 group-hover:text-white h-5 w-5 '/>
-                                                        </div>
-                                                        </>
-                                                    }
-
-                                                    {loading === true &&
-                                                    <div className='flex justify-center text-xs font-bold text-gray-400 '>
-                                            
-                                                        <div className='flex rounded-full items-center justify-center space-x-1 '>
-                                                        
-                                                        <div className='bg-cyan-400 rounded-full '>
-                                                        <BeatLoader size={6} color='white' loading/>
+                                                                <div className='flex rounded-full items-center justify-center space-x-1 '>
+                                                                
+                                                                <div className='bg-cyan-400 rounded-full '>
+                                                                <BeatLoader size={6} color='white' loading/>
+                                                                    </div>
+                                                                
+                                                                </div>
                                                             </div>
-                                                        
+                                                            }
                                                         </div>
-                                                    </div>
-                                                    }
-                                                </div>
-                                       {/* <BeatLoader size={10} color='white' loading/> */}   
-                                    </div>
-                                  </div> }
-                                  {imageBlob.length>0 && messageData.type === 'audio' &&
-                                  <div className='w-full h-full h-8 flex justify-center'>
-                                      <div className='flex justify-left font-semibold text-gray-500 items-center bg-gray-300 space-x-1 py-1 px-3 '>
-                                       
-                                        <AudioForm Url={imageBlob} DP={viewer.dpUrl}/>
-                                                <div>
-                                                   {loading ===false && <div onClick={()=>uploadFile(fileData)} className='bg-gray-400 my-7 hover:bg-cyan-400 rounded-full p-2'>
-                                                        <MdSend className='text-gray-100 text-white h-5 w-5 '/>
-                                                    </div>}
-
-                                                    {loading ===true &&
-                                                    <div className='flex justify-center text-xs font-bold text-gray-400 '>
+                                            {/* <BeatLoader size={10} color='white' loading/> */}   
+                                            </div>
+                                        </div> }
+                                        {imageBlob.length>0 && messageData.type === 'audio' &&
+                                        <div className='pt-3 w-full h-full h-8 flex justify-center'>
+                                            <div className=' font-semibold text-gray-500 items-center bg-gray-300 space-x-1 py-1 px-3 '>
                                             
-                                                        <div className='flex rounded-full items-center justify-center space-x-1 '>
+                                                <AudioForm Url={imageBlob} DP={viewer.dpUrl}/>
                                                         
-                                                        <div className='bg-cyan-400 rounded-full '>
-                                                        <BeatLoader size={6} color='white' loading/>
-                                                            </div>
-                                                        
-                                                        </div>
-                                                    </div>
-                                                    }
-                                                        
-                                                    <div onClick={()=>{
-                                                        setImageBlob('');
-                                                        setmessageData({...messageData, type:''});
-                                                        }}  className='bg-gray-100 my-7 hover:bg-red-400 rounded-full p-2 group'>
-                                                        <XCircleIcon  className='text-gray-300 group-hover:text-white h-5 w-5 '/>
-                                                    </div>
-                                                </div>
-                                       {/* <BeatLoader size={10} color='white' loading/> */}   
-                                    </div>
-                                  </div> }
-                                  {imageBlob.length>0 && messageData.type === 'video' &&
-                                  <div className='w-full h-full h-8 flex justify-center'>
-                                      <div className='flex justify-left font-semibold text-gray-500 items-center bg-gray-300 space-x-1 py-1 px-3 '>
-                                       
-                                        <VideoForm Url={imageBlob}/>
-                                                <div>
-                                                {loading===false &&
-                                                        <>
-                                                        <div onClick={()=>uploadFile(fileData)}  className='bg-gray-400 my-7 hover:bg-cyan-400 rounded-full p-2'>
-                                                            <MdSend className='text-gray-100 text-white h-5 w-5 '/>
-                                                        </div>
+                                                        <div className='flex justify-around'>
+                                                        {loading ===false && <div onClick={()=>uploadFile(fileData)} className='bg-cyan-400 my-7 hover:bg-cyan-500 rounded-full p-2'>
+                                                                <MdSend className='text-gray-100 text-white h-5 w-5 '/>
+                                                            </div>}
+
+                                                            {loading ===true &&
+                                                            <div className='flex justify-center text-xs font-bold text-gray-400 '>
                                                     
-                                                        <div onClick={()=>{
-                                                            setImageBlob('');
-                                                            setmessageData({...messageData, type:''});
-                                                            }}   className='bg-gray-100 my-7 hover:bg-red-400 rounded-full p-2 group'>
-                                                            <XCircleIcon  className='text-gray-300 group-hover:text-white h-5 w-5 '/>
-                                                        </div>
-                                                        </>
-                                                    }
-
-                                                    {loading === true &&
-                                                    <div className='flex justify-center text-xs font-bold text-gray-400 '>
-                                            
-                                                        <div className='flex rounded-full items-center justify-center space-x-1 '>
-                                                        
-                                                        <div className='bg-cyan-400 rounded-full '>
-                                                        <BeatLoader size={6} color='white' loading/>
+                                                                <div className='flex rounded-full items-center justify-center space-x-1 '>
+                                                                
+                                                                <div className='bg-cyan-400 rounded-full '>
+                                                                <BeatLoader size={6} color='white' loading/>
+                                                                    </div>
+                                                                
+                                                                </div>
                                                             </div>
+                                                            }
                                                         
+                                                                
+                                                            <div onClick={()=>{
+                                                                // setImageBlob('');
+                                                                // setFileData('');
+                                                                setmessageData({...messageData, type:''});
+                                                                }}  className='bg-gray-100 my-7 hover:bg-red-400 rounded-full p-2 group'>
+                                                                <XCircleIcon  className='text-gray-300 group-hover:text-white h-5 w-5 '/>
+                                                            </div>
+                                                            
                                                         </div>
-                                                    </div>
-                                                    }
-                                                </div>
-                                       {/* <BeatLoader size={10} color='white' loading/> */}   
-                                    </div>
-                                  </div> }
+                                            {/* <BeatLoader size={10} color='white' loading/> */}   
+                                            </div>
+                                        </div> }
+                                        {imageBlob.length>0 && messageData.type === 'video' &&
+                                        <div className='pt-3 w-full h-full h-8 flex justify-center'>
+                                            <div className='font-semibold text-gray-500 items-center bg-gray-300 space-x-1 py-1 px-3 '>
+                                            
+                                                <VideoForm Url={imageBlob}/>
+                                                        <div className='flex justify-around'>
+                                                        {loading===false &&
+                                                                <>
+                                                                    <div onClick={()=>uploadFile(fileData)}  className='bg-cyan-400 my-7 hover:bg-cyan-500 rounded-full p-2'>
+                                                                        <MdSend className='text-gray-100 text-white h-5 w-5 '/>
+                                                                    </div>
+                                                                
+                                                                    <div onClick={()=>{
+                                                                        // setImageBlob('');
+                                                                        // setFileData('');
+                                                                        setmessageData({...messageData, type:''});
+                                                                        }}   className='bg-gray-100 my-7 hover:bg-red-400 rounded-full p-2 group'>
+                                                                        <XCircleIcon  className='text-gray-300 group-hover:text-white h-5 w-5 '/>
+                                                                    </div>
+                                                                </>
+                                                            }
+
+                                                            {loading === true &&
+                                                            <div className='flex justify-center text-xs font-bold text-gray-400 '>
+                                                    
+                                                                <div className='flex rounded-full items-center justify-center space-x-1 '>
+                                                                
+                                                                <div className='bg-cyan-400 rounded-full '>
+                                                                <BeatLoader size={6} color='white' loading/>
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                            </div>
+                                                            }
+                                                        </div>
+                                            {/* <BeatLoader size={10} color='white' loading/> */}   
+                                            </div>
+                                        </div> }
+                                  </div>
                                 
 
                                 {loading===true  && 
@@ -468,8 +504,75 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                   </div>}
                                         
 
-                                <div className='flex justify-end'>
-                                        <div className=' w-1/7 space-y-7 text-gray-400 m-auto items-center'>
+                                <div  className=' w-full p-2 sm:w-1/2 lg:w-1/4 fixed bottom-8 right-0'>
+
+                                       
+                                    {messageData.type !== 'image' &&messageData.type !== 'video' && messageData.type !== 'audio' &&
+                                        <div className ='flex justify-center  w-full'>
+
+                                            <div className={`${messageData.body.length < 25 && `h-12`}
+                                                            ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
+                                                            ${messageData.body.length > 80 && `h-32`}
+                                                            m-1 p-1 rounded-full items-center flex bg-cyan-200 w-full`}>
+                                                
+                                                <div className={`${messageData.body.length < 25 && `h-12`}
+                                                            ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
+                                                            ${messageData.body.length > 80 && `h-32`}
+                                                            p-2 bg-gray-100 rounded-xl w-full`}>
+                                            
+                                                <textarea 
+                                                value={messageData.body}
+                                                onChange={(e)=>{
+                                                    socket.current.emit("sendTypingMessage", {
+                                                            typingMessageData
+                                                        });
+                                                    
+                                                    setmessageData({...messageData, body: e.target.value, type:'text'});
+                                                
+                                                    }
+                                                    }
+                                                type="text" placeholder="Type Message Here..." 
+                                                className={`${messageData.body.length < 25 && `h-12`}
+                                                            ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
+                                                            ${messageData.body.length > 80 && `h-32`}
+                                                            resize-none h-full w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded`}/>
+                                            
+                                                </div> 
+
+                                            </div>
+
+
+                                            
+                                            { messageData.body.length > 0 && loading === false && messageData.type === 'text' &&
+                                                <div className='flex justify-center p-3 text-xs font-bold text-gray-400 '>
+                                                    
+                                                    <div className='flex rounded-full items-center justify-center space-x-1 '>
+                                                    
+                                                    <div onClick= {sendMessage} className='bg-cyan-400 rounded-full p-2'>
+                                                            <MdSend className='text-gray-100 text-white h-6 w-6 '/>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                                }
+                                                
+                                            {loading ===true && <div className='flex justify-center text-xs font-bold text-gray-400 '>
+                                                    
+                                                    <div className='flex rounded-full items-center justify-center space-x-1 '>
+                                                    
+                                                    <div className='bg-cyan-400 rounded-full '>
+                                                    <BeatLoader size={6} color='white' loading/>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </div>
+                                                }
+                                        </div>
+                                        }
+
+
+
+                                        <div className='flex justify-around pb-5 pt-2  text-gray-400 m-auto  items-center'>
                                              {/* UPLOAD INPUTS */}
                                         
                                         <input  onChange = {(e)=>readFile(e.target.files[0], 'image')} 
@@ -483,19 +586,19 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                              {messageData.body.length<1 &&
                                                 <>
                                             <label htmlFor= 'ImageUpload'>
-                                                <div className='flex my-7 hover:text-cyan-500 cursor-pointer justify-center items-center  items-center'>
+                                                <div className={`flex hover:text-cyan-500 cursor-pointer justify-center items-center  items-center`}>
                                                     <BsFileEarmarkImageFill size={20}/> 
                                                 </div>
                                             </label>
 
                                             <label htmlFor= 'AudioUpload'>
-                                                <div className='flex my-7 hover:text-cyan-500 cursor-pointer justify-center items-center items-center'>
+                                                <div className={`flex  ${messageData.type === 'audio' && `text-cyan-400`} hover:text-cyan-500 cursor-pointer justify-center items-center items-center`}>
                                                     <MdLibraryMusic size={20}/> 
                                                 </div>
                                             </label>
 
                                             <label htmlFor= 'VideoUpload'>
-                                                <div className='flex my-7 hover:text-cyan-500 cursor-pointer justify-center items-center  items-center'>
+                                                <div className={`flex  ${messageData.type === 'video' && `text-cyan-400`} hover:text-cyan-500 cursor-pointer justify-center items-center  items-center`}>
                                                     <MdVideoLibrary size={20}/> 
                                                 </div>
                                             </label>
@@ -503,54 +606,9 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                             }
                                                
                                         </div>
-                                
-                                    <div className=' m-1 p-1 rounded-full flex bg-cyan-200 w-3/4'>
-                                        
-                                        <div className='p-2 bg-gray-100 rounded-xl w-full'>
-                                       
-                                        <textarea 
-                                        value={messageData.body}
-                                        onChange={(e)=>{
-                                            socket.current.emit("sendTypingMessage", {
-                                                    typingMessageData
-                                                });
-                                              
-                                             setmessageData({...messageData, body: e.target.value, type:'text'});
-                                           
-                                             }
-                                            }
-                                        type="text" placeholder="Type Message Here..." className=" resize-none h-36 max-h-screen w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded"/>
-                                    
-                                        </div> 
-
-                                    </div>
-                                     { messageData.body.length > 0 && loading === false &&
-                                        <div className='flex justify-center p-3 text-xs font-bold text-gray-400 '>
-                                            
-                                            <div className='flex rounded-full items-center justify-center space-x-1 '>
-                                              
-                                               <div onClick= {sendMessage} className='bg-cyan-400 rounded-full p-2'>
-                                                    <MdSend className='text-gray-100 text-white h-6 w-6 '/>
-                                                </div>
-                                            
-                                            </div>
-                                        </div>
-                                        }
-                                         
-                                       {loading ===true && <div className='flex justify-center text-xs font-bold text-gray-400 '>
-                                            
-                                            <div className='flex rounded-full items-center justify-center space-x-1 '>
-                                              
-                                               <div className='bg-cyan-400 rounded-full '>
-                                               <BeatLoader size={6} color='white' loading/>
-                                                </div>
-                                            
-                                            </div>
-                                        </div>
-                                        }
                                         
                                   
-                                         <div ref={messagesEndRef} />
+                                      
                                       
                                 </div>
                                   

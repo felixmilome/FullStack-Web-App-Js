@@ -5,6 +5,7 @@ import {ReviewsModel} from "../models/reviewsModel.js";
 import { taxer } from "../functions.js";
 import {NotificationsModel} from '../models/notificationsModel.js';
 
+//Search area: display
 
 //Get  Diariessss===========================================
 export const getDiaries = async  (req, res) => {

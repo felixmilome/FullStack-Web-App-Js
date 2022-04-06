@@ -47,16 +47,19 @@ export const getHallFameApi = () => API.get('/system/hallFame');
 //Convo
 export const getConvosApi = (id) => API.get(`/convos/${id}`, id); 
 export const postConvosApi = (convoData) => API.post('/convos', convoData);
-export const patchConvosApi = (id, convoData) => API.patch(`/convos/${id}`, convoData);
-export const deleteConvosApi = (id) => API.delete(`/convos/${id}`);
+export const patchConvosApi = (id, convoData) => API.patch(`/convos/${id}`, convoData); 
+export const deleteConvosApi = (id) => API.delete(`/convos/${id}`); 
 //Message
 export const getMessagesApi = (convoId) => API.get(`/messages/${convoId}`); 
 export const postMessagesApi = (messageData) => API.post('/messages/', messageData); 
+export const readMessagesApi = (id) => API.patch(`/messages/readMessages/${id}`); 
 //Notifications
 export const postNotificationsApi = (notificationData) => API.post('/notifications/', notificationData); 
 export const getNotificationsApi = (id) => API.get(`/notifications/${id}`);
+export const readNotificationsApi = (id) => API.patch(`/notifications/${id}`);
+export const readConvoNotificationsApi = (convoId) => API.delete(`/notifications/readConvoNotifications/${convoId}`);  
 //REVIEWS
-export const getReviewsApi = (postId) => API.get(`/reviews/${postId}`); 
+export const getReviewsApi = (postId) => API.get(`/reviews/${postId}`);   
 export const postReviewsApi = (reviewData) => API.post('/reviews/', reviewData);
 export const deleteReviewsApi = (reviewId) => API.delete(`/reviews/${reviewId}`);
 export const patchReviewsApi = (reviewData) => API.patch('/reviews/', reviewData);

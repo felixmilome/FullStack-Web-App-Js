@@ -38,6 +38,10 @@ const messagesSchema = mongoose.Schema({
                 type: Number,
                 default: 0
         },
+        read:{
+                type: Boolean,
+                default: false,
+        },
    
         tipsArray:[Number]
 

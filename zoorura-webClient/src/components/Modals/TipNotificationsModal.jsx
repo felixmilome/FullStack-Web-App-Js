@@ -20,8 +20,8 @@ function TipNotificationsModal({setshowSubscribers}) {
 
             {/* Heading */}
            
-                <div className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl hover:bg-cyan-500  bg-gray-100 items-center mt-4 mb-3 group">
-                    <p className= "text-gray-500 text-center text-sm font-semibold group-hover:text-white">Tip Notifications</p> 
+                <div className= "mx-3 p-3 space-y-2 rounded-xl   bg-gray-100 items-center mt-4 mb-3 group">
+                    <p className= "text-gray-500 text-center text-sm font-semibold">Tip Notifications</p> 
                 </div>  
             
                 <div className= "mb-60 border-gray-200 border-t">

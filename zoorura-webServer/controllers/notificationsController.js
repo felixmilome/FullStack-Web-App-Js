@@ -31,3 +31,44 @@ export const postNotifications = async  (req, res) => {
         res.status(404).json({message: error.message});
     }
  }
+ export const readNotifications = async  (req, res) => {
+    const {id} = req.params;
+    console.log(req.params);
+
+    try{  
+    
+        const updateNotification = await NotificationsModel.findByIdAndUpdate(id, { $set: {read:true}}, { new: true });
+        
+        console.log(updateNotification);
+        
+        const unpopulatedNewNotification = await NotificationsModel.findById(id).populate('sender', 'dpUrl userName'); ;
+        const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+        .populate('sender', 'dpUrl userName'); 
+
+        res.status(200).json(newNotification);
+
+    } catch(error){
+        res.status(404).json({message: error.message});
+        console.log(error.message);
+    }
+ }
+ export const readConvoNotifications = async  (req, res) => {
+
+    const {convoId} = req.params;
+    console.log(req.params); 
+
+    try{  
+    
+        const updatedNotifications = await NotificationsModel.deleteMany({postId: { $in: [ convoId ] } })
+        
+        console.log('deleted all');
+        console.log(updatedNotifications);
+
+  
+        res.status(200).json('Success');
+
+    } catch(error){
+        res.status(404).json({message: error.message});
+        console.log(error.message);
+    }
+ }

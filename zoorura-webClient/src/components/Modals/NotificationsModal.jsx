@@ -1,6 +1,7 @@
 import{useSelector, useDispatch} from 'react-redux';
 import NotificationsmodalRow from './NotificationsmodalRow';
 
+
 function NotificationsModal({popTipNotifications}) {
     const allNotifications = useSelector((state) => state.notificationsReducer);
     
@@ -18,10 +19,10 @@ function NotificationsModal({popTipNotifications}) {
                         hide
                     </div>  */}
 
-            {/* Heading */} 
+            {/* Heading */}  
            
-                <div className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl hover:bg-cyan-500  bg-gray-100 items-center mt-4 mb-3 group">
-                    <p className= "text-gray-500 text-center text-sm font-semibold group-hover:text-white">Notifications</p> 
+                <div className= "mx-3 p-3 space-y-2 rounded-xl  bg-gray-100 items-center mt-4 mb-3 group">
+                    <p className= "text-gray-500 text-center text-sm font-semibold ">Notifications</p> 
                 </div>  
             
                 <div className= "mb-60 border-gray-200 border-t">
