@@ -122,7 +122,7 @@ export const postTip = async  (req, res) => {
                                     const tippedDiary = await DiariesModel.findById(unpopulatedTippedDiary._id)
                                    .populate('diaryMiniProfile', 'dpUrl userName');
 
-                                   const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedDiary._id, body:tippedDiary.body, read: false,class:'tip',  type:  'diaryTip', createdOn: new Date(), dateRank: Date.now()});
+                                   const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, tipAmount:walletPush, postId:tippedDiary._id, body:tippedDiary.title, read: false,class:'tip',  type:  'diaryTip', createdOn: new Date(), dateRank: Date.now()});
                                    const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                    .populate('sender', 'dpUrl userName');
 

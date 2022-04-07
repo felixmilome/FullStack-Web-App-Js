@@ -1,9 +1,11 @@
  import {combineReducers} from 'redux';
- import {diariesReducer} from './diariesReducer';
+ import {diariesReducer, popularDiariesReducer,
+         randomDiariesReducer, usersDiariesReducer} from './diariesReducer';
   import {savedDiariesReducer} from './savedDiariesReducer.js';
  import {googleauthReducer} from './googleauthReducer';
  import { hallFameReducer } from './hallFameReducer';
- import {profileResetReducer, getMiniProfileReducer,blockReducer, populateBlockReducer, securityResetReducer, forgotPasswordReducer} from './profileReducer';
+ import {profileResetReducer, getMiniProfileReducer,blockReducer,
+         populateBlockReducer, securityResetReducer, forgotPasswordReducer} from './profileReducer';
  import {convosReducer} from './convosReducer';
  import {convoStateReducer} from './stateReducers.js';
  import {messagesReducer} from './messagesReducer';
@@ -17,19 +19,19 @@
        reviewsOpenedReducer, tipDiaryOpenedReducer,
          tipReviewOpenedReducer} from './openedCheckReducer';
  
-         export default combineReducers({
+    export default combineReducers({
 
-    diariesReducer, savedDiariesReducer,
-     convoStateReducer, googleauthReducer,
-     profileResetReducer, getMiniProfileReducer,
-     hallFameReducer, convosReducer, messagesReducer,
+      diariesReducer, savedDiariesReducer, usersDiariesReducer,
+      randomDiariesReducer, popularDiariesReducer,
+      convoStateReducer, googleauthReducer,
+      profileResetReducer, getMiniProfileReducer,
+      hallFameReducer, convosReducer, messagesReducer,
       socketReducer, deleteAccountReducer,
       notificationsReducer, reviewsReducer, tipsReducer,
-       blockReducer, populateBlockReducer, securityResetReducer,
-        forgotPasswordReducer,
-       headSearchReducer,
+      blockReducer, populateBlockReducer, securityResetReducer,
+      forgotPasswordReducer,headSearchReducer,
        messagesOpenedReducer, 
-       reviewsOpenedReducer, tipDiaryOpenedReducer, 
-        tipReviewOpenedReducer
+      reviewsOpenedReducer, tipDiaryOpenedReducer,
+       tipReviewOpenedReducer
        
- });  
+    });  

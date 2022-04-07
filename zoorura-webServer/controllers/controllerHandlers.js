@@ -1,8 +1,9 @@
 import { UsersModel } from "../models/usersModel.js";
 import {TipsModel} from "../models/tipsModel.js";
 import {NotificationsModel} from "../models/notificationsModel.js";
+import {DiariesModel} from "../models/diariesModel.js";
 
-    export const tipHandler =(amount, giverId, receiverId, postId, type)=>{
+    export const tipHandler = async(amount, giverId, receiverId, postId, type)=>{
                 
         try{
             //WITHDRAW DATAS==============-----------------------------------------
@@ -49,7 +50,7 @@ import {NotificationsModel} from "../models/notificationsModel.js";
         }
 
     } 
-    export const notificationHandler =  (userId,receiverId, body, type, tipAmount)=>{
+    export const notificationHandler =  async (userId,receiverId, body, type, tipAmount)=>{
         
         try{
 
@@ -65,3 +66,287 @@ import {NotificationsModel} from "../models/notificationsModel.js";
 
         }
     }
+   
+    export const getPopularDiariesHandler =  async ()=>{
+        
+        try{
+
+            const diaries = await DiariesModel.aggregate([
+
+                // { followers: { $in: userId } },
+                
+                { 
+               
+                    $lookup: {
+        
+                      from: 'UsersModel',
+                      localField: 'diaryMiniProfile',
+                      foreignField: '_id',
+                      as: 'miniProfile',
+        
+                    },
+                   
+         
+                },
+                
+                { 
+                    $project: {
+                        // "miniProfile.userName": 1,
+                        // "miniProfile.dpUrl": 1,
+                        
+                        "miniProfile.name": 0, 
+                         "miniProfile.email": 0, 
+                         "miniProfile.tempEmail": 0,
+                         "miniProfile.tempPassword": 0, 
+                         "miniProfile.password": 0, 
+                         "miniProfile.wallet": 0, 
+                         "miniProfile.time": 0, 
+                         "miniProfile.verified": 0, 
+                        "miniProfile.profileVerified": 0,
+                        "miniProfile.verCode": 0, 
+                        "miniProfile.bio": 0,
+                        "miniProfile.convoTip": 0,
+                        "miniProfile.postTotal": 0,        
+                         "miniProfile.verTime": 0, 
+                         "miniProfile.verExpiry": 0,
+                         "miniProfile.activityPointsTotal": 0,
+                         "miniProfile.dailyLogin": 0,
+                         "miniProfile.jwtExpiry": 0,  
+                         "miniProfile.lastLogin": 0,
+                         "miniProfile.follows": 0, 
+                         "miniProfile.followers": 0,
+                         "miniProfile.blocked": 0, 
+                         "miniProfile.blockers": 0,
+                         "miniProfile.activityPointsRecord": 0, 
+                         "miniProfile.withdrawals": 0,
+                         "miniProfile.deposits": 0,
+                        
+        
+                        } 
+                },
+                { 
+               
+                    $lookup: {
+        
+                      from: 'UsersModel',
+                      localField: 'displayerMiniProfile',
+                      foreignField: '_id',
+                      as: 'displayerMiniProfile',
+        
+                    },
+                   
+         
+                },
+                
+                { 
+                    $project: {
+                        // "displayerMiniProfile.userName": 1,
+                        // "displayerMiniProfile.dpUrl": 1,
+                        "miniProfile.name": 0, 
+                         "miniProfile.email": 0, 
+                         "miniProfile.tempEmail": 0,
+                         "miniProfile.tempPassword": 0, 
+                         "miniProfile.password": 0, 
+                         "miniProfile.wallet": 0, 
+                         "miniProfile.time": 0, 
+                         "miniProfile.verified": 0, 
+                        "miniProfile.profileVerified": 0,
+                        "miniProfile.verCode": 0, 
+                        "miniProfile.bio": 0,
+                        "miniProfile.convoTip": 0,
+                        "miniProfile.postTotal": 0,        
+                         "miniProfile.verTime": 0, 
+                         "miniProfile.verExpiry": 0,
+                         "miniProfile.activityPointsTotal": 0,
+                         "miniProfile.dailyLogin": 0,
+                         "miniProfile.jwtExpiry": 0,  
+                         "miniProfile.lastLogin": 0,
+                         "miniProfile.follows": 0, 
+                         "miniProfile.followers": 0,
+                         "miniProfile.blocked": 0, 
+                         "miniProfile.blockers": 0,
+                         "miniProfile.activityPointsRecord": 0, 
+                         "miniProfile.withdrawals": 0,
+                         "miniProfile.deposits": 0,
+                        }  
+                },
+        
+                { $addFields: 
+                    { "avgRank": 
+                        { $sum: [ "$dateRank",  {$sum: ["$tipsArray"]}, {$sum: ["$displaysArray"]} ] }
+                    }
+                },
+               
+        
+                ]).sort({"avgRank":-1}).limit(40);
+
+                return diaries;
+
+        }catch (error){
+
+            return error.message;
+
+        }
+    }
+
+    export const getFollowedDiariesHandler =  async (userId)=>{
+        
+        try{
+
+            const diaries = await DiariesModel.aggregate([
+
+                // { followers: { $elemMatch: userId } },
+                {
+                    "$match": {
+                      followers: {
+                        $eq: userId
+                      }
+                    }
+                  },
+                
+                { 
+               
+                    $lookup: {
+        
+                      from: 'UsersModel',
+                      localField: 'diaryMiniProfile',
+                      foreignField: '_id',
+                      as: 'miniProfile',
+        
+                    },
+                   
+         
+                },
+                
+                { 
+                    $project: {
+                        // "miniProfile.userName": 1,
+                        // "miniProfile.dpUrl": 1,
+                        
+                        "miniProfile.name": 0, 
+                         "miniProfile.email": 0, 
+                         "miniProfile.tempEmail": 0,
+                         "miniProfile.tempPassword": 0, 
+                         "miniProfile.password": 0, 
+                         "miniProfile.wallet": 0, 
+                         "miniProfile.time": 0, 
+                         "miniProfile.verified": 0, 
+                        "miniProfile.profileVerified": 0,
+                        "miniProfile.verCode": 0, 
+                        "miniProfile.bio": 0,
+                        "miniProfile.convoTip": 0,
+                        "miniProfile.postTotal": 0,        
+                         "miniProfile.verTime": 0, 
+                         "miniProfile.verExpiry": 0,
+                         "miniProfile.activityPointsTotal": 0,
+                         "miniProfile.dailyLogin": 0,
+                         "miniProfile.jwtExpiry": 0,  
+                         "miniProfile.lastLogin": 0,
+                         "miniProfile.follows": 0, 
+                         "miniProfile.followers": 0,
+                         "miniProfile.blocked": 0, 
+                         "miniProfile.blockers": 0,
+                         "miniProfile.activityPointsRecord": 0, 
+                         "miniProfile.withdrawals": 0,
+                         "miniProfile.deposits": 0,
+                        
+        
+                        } 
+                },
+                { 
+               
+                    $lookup: {
+        
+                      from: 'UsersModel',
+                      localField: 'displayerMiniProfile',
+                      foreignField: '_id',
+                      as: 'displayerMiniProfile',
+        
+                    },
+                   
+         
+                },
+                
+                { 
+                    $project: {
+                        // "displayerMiniProfile.userName": 1,
+                        // "displayerMiniProfile.dpUrl": 1,
+                        "miniProfile.name": 0, 
+                         "miniProfile.email": 0, 
+                         "miniProfile.tempEmail": 0,
+                         "miniProfile.tempPassword": 0, 
+                         "miniProfile.password": 0, 
+                         "miniProfile.wallet": 0, 
+                         "miniProfile.time": 0, 
+                         "miniProfile.verified": 0, 
+                        "miniProfile.profileVerified": 0,
+                        "miniProfile.verCode": 0, 
+                        "miniProfile.bio": 0,
+                        "miniProfile.convoTip": 0,
+                        "miniProfile.postTotal": 0,        
+                         "miniProfile.verTime": 0, 
+                         "miniProfile.verExpiry": 0,
+                         "miniProfile.activityPointsTotal": 0,
+                         "miniProfile.dailyLogin": 0,
+                         "miniProfile.jwtExpiry": 0,  
+                         "miniProfile.lastLogin": 0,
+                         "miniProfile.follows": 0, 
+                         "miniProfile.followers": 0,
+                         "miniProfile.blocked": 0, 
+                         "miniProfile.blockers": 0,
+                         "miniProfile.activityPointsRecord": 0, 
+                         "miniProfile.withdrawals": 0,
+                         "miniProfile.deposits": 0,
+                        }  
+                },
+        
+                { $addFields: 
+                    { "avgRank": 
+                        { $sum: [ "$dateRank",  {$sum: ["$tipsArray"]}, {$sum: ["$displaysArray"]} ] }
+                    }
+                },
+               
+        
+                ]).sort({"avgRank":-1}).limit(10);
+
+                return diaries;
+
+        }catch (error){
+
+            return error.message;
+
+        }
+    }
+
+    export const getRandomDiariesHandler =  async ()=>{
+        
+        try{
+
+            const diaries = await DiariesModel.find().limit(5)
+            .populate('diaryMiniProfile', 'dpUrl userName');
+            
+            return diaries;
+
+        }catch (error){
+
+            return error.message;
+
+        }
+    }
+    export const getUsersDiariesHandler =  async (userId)=>{
+        
+        try{
+
+            const diaries = await DiariesModel.find( { creator: { $in: userId } }).sort({"dateRank":-1})
+            .populate('diaryMiniProfile', 'dpUrl userName');
+            
+            return diaries;
+
+        }catch (error){
+
+            return error.message;
+
+        }
+    }
+
+   

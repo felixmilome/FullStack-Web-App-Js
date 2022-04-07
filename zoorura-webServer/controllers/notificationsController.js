@@ -3,12 +3,12 @@ import  mongoose  from "mongoose";
 
 export const getNotifications = async  (req, res) => {
     const {id} = req.params;
-    console.log('params :'+ req.params);
+    //console.log('params :'+ req.params);
 
     try{ 
         const notifications = await NotificationsModel.find({receiver: { $in: [ id ] } }).sort({"dateRank":-1})
         .populate('sender', 'dpUrl userName');
-        console.log(notifications);
+       // console.log(notifications);
         res.status(200).json(notifications);
 
     } catch(error){

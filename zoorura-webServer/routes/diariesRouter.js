@@ -8,7 +8,7 @@ import { auth } from '../middleware/authMiddleware.js';
 
 const diariesRouter = express.Router();    
 
-diariesRouter.get('/', getDiaries); 
+diariesRouter.get('/', auth, getDiaries); 
 diariesRouter.post('/', auth, postDiaries);     
 diariesRouter.patch('/:id', auth, patchDiaries); 
 diariesRouter.delete('/:id', auth, deleteDiaries);

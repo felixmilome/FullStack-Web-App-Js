@@ -7,7 +7,7 @@ import { useState } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
 import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
 
-function Feed(diaryId, setDiaryId, setNavbars) {
+function Feed(diaryId, setDiaryId) {
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const[popCreatediary, setpopCreatediary] = useState(false);
     const[popLogin, setpopLogin] = useState(false);

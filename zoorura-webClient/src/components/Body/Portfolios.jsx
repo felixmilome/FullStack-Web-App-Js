@@ -304,7 +304,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
 
 
                            {/* //Diaries Map ========================== */}
-                            <div className=''>
+                            {/* <div className=''>
                                 
                                    { diaries.map((diary) =>(
                                         
@@ -314,7 +314,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                         // <PostBox key={diary._id} diary={diary} setDiaryId ={setDiaryId}/>
                                     ))
                                     }
-                            </div>
+                            </div> */}
                         
                     
                 </div>

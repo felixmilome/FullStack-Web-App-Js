@@ -4,136 +4,62 @@ import {UsersModel} from "../models/usersModel.js";
 import {ReviewsModel} from "../models/reviewsModel.js";
 import { taxer } from "../functions.js";
 import {NotificationsModel} from '../models/notificationsModel.js';
+import { getPopularDiariesHandler, getFollowedDiariesHandler, getRandomDiariesHandler, getUsersDiariesHandler  } from "./controllerHandlers.js";
 
 //Search area: display
-
+ 
 //Get  Diariessss===========================================
 export const getDiaries = async  (req, res) => {
    try{ 
-
-    //     const diaries = await DiariesModel.find().limit(5).sort({"tips":-1, "time":-1})
-    //     .populate('diaryMiniProfile', 'dpUrl userName');
-    //    // console.log(diaries);
-    //     res.status(200).json(diaries); 
-
-
-    const diaries = await DiariesModel.aggregate([
        
-        
-        { 
-       
-            $lookup: {
+    const user = await UsersModel.findById(req.userId, {id: 1});
+    console.log(user);
+    const popularDiaries = await getPopularDiariesHandler();
+    const followedDiaries = await getFollowedDiariesHandler(user._id);
+    const randomDiaries = await getRandomDiariesHandler();
 
-              from: 'UsersModel',
-              localField: 'diaryMiniProfile',
-              foreignField: '_id',
-              as: 'miniProfile',
-
-            },
-           
- 
-        },
-        
-        { 
-            $project: {
-                // "miniProfile.userName": 1,
-                // "miniProfile.dpUrl": 1,
-                
-                "miniProfile.name": 0, 
-                 "miniProfile.email": 0, 
-                 "miniProfile.tempEmail": 0,
-                 "miniProfile.tempPassword": 0, 
-                 "miniProfile.password": 0, 
-                 "miniProfile.wallet": 0, 
-                 "miniProfile.time": 0, 
-                 "miniProfile.verified": 0, 
-                "miniProfile.profileVerified": 0,
-                "miniProfile.verCode": 0, 
-                "miniProfile.bio": 0,
-                "miniProfile.convoTip": 0,
-                "miniProfile.postTotal": 0,        
-                 "miniProfile.verTime": 0, 
-                 "miniProfile.verExpiry": 0,
-                 "miniProfile.activityPointsTotal": 0,
-                 "miniProfile.dailyLogin": 0,
-                 "miniProfile.jwtExpiry": 0,  
-                 "miniProfile.lastLogin": 0,
-                 "miniProfile.follows": 0, 
-                 "miniProfile.followers": 0,
-                 "miniProfile.blocked": 0, 
-                 "miniProfile.blockers": 0,
-                 "miniProfile.activityPointsRecord": 0, 
-                 "miniProfile.withdrawals": 0,
-                 "miniProfile.deposits": 0,
-                
-
-                } 
-        },
-        { 
-       
-            $lookup: {
-
-              from: 'UsersModel',
-              localField: 'displayerMiniProfile',
-              foreignField: '_id',
-              as: 'displayerMiniProfile',
-
-            },
-           
- 
-        },
-        
-        { 
-            $project: {
-                // "displayerMiniProfile.userName": 1,
-                // "displayerMiniProfile.dpUrl": 1,
-                "miniProfile.name": 0, 
-                 "miniProfile.email": 0, 
-                 "miniProfile.tempEmail": 0,
-                 "miniProfile.tempPassword": 0, 
-                 "miniProfile.password": 0, 
-                 "miniProfile.wallet": 0, 
-                 "miniProfile.time": 0, 
-                 "miniProfile.verified": 0, 
-                "miniProfile.profileVerified": 0,
-                "miniProfile.verCode": 0, 
-                "miniProfile.bio": 0,
-                "miniProfile.convoTip": 0,
-                "miniProfile.postTotal": 0,        
-                 "miniProfile.verTime": 0, 
-                 "miniProfile.verExpiry": 0,
-                 "miniProfile.activityPointsTotal": 0,
-                 "miniProfile.dailyLogin": 0,
-                 "miniProfile.jwtExpiry": 0,  
-                 "miniProfile.lastLogin": 0,
-                 "miniProfile.follows": 0, 
-                 "miniProfile.followers": 0,
-                 "miniProfile.blocked": 0, 
-                 "miniProfile.blockers": 0,
-                 "miniProfile.activityPointsRecord": 0, 
-                 "miniProfile.withdrawals": 0,
-                 "miniProfile.deposits": 0,
-                } 
-        },
-
-        { $addFields: 
-            { "avgRank": 
-                { $sum: [ "$dateRank",  {$sum: ["$tipsArray"]}, {$sum: ["$displaysArray"]} ] }
-            }
-        },
-       
-
-        ]).sort({"avgRank":-1}).limit(10);
-
- 
-       
-        res.status(200).json(diaries);
+        res.status(200).json({followedDiaries, popularDiaries, randomDiaries});
+    
 
         
    } catch(error){
        res.status(404).json({message: error.message});
+       console.log(error.message);
    }
 }
+
+export const getUsersDiaries = async  (req, res) => {
+    try{ 
+    
+        const{userId} = req.body;
+        const usersDiaries = await getUsersDiariesHandler(userId);
+     
+         res.status(200).json(usersDiaries);
+     
+ 
+         
+    } catch(error){
+
+        res.status(404).json({message: error.message});
+        console.log(error.message);
+    }
+ }
+
+
+
+
+
+
+
+
+// OTHER DIARY CONTROLLERS+++++++++++++++++++++
+
+
+
+
+
+
+
 
 
 //Post  Diariessss===========================================
@@ -145,7 +71,7 @@ export const postDiaries =  async (req, res)=> {
         console.log(diary.originalId); 
         
     try{
-        const user = await UsersModel.findById(req.userId);
+        const user = await UsersModel.findById(req.userId); 
         const  newPostSpam = user.postSpam + 1;
         if(newPostSpam > 10){
 
@@ -154,7 +80,7 @@ export const postDiaries =  async (req, res)=> {
         }else { 
 
                 if (diary.type === 'diary'){
-                    const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
+                    const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, followers:user.followers, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
                     try{
                         await newDiary.save();
 
@@ -179,8 +105,8 @@ export const postDiaries =  async (req, res)=> {
                                 // const displayedDiary = await DiariesModel.findById(unpopulatedDisplayedDiary._id)
                                 // .populate('displaysArray', 'userName');
 
-                                const newDisplay = new DiariesModel({creator:displayedDiary.creator, title:displayedDiary.title, caption:displayedDiary.caption, file:displayedDiary.file, media:displayedDiary.media,
-                                diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
+                                const newDisplay = new DiariesModel({creator:req.userId, title:displayedDiary.title, caption:displayedDiary.caption, file:displayedDiary.file, media:displayedDiary.media,
+                                diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', followers:user.followers, originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
                                     displaysArray: [], time: displayedDiary.time, dateRank: (Date.now()/360000),tippers:[], reviewers:[], displaysArray:[]});   
                                 
                                     console.log(newDisplay); 

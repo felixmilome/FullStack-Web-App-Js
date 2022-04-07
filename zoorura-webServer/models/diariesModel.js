@@ -94,6 +94,7 @@ const diariesSchema = mongoose.Schema({
     },
     tippers: [String],
     reviewers: [String],
+    followers: [],
 
 });
 

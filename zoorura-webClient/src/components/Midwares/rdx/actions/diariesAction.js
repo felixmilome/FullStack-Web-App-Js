@@ -4,8 +4,14 @@ import * as axs from './axs';
 export const getDiariesAction = () => async (dispatch) => {
     try{
         const {data} = await axs.getDiariesApi();
+        console.log(data);
 
-        dispatch ({type: 'GET_ALL_DIARIES', payload: data});
+        const {followedDiaries, popularDiaries, randomDiaries} = data;
+
+        dispatch ({type: 'GET_FOLLOWED_DIARIES', payload: followedDiaries});
+        dispatch ({type: 'GET_POPULAR_DIARIES', payload: popularDiaries}); 
+        dispatch ({type: 'GET_RANDOM_DIARIES', payload: randomDiaries});  
+
     } catch(error) {
         console.log(error); 
     }
