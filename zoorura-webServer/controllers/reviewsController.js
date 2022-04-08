@@ -4,8 +4,8 @@ import {ReviewsModel} from "../models/reviewsModel.js";
 import {DiariesModel} from "../models/diariesModel.js";
 import {NotificationsModel} from "../models/notificationsModel.js";
 import  mongoose  from "mongoose";
-
-//Search Area: reviewReply
+ 
+//Search Area: reviewReply newPostSpam
 
 export const getReviews =  async (req, res)=> {
 
@@ -116,7 +116,7 @@ export const postReview = async  (req, res) => {
             const user = await UsersModel.findById(req.userId);
             const  newReviewSpam = user.reviewSpam + 1;
             
-            if(newPostSpam > 25){
+            if(newReviewSpam > 25){
 
                 res.json('Spam');
 

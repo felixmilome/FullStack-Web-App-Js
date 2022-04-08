@@ -9,7 +9,8 @@ import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { MdSend,MdOutlineCancel} from "react-icons/md";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
-//import { BiCommentEdit } from "react-icons/bi";
+import{BsFillEmojiLaughingFill} from 'react-icons/bs';
+
 import {BeatLoader} from "react-spinners";
 import {useNavigate} from 'react-router-dom';
 
@@ -43,7 +44,9 @@ import { PostFrameTips } from "./PostFrameTips.jsx";
 import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
 import { PostFrameReviews } from "./PostFrameReviews.jsx";
 import {Link} from 'react-router-dom';
+import Picker from 'emoji-picker-react'
 
+//Search Area title
 
 
 
@@ -56,7 +59,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     //const[tipData, setTipData] = useState({tipper: '', tipperId: '', amount: null, tipperObj: {tipper: '', tipperId:'', amount: null}});
     const[tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type: '', amount: null});
     //const[reviewData, setreviewData] = useState({reviewer: user.result.userName, reviewerId:user.result._id, body: ''});
-    const[reviewData, setreviewData] = useState({reviewedId:'', reviewedPostId:'', body: '', replied:null, repliedPostId:null, reply:false});
+    const[reviewData, setreviewData] = useState({reviewedId:diary.creator, reviewedPostId:diary._id, body: '', replied:null, repliedPostId:null, reply:false});
     const[socketReviewData, setSocketReviewData] = useState({reviewerId:user.result._id, reviewerMiniProfile:{_id: user.result._id, dpUrl: user.result.dpUrl, userName:user.result.userName}, reviewedMiniProfile:diary.creator, reviewedPostId:diary._id, body: ''});
     const [socketReviewNotification, setSocketReviewNotification] = useState({sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiver:diary.creator, body:'',postId:diary._id, type: 'review'});
     const [displayData, setDisplayData] = useState({
@@ -78,32 +81,14 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[reviewDelivery, setReviewDelivery] = useState(false); 
     const[reviewDisplay, setReviewDisplay] = useState(false); 
     const[popDisplayPosted, setPopDisplayPosted] = useState(false); 
+    const [chosenEmoji, setChosenEmoji] = useState(null);
+    const [emojiBox, setEmojiBox] = useState(false);
 
     const socket = useSelector((state) => state.socketReducer);
 
     const navigate = useNavigate();
 
-    
-    // useEffect(() => {
-    //     dispatch(getMiniProfileAction(diary.creator));
-    // }, [dispatch]);
-   
-    // const miniProfileData = useSelector((state) => state.getMiniProfileReducer);
 
-    // console.log(miniProfile);
-   
-    
-    
-   // console.log(miniProfile);
-    //console.log(diary);
-
-    // useEffect(() => {
-    //     dispatch(getTipsAction(diary.creator));
-    // }, [dispatch]);
-    
-    // const tippers = useSelector((state) => state.tipsReducer);
-    // console.log(tippers);
-  
 
         function getSum(total, num) { 
             return total + num;
@@ -111,27 +96,21 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         const tipsArray = diary.tipsArray;
         const unroundedTips = tipsArray.reduce(getSum, 0);
         const tips = Math.trunc(unroundedTips * Math.pow(10, 2)) / Math.pow(10, 2);
-        console.log(tips);
+       
+
+    
+        const onEmojiClick = (event, emojiObject) => { 
+        
+          
+            setreviewData({reviewedId:diary.creator, reviewedPostId:diary._id, body: reviewData.body+emojiObject.emoji+' ', replied:null, repliedPostId:null, reply:false});
+            console.log(reviewData);  
+        };
     
 
-
-
-    // const reviewNotifier= (notificationRes, reviewRes) =>{
- 
-    //     socket.current.emit("sendNotification", {
-    //         notificationRes            
-    //      });
-
-    //      socket.current.emit("sendReview", {
-    //         reviewRes  
-    //      });  
-    //      console.log(notificationRes);    
-    //      console.log(reviewRes);
-
-    // }    
     const reviewDiary = () =>{
 
         setReviewLoading(true);
+        setEmojiBox(false);
        
         try{
             dispatch(postReviewsAction(reviewData, setreviewData, setReviewLoading, setReviewDelivery, socket));
@@ -154,6 +133,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const tipDiary = () =>{
        
         setTipLoading(true);
+        
 
         try{
 
@@ -188,13 +168,13 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {spam ==true &&
         <DeliveryPop message='Todays Review Limit(25) reached! Try Tomorrow '/>
          } 
-        <div className="text-black p-2 sm:px-12 py-4 rounded-xl bg-gray-100 relative xl:w-2/5 mx-auto mb-6"> 
+        <div className="text-black p-2 sm:px-12 py-4 rounded-md sm:rounded-xl bg-gray-100 relative xl:w-2/5 mx-auto mb-6"> 
          
 
             {/* Post-Top-Cyan Invisible Parent*/}
             <div className="flex justify-end">
                 {/* Top-Cyan */}
-                <div className="bg-gray-100 rounded-t-xl w-full transition delay-50 py-0.5 flex items-center font-bold justify-between">
+                <div className="rounded-t-xl w-full transition delay-50 py-0.5 flex items-center font-bold justify-between">
                         {/*Top-Mid*/}
                         <div className="flex items-center justify-between">
                             {/* Top-Mid Img*/}
@@ -283,19 +263,26 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
 
         {/* Post Mid Invisible Parent */}
-        <div className="bg-gray-100 rounded-b-xl break-words">
+        <div className=" rounded-b-xl break-words">
 
         {/* Post Caption Invisible Parent */}
-        <div className="relative flex justify-center bg-gray-100  my-0.5">
+        <div className="relative flex justify-center   my-0.5">
             {/* Post Mid Frame*/}
-            <div onClick= {()=> {console.log(diary.reviewers)}} className="w-full items-center p-4 text-sm rounded-t-xl break-words"> 
+            <div onClick= {()=> {console.log(diary.reviewers)}} className="max-h-screen overflow-scroll w-full items-center p-4 text-sm rounded-t-xl break-words"> 
                     <p className="leading-5 font-semibold my-1 text-gray-700">{diary.title}</p>
-                    <p className="leading-5 font-light text-gray-700">{diary.caption}</p>                 
+                    
+                    {diary.caption.split('\n').map(function(item) {
+                    return (
+                        <p key={item} className="leading-5 font-light text-gray-700">{item}</p> 
+                        )
+                    })}
+
+
             </div>  
 
         </div>
 
-        <div className="flex p-1 justify-center bg-gray-100 ">
+        <div className="flex p-1 justify-center ">
             {/* Post Mid Frame*/}
             {diary.file && diary.file.length > 0 && <div className="max-h-screen w-full transition delay-50 flex z-30 justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
                             
@@ -604,7 +591,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         <div className="">
             {/* Post Bottom Icons*/}
          {diary.postType !== 'display' && <>
-            <div className="w-full  justify-around transition delay-50 flex items-center  bg-gray-100 border-b border-t border-gray-300 font-bold p-3">
+            <div className="w-full  justify-around transition delay-50 flex items-center border-b border-t border-gray-300 font-bold p-3">
           
 
 {/* TIIIIPPPPZZZZZ=+===================== */}
@@ -723,7 +710,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
             {/* Opinion Box */} 
 
-            <div className="relative p-3 bg-gray-100 rounded-b-md  border-gray-300">
+            <div className="relative p-3 rounded-b-md  border-gray-300">
 
             
 
@@ -809,29 +796,44 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
                     <div className="fixed p-4 bottom-0 w-full items-center">
                             
-                           <div  className='absolute bottom-8 right-8'>
-                                { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
-                                <>
-                                    {!reviewLoading && <MdSend size={24} onClick= {reviewDiary}/> }
-                                    {reviewLoading && 
-                                    <>
-                                    {/* <p className= 'text-xs font-extralight'>sending review</p> */}
-                                    <BeatLoader size={7} color='black' loading/>
-                                    </> }
-                                </>
-                                } 
-                            </div>
-                            
+                         
+                             
+                          <div className='flex items-center space-x-2'>
 
-                            <textarea value= {reviewData.body}
-                            onChange={(e)=> {
+                                <textarea value= {reviewData.body}
+                                onChange={(e)=> {
+                                    
+                                    setreviewData({reviewedId:diary.creator, reviewedPostId:diary._id, body:e.target.value, replied:null, repliedPostId:null, reply:false});
                                 
-                                setreviewData({reviewedId:diary.creator, reviewedPostId:diary._id, body: e.target.value, replied:null, repliedPostId:null, reply:false});
-                                setSocketReviewData({...socketReviewData, body: e.target.value});
 
-                            }}
-                            type="text" placeholder="Write Review Here..." className="h-40 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
-                    
+                                }}
+                                type="text" placeholder="Write Review Here..." className="h-20 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                                <div  className=''>
+                                    { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
+                                    <>
+                                        {!reviewLoading && <MdSend size={24} onClick= {reviewDiary}/> }
+                                        {reviewLoading && 
+                                        <>
+                                        {/* <p className= 'text-xs font-extralight'>sending review</p> */}
+                                        <BeatLoader size={7} color='black' loading/>
+                                        </> }
+                                    </>
+                                    } 
+                                </div>
+                                
+                                <div className=''>
+                                    <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                <BsFillEmojiLaughingFill/>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                            {emojiBox && 
+                                            <div className='flex justify-center bg-gray-300'>
+                                                <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
+                                            </div>
+                                } 
+                                       
                     </div>
                      </div>
                     }

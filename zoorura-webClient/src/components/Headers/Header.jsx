@@ -31,6 +31,7 @@ import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {io} from 'socket.io-client'
 
+//Search Area.. Go
 
 function Header() {
 
@@ -269,12 +270,7 @@ function Header() {
 
     return (
         
-        <div style={{  
-            backgroundImage: "url(" + "https://thumbs.dreamstime.com/z/cartoon-cute-doodles-hand-drawn-african-illustration-sketchy-picture-doodle-inscription-africa-74329506.jpg" + ")",
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat'
-          }} className= "sticky top-0 z-50 ">
+        <div className= "sticky top-0 z-50 ">
               {/*==============SIGN UP/ LOGIN =================*/}
             {user && !user.result.verified  ? <VerifyForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>} 
             { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
@@ -294,7 +290,7 @@ function Header() {
 
                             
                             <>
-                                <h1 className= "m-1 pr-2 inline-flex font-light text-xl text-sm ">Go Home</h1>
+                                <h1 className= "m-1 pr-2 inline-flex font-bold text-xl text-sm ">Go Home</h1>
                                
                             </>
                        
@@ -316,13 +312,13 @@ function Header() {
                     <div  className="cursor-pointer  rounded-full hover:bg-gray-200 bg-transparent flex items-center justify-between">
                                 
                                 <div className= 'rounded-full items-center  bg-gray-100 object-cover'>
-                                    <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-16 sm:w-16"/>
+                                    <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 "/>
                                 </div>
 
                             
                             
                                 <> 
-                                    <h1 className= "m-1 inline-flex text-sm font-light text-2xl p-1">{user && !user.result.verified && <>Go Back to  </>} Log In/Sign Up</h1> 
+                                    <h1 className= "m-1 inline-flex text-sm font-bold text-2xl p-1">{user && !user.result.verified && <>Go Back to  </>} Sign Up-Log In</h1> 
                                     
                                 </>
                                 

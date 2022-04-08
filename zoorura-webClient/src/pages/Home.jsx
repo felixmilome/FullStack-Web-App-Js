@@ -41,7 +41,8 @@ function Home({showProfile}) {
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
     return (
-        <div className="bg-gray-300 text-gray-700 h-full min-h-screen pb-40">
+         <div className="m-0 text-gray-700 h-full min-h-screen pb-40 bg-gradient-to-r from-cyan-900 to-gray-900">
+         {/* <div className=" text-gray-700 h-full min-h-screen pb-40 bg-gray-300"> */}
 
        
     
@@ -87,9 +88,9 @@ function Home({showProfile}) {
                                     backgroundSize: 'contain',
                                     backgroundRepeat: 'repeat',
                                     pointerEvents: 'none',
-                                    opacity: 0.04,
+                                    opacity: 0.05,
                                 }}
-                className=" fixed top-0 z-20  w-screen h-screen">  
+                className=" fixed top-0 z-20  w-screen h-screen ">  
                     
             </div>
            

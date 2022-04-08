@@ -10,6 +10,7 @@ import{BsInstagram, BsTwitch, BsFileEarmarkImageFill, BsLink45Deg, BsFileEarmark
 import{RiSoundcloudLine, RiPinterestLine, RiRedditFill} from "react-icons/ri";
 import {BiUnlink} from 'react-icons/bi';
 import {BeatLoader} from "react-spinners";
+import{BsFillEmojiLaughingFill} from 'react-icons/bs';
 
 import{ImReddit, ImWordpress, ImYoutube2} from "react-icons/im";
 import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
@@ -36,9 +37,9 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 import { PostFormTagSearch } from './PostFormTagSearch.jsx';
-import { GiDiamondTrophy } from 'react-icons/gi';
+import Picker from 'emoji-picker-react';
 
-
+//Search Area: textarea title
 
 
 
@@ -66,6 +67,11 @@ function PostForm() {
     const [searchingName, setSearchingName] = useState(false);
     const [searchedName, setSearchedName] = useState('');
     const [searchError, setSearchError] = useState(false);
+    
+    const [chosenEmoji, setChosenEmoji] = useState(null);
+    const [emojiBox, setEmojiBox] = useState(false);
+
+
 
     const[types, setTypes] = useState({image:'image', audio:'audio', video:'video', pdf:'pdf' });
 
@@ -127,32 +133,27 @@ function PostForm() {
             ]
         );
 
- const {register, handleSubmit, formState: {errors}} = useForm({
-        resolver: yupResolver(postSchema),
-    });
+    const {register, handleSubmit, formState: {errors}} = useForm({
+            resolver: yupResolver(postSchema),
+        });
 
     
    
+    const onEmojiClick = (event, emojiObject) => {
+        
+        setChosenEmoji(emojiObject);
+        setdiariesData({...diariesData, caption: diariesData.caption+emojiObject.emoji+' '})
+    };
 
-    // const handleImage = async (e)=>{
-    //     e.preventDefault();
-    //     const image = e.target.files[0];
-    //     console.log(image);
-    //     uploadImage(image);
-            
-    // };
-
-    //const reader = new FileReader();
-
-const clearUrl = ()=> {
-    //Useeffect cleared Url.value  
-     setdiariesData({...diariesData, media:'', file:''});
-     setAttachment('file')
-}
-const clearUrl_NoSwitch = ()=> {
-    //Useeffect cleared Url.value  
-     setdiariesData({...diariesData, media:'', file:''});
-     document.getElementById('url').value = '';
+    const clearUrl = ()=> {
+        //Useeffect cleared Url.value  
+        setdiariesData({...diariesData, media:'', file:''});
+        setAttachment('file')
+    }
+    const clearUrl_NoSwitch = ()=> {
+        //Useeffect cleared Url.value  
+        setdiariesData({...diariesData, media:'', file:''});
+        document.getElementById('url').value = '';
      
 }
 
@@ -452,21 +453,6 @@ function readFile(file, type) {
     };
 
 
-// //CLOUDINARY +++++++++++++++++++++
-//     const uploadFile = async (image) =>{
-//         const formData =  new FormData();
-//         formData.append ("file", fileData);
-//         formData.append("upload_preset", "")
-//         try{
-//         axios.post("https://api.cloudinary.com/v1_1/zoorura/image/upload",
-//          formData).then((response))=>{
-//              console.log(response);
-//          });
-//          }catch(error){
-//              console.log(error.message);
-//          }
-
-//     };
 
     const post = (data)=>{
         
@@ -482,6 +468,10 @@ function readFile(file, type) {
         }
             
     }
+
+
+   
+
     return (
         <div className="flex items-center justify-center">
        
@@ -600,21 +590,6 @@ function readFile(file, type) {
                    
 
 
-                            {/* File Upload------------ */}
-
-                                    {/* <div className= "items-center bg-gray-100 rounded-full p-3 text-gray-300 mx-auto w-20 h-20">
-                                    
-                                    <FileBase
-                                        
-                                        type="file"
-                                        multiple={false}
-                                        onDone={({base64})=> setdiariesData ({...diariesData, file:base64})}
-                                        
-                                    />
-                                        <CameraIcon className="m-auto h-10 w-10"/>
-                                        <p className= "text-center text-xs font-base text-gray-400">Photo</p>
-                                    </div> */}
-
 
                                 {/*-- URL------------ */}
                                     {attachment === 'link' &&
@@ -641,7 +616,7 @@ function readFile(file, type) {
                                     <div className= 'w-full flex justify-center space-x-5'>
                                     
 
-                                       {/* UPLOAD INPUTS */}
+                                       {/* UPLOAD INPUTS */} 
                                         
                                         <input {...register('ImageUpload',{
                                             onChange: (e) => {readFile(e.target.files[0], types.image)}
@@ -1061,18 +1036,29 @@ function readFile(file, type) {
                                         </div>
                                     </div>
                                 {/* ---Content---------------  */}
-                                    <div className="px-3 items-center flex justify-center">
-                                        <div className='w-full'>
-                                        <textarea name= "caption"
-                                        value= {diariesData.caption} 
+                                    <div className="px-3 items-center">
+                                        <div className='w-full items-center'>
 
-                                         {...register('caption',{
-                                        onChange: (e) => {setdiariesData({...diariesData, caption: e.target.value})}
-                                        })}   
-                        
-                                        placeholder="Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 font-light outline-none  mt-1 w-full  px-4 py-2 border border-gray-300 rounded-md bg-gray-100"/>
-                                        <p className='text-xs text-red-700 font-light' >{errors.caption?.message}</p>
+                                                <textarea name= "caption"
+                                                value= {diariesData.caption}  
+
+                                                {...register('caption',{
+                                                onChange: (e) => {setdiariesData({...diariesData, caption: e.target.value})}
+                                                })}   
+                                
+                                                placeholder="Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 font-light outline-none  mt-1 w-full  px-4 py-2 border border-gray-300 rounded-md bg-gray-100"/>
+                                                <p className='text-xs text-red-700 font-light' >{errors.caption?.message}</p>
+                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max mx-auto my-1 text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                    <BsFillEmojiLaughingFill/>
+                                                </div>
+                                       
                                         </div>
+
+                                        {emojiBox && 
+                                                    <div className='flex justify-center bg-gray-300'>
+                                                        <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
+                                                    </div>
+                                        }
                                     </div>
                                 {/* Endorsement------------- */}
                                     <div className="m-auto w-3/4">

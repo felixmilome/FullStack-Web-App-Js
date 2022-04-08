@@ -14,9 +14,9 @@ export const BallersArena = () => {
             {/* space */}
     
             {/* Heading */}
-            <div className="bg-transparent  my-2 p-3 cursor-pointer  items-center flex  space-x-2 justify-center">
+            <div className="bg-transparent text-gray-200  my-2 p-3 cursor-pointer  items-center flex  space-x-2 justify-center">
                 
-                   <div className="w-8 h-8 bg-gray-700 text-gray-100 flex justify-center items-center rounded-full">
+                   <div className="w-8 h-8 bg-gray-800 flex justify-center items-center rounded-full">
                     <RiVipCrownFill/>
                      </div>
                 

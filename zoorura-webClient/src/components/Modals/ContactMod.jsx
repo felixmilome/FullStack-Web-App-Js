@@ -9,6 +9,7 @@ import { MdSend} from "react-icons/md";
 import {useState, useRef, useEffect} from 'react';
 import {postMessagesAction, getMessagesAction} from '../Midwares/rdx/actions/messagesAction.js';
 import {postNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js';
+import{BsFillEmojiLaughingFill} from 'react-icons/bs';
 
 import {PicForm, AudioForm, VideoForm} from "../Body/PostForms/Previews.jsx";
 
@@ -16,6 +17,7 @@ import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 import { SurePop } from "../Body/SurePop.jsx";
 import{readConvoNotificationsAction} from "../Midwares/rdx/actions/notificationsAction.js" 
+import Picker from 'emoji-picker-react';
 
 //Search Area: textarea
 
@@ -34,6 +36,8 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
      const[fileData, setFileData] = useState('');
      const[imageBlob, setImageBlob] = useState('');
      const[contactViewed, setContactViewed] = useState(false);
+     const [chosenEmoji, setChosenEmoji] = useState(null);
+    const [emojiBox, setEmojiBox] = useState(false);
      
 
 
@@ -67,6 +71,12 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         }
 
     }, []);
+
+    const onEmojiClick = (event, emojiObject) => {
+        
+        setChosenEmoji(emojiObject);
+        setmessageData({...messageData, body: messageData.body+emojiObject.emoji+' '})
+    };
 
     useEffect(() => { 
 
@@ -234,6 +244,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         setProgress(90)
         dispatch(postMessagesAction(messageData, socket, setLoading, setProgress, setmessageData));
        setContactViewed(true);
+       setEmojiBox(false);
            
        // setmessageData({...messageData, body: '', type:''});
         
@@ -258,6 +269,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         dispatch(postMessagesAction(messageDataObj, socket, setLoading, setProgress, setmessageData));
         console.log(messageDataObj);
         setContactViewed(true);
+        setEmojiBox(false);
         
         
 
@@ -504,7 +516,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                   </div>}
                                         
 
-                                <div  className=' w-full p-2 sm:w-1/2 lg:w-1/4 fixed bottom-8 right-0'>
+                                <div  className=' w-full px-1 sm:w-1/2 lg:w-1/4 fixed bottom-0 py-2 bg-gray-200 border border-gray-300 right-0 sm:right-2'>
 
                                        
                                     {messageData.type !== 'image' &&messageData.type !== 'video' && messageData.type !== 'audio' &&
@@ -513,7 +525,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                             <div className={`${messageData.body.length < 25 && `h-12`}
                                                             ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
                                                             ${messageData.body.length > 80 && `h-32`}
-                                                            m-1 p-1 rounded-full items-center flex bg-cyan-200 w-full`}>
+                                                            m-1 p-1 rounded-full items-center flex bg-cyan-400 w-full`}>
                                                 
                                                 <div className={`${messageData.body.length < 25 && `h-12`}
                                                             ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
@@ -538,9 +550,14 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                             resize-none h-full w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded`}/>
                                             
                                                 </div> 
+                                                <div className='flex p-1 items-center'>
+                                                            <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-cyan-400 bg-gray-100 hover:bg-gray-800 rounded-full p-1'>
+                                                                        <BsFillEmojiLaughingFill/>
+                                                            </div>
+                                                        </div>
 
                                             </div>
-
+                                            
 
                                             
                                             { messageData.body.length > 0 && loading === false && messageData.type === 'text' &&
@@ -551,6 +568,8 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                     <div onClick= {sendMessage} className='bg-cyan-400 rounded-full p-2'>
                                                             <MdSend className='text-gray-100 text-white h-6 w-6 '/>
                                                         </div>
+
+                                                      
                                                     
                                                     </div>
                                                 </div>
@@ -572,8 +591,10 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
 
 
-                                        <div className='flex justify-around pb-5 pt-2  text-gray-400 m-auto  items-center'>
+                                        <div className='flex justify-around pt-2  text-gray-400 m-auto  items-center'>
                                              {/* UPLOAD INPUTS */}
+
+                                          
                                         
                                         <input  onChange = {(e)=>readFile(e.target.files[0], 'image')} 
                                          className= "hidden" id='ImageUpload' type="file" accept="image/png, image/jpeg, image/jpg"/> 
@@ -602,12 +623,17 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                     <MdVideoLibrary size={20}/> 
                                                 </div>
                                             </label>
+
                                             </>
                                             }
                                                
                                         </div>
                                         
-                                  
+                                        {emojiBox && 
+                                                    <div className='flex m-2 p-2 rounded-md justify-center bg-gray-300'>
+                                                        <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
+                                                    </div>
+                                        }
                                       
                                       
                                 </div>

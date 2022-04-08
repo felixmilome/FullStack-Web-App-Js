@@ -75,7 +75,7 @@ export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, 
         console.log(error.message);
     }
 }
-export const patchReviewsAction = (reviewData, setReviewLoading, setReviewDelivery, setReviewEditor, setSpam) => async (dispatch) => {
+export const patchReviewsAction = (reviewData, setreviewData, setReviewLoading, setReviewDelivery, setReviewEditor, setSpam) => async (dispatch) => {
 
     console.log("patchReview Action Act");
 
@@ -88,6 +88,7 @@ export const patchReviewsAction = (reviewData, setReviewLoading, setReviewDelive
         }else {
             
             dispatch ({type: 'PATCH_REVIEW', payload: data});
+            setreviewData({reviewedId:'', reviewedPostId:'', body: ''}); 
 
             
 

@@ -5,6 +5,8 @@ import moment from 'moment';
 import{GiMoneyStack, GiTakeMyMoney} from "react-icons/gi"; 
 import { BiCommentEdit } from "react-icons/bi";
 import { MdSend,MdOutlineCancel} from "react-icons/md";
+import{BsFillEmojiLaughingFill} from 'react-icons/bs';
+
 import {BeatLoader} from "react-spinners";
 import {patchReviewsAction, postReviewsAction, deleteReviewsAction} from "../Midwares/rdx/actions/reviewsAction.js"
 import OutsideClickHandler from 'react-outside-click-handler';
@@ -13,6 +15,8 @@ import { SurePop } from './SurePop';
 import {postTipsAction} from "../Midwares/rdx/actions/tipsAction.js";
 import {ReviewTipRow} from "./ReviewTipRow.jsx"
 import { PostRevReply } from './PostRevReply';
+import Picker from 'emoji-picker-react'
+
 
 export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
 
@@ -27,6 +31,8 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
        const[deleteReviewSurePop, setDeleteReviewSurePop] = useState(false); 
        const[tipReviewSurePop, setTipReviewSurePop] = useState(false);
        const[popTip, setpopTip] = useState(false); 
+       const [chosenEmoji, setChosenEmoji] = useState(null);
+       const [emojiBox, setEmojiBox] = useState(false);
 
        const socket = useSelector((state) => state.socketReducer);
        const reviewersAll = useSelector((state) => state.reviewsReducer);
@@ -48,6 +54,15 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
     function getSum(total, num) { 
         return total + num;
     }
+
+
+    const onEmojiClick = (event, emojiObject) => { 
+        
+          
+        setreviewData({reviewedId:diaryCreator, reviewedPostId:diaryId, body: reviewData.body+emojiObject.emoji+' ', replied:null, repliedPostId:null, reply:false});
+        console.log(reviewData);  
+    };
+
     const reviewTipsArray = reviewer.tipsArray;
     const unroundedReviewTips = reviewTipsArray.reduce(getSum, 0);
     const reviewTips = Math.trunc(unroundedReviewTips * Math.pow(10, 2)) / Math.pow(10, 2);
@@ -97,7 +112,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
         setLoading(true);
        
         try{
-            dispatch(patchReviewsAction(reviewData, setLoading, setReviewDelivery, setReviewEditor));
+            dispatch(patchReviewsAction(reviewData, setreviewData, setLoading, setReviewDelivery, setReviewEditor));
             console.log(reviewData);
         }
         catch(error){
@@ -152,20 +167,30 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
         
 
                     {/* EDITOR */}
-                    {reviewEditor && <div className="absolute bottom-2 z-20 w-2/3 bg-gray-100 py-1 items-center">
+                    {reviewEditor &&  <div className="absolute bottom-2 z-20 w-2/3 bg-gray-100 items-center">
                             
                     <OutsideClickHandler     
                             onOutsideClick={() => {
                                 setReviewEditor(false);
                             }}
-                            >
+                            > 
                     
                             
-                            <div className='bg-transparent border border-gray-300 rounded-md p-1'>
+                            <div className='bg-transparent border  border-gray-300 rounded-md p-1'>
+                           
+                              
+                                        
                                 <textarea value= {reviewData.body}
                                 onChange={(e)=> setreviewData({reviewId:reviewer._id, body: e.target.value})}
                                 type="text" placeholder="Edit Review Here..." className="h-16 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
-                                
+                                   <div className='w-full flex justify-end'>
+                                        <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                    <BsFillEmojiLaughingFill/>
+                                        </div>
+                                    </div>
+                                    {emojiBox && <div className='flex justify-center bg-gray-300'>
+                                    <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
+                                    </div>}
                                 <div className='flex items-center justify-around'>
                                     <div onClick= {()=> setReviewEditor(false)}className='flex bg-gray-100 px-3 rounded-t-md cursor-pointer justify-center'>
                                     <p className='text-xs'>Cancel</p>
@@ -209,7 +234,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                             {/* Name and Comment*/}
                             <div className="items-center m-1 bg-transparent w-5/6">  
                             <div className="flex bg-transparentrounded-2xl w-fit">
-                                <div className= "bg-gray-100 border  border-gray-300 p-3 rounded-2xl max-w-3/4">
+                                <div className= "max-h-96 overflow-scroll bg-gray-100 border  border-gray-300 p-3 rounded-2xl max-w-3/4">
                                     
                                     <div className= 'flex bg-transparent rounded-md w-min '>
 
@@ -218,7 +243,13 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                         
                                     </div>
                                     
-                                <div className= "font-light text-xs break-words">{reviewer.body}</div>
+                              
+                                    {reviewer.body.split('\n').map(function(item) {
+                                    return (
+                                        <p key={item} className="leading-5 font-light text-gray-700">{item}</p> 
+                                        )
+                                    })}
+
                                 <p className='font-extralight'>{reviewer.edited===true && 'edited '}{moment (reviewer.time).fromNow()}</p>
                                 </div>
                                 
@@ -316,35 +347,52 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                     
                   
                        { reviewer.reply ===false && replyInput ===true &&
-                       <div className="relative w-full rounded-xl items-center">
+                       <div className=" w-full rounded-xl items-center">
                             
-                            <div  className='absolute bottom-3 right-12'>
-                                 { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
-                                 <>
-                                     {!loading && <MdSend onClick= {reviewDiary}/> }
-                                     {loading && 
-                                     <>
-                                     {/* <p className= 'text-xs font-extralight'>sending review</p> */}
-                                     <BeatLoader size={7} color='black' loading/>
-                                     </> }
-                                 </> 
-                                 } 
-                             </div>
-                                <textarea value= {reviewData.body}
-                                        onChange={(e)=> {
-                                            
-                                            setreviewData({...reviewData, reviewedId:diaryCreator, reviewedPostId:diaryId, body:e.target.value, replied:reviewer.reviewerId, repliedPostId:reviewer._id, reply:true});
-                                            
+                           
 
-                                        }}
-                                        type="text" placeholder={`reply @${reviewer.reviewerMiniProfile.userName}`} className="max-h-screen
-                                        w-1/2 ml-8 text-gray-700 outline-none bg-gray-100
-                                        text-xs  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                               
+                                    <div className="relative flex items-center justify-center p-3 space-x-2">
+                                            <textarea value= {reviewData.body}
+                                                onChange={(e)=> {
+                                                    
+                                                    setreviewData({...reviewData, reviewedId:diaryCreator, reviewedPostId:diaryId, body:e.target.value, replied:reviewer.reviewerId, repliedPostId:reviewer._id, reply:true});
+                                                    
+
+                                                }}
+                                                type="text" placeholder={`reply @${reviewer.reviewerMiniProfile.userName}`} className="max-h-screen
+                                                w-full ml-8 text-gray-700 outline-none bg-gray-100
+                                                text-xs  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+
+                                                    <div  className=''>
+                                                        { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
+                                                        <>
+                                                            {!loading && <MdSend onClick= {reviewDiary}/> }
+                                                            {loading && 
+                                                            <>
+                                                            {/* <p className= 'text-xs font-extralight'>sending review</p> */}
+                                                            <BeatLoader size={7} color='black' loading/>
+                                                            </> }
+                                                        </> 
+                                                        } 
+                                                    </div>
+                                            
+                                            <div className='w-full'>
+                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                            <BsFillEmojiLaughingFill/>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    {emojiBox && 
+                                                <div className='flex justify-center bg-gray-300'>
+                                                    <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
+                                                </div>
+                                            } 
                         </div>
                         }
-                         {replyInput===true && 
-                         <div className='max-h-80 mb-40 overflow-scroll bg-gray-100 border border-gray-300 w-fit rounded-xl'>  
-                                {availableRepliers?.length > 0 && availableRepliers?.map((replier) =>(
+                         {replyInput===true && availableRepliers?.length > 0 &&
+                         <div className='max-h-80 overflow-scroll bg-gray-200  w-fit rounded-xl'>  
+                                {availableRepliers?.map((replier) =>(
                                     <> 
                                         {replier.repliedPostId === reviewer._id && 
                                         <div key={replier._id}  className='ml-20 bg-gray-100'>            

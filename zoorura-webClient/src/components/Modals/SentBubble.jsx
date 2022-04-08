@@ -34,10 +34,15 @@ function SentBubble({SentMessage, message, Type, File}) {
            {Type === 'text' &&
             <div className="flex max-w-3/4 justify-end py-1 px-3 text-sm font-light">
         
-                <div style={{wordBreak: 'break-word'}} className="my-0 p-3  bg-cyan-500 shadow-xl rounded-t-xl rounded-bl-xl bg-gray-100 text-white">
+                <div style={{wordBreak: 'break-word'}} className="my-0 p-3 max-h-screen overflow-scroll  bg-cyan-500 shadow-xl rounded-t-xl rounded-bl-xl bg-gray-100 text-white">
                     
                     
-                    <p>{SentMessage}</p>
+                    
+                    {SentMessage.split('\n').map(function(item) {
+                        return (
+                            <p key={item} >{item}</p> 
+                            )
+                    })}
 
                       
                     <div style={{wordBreak: 'break-word'}} className="text-xs text-cyan-200 text-right pt-2">

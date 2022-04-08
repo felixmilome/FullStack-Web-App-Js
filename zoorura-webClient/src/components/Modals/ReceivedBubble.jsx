@@ -106,6 +106,13 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                         <div className="flex justify-start p-1 text-sm font-light">
                             <div style={{wordBreak: 'break-word'}}  className="p-3 max-w-xs  bg-gray-100 rounded-t-xl rounded-br-xl bg-gray-100 text-gray-600">
                                 <p>{ReceivedMessage}</p>
+
+                                {ReceivedMessage.split('\n').map(function(item) {
+                                    return (
+                                        <p key={item}>{item}</p> 
+                                        )
+                                })}
+
                                 <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-400 text-right pt-2">
                                 <p>14.4.23, 4.32 pm</p>
                                 </div>
