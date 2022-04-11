@@ -255,7 +255,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                     </div>
                             {popOptions && <PostoptionsModal setpopOptions={setpopOptions} diary= {diary} creator={diary.creator} setDiaryId = {setDiaryId}/>}
                             
-                        </OutsideClickHandler>   
+                        </OutsideClickHandler>    
                 
                 </div> 
 

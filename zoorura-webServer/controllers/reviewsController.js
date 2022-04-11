@@ -14,7 +14,8 @@ export const getReviews =  async (req, res)=> {
         try{ 
            
                 const reviews = await ReviewsModel.find({reviewedPostId: { $in: [ postId ] } })
-                .populate('reviewerMiniProfile', 'dpUrl userName');
+                .populate('reviewerMiniProfile', 'dpUrl userName')
+                .populate('repliedMiniProfile', 'dpUrl userName');;
                 res.status(200).json(reviews); 
             } 
             
@@ -48,7 +49,8 @@ export const postReview = async  (req, res) => {
 
                             const unpopulatedNewReview = await ReviewsModel.create({reviewerId:req.userId, reviewerMiniProfile:req.userId, reviewedMiniProfile:reviewedId, repliedMiniProfile:replied, repliedPostId:repliedPostId, reply:reply, reviewedPostId:reviewedPostId, body:body, time:Date.now()})
                             const newReview = await ReviewsModel.findById(unpopulatedNewReview._id)
-                            .populate('reviewerMiniProfile', 'dpUrl userName');
+                            .populate('reviewerMiniProfile', 'dpUrl userName')
+                            .populate('repliedMiniProfile', 'dpUrl userName');
                             
                         // console.log(newReview); 
 
@@ -129,7 +131,8 @@ export const postReview = async  (req, res) => {
 
                     const patchedReviewUnpopulated = await ReviewsModel.findByIdAndUpdate(reviewId, { $set: {edited:true, body:body, time: new Date()}}, { new: true });
                     const patchedReview = await ReviewsModel.findById(patchedReviewUnpopulated._id)
-                    .populate('reviewerMiniProfile', 'dpUrl userName');
+                    .populate('reviewerMiniProfile', 'dpUrl userName')
+                    .populate('repliedMiniProfile', 'dpUrl userName');
                     const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {reviewSpam:newReviewSpam}}, { new: true });
 
                     console.log(patchedReview);

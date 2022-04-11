@@ -36,7 +36,7 @@ function SentBubble({SentMessage, message, Type, File}) {
         
                 <div style={{wordBreak: 'break-word'}} className="my-0 p-3 max-h-screen overflow-scroll  bg-cyan-500 shadow-xl rounded-t-xl rounded-bl-xl bg-gray-100 text-white">
                     
-                    
+                <p className='font-bold text-xs'>You:</p>
                     
                     {SentMessage.split('\n').map(function(item) {
                         return (
@@ -55,9 +55,10 @@ function SentBubble({SentMessage, message, Type, File}) {
               
                     {File?.length > 0 && 
                     
-                    <div className="flex w-4/5 h-60 m-1 justify-end text-sm font-light  items-center">
+                    <div className="flex w-4/5 h-60 mx-1 my-4 justify-end text-sm font-light  items-center">
                         <div className='bg-transparent '>
-                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-l-xl rounded-tr-xl  bg-cyan-500  text-white ">
+                        <p className='text-xs font-light text-center'>You</p>
+                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-l-xl rounded-tr-xl  border border-cyan-400  text-white ">
 
                             
                                         {Type ==='video' &&

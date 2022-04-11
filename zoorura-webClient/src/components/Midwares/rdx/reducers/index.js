@@ -9,6 +9,7 @@
  import {convosReducer} from './convosReducer';
  import {convoStateReducer} from './stateReducers.js';
  import {messagesReducer} from './messagesReducer';
+ import {tagsReducer} from './tagsReducer';
  import {socketReducer} from './socketReducer'; 
  import {notificationsReducer} from './notificationsReducer';
  import {reviewsReducer} from './reviewsReducer';
@@ -32,6 +33,6 @@
       forgotPasswordReducer,headSearchReducer,
        messagesOpenedReducer, 
       reviewsOpenedReducer, tipDiaryOpenedReducer,
-       tipReviewOpenedReducer
+       tipReviewOpenedReducer, tagsReducer
        
     });  

@@ -9,6 +9,7 @@ import {convosRouter} from './routes/convosRouter.js';
 import {messagesRouter} from './routes/messagesRouter.js';
 import {notificationsRouter} from './routes/notificationsRouter.js';
 import {tipsRouter} from './routes/tipsRouter.js';
+import {tagsRouter} from './routes/tagsRouter.js';
 import {reviewsRouter} from './routes/reviewsRouter.js';
 import {savedDiariesRouter} from './routes/savedDiariesRouter.js';
 import {searchRouter} from './routes/searchRouter.js';
@@ -29,6 +30,7 @@ app.use('/messages', messagesRouter);
 app.use('/notifications/', notificationsRouter);
 app.use('/reviews/', reviewsRouter);
 app.use('/tips/', tipsRouter);
+app.use('/tags/', tagsRouter);
 app.use('/savedDiaries/', savedDiariesRouter);
 app.use('/search/', searchRouter);
 

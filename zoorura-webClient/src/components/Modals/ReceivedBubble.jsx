@@ -105,11 +105,13 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                     <div className="rounded-full bg-pink-100">
                         <div className="flex justify-start p-1 text-sm font-light">
                             <div style={{wordBreak: 'break-word'}}  className="p-3 max-w-xs  bg-gray-100 rounded-t-xl rounded-br-xl bg-gray-100 text-gray-600">
-                                <p>{ReceivedMessage}</p>
+                                
+                                <p className='font-bold text-xs'>@{displayed.userName}:</p>
+                               
 
                                 {ReceivedMessage.split('\n').map(function(item) {
                                     return (
-                                        <p key={item}>{item}</p> 
+                                        <p key={item}>{item}</p>  
                                         )
                                 })}
 
@@ -129,14 +131,15 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
 
             {File?.length > 0 && 
                     
-                    <div className="flex w-4/5 h-60 m-1  justify-start text-sm font-light">
-                        <div className='bg-transparent'>
-                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-r-xl rounded-tl-xl  bg-pink-100 text-white">
+                    <div className="flex w-4/5 h-fit my-8 p-2 border border-pink-300 rounded-md  justify-start text-sm font-light">
+                        <div className='bg-transparent m-auto'>
+                        <p className='text-xs font-light text-center'>@{displayed.userName}</p>
+                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-r-xl rounded-tl-xl  bg-gray-100 text-white">
 
                             
                                         {Type ==='video' &&
-                                            <VideoForm Url={File}/>
-                                        }
+                                            <VideoForm Url={File}/> 
+                                        } 
                                           {Type ==='audio' &&
                                             <AudioForm Url={File}/>
                                         }

@@ -340,7 +340,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                 if (viewer._id === message.senderId){ //BELONGS TO ME(VIEWER)
                                 
                                     return(
-                                        <SentBubble key={message._id} message={message} SentMessage={message.body} File={message.file} Type={message.type}/>
+                                        <SentBubble key={message._id} message={message} SentMessage={message.body} File={message.file} viewer={viewer} Type={message.type}/>
                                     )
                                 }
                                 if (displayed._id === message.senderId){//BELONGS TO THEM(DISPLAYED) 

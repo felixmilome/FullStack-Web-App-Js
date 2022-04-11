@@ -188,7 +188,8 @@ function PostEdit({diaryId, setDiaryId, postId, setpopOptions, setPostId}) {
                        
                         {/* Cyan Heading */}
                         <div className="bg-transparent border-b-2 border-gray-300">
-                            <p className="text-center p-3 font-bold text-gray-400 ">Edit This Post</p>
+                            <p className="text-center text-sm font-bold ">Edit This Post</p>
+                            <p className="text-center text-sm font-light ">(Only title and Caption allowed)</p>
                             {/* <div className ="text-center  items-center p-1 flex flex-wrap text-gray-400 justify-around">
                                <PostFRow sizing={45} Icon={ImYoutube2}/>
                                <PostFRow sizing ={20} Icon={BsInstagram}/>
@@ -212,7 +213,7 @@ function PostEdit({diaryId, setDiaryId, postId, setpopOptions, setPostId}) {
 
                     {/*----- FORM------------------------- */}
                     <form onSubmit={handleSubmit}>
-                        <div className= "flex justify-center items-center p-0.5">
+                        {/* <div className= "flex justify-center items-center p-0.5">
                             <img src="./assets/images/milome.jpeg" alt="DP" className="rounded-full h-7 w-7"/>
                         
                         <select 
@@ -225,7 +226,7 @@ function PostEdit({diaryId, setDiaryId, postId, setpopOptions, setPostId}) {
                             <option value="subscribers">My Subscribers </option>
                             <option value="private"> Private/Only Me </option>
                         </select> 
-                        </div>
+                        </div> */}
                         <div className="">
 
 
@@ -265,13 +266,13 @@ function PostEdit({diaryId, setDiaryId, postId, setpopOptions, setPostId}) {
 
 
                                 {/*-- URL------------ */}
-                                    <div className="flex justify-center">
+                                    {/* <div className="flex justify-center">
                                         <input name= "file"
                                        //value= {diariesData.file}
                                         //onChange={(e)=> setdiariesData({...diariesData, file: e.target.value})}
                                         onChange={handleUrl}
                                         placeholder="To Edit Url Paste New Url Here" className="rounded-full text-center text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-400 bg-gray-200"/>
-                                    </div>
+                                    </div> */}
 
 
 

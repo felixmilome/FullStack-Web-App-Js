@@ -77,15 +77,15 @@ export const postDiaries =  async (req, res)=> {
 
             res.json('Spam');
 
-        }else { 
+        }else {  
 
                 if (diary.type === 'diary'){
-                    const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, followers:user.followers, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
+                    const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, followers:user.followers, tags:diary?.tags, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
                     try{
                         await newDiary.save();
 
                        const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {postSpam:newPostSpam}}, { new: true });
-                        
+                      
                         res.status(201).json(newDiary);
 
                     console.log(newDiary);
@@ -106,7 +106,7 @@ export const postDiaries =  async (req, res)=> {
                                 // .populate('displaysArray', 'userName');
 
                                 const newDisplay = new DiariesModel({creator:req.userId, title:displayedDiary.title, caption:displayedDiary.caption, file:displayedDiary.file, media:displayedDiary.media,
-                                diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', followers:user.followers, originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
+                                diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', followers:user.followers, tags:[], originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
                                     displaysArray: [], time: displayedDiary.time, dateRank: (Date.now()/360000),tippers:[], reviewers:[], displaysArray:[]});   
                                 
                                     console.log(newDisplay); 
@@ -117,10 +117,12 @@ export const postDiaries =  async (req, res)=> {
                                     const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                     .populate('sender', 'dpUrl userName');
 
+                                   
+
                                     res.json({newDisplay:newDisplay, newNotification:newNotification});
 
                                     //res.status(201).json({newDisplay:newDisplay, displayedDiary:displayedDiary});
-                                    //console.log(newDisplay);
+                                    //console.log(newDisplay); 
 
                         } catch(error){
 
@@ -137,6 +139,7 @@ export const postDiaries =  async (req, res)=> {
         }
     }catch(error){
         res.status(409).json({message:error.message});
+        console.log(error.message);
     }
 
 }

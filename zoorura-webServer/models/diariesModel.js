@@ -38,6 +38,12 @@ const reviewSchema = mongoose.Schema({
     },    
     tippers: [], 
 });
+// const tagsSchema = mongoose.Schema({
+//     tagMiniProfile: {
+//         type: Schema.Types.ObjectId,
+//         ref: 'UsersModel'
+//     },
+// });
 
 
 const diariesSchema = mongoose.Schema({
@@ -95,6 +101,7 @@ const diariesSchema = mongoose.Schema({
     tippers: [String],
     reviewers: [String],
     followers: [],
+    tags: [],
 
 });
 

@@ -1060,7 +1060,7 @@ function readFile(file, type) {
                                                     </div>
                                         }
                                     </div>
-                                {/* Endorsement------------- */}
+                                {/* TAGG------------- */}
                                     <div className="m-auto w-3/4">
                                         <div className='flex bg-transparent h-10'>
                                         <input name= "endorsement" onChange={(e)=>{
@@ -1068,7 +1068,7 @@ function readFile(file, type) {
                                             setSearchError(false);
                                             console.log(diariesData);
                                         }}
-                                        placeholder="Tag Endorsers(Optional)" className="text-gray-700 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100"/>
+                                        placeholder="Tag People(Optional)" className="text-gray-700 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100"/>
                                         {/* <p className='mx-3 text-xs text-red-700 font-light' >error</p> */}  
                                             {searchingName===false && <div onClick={searchName} className="flex justify-center items-center p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
                                             <MdSearch size={24}/>
@@ -1079,13 +1079,14 @@ function readFile(file, type) {
                                             </div> 
                                             }
                                         </div>
-                                      {searchedMiniProfile.userName?.length > 0 && searchedName != user.result.userName &&
+                                      {searchedMiniProfile.userName?.length > 0 && searchedName !== user.result.userName && searchedMiniProfile._id !== user.result._id &&
                                         <div className='flex  justify-center text-xs items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
                                         <img src={searchedMiniProfile.dpUrl} alt="DP" className="rounded-full h-7 w-7"/>
                                             <p>@{searchedMiniProfile.userName}</p>
                                             <div onClick={()=>{
                                                 if(!tagArray.includes(searchedMiniProfile._id) 
                                                 && !tagObjArray.includes(searchedMiniProfile) 
+                                               
                                                 && tagArray.length < 21 
                                                 ){
 
@@ -1105,7 +1106,7 @@ function readFile(file, type) {
                                         <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
                                             <p>@{searchedName} Not Found. Ensure they exist</p>
                                         </div>}
-                                        {searchedName == user.result.userName && 
+                                        {searchedName === user.result.userName && 
                                         <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
                                             <p>You cant Endorse yourself!</p>
                                         </div>}

@@ -72,6 +72,8 @@ export const deleteSavedDiariesApi = (savedId) => API.delete(`/savedDiaries/${sa
 export const getSavedDiariesApi = () => API.get('/savedDiaries/');
 //Search
 export const headSearchApi = (searchData) => API.post('/search/headSearch', searchData);
+//Tags
+export const getTagsApi = (tags) => API.post(`/tags/getTags/`, tags); //type post because it carries body
 
 
 

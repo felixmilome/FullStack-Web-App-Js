@@ -17,6 +17,7 @@ import {ReviewTipRow} from "./ReviewTipRow.jsx"
 import { PostRevReply } from './PostRevReply';
 import Picker from 'emoji-picker-react'
 
+//SearchArea: textarea replied
 
 export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
 
@@ -166,59 +167,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                     }
         
 
-                    {/* EDITOR */}
-                    {reviewEditor &&  <div className="absolute bottom-2 z-20 w-2/3 bg-gray-100 items-center">
-                            
-                    <OutsideClickHandler     
-                            onOutsideClick={() => {
-                                setReviewEditor(false);
-                            }}
-                            > 
                     
-                            
-                            <div className='bg-transparent border  border-gray-300 rounded-md p-1'>
-                           
-                              
-                                        
-                                <textarea value= {reviewData.body}
-                                onChange={(e)=> setreviewData({reviewId:reviewer._id, body: e.target.value})}
-                                type="text" placeholder="Edit Review Here..." className="h-16 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
-                                   <div className='w-full flex justify-end'>
-                                        <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
-                                                    <BsFillEmojiLaughingFill/>
-                                        </div>
-                                    </div>
-                                    {emojiBox && <div className='flex justify-center bg-gray-300'>
-                                    <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
-                                    </div>}
-                                <div className='flex items-center justify-around'>
-                                    <div onClick= {()=> setReviewEditor(false)}className='flex bg-gray-100 px-3 rounded-t-md cursor-pointer justify-center'>
-                                    <p className='text-xs'>Cancel</p>
-                                    </div>
-
-                                    <div >
-                                            {reviewData && reviewData.body.length > 0 && reviewData.body.length < 2000 &&
-                                            <>
-                                                {!loading &&
-                                                <div className='flex bg-gray-100 px-3 rounded-t-md cursor-pointer justify-center'>
-                                                <p className= 'text-xs'>Edit </p>
-                                                <MdSend onClick= {patchReview}/> 
-                                                </div>
-                                                }
-                                                {loading && 
-                                                <>
-                                                {/* <p className= 'text-xs font-extralight'>sending review</p> */}
-                                                <BeatLoader size={7} color='black' loading/>
-                                                </> }
-                                            </>
-                                            } 
-                                    </div>
-                                </div>
-
-                            </div>
-                            </OutsideClickHandler>
-                    </div>
-                    }
             
                 
                     <div className=" relative p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
@@ -234,19 +183,24 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                             {/* Name and Comment*/}
                             <div className="items-center m-1 bg-transparent w-5/6">  
                             <div className="flex bg-transparentrounded-2xl w-fit">
-                                <div className= "max-h-96 overflow-scroll bg-gray-100 border  border-gray-300 p-3 rounded-2xl max-w-3/4">
+                                <div  className= "max-h-96 overflow-scroll bg-gray-100 border  border-gray-300 p-3 rounded-2xl max-w-3/4">
                                     
-                                    <div className= 'flex bg-transparent rounded-md w-min '>
+                                    <div className= ' bg-transparent rounded-md w-full '> 
 
                                         
                                         <p className='text-xs font-semibold'> @{reviewer.reviewerMiniProfile.userName}:</p>
+                                       {reviewer.reply === true &&
+                                       <div className= 'w-max p-0.5 rounded border border-gray-300 flex justify-center'>
+                                            <p className='text-xs font-light'> to: @{reviewer.repliedMiniProfile.userName}</p>
+                                        </div>}
+                                        
                                         
                                     </div>
                                     
                               
                                     {reviewer.body.split('\n').map(function(item) {
                                     return (
-                                        <p key={item} className="leading-5 font-light text-gray-700">{item}</p> 
+                                        <p style={{wordBreak: 'break-word'}} key={item} className="leading-5 font-light text-gray-700">{item}</p> 
                                         )
                                     })}
 
@@ -306,12 +260,26 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
 
 
                                         
-                                        { reviewer.reply === false &&
+                                        { reviewer.reply === false && //if this is not a reply
                                             <div onClick= {()=>{
                                                 setReplyInput(!replyInput);
-                                                setreviewData({...reviewData, replied:reviewer.reviewerId});
+                                                setreviewData({...reviewData, body:'', replied:reviewer.reviewerId});
                                                 }}className= 'inline-flex items-center hover:bg-gray-200 rounded-xl px-1 cursor-pointer'>
                                                         <p>reply {thisReplies.length>0 && (thisReplies.length)}</p>
+                                            </div>
+                                        }
+                                        
+                                        { reviewer.reply === true && reviewer.reviewerId !== userId &&
+
+                                            <div className='relative'>
+                                                <div onClick= {()=>{
+                                                    setReplyInput(!replyInput);
+                                                    setreviewData({...reviewData, body:'', replied:reviewer.reviewerId});
+                                                    }}className= 'inline-flex items-center hover:bg-gray-200 rounded-xl px-1 cursor-pointer'>
+                                                            <p>reply</p>
+                                                </div>
+                                                
+                                               
                                             </div>
                                         }
                                       
@@ -323,6 +291,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                         <div onClick= {()=>{
                                             setreviewData({...reviewData, body:reviewer.body});
                                             setReviewEditor(true);
+                                            setReplyInput(false);
                                             }} className="bg-transparent rounded-full flex justify-center cursor-pointer hover:bg-gray-200 px-2 items-center  group">
                                             {/* <BiCommentEdit  size ={20} className="text-gray-400"/> */}
                                             <p>edit</p>
@@ -338,15 +307,124 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                     }
 
                         </div>
+                                        
+                                        
+                                        
                         
+
                                 
                     </div>
+
                    
                     
                     {/* INPUT */}
+
+
+
+                                        {/* EDITOR */}
+                    {reviewEditor &&  <div className=" w-2/3 bg-gray-100 items-center">
+                            
+                            <OutsideClickHandler     
+                                    onOutsideClick={() => {
+                                        setReviewEditor(false);
+                                    }}
+                                    > 
+                            
+                                    
+                                    <div className='bg-transparent border  border-gray-300 rounded-md p-1'>
+                                   
+                                      
+                                                
+                                        <textarea value= {reviewData.body}
+                                        onChange={(e)=> setreviewData({reviewId:reviewer._id, body: e.target.value})}
+                                        type="text" placeholder="Edit Review Here..." className="h-16 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                                           <div className='w-full flex justify-end'>
+                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                            <BsFillEmojiLaughingFill/>
+                                                </div>
+                                            </div>
+                                            {emojiBox && <div className='flex justify-center bg-gray-300'>
+                                            <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
+                                            </div>}
+                                        <div className='flex items-center justify-around'>
+                                            <div onClick= {()=> setReviewEditor(false)}className='flex bg-gray-100 px-3 rounded-t-md cursor-pointer justify-center'>
+                                            <p className='text-xs'>Cancel</p>
+                                            </div>
+        
+                                            <div >
+                                                    {reviewData && reviewData.body.length > 0 && reviewData.body.length < 2000 &&
+                                                    <>
+                                                        {!loading &&
+                                                        <div className='flex bg-gray-100 px-3 rounded-t-md cursor-pointer justify-center'>
+                                                        <p className= 'text-xs'>Edit </p>
+                                                        <MdSend onClick= {patchReview}/> 
+                                                        </div>
+                                                        }
+                                                        {loading && 
+                                                        <>
+                                                        {/* <p className= 'text-xs font-extralight'>sending review</p> */}
+                                                        <BeatLoader size={7} color='black' loading/>
+                                                        </> }
+                                                    </>
+                                                    } 
+                                            </div>
+                                        </div>
+        
+                                    </div>
+                                    </OutsideClickHandler>
+                            </div>
+                            }
+
+                                    {/*REPLY A REPLY INPUT */}
+                                    { reviewer.reply === true && reviewer.reviewerId !== userId &&
+                                                 <div className=" w-full rounded-xl items-center">
+                                                    
+                                                    <div className="relative w-full flex items-center justify-center space-x-2">
+                                                            <textarea value= {reviewData.body}
+                                                                onChange={(e)=> {
+                                                                    
+                                                                    setreviewData({...reviewData, reviewedId:diaryCreator, reviewedPostId:diaryId, body:e.target.value, replied:reviewer.reviewerId, repliedPostId:reviewer.repliedPostId, reply:true});
+                 
+                                                                }}
+                                                                type="text" placeholder={`reply @${reviewer.reviewerMiniProfile.userName}`} className="max-h-screen
+                                                                w-full ml-8 text-gray-700 outline-none bg-gray-100
+                                                                text-xs  border border-gray-300 rounded-md py-3 pl-3 pr-8" 
+                                                                
+                                                                />
+                
+                                                                    <div  className=''>
+                                                                        { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
+                                                                        <>
+                                                                            {!loading && <MdSend onClick= {reviewDiary}/> }
+                                                                            {loading && 
+                                                                            <>
+                                                                            {/* <p className= 'text-xs font-extralight'>sending review</p> */}
+                                                                            <BeatLoader size={7} color='black' loading/>
+                                                                            </> }
+                                                                        </> 
+                                                                        } 
+                                                                    </div>
+                                                            
+                                                            <div className='p-3'>
+                                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                                            <BsFillEmojiLaughingFill/>
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                   
+                                                             {emojiBox && 
+                                                                <div className='flex justify-center bg-gray-300'>
+                                                                    <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
+                                                                </div>
+                                                            } 
+                                                            
+                                                </div>
+                                            }
                     
                   
-                       { reviewer.reply ===false && replyInput ===true &&
+
+                  {/*REPLY INPUT */}
+                       { reviewer.reply ===false && replyInput ===true && reviewEditor=== false &&
                        <div className=" w-full rounded-xl items-center">
                             
                            
