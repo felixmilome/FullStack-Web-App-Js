@@ -82,7 +82,7 @@ export const postDiaries =  async (req, res)=> {
 
         }else {  
 
-                if (diary.type === 'diary' && diary.tags.length < 21
+                if (diary.type === 'diary' && !diary.tags?.length < 21
                  && diary.title.length > 0 && diary.title.length < 50
                  && diary.caption.length > 0 && diary.caption.length < 500){
                     const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, followers:user.followers, tags:diary?.tags, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
@@ -97,6 +97,7 @@ export const postDiaries =  async (req, res)=> {
                     console.log(updatedUser);
                 } catch(error){
                     res.status(409).json({message:error.message});
+                    console.log(error.message);
                 } 
                 } else if (diary.type === 'display'){
                     
