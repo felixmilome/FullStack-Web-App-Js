@@ -8,7 +8,7 @@ function PostOptionsRow({Icon, title, amount}) {
             <p className= "inline-block px-1 text-sm sm:inline-flex font-medium text-gray-500 group-hover:text-white">
                 {title}
                 </p> 
-               {amount && amount>0 && <div className='bg-yellow-500 rounded-full w-5 h-5 p-1 items-center flex justify-center text-white'>
+               {amount && amount.length > 0 && <div className='bg-yellow-500 rounded-full w-5 h-5 p-1 items-center flex justify-center text-white'>
                     <p className= 'text-xs'>{amount}</p>
                 </div> }    
             </div>

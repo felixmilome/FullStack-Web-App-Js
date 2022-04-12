@@ -84,19 +84,26 @@ export const postDisplayDiariesAction = (diary, setPopDisplayed, navigate, setSp
         console.log(error);
     }
 }
-export const patchDiariesAction = (id, diariesEditData, setpopPosted, setpopOptions, setSpam) => async (dispatch)=>{
+export const patchDiariesAction = (id, diariesEditData, setpopPosted, setSpam) => async (dispatch)=>{
     try{
-        const {data} = await axs.patchDiariesApi(id, diariesEditData); 
+
+        //console.log('patchAction')
+        const {data} = await axs.patchDiariesApi(id, diariesEditData);
+        console.log(data);
+
         if (data === 'Spam'){
             setSpam (true);
-            setTimeout( function() {setSpam (false)}, 2000); 
-        }else{
-            dispatch ({type: 'PATCH_DIARY', payload: data});
+            setTimeout( function() {setSpam (false)}, 2000);
+
+        }else if (data === 'Success'){
+          
             setpopPosted(true);
-            setTimeout( function() {setpopOptions(false)}, 2000);
+            //setTimeout( function() {setpopOptions(false)}, 2000);
+            window.location = ('/') 
+            
         }
     } catch(error){
-        console.log(error);
+        console.log(error.message);
         // console.log(diariesEditData);
         // console.log(id);
     }
@@ -105,7 +112,8 @@ export const patchDiariesAction = (id, diariesEditData, setpopPosted, setpopOpti
 export const deleteDiariesAction = (id) => async (dispatch) =>{
         try{
             await axs.deleteDiariesApi(id);
-            dispatch({type: 'DELETE_DIARY', payload: id});
+            window.location = ('/') 
+            //dispatch({type: 'DELETE_DIARY', payload: id});
 
         } catch(error){
             console.log(error);

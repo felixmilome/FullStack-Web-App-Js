@@ -13,6 +13,8 @@ import { DeliveryPop } from "./DeliveryPop.jsx";
 import { PostTagRow } from "./PostTagRow.jsx";
 import * as axs from '../Midwares/rdx/actions/axs';
 
+//search area: tags
+
 function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
 
     const[popDeleted, setPopDeleted] = useState(false);
@@ -108,7 +110,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
             <PostOptionsRow Icon = {BookmarkIcon} title ="Save"/>
             </div>}
             <div className='flex items-center' onClick = {tagHandler}>
-            <PostOptionsRow Icon = {TagIcon} title ="Tags" amount= {diary.tags.length} />
+            <PostOptionsRow Icon = {TagIcon} title ="Tags" amount= {diary.tags} />
                 
             
             </div>
@@ -123,7 +125,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
             <div onClick = {()=> setPopEdit(true)}>
                 <div onClick = {()=> setPostId(diary._id)}>  
                 <PostOptionsRow Icon = {AiOutlineEdit} title ="Edit"/>
-                </div>
+                </div> 
             </div>
            
 
@@ -189,7 +191,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
         </div> }
         
         <div className="bg-gray-200 absolute top-20 left-0 z-40 w-full">
-           {popEdit && <PostEdit diary={diary} postId={postId} setPostId={setPostId} setpopOptions ={setpopOptions}/>}
+           {popEdit && <PostEdit diary={diary} setpopOptions ={setpopOptions}/>}
            </div>
         </div>
         

@@ -9,13 +9,17 @@ const savedDiariesSchema = mongoose.Schema({
     diaryMiniData: {
         type: Schema.Types.ObjectId,
         ref: 'DiariesModel'
+    }, 
+    diaryId: {
+        type: String,
+        required:true
     },  
     originalOwnerMiniProfile: {
         type: Schema.Types.ObjectId,
         ref: 'UsersModel'
     }, 
  
-    time: {
+    time: { 
         type: Date,
         default: Date.now()
     },

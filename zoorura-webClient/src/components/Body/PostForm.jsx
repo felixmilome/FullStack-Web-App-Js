@@ -253,8 +253,8 @@ function readFile(file, type) {
           const urInput = await e.target.value.trim();
    
 
-       if(urInput.includes('www.youtube.com') || urInput.includes('//youtu.be') ){
-            const fileUrl = urYt (urInput);
+       if(urInput.includes('youtube.com/') || urInput.includes('//youtu.be') ){
+            const fileUrl = urYt (urInput);  
             console.log (fileUrl);
             setdiariesData({...diariesData, file: fileUrl, media: 'url'});
             console.log(diariesData);
@@ -477,13 +477,13 @@ function readFile(file, type) {
        
 
                 { popPosted == true &&
-                        <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
+                        <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 top-40 m-auto text-center font-bold text-white">
                            <p> Post Added! </p>
                         </div>
                 }
 
             { spam == true &&
-                        <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
+                        <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 top-40 m-auto text-center font-bold text-white">
                            <p> Todays Posting Limit(10) reached! Try Tomorrow </p>
                         </div>
                  } 
@@ -755,7 +755,7 @@ function readFile(file, type) {
                                     }
                                     
                                 {/* ======YOUTUBE======== */}
-                                  { diariesData.file.length && diariesData.file.includes('www.youtube.com')?
+                                  { diariesData.file.length && diariesData.file.includes('youtube.com/')?
                                         <div >
                                             <div className='flex justify-center text-gray-400'>
                                            <ImYoutube2 size={40}/>
@@ -984,7 +984,7 @@ function readFile(file, type) {
                                         </>
                                     }
                                       { diariesData.file.length && diariesData.file.includes('https://')
-                                      && !diariesData.file.includes('www.youtube.com')
+                                      && !diariesData.file.includes('youtube.com/')
                                       && !diariesData.file.includes('firebasestorage.googleapis.com')
                                       && !diariesData.file.includes('www.instagram.com')
                                       && !diariesData.file.includes('www.tiktok.com')
@@ -1064,19 +1064,21 @@ function readFile(file, type) {
                                     <div className="m-auto w-3/4">
                                         <div className='flex bg-transparent h-10'>
                                         <input name= "endorsement" onChange={(e)=>{
-                                            setSearchedName(e.target.value.toLocaleLowerCase());
+                                            setSearchedName(e.target.value.toLocaleLowerCase().replace('@', '').trim());
                                             setSearchError(false);
                                             console.log(diariesData);
                                         }}
-                                        placeholder="Tag People(Optional)" className="text-gray-700 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100"/>
+                                        placeholder="Mentions(Optional) Enter a Name then Click Search" className="text-gray-700 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100"/>
                                         {/* <p className='mx-3 text-xs text-red-700 font-light' >error</p> */}  
-                                            {searchingName===false && <div onClick={searchName} className="flex justify-center items-center p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
-                                            <MdSearch size={24}/>
-                                            </div> }
+                                            {searchingName===false && searchedName.length>0 &&
+                                                <div onClick={searchName} className="flex justify-center items-center p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
+                                                    <MdSearch size={24}/>
+                                                </div> 
+                                            }
                                             {searchingName===true &&
-                                             <div onClick={searchName} className=" flex justify-center w-16 p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
-                                            <BeatLoader size={7} color='white' loading/>
-                                            </div> 
+                                                <div className=" flex justify-center w-16 p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
+                                                    <BeatLoader size={7} color='white' loading/>
+                                                </div> 
                                             }
                                         </div>
                                       {searchedMiniProfile.userName?.length > 0 && searchedName !== user.result.userName && searchedMiniProfile._id !== user.result._id &&
@@ -1119,7 +1121,7 @@ function readFile(file, type) {
                                                     <div key={tag._id} >
                                                         <PostFormTagSearch diariesData= {diariesData} setdiariesData={setdiariesData} tag={tag} tagArray={tagArray} tagObjArray={tagObjArray} setTagObjArray={setTagObjArray} setTagArray={setTagArray} />
                                                     </div>
-                                                ))
+                                                )) 
                                             }
                                     </div>}
                                     
@@ -1133,19 +1135,9 @@ function readFile(file, type) {
                                         text-white cursor-pointer
                                         font-semibold p-1">
                                         {progress === 0 ?<p>Post</p>:
-                                      <p>Uploading: {progress}%</p>}
+                                      <p>Uploading...</p>}
                                     </button>
-                                    {progress >0 &&
-                                     <button type= 'button' className="items-center mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
-                                    bg-gradient-to-r hover:from-pink-500
-                                    hover:to-yellow-500 my-3 flex
-                                    mx-auto w-1/3 rounded-md
-                                        my-2 justify-center 
-                                        text-white cursor-pointer
-                                        font-semibold p-1">
-                                       Cancel Upload
-                                    </button>
-                                    }
+                                
 
                             
                             

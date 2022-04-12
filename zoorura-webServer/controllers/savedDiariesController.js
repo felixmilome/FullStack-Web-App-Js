@@ -13,7 +13,7 @@ export const getSavedDiaries =  async (req, res)=> {
            
                 const savedDiaries = await SavedDiariesModel.find({saverId: { $in: [ userId ] } })
                 .populate('diaryMiniData', 'title caption')
-                .populate('originalOwnerMiniProfile', 'dpUrl userName');
+                .populate('originalOwnerMiniProfile', 'dpUrl userName'); 
 
                 res.json(savedDiaries); 
             } 
@@ -37,7 +37,7 @@ export const saveDiaries = async  (req, res) => {
         try{  
                 if (diary){
 
-                            const unpopulatedSavedDiary = await SavedDiariesModel.create({saverId:req.userId, diaryMiniData:diaryId, originalOwnerMiniProfile:diary.creator, time: parseInt(Date.now())})
+                            const unpopulatedSavedDiary = await SavedDiariesModel.create({saverId:req.userId, diaryMiniData:diaryId, diaryId:diaryId, originalOwnerMiniProfile:diary.creator, time: parseInt(Date.now())})
                             const newSavedDiary = await SavedDiariesModel.findById(unpopulatedSavedDiary._id)
                             .populate('diaryMiniData', 'title caption')
                             .populate('originalOwnerMiniProfile', 'dpUrl userName');

@@ -585,3 +585,38 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
 export default PostFrame;
 
+//WebPage
+
+// { diary.file.length && diary.file.includes('https://')
+// && !diary.file.includes('youtube.com/')
+// && !diary.file.includes('zooruraweb.appspot.com')
+// && !diary.file.includes('www.instagram.com')
+// && !diary.file.includes('www.tiktok.com')
+// && !diary.file.includes('twitter.com')
+// && !diary.file.includes('www.soundcloud.com')
+// && !diary.file.includes('redditmedia.com')
+// && !diary.file.includes('www.facebook.com')
+// && !diary.file.includes('drive.google.com')
+// && !diary.file.includes('player.twitch.com')
+// && !diary.file.includes('www.wordpress.com')
+// && !diary.file.includes('pin.it')
+// && !diary.file.includes('vt.tiktok.com')
+// && !diary.file.includes('vm.tiktok.com')
+
+// ?
+//     <div >
+//         <div className='flex p-3 justify-center text-gray-400'>
+//     <CgWebsite/>
+//     </div>
+//         {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Website Attachment</p> */}
+//         <div className="relative flex justify-center m-auto  lg:p-0">
+//         <WpForm Url= {diary.file}/>
+//             <div className="absolute text-sm text-gray-400 z-0 mt-20">
+//                 Attaching Webpage...
+//             </div>
+//         </div> 
+// </div> : 
+// <>
+    
+//     </>
+// }

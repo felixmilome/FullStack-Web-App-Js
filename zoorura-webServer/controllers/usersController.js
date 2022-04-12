@@ -17,7 +17,7 @@ import {MessagesModel} from '../models/messagesModel.js';
 import {ReviewsModel} from '../models/reviewsModel.js';
 import {NotificationsModel} from '../models/notificationsModel.js';
 
-//Search Area: follow
+//Search Area: follow 
 
 
 import dotenv from 'dotenv';
@@ -91,7 +91,7 @@ function getCodec() {
       
           const user = await UsersModel.findById(id);
           console.log(user);
-          const {email, firstName, lastName} = user;
+          const {email} = user;
           const userName = user.userName.toLowerCase();
   
             const uniqueStr = getCodec ();
@@ -103,7 +103,7 @@ function getCodec() {
     
             const otpPatchedUser = await UsersModel.findByIdAndUpdate(id, {$set: {verCode: uniqueStrEncrypted}}, { new: true });
             console.log(otpPatchedUser);
-            const emailSent = sendVerifyEmail (email,uniqueStr, userName, firstName, lastName);
+            const emailSent = sendVerifyEmail (email,uniqueStr, userName);
             console.log(emailSent);
 
             if(emailSent){
@@ -367,7 +367,7 @@ export const login = async (req,res) => {
 }
 export const register = async (req,res) => {
     
-    const {firstName, lastName, password, confirmPassword} = req.body;
+    const {password, confirmPassword} = req.body;
     const userName = req.body.userName.toLowerCase();
     const email = req.body.email.toLowerCase();
     try {
@@ -376,7 +376,7 @@ export const register = async (req,res) => {
 
 
          if(existingUser && !existingEmail){
-
+ 
             return res.json({message:"UsernameTaken"});
 
           } else if (existingEmail && !existingUser) {
@@ -388,8 +388,8 @@ export const register = async (req,res) => {
             return res.json({message:"UsernameEmailTaken"});
   
           }else if(!existingEmail && !existingUser 
-            && firstName.length > 1 && firstName.length < 16 && /^[aA-zZ]+$/.test(firstName) == true
-            && lastName.length > 1 && lastName.length < 16 && /^[aA-zZ]+$/.test(lastName) == true
+            // &la.length > 1 &la.length < 16 && /^[aA-zZ]+$/.tesla) == true
+            // && lastName.length > 1 && lastName.length < 16 && /^[aA-zZ]+$/.test(lastName) == true
             && userName.length > 1 && userName.length < 31 && /^\d*[a-zA-Z][a-zA-Z\d]*$/.test(userName) == true
             && email.length > 2 && email.length < 41 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) == true
             && password.length > 4 && password.length < 24 && /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/.test(password) == true
@@ -401,7 +401,7 @@ export const register = async (req,res) => {
               console.log(uniqueStr);
               const uniqueStrEncrypted = await bcrypt.hash (uniqueStr, 12);
               
-              const resultX = await UsersModel.create({email, userName, password: hashedPassword, name :`${firstName} ${lastName}`, verCode: uniqueStrEncrypted, verTime: Date.now(), verExpiry: Date.now() + 172800000});
+              const resultX = await UsersModel.create({email, userName, password: hashedPassword, verCode: uniqueStrEncrypted, verTime: Date.now(), verExpiry: Date.now() + 172800000});
               const result = await UsersModel.findById(resultX._id, {password:0, verCode:0});
                 
               console.log(result);
@@ -409,7 +409,7 @@ export const register = async (req,res) => {
 
                 if (result) {
                     const remail = result.email;
-                    sendVerifyEmail (remail,uniqueStr, userName, firstName, lastName);    
+                    sendVerifyEmail (remail,uniqueStr, userName);    
                     const token = jwt.sign({email: result.email, id: result._id}, JWT_SECRET, {expiresIn: "12h"});
                     res.status(200).json({result, token, message:'RegistrySuccess'});
                 }
@@ -422,6 +422,7 @@ export const register = async (req,res) => {
 
     } catch (error) { 
       res.json({message: 'UnknownError'}); 
+      console.log(error.message);
     }
   
 }

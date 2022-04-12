@@ -28,8 +28,8 @@ import * as axs from "../Midwares/rdx/actions/axs.js"
 
 
 const signUpSchema = yup.object().shape({
-    firstName: yup.string().strict(false).trim().required('firstname required').matches(/^[aA-zZ]+$/, "letters only for firstname").min(2).max(15),
-    lastName: yup.string().strict(false).trim().required('lastname required').matches(/^[aA-zZ]+$/, "letters only for lastname").min(2).max(15),
+    // firstName: yup.string().strict(false).trim().required('firstname required').matches(/^[aA-zZ]+$/, "letters only for firstname").min(2).max(15),
+    // lastName: yup.string().strict(false).trim().required('lastname required').matches(/^[aA-zZ]+$/, "letters only for lastname").min(2).max(15),
     userName: yup.string().strict(false).trim().required('username required').matches(/^\d*[a-zA-Z][a-zA-Z\d]*$/, "letters or letters+number for username").min(2).max(30),
     email: yup.string().strict(false).trim().email().required('email required').min(3).max(40),
     password: yup.string().required('password required').matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/, "no spaces").min(5).max(25),
@@ -67,7 +67,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     const[required, setRequired] = useState (false);
     
 
-    const [formData, setFormData] = useState ({firstName: '', lastName: '', userName: '', email: '', password: '', confirmPassword: '', isChecked: false});
+    const [formData, setFormData] = useState ({userName: '', email: '', password: '', confirmPassword: '', isChecked: false});
     const dispatch = useDispatch();
    const navigate = useNavigate();
     const [emailCheck, setEmailCheck] = useState(null);
@@ -86,19 +86,26 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     const checkEmail = async() => {
         if(formData.email && emailIsValid(formData.email)){
             try{
+
                 console.log(formData.email);
                 const {data} = await axs.checkEmailApi(formData.email);
                 setEmailCheck (data);
                 console.log(data); 
+
             }catch(error){
+
                 console.log(error);
+
             }  
         } else{
+
             return;
+
         } 
     } 
     const checkUsername = async () => {
         if(formData.userName && userNameIsValid(formData.userName)){
+
             try{
                
                 console.log(formData.userName);
@@ -110,6 +117,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
             }catch(error){
                 console.log(error);
             } 
+            
         } else{
             console.log('empty');
         }
@@ -173,15 +181,15 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-        <div className="fixed text-gray-600 font-bold top-10 z-50 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+        <div className="flex justify-center items-center fixed top-0 left-0 z-50 bg-transparent w-full h-screen overflow-y-scroll">
              
         {/* ============Floating FORM BOX ======== */}
     {/* <iframe src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"
      allow="fullscreen" width="100%" height="700" >
     </iframe> */}
     {/* <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"/> */}
-            <div className="rounded-xl p-2 sm:p-6 w-full lg:w-2/5 bg-gray-100
-              shadow-md m-2 h-full border border-gray-300">
+            <div className="rounded-xl p-2 sm:p-6 w-full font-bold lg:w-2/5 bg-gray-100
+              shadow-md border border-gray-300">
 
                  <form onSubmit={handleSubmit(signUp)}>
                         <div className= "pt-3 pb-1 flex items-center bg-transparent justify-around">
@@ -220,7 +228,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                         <div className="p-3 text-sm m-1">
                     {/* First and LastNames */}
                     
-                        <div className= "p-1 space-x-1 flex items-center justify-around">
+                        {/* <div className= "p-1 space-x-1 flex items-center justify-around">
                             <div className="w-full relative">
                              <input {...register('firstName',{
                                  onChange: (e) => {setFormData({...formData, firstName: e.target.value.trim()})}
@@ -237,11 +245,11 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.lastName?.message}</p>
                                 {formData.lastName.length >0 && <p className='absolute top-1 right-2 text-gray-400 text-xs text-center font-light'>Lastname:</p>}
                             </div>
-                        </div>
+                        </div> */}
 
                     {/* UserName */}
                     <div className= "p-1 flex items-center justify-around">
-                         <div onBlur= {checkUsername} onChange={(e)=>setUserNameCheck(null)} className="bg-transparent w-full relative">
+                         <div onBlur= {checkUsername} onChange={(e)=>setUserNameCheck(null)} className=" w-full sm:w-3/4 relative">
                             <input  name='userName'
                              {...register('userName',{
                                  onChange: (e) => {setFormData({...formData, userName: e.target.value.trim().toLowerCase()})}
@@ -259,7 +267,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                     </div>
                         {/* Email*/}
                     <div onBlur= {checkEmail} onChange={(e)=>setEmailCheck(null)} className= "p-1 flex items-center justify-around">
-                        <div className="bg-transparent w-full relative">
+                        <div className="w-full sm:w-3/4 relative">
                             <input 
                              {...register('email',{
                                  onChange: (e) => {setFormData({...formData, email: e.target.value.trim().toLowerCase()})}
@@ -277,7 +285,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                     </div>
                         {/* Password*/}
                     <div className= "p-1 flex items-center justify-around">
-                        <div className="w-full relative">
+                        <div className="w-full sm:w-3/4 relative">
                             <input {...register('password',{
                                  onChange: (e) => {setFormData({...formData, password: e.target.value})}
                                 })}
@@ -291,7 +299,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                     </div>
                             {/* Confirm Password*/}
                     <div className= "p-1 flex items-center justify-around">
-                        <div className="w-full relative">
+                        <div className="w-full sm:w-3/4 relative">
                             <input 
                              {...register('confirmPassword',{
                                  onChange: (e) => {setFormData({...formData, confirmPassword: e.target.value})}
@@ -418,11 +426,11 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-         <div className="fixed text-gray-600 font-bold top-16 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+        <div className="flex justify-center items-center fixed top-0 left-0 z-50 bg-transparent w-full h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
 
-            <div className="w-full lg:w-2/5 bg-gray-100  p-1 rounded-xl shadow-xl m-2 h-full">
+            <div className="w-full lg:w-2/5 bg-gray-100  p-1 rounded-xl shadow-xl m-2 font-bold">
             
             <form onSubmit={handleSubmit(logIn)}>
                         <div className= "pt-3 pb-1 flex items-center justify-around">
@@ -469,7 +477,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                         <div className="p-3 text-sm">
                         {/* Email*/}
                         <div className ='bg-transparent flex items-center justify-around'>
-                            <div className= "relative w-full m-2 ">
+                            <div className= "relative w-full sm:w-3/4 m-2 ">
                                 <input {...register('email',{
                                     onChange: (e) => {setFormData({...formData, email: e.target.value})}
                                     })} name='email' className= "w-full bg-gray-200 border-b border-gray-200  px-4 py-2 rounded-full" type="text" placeholder= "Email/Username"/>
@@ -479,7 +487,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                         </div>
                         {/* Password*/}
                         <div className='bg-transparent flex items-center justify-around'>
-                            <div className= "relative w-full m-2 ">
+                            <div className= "relative w-full sm:w-3/4 m-2 ">
                                 <input {...register('password',{
                                     onChange: (e) => {setFormData({...formData, password: e.target.value})}
                                     })}  name='password' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full"

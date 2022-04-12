@@ -36,10 +36,10 @@ const Schema = mongoose.Schema;
     //===========MAIN USER============================
 
 const usersSchema = mongoose.Schema({
-        name: {
-                type: String,
-                required: true
-                },
+        // name: {
+        //         type: String,
+        //         required: true
+        //         },
         userName: {
                 type: String,
                 required: true

@@ -15,7 +15,7 @@ const tipsSchema = mongoose.Schema({
         ref: 'UsersModel'
     },
     tippedPostId: {
-        type: String,
+        type: String, 
     },
     type:{
         type:String,

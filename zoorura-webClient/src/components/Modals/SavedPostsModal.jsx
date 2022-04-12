@@ -11,7 +11,8 @@ import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
 function SavedPostsModal({setPopSaved}) {
 
 const dispatch= useDispatch();
-const savedDiaries = useSelector((state) => state.savedDiariesReducer);
+const allSavedDiaries = useSelector((state) => state.savedDiariesReducer);
+const savedDiaries = allSavedDiaries.filter(savedDiary => savedDiary.diaryMiniData?._id?.length > 0); //incase deleted
 const[popDeleted, setPopDeleted] = useState(false);
 const[loading, setLoading] = useState(false);
 const[popError, setPopError] = useState(false);
@@ -19,7 +20,7 @@ const[popError, setPopError] = useState(false);
  console.log(savedDiaries);
 
    useEffect(() => {
-                    dispatch(getSavedDiariesAction());
+                    dispatch(getSavedDiariesAction()); 
             }, [dispatch]);
 
     const deleteSavedPost = (savedId) =>{
@@ -60,24 +61,29 @@ const[popError, setPopError] = useState(false);
                 
                 <div className= "mb-60 w-full  ">
                     
-                    {savedDiaries && 
+                    {savedDiaries.length > 0 && 
                         <>
                            
                             {
                                 
                                 savedDiaries.map((savedDiary) =>(
-                                <div key= {savedDiary._id} className='relative w-full '>
-                                    <Link to={`/DiaryLink/${savedDiary.diaryMiniData._id}`}>
-                                        <SavedPostsModalRow  Src = {savedDiary.originalOwnerMiniProfile.dpUrl} PersonName= {savedDiary.originalOwnerMiniProfile.userName}  Note={savedDiary.diaryMiniData.title} savedId={savedDiary.diaryMiniData._id}/>
-                                    </Link>
-                                    {loading == false ?
-                                    <div onClick={()=>deleteSavedPost (savedDiary._id)} className= 'absolute text-gray-400 hover:text-red-400  top-2 right-1 p-1 rounded-md'>
-                                        <MdOutlineCancel/>
-                                    </div>:
-                                    <div className= 'absolute text-gray-500  top-2 right-1 p-1 rounded-md'>
-                                    ...
-                                    </div>}
-                                </div>
+
+                                  
+                                            <div key= {savedDiary._id} className='relative w-full '>
+                                                <Link to={`/DiaryLink/${savedDiary.diaryMiniData._id}`}>
+                                                    <SavedPostsModalRow  Src = {savedDiary.originalOwnerMiniProfile.dpUrl} PersonName= {savedDiary.originalOwnerMiniProfile.userName}  Note={savedDiary.diaryMiniData.title} savedId={savedDiary.diaryMiniData._id}/>
+                                                </Link>
+                                                {loading == false ?
+                                                <div onClick={()=>deleteSavedPost (savedDiary._id)} className= 'absolute text-gray-400 hover:text-red-400  top-2 right-1 p-1 rounded-md'>
+                                                    <MdOutlineCancel/>
+                                                </div>:
+                                                <div className= 'absolute text-gray-500  top-2 right-1 p-1 rounded-md'>
+                                                ...
+                                                </div>}
+                                        </div>
+
+                                   
+
                                 ))
                             } 
                         

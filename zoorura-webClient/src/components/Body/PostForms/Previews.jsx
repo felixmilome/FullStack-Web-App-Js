@@ -94,18 +94,13 @@ export const PicForm = ({Url}) => {
 export const YtForm = ({Url}) => { 
     return (
         <>
-            <iframe className= "z-10" growth="HaskellandPythonLibratriesLibraryk
-            bsgfuyefsu763297032097987-77" decoder="zooruraJavaDecoder6565438zz66" 
+            <iframe className= "z-10"
             title=""
             width="100%" height="400"
             src={Url}
-                //src="https://www.youtube.com/embed/dmFwB0WEEDY"
-                //title="Zoorura Decode-Embed-Embed Class u820783644982369ybhhvdjgjdfbjhbfjbjfhbjCode976796976969697697Title976789698608698686876hjvhgvhgvchgcvhjvvjgvjv55557687876y"
-                frameborder="0"
+                frameborder="0" 
                     allow="accelerometer;
-                    autoplay; ZooruraPythonPackvhgvchgcvhgchgchdh; 
-                    ZooruraJavaFile5756892739785236hgjsdgjv
-                    sjhvjsdvjsvdj678973296293ghjsdgjhgjhsdgjh.Codex; 
+                    autoplay;
                     clipboard-write;
                     encrypted-media; gyroscope;
                     picture-in-picture" allowfullscreen='true'>
@@ -119,7 +114,7 @@ export const IgForm = ({Url}) => {
     return (
         <>
             <iframe className= "z-10"
-            src={Url}
+            src={Url} 
             //src="https://www.instagram.com/reel/CWLrjRQIEnu/embed"
                                 width="360" height="500" frameborder="0" 
                                 scrolling="yes" allowtransparency="false">
@@ -194,11 +189,13 @@ export const RdForm = ({Url}) => {
 }
 export const FbForm = ({Url}) => {
 
+  
+
     
     return (
         <>
-           <iframe className= "z-10" height="450" width="100%"
-           src ={Url}
+           <iframe id='fbFrame' className= "z-10" height="450" width="100%"
+           src ={Url} 
            //src="https://www.facebook.com/plugins/video.php?height=200&href=https%3A%2F%2Fwww.facebook.com%2FWeruTV%2Fvideos%2F612650889857740%2F&show_text=false&width=200&" width= "350" height="350" 
                 scrolling="yes" frameborder="0" 
                 allowfullscreen="true" 

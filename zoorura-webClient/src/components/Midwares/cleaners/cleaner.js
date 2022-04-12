@@ -3,14 +3,16 @@ export const urIg = (urInput) => {
     //https://www.instagram.com/reel/CWLrjRQIEnu/embed good
    // https://www.instagram.com/p/CWaoRfSrQez/?utm_source=ig_web_copy_link org
    //https://www.instagram.com/embed/CWaoRfSrQez/ result
-    let trim = urInput.trim();
+   
     // let result1 =trim.replace(/\/tv\//gi, "/embed/");
     // let result2 = result1.replace(/\/reel\//gi, "/embed/");
     // let result3 = result2.replace(/\/p\//gi, "/embed/");
+    let trim = urInput.trim();
     let emb= "embed";  
     let result1 = trim.replace(/\?utm_medium=copy_link/gi, "");
     let result2= result1.replace(/\?utm_source=ig_web_copy_link/gi, "");
-    let resultFinal = result2.concat(emb);
+    let result3= result2.replace(/\?utm_source=ig_web_button_share_sheet/gi, "");
+    let resultFinal = result3.concat(emb);
 
     return resultFinal;
 
@@ -33,8 +35,10 @@ export const urYt = (urInput) => {
     let trim = urInput.trim();
     let result1 = trim.replace(/youtu.be/gi, "www.youtube.com/embed");
     let result2 = result1.replace(/watch\?v\=/gi, "embed/");
-    let resultFinal = result2.substring(0, 41);
-
+    let result3 = result2.replace(/shorts/gi, "embed/");
+    let resultFinal = result3.substring(0, 41);
+    console.log(resultFinal);
+ 
     return resultFinal;
 
 }

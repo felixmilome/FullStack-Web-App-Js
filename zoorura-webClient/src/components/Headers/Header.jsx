@@ -318,7 +318,7 @@ function Header() {
                             
                             
                                 <> 
-                                    <h1 className= "m-1 inline-flex text-sm font-bold text-2xl p-1">{user && !user.result.verified && <>Go Back to  </>} Sign Up-Log In</h1> 
+                                    <h1 className= "m-1 inline-flex text-sm font-bold text-xl p-1">{user && !user.result.verified && <>Go Back to  </>} Sign Up-Log In</h1> 
                                     
                                 </>
                                 

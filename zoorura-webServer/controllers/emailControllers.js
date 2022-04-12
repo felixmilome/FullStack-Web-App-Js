@@ -1,5 +1,7 @@
 import nodemailer from "nodemailer";
 
+//https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/webFiles%2Fwhitelogo.png?alt=media&token=69da6e12-536a-4efa-9855-25c13e1b5b32
+
 //nodemailer transporter
  let transporter = nodemailer.createTransport({
    host: 'zoorura.com',
@@ -11,13 +13,13 @@ import nodemailer from "nodemailer";
     } 
   });
 
-  export const sendVerifyEmail = async (remail, uniqueStr, userName, firstName, lastName) => {
+  export const sendVerifyEmail = async (remail, uniqueStr, userName) => {
 
 
       const mailOptions = {
         from: 'Zoorura <noreply@zoorura.com>', 
         to: remail, 
-        subject: "Zoorura Email Verification Testing",
+        subject: "Zoorura Email Verification",
         html: `<!doctype html>
         <html>
           <head>
@@ -372,11 +374,11 @@ import nodemailer from "nodemailer";
                             <tr>
                               <td>
                                 
-                                <p>An account called @<b>${userName}</b> was created using this email in Zoorura. Enter the OTP Verification code below in your Zoorura App/Website to verify it's you. Expiry in 48hrs:</p>
+                                <p>An account called @<b>${userName}</b> was created using this email in Zoorura. Copy and Paste or Enter the OTP below in your Zoorura Account. Ensure it's the latest OTP sent. Expiry in 48hrs:</p>
                                 
                                 <h1>${uniqueStr}</h1>
 
-                                <p>ALL PREVIOUS OTPS ARE INVALID</p>
+                                <p>NOTE:Previous OTPs are Invalid</p>
                                 
                               </td>
                             </tr>
@@ -395,12 +397,17 @@ import nodemailer from "nodemailer";
                           <td class="content-block">
                             <span class="apple-link">Zoorura Technologies Ltd, Nairobi, Kenya</span>
                             <br> This is an auto generated email for @${userName}. Please do not reply
-                            <br> Ignore if it is not you. Or <a href= "#"> report violation. </a>
+                            <br> Ignore if it is not you. Or <a href= "#"> report violation </a>
                           </td>
                         </tr>
                         <tr>
                           <td class="content-block powered-by">
-                            Powered by Zoorura Technologies.
+                          <a href= "https://www.zoorura.com/"> Powered by Zoorura </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="content-block powered-by">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/webFiles%2Fwhitelogo.png?alt=media&token=69da6e12-536a-4efa-9855-25c13e1b5b32g" alt="Trademark" width="100" height="100">
                           </td>
                         </tr>
                       </table>
@@ -813,6 +820,11 @@ import nodemailer from "nodemailer";
                           Powered by Zoorura Technologies.
                         </td>
                       </tr>
+                      <tr>
+                      <td class="content-block powered-by">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/webFiles%2Fwhitelogo.png?alt=media&token=69da6e12-536a-4efa-9855-25c13e1b5b32g" alt="Trademark" width="100" height="100">
+                      </td>
+                    </tr>
                     </table>
                   </div>
                   <!-- END FOOTER -->
@@ -1221,6 +1233,11 @@ import nodemailer from "nodemailer";
                           Powered by Zoorura Technologies.
                         </td>
                       </tr>
+                      <tr>
+                      <td class="content-block powered-by">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/webFiles%2Fwhitelogo.png?alt=media&token=69da6e12-536a-4efa-9855-25c13e1b5b32g" alt="Trademark" width="100" height="100">
+                      </td>
+                    </tr>
                     </table>
                   </div>
                   <!-- END FOOTER -->

@@ -317,7 +317,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                 {/* ======YOUTUBE======== */}
                                 {diary.media === 'url' &&
                                 <>
-                                { diary.file.length && diary.file.includes('www.youtube.com')?
+                                { diary.file.length && diary.file.includes('youtube.com/')?
                                         <div className ="w-full">
                                             <div className=' w-full flex justify-center text-gray-400'>
                                            <ImYoutube2 size={40}/>
@@ -546,7 +546,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                         </>
                                     }
                                       { diary.file.length && diary.file.includes('https://')
-                                      && !diary.file.includes('www.youtube.com')
+                                      && !diary.file.includes('youtube.com/')
                                       && !diary.file.includes('zooruraweb.appspot.com')
                                       && !diary.file.includes('www.instagram.com')
                                       && !diary.file.includes('www.tiktok.com')
@@ -1000,7 +1000,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 {/*=============================IFRAMES========================================*/}
                                         
                                     {/* ======YOUTUBE======== */}
-                                    { diary.file.length && diary.file.includes('www.youtube.com')?
+                                    { diary.file.length && diary.file.includes('youtube.com/')?
                                             <div className ="w-full">
                                                 <div className=' w-full flex justify-center text-gray-400'>
                                             <ImYoutube2 size={40}/>
@@ -1229,7 +1229,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                             </> 
                                         }
                                         { diary.file.length && diary.file.includes('https://')
-                                        && !diary.file.includes('www.youtube.com')
+                                        && !diary.file.includes('/youtube.com')
                                         && !diary.file.includes('zooruraweb.appspot.com')
                                         && !diary.file.includes('www.instagram.com')
                                         && !diary.file.includes('www.tiktok.com')

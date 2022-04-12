@@ -17,7 +17,7 @@ const reviewsSchema = mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'UsersModel'
     }, 
-    reply: {
+    reply: { 
         type: Boolean,
         default: false
     },

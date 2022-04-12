@@ -2,6 +2,9 @@ import  mongoose  from "mongoose";
 import {DiariesModel} from "../models/diariesModel.js";
 import {UsersModel} from "../models/usersModel.js";
 import {ReviewsModel} from "../models/reviewsModel.js";
+import {SavedDiariesModel} from "../models/savedDiariesModel.js";
+import {TipsModel} from "../models/tipsModel.js";
+
 import { taxer } from "../functions.js";
 import {NotificationsModel} from '../models/notificationsModel.js';
 import { getPopularDiariesHandler, getFollowedDiariesHandler, getRandomDiariesHandler, getUsersDiariesHandler  } from "./controllerHandlers.js";
@@ -79,7 +82,9 @@ export const postDiaries =  async (req, res)=> {
 
         }else {  
 
-                if (diary.type === 'diary'){
+                if (diary.type === 'diary' && diary.tags.length < 21
+                 && diary.title.length > 0 && diary.title.length < 50
+                 && diary.caption.length > 0 && diary.caption.length < 500){
                     const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, followers:user.followers, tags:diary?.tags, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
                     try{
                         await newDiary.save();
@@ -150,27 +155,39 @@ export const postDiaries =  async (req, res)=> {
 export const patchDiaries = async (req, res) =>{
     const{id} = req.params;
     const newDiary=req.body;
+    
+  
 
     try{
-
+        const oldDiary = await DiariesModel.findById(id);
         const user = await UsersModel.findById(req.userId);
         const  newPostSpam = user.postSpam + 1;
         if(newPostSpam > 10){
 
             res.json('Spam');
 
-        }else{
+        }else if(newPostSpam <10 && newDiary.title.length>0 && newDiary.title.length<50
+            && newDiary.caption.length>0 && newDiary.caption.length<500 
+            && oldDiary.creator === req.userId
+            ){
 
-            if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
-                const patchedDiary = await DiariesModel.findByIdAndUpdate(id, newDiary, { new: true })
-                .populate('miniProfile', 'dpUrl userName'); //change things populate cant happen on update also Use set to set only FILE CAP TITLE ONLY
+                const patchedDiary = await DiariesModel.findByIdAndUpdate(id, { $set: {title:newDiary.title, caption:newDiary.caption}}, { new: true });
                const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {postSpam:newPostSpam}}, { new: true });
-                res.json(patchedDiary);
-                console.log(updatedUser);
+               console.log({patchedDiary});
+               console.log({updatedUser}) 
+               res.json('Success');
+                console.log('Updated');
+
+        }else if(newPostSpam >10){
+
+                res.json('Spam');
+                console.log('Updated');
+
         }
             
     }catch(error){
         res.status(409).json({message:error.message});
+        console.log(error.message);
     }
 
 }
@@ -183,13 +200,17 @@ export const deleteDiaries = async (req,res) =>{
    const diary = await DiariesModel.findById(id);
    const creator = diary.creator;
 
-   console.log(requester);
-   console.log(creator);
+   console.log(requester); 
+   console.log(creator); 
 
    if (requester === creator) {
 
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
     await DiariesModel.findByIdAndRemove(id);
+    await ReviewsModel.deleteMany({'reviewedPostId': id});
+    await SavedDiariesModel.deleteMany({'diaryId': id});
+    await TipsModel.deleteMany({'tippedPostId:': id});
+    await DiariesModel.deleteMany({'originalId:': id});
     console.log("Diary Deleted!")
     res.json({message: "Post Deleted Successfully"});
 
