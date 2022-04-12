@@ -168,7 +168,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         {spam ==true &&
         <DeliveryPop message='Todays Review Limit(25) reached! Try Tomorrow '/>
          } 
-        <div className="text-black p-2 sm:px-12 py-4 rounded-md sm:rounded-xl bg-gray-100 relative xl:w-2/5 mx-auto mb-6"> 
+        <div className="text-black p-2 sm:px-12 py-4 rounded-md sm:rounded-xl bg-gray-100 relative sm:w-3/4 xl:w-2/5 mx-auto mb-6"> 
          
 
             {/* Post-Top-Cyan Invisible Parent*/}

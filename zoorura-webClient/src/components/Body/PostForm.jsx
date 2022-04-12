@@ -377,13 +377,16 @@ function readFile(file, type) {
 
        const constructor = async(url) => {
 
-            const diariesDataConstruct = {
-                    title: diariesData.title,
-                    caption: diariesData.caption,
-                    file: url,
-                    media: diariesData.media,
-                    type:'diary',
-                    publicity: diariesData.publicity};
+            const diariesDataConstruct = { 
+                ...diariesData, file:url
+                    // title: diariesData.title,
+                    // caption: diariesData.caption,
+                    // file: url,
+                    // media: diariesData.media,
+                    // type:'diary',
+                    // tags:[],
+                    // publicity: diariesData.publicity
+                };
 
                 return diariesDataConstruct;
  
@@ -488,7 +491,7 @@ function readFile(file, type) {
                         </div>
                  } 
                
-                <div className="p-5 space-y-5 w-full xl:w-2/5 bg-gray-100 items-center  z-30  m-4 rounded-xl">
+                <div className="p-5 space-y-5 w-full sm:w-3/4 xl:w-2/5 bg-gray-100 items-center  z-30  m-4 rounded-xl">
                         
                        
                        
