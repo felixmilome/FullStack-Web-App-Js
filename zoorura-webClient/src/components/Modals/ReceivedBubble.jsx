@@ -131,10 +131,10 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
 
             {File?.length > 0 && 
                     
-                    <div className="flex w-4/5 h-fit my-8 p-2 border border-pink-300 rounded-md  justify-start text-sm font-light">
+                    <div className="flex w-4/5 h-fit my-8 p-2  rounded-md  justify-start text-sm font-light">
                         <div className='bg-transparent m-auto'>
                         <p className='text-xs font-light text-center'>@{displayed.userName}</p>
-                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-r-xl rounded-tl-xl  bg-gray-100 text-white">
+                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-r-xl rounded-tl-xl  bg-gray-100 border border-pink-300 text-white">
 
                             
                                         {Type ==='video' &&

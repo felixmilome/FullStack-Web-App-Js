@@ -19,22 +19,36 @@ export const Search = () => {
  const dispatch = useDispatch()
  const searchResults = useSelector((state) => state.headSearchReducer);
 
+    // const debounce = (cb, delay = 1000) => {
+    //  let timeout
+    //  return (...args) => {
+    //      clearTimeout(timeout)
+    //      timeout = setTimeout (() => {
+    //          cb (...args)
+    //      }, delay)
+    //      }
+    // }
+ 
 
- const handleSearch = ()=>{
-    if(searchData.term.length>0){
+ const handleSearch = (e) => {
+
+   setSearchData({...searchData, term:e.target.value.replace('@', '').trim()});
+   const searchDataObj = {term:e.target.value.replace('@', '').trim(), type:'all'};
+
+    if(searchDataObj.term.length>0){
         setSearchDisplay('all');
-        setLoading(true);
+        (setLoading(true));
         setSearchOptions(true);
         setError('');
         setSearchAll(true);
-        dispatch(headSearchAction(searchData, setLoading, setError));
+        dispatch(headSearchAction(searchDataObj, setLoading, setError));
     } else{
         return;
     }
 
-
-
  }
+
+
  
 
   return (
@@ -43,7 +57,12 @@ export const Search = () => {
      
                         
        {searchOptions === false &&
-        <div onClick={handleSearch} className="p-1 sm:p-3 bg-cyan-400 hover:bg-cyan-600 rounded-full items:center">
+        <div onClick={(e)=>{
+
+           
+            handleSearch(e);
+           
+        }} className="p-1 sm:p-3 bg-cyan-400 hover:bg-cyan-600 rounded-full items:center">
             <SearchIcon  className= 'h-6 text-white'/>
             
         </div>
@@ -54,7 +73,10 @@ export const Search = () => {
             
         </div>
         }
-        <input onChange={(e)=> setSearchData({...searchData, term:e.target.value.trim()})} className ="bg-transarent w-64 rounded-full m-1 h-7 md:inline-flex p-4 bg-gray items-center outline-none font-light placeholder-gray-400"
+        <input onChange={(e)=>{
+           
+            handleSearch(e);
+        }}  className ="bg-transarent w-64 rounded-full m-1 h-7 md:inline-flex p-4 bg-gray items-center outline-none font-light placeholder-gray-400"
         type="text"
         placeholder="Search Zoorura"/>
 

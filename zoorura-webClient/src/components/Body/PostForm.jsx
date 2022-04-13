@@ -39,7 +39,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 import { PostFormTagSearch } from './PostFormTagSearch.jsx';
 import Picker from 'emoji-picker-react';
 
-//Search Area: textarea title
+//Search Area: Clear
 
 
 
@@ -48,7 +48,7 @@ function PostForm() {
     const [tagArray, setTagArray] = useState([])
     const [spam, setSpam] = useState(false)
     const [diariesData, setdiariesData] = useState({
-        title:'', caption:'', file: '', media: '', type: 'diary',  publicity:'', tags:[]
+        title:'', caption:'', file: '', media: '', type: 'diary',  publicity:'public', tags:[]
     }); 
    const[imageBlob, setImageBlob] = useState('');
    const[mediaType, setMediaType] = useState('');
@@ -504,15 +504,15 @@ function readFile(file, type) {
                                <PostFRow sizing ={20} Icon={SiFacebook}/>
                                <PostFRow sizing ={20} Icon={SiTiktok}/>
                                <PostFRow sizing ={20} Icon={SiTwitter}/>
-                               <PostFRow sizing ={20} Icon={RiSoundcloudLine}/>
+                              
                  
 
                             </div>
                             <div className ="text-center  items-center p-1 flex flex-wrap text-gray-400 justify-around">
-    
+                                <PostFRow sizing ={20} Icon={RiSoundcloudLine}/>
                                <PostFRow sizing ={20} Icon={RiPinterestLine}/>
                                <PostFRow sizing ={20} Icon={ImReddit}/>
-                               <PostFRow sizing ={20} Icon={BsTwitch}/>
+                               {/* <PostFRow sizing ={20} Icon={BsTwitch}/> */}
                                <PostFRow sizing ={20} Icon={ImWordpress}/>
                                <PostFRow sizing ={20} Icon={FaGoogleDrive}/>
 
@@ -527,7 +527,12 @@ function readFile(file, type) {
                         <select 
                         name= "publicity"
                         value= {diariesData.publicity}
-                        onChange={(e)=> setdiariesData({...diariesData, publicity: e.target.value})}
+                        onChange={(e)=> {
+
+                            setdiariesData({...diariesData, publicity: e.target.value});
+                            console.log(diariesData.publicity);
+                        
+                        }}
                         
                         className="m-2 flex text-center justify-center items-center font-light text-xs text-gray-600 outline-none bg-gray-200 rounded-full p-1 border-none">
                             <option value="public"> Public </option>
@@ -696,15 +701,15 @@ function readFile(file, type) {
                                 {/* Clear Button */}
 
                                 {diariesData.media === "url" && 
-                                        <div onClick= {clearUrl_NoSwitch} className= 'flex  w-1/5 justify-center items-center font-semibold text-xs m-auto bg-transparent p-1 text-gray-300 hover:text-red-400 cursor-pointer'>
+                                        <div onClick= {clearUrl_NoSwitch} className= 'flex  w-1/4 border my-2 justify-center items-center font-semibold text-xs mx-auto bg-transparent p-1 text-gray-300 hover:text-red-400 cursor-pointer'>
                                             <BiUnlink size={20}/> 
                                             Clear Url
                                         </div>                              
                                 }
                                 {diariesData.media.length>1 && diariesData.media !== "url" && 
-                                        <div onClick= {clearInput} className= 'flex w-1/5 justify-center items-center font-semibold text-xs m-auto bg-transparent p-1 text-gray-300  hover:text-red-400 cursor-pointer'>
+                                        <div onClick= {clearInput} className= 'flex w-1/4 border my-2 justify-center items-center font-semibold text-xs mx-auto bg-transparent p-1 text-gray-300  hover:text-red-400 cursor-pointer'>
                                             <BsFileEarmarkMinus size={20}/> 
-                                           Clear File
+                                           Remove File
                                         </div>                              
                                 }
 
@@ -749,7 +754,7 @@ function readFile(file, type) {
                                         <div >
                                           
                                             <div className="flex justify-center m-auto w-full p-2 lg:p-0">
-                                                <VideoForm Url= {imageBlob}/>
+                                                <VideoForm Url= {imageBlob} />
                                             </div>
                                        </div> : 
                                        <>
@@ -999,6 +1004,7 @@ function readFile(file, type) {
                                       && !diariesData.file.includes('player.twitch.com')
                                       && !diariesData.file.includes('wordpress.com')
                                       && !diariesData.file.includes('pin.it')
+                                      && !diariesData.file.includes('pinterest.com')
                                       && !diariesData.file.includes('vt.tiktok.com')
                                       && !diariesData.file.includes('vm.tiktok.com')
                         
@@ -1071,10 +1077,10 @@ function readFile(file, type) {
                                             setSearchError(false);
                                             console.log(diariesData);
                                         }}
-                                        placeholder="Mentions(Optional) Enter a Name then Click Search" className="text-gray-700 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100"/>
+                                        placeholder="Mentions(Optional): Enter a name, click Search" className="text-gray-700 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100"/>
                                         {/* <p className='mx-3 text-xs text-red-700 font-light' >error</p> */}  
-                                            {searchingName===false && searchedName.length>0 &&
-                                                <div onClick={searchName} className="flex justify-center items-center p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
+                                            {searchingName===false && 
+                                                <div onClick={searchedName.length > 0 ? searchName: ''} className="flex justify-center items-center p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
                                                     <MdSearch size={24}/>
                                                 </div> 
                                             }
@@ -1109,11 +1115,11 @@ function readFile(file, type) {
                                         </div>}
                                         {searchError===true && searchedMiniProfile ==="NO_USER" && 
                                         <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
-                                            <p>@{searchedName} Not Found. Ensure they exist</p>
+                                            <p>@{searchedName} not found. Ensure they exist</p>
                                         </div>}
                                         {searchedName === user.result.userName && 
                                         <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
-                                            <p>You cant Endorse yourself!</p>
+                                            <p>You cant mention yourself!</p>
                                         </div>}
                                     </div>
 

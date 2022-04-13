@@ -74,7 +74,11 @@ import {DiariesModel} from "../models/diariesModel.js";
             const diaries = await DiariesModel.aggregate([
 
                 // { followers: { $in: userId } },
-                
+                { $match : { 
+                    publicity : "public" 
+                  } 
+               },
+              
                 { 
                
                     $lookup: {
@@ -203,6 +207,14 @@ import {DiariesModel} from "../models/diariesModel.js";
                       }
                     }
                   },
+              
+                
+                 { 
+                     $match: { 
+                     $or: [  {publicity : "public"}, {publicity : "subscribers"}  ] 
+                    } 
+                },
+                 
                 
                 { 
                
@@ -322,7 +334,7 @@ import {DiariesModel} from "../models/diariesModel.js";
         
         try{
 
-            const diaries = await DiariesModel.find().limit(5)
+            const diaries = await DiariesModel.find({publicity: { $in: [ 'public' ] } }).limit(5)
             .populate('diaryMiniProfile', 'dpUrl userName');
             
             return diaries;

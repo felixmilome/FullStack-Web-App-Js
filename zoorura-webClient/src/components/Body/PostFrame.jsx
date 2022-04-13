@@ -556,8 +556,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                       && !diary.file.includes('www.facebook.com')
                                       && !diary.file.includes('drive.google.com')
                                       && !diary.file.includes('player.twitch.com')
-                                      && !diary.file.includes('www.wordpress.com')
+                                      && !diary.file.includes('wordpress.com')
                                       && !diary.file.includes('pin.it')
+                                      && !diary.file.includes('pinterest.com')
                                       && !diary.file.includes('vt.tiktok.com')
                                       && !diary.file.includes('vm.tiktok.com')
                         
@@ -1239,8 +1240,9 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                                         && !diary.file.includes('www.facebook.com')
                                         && !diary.file.includes('drive.google.com')
                                         && !diary.file.includes('player.twitch.com')
-                                        && !diary.file.includes('www.wordpress.com')
+                                        && !diary.file.includes('wordpress.com')
                                         && !diary.file.includes('pin.it')
+                                        && !diary.file.includes('pinterest.com')
                                         && !diary.file.includes('vt.tiktok.com')
                                         && !diary.file.includes('vm.tiktok.com')
                             

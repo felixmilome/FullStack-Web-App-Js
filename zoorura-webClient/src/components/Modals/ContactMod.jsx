@@ -401,7 +401,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                   </div>}
                                         
 
-                                <div  className=' w-full px-1 sm:w-1/2 lg:w-1/4 fixed bottom-0 py-2 bg-gray-200  right-0 sm:right-2 mt-6'>
+                                <div  className=' w-full px-1 sm:w-1/2 lg:w-1/4 fixed bottom-0 z-50 py-2 bg-gray-200  right-0 sm:right-2 mt-6'>
 
                                        
                                     {messageData.type !== 'image' &&messageData.type !== 'video' && messageData.type !== 'audio' &&
@@ -476,7 +476,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
 
 
-                                        <div className='pt-2  text-gray-400 m-auto  items-center'>
+                                        <div className=' pt-2  text-gray-400 m-auto  items-center'>
                                              {/* UPLOAD INPUTS */}
 
                                                     <div className='w-full p-4'>

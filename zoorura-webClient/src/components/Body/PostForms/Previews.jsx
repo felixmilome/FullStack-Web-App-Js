@@ -1,5 +1,5 @@
 import VideoPlayer from 'react-video-js-player';
-
+import ReactPlayer from 'react-player'
 
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
@@ -19,41 +19,46 @@ import 'react-h5-audio-player/lib/styles.css';
 // } 
 
 export const AudioForm = ({Url, DP}) => {
+    
     return (
-        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
-            <div className= "z-10 h-full w-full">     
+        <div id='myDIV' className='flex justify-center rounded-full items-center h-full w-full bg-gray-200 p-1'>
+            <div className= "z-10 h-full w-fit m-auto">     
                 {/* <iframe src={Url}
                     allow="fullscreen" width="100%" height='400' >
                 </iframe>  */}
                 {/* <AudioPlayer poster = {DP}
                     src={Url}
                 /> */}
-                  <video src={Url} poster= {DP} controls controlsList="nodownload">
-                </video>
+                  {/* <video src={Url} width='280px' height='50px'  controls controlsList="nodownload">
+                </video> */}
+                <ReactPlayer controls width='280px' height='50px' config={{ file: { attributes: { controlsList: 'nodownload' } } }} url={Url} />
             </div> 
         </div>
     )
 }
-export const VideoFrame = ({Url}) => {
-    return (
-        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
-            <div className= "z-10 h-full w-full"> 
-            <VideoPlayer src={Url}/>    
-            </div> 
-        </div>
-    )
-}
+// export const VideoFrame = ({Url}) => {
+//     return (
+//         <div className='max-h-screen  w-4/5 bg-gray-200 p-1'>
+//             <div className= "z-10 h-full w-full"> 
+//             <VideoPlayer  src={Url} />    
+//             </div> 
+//         </div>
+//     )
+// }
 export const VideoForm = ({Url, DP}) => {
+   
     return (
-        <div className='flex justify-center max-h-screen w-11/12 bg-black p-1 py-4'>
+        <div className='flex justify-center max-h-screen w-11/12 bg-black p-1 py-2'>
             <div className= "flex m-auto bg-gray-800 z-10 h-full w-full"> 
             {/* <VideoPlayer src={Url}
             onLoad= {(console.log(Url))}/>     */}
                 {/* <iframe src={Url}
                     allow="fullscreen" width="100%" height='400' >
                 </iframe>  */}
-                 <video className= "m-auto" src={Url} poster={DP} controls controlsList="nodownload">
+                 <video className= "m-auto" src={Url}  controls controlsList="nodownload">
                 </video>
+                
+                  {/* <ReactPlayer width='240px' controls config={{ file: { attributes: { controlsList: 'nodownload' } } }} url={Url} /> */}
             </div> 
         </div>
     )
@@ -159,7 +164,7 @@ export const SnForm = ({Url}) => {
 
     return (
       
-             <iframe className= "z-10" width="100%" height="100%" scrolling="no" frameborder="no" 
+             <iframe className= "z-10" width="340" height="100%" scrolling="no" frameborder="no" 
                 src={Source}>
             </iframe>
        

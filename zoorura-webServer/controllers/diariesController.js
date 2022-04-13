@@ -85,7 +85,7 @@ export const postDiaries =  async (req, res)=> {
                 if (diary.type === 'diary' && !diary.tags?.length < 21
                  && diary.title.length > 0 && diary.title.length < 50
                  && diary.caption.length > 0 && diary.caption.length < 500){
-                    const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, followers:user.followers, tags:diary?.tags, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
+                    const newDiary = new DiariesModel({...diary,  creator: req.userId, postType: diary.type, diaryMiniProfile: req.userId, publicity:diary.publicity, followers:user.followers, tags:diary?.tags, time: new Date().toISOString(), dateRank: (Date.now()/360000) }); //time is for updates
                     try{
                         await newDiary.save();
 
@@ -106,11 +106,11 @@ export const postDiaries =  async (req, res)=> {
                             try{
 
                                 const displayedDiary = await DiariesModel.findByIdAndUpdate(diary.originalId, { $push: { "displaysArray": req.userId }}, { new: true });
-                                console.log(displayedDiary);
+                                //console.log(displayedDiary);
                                 
                                 // const displayedDiary = await DiariesModel.findById(unpopulatedDisplayedDiary._id)
                                 // .populate('displaysArray', 'userName');
-
+                                if(displayedDiary.publicity === 'public'){
                                 const newDisplay = new DiariesModel({creator:req.userId, title:displayedDiary.title, caption:displayedDiary.caption, file:displayedDiary.file, media:displayedDiary.media,
                                 diaryMiniProfile:displayedDiary.diaryMiniProfile, postType: 'display', publicity:'public', followers:user.followers, tags:[], originalId: diary.originalId, displayerMiniProfile:req.userId, displayTime: Date.now(), displayable: false, 
                                     displaysArray: [], time: displayedDiary.time, dateRank: (Date.now()/360000),tippers:[], reviewers:[], displaysArray:[]});   
@@ -126,6 +126,7 @@ export const postDiaries =  async (req, res)=> {
                                    
 
                                     res.json({newDisplay:newDisplay, newNotification:newNotification});
+                                }
 
                                     //res.status(201).json({newDisplay:newDisplay, displayedDiary:displayedDiary});
                                     //console.log(newDisplay); 
@@ -172,7 +173,7 @@ export const patchDiaries = async (req, res) =>{
             && oldDiary.creator === req.userId
             ){
 
-                const patchedDiary = await DiariesModel.findByIdAndUpdate(id, { $set: {title:newDiary.title, caption:newDiary.caption}}, { new: true });
+                const patchedDiary = await DiariesModel.findByIdAndUpdate(id, { $set: {title:newDiary.title, caption:newDiary.caption, publicity:newDiary.publicity}}, { new: true });
                const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {postSpam:newPostSpam}}, { new: true });
                console.log({patchedDiary});
                console.log({updatedUser}) 
