@@ -23,6 +23,7 @@ import {Link} from 'react-router-dom';
  
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef } from 'react';
+import {BeatLoader} from "react-spinners";
 
 
 import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
@@ -31,13 +32,14 @@ import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {io} from 'socket.io-client'
 
-//Search Area.. Go
+//Search Area.. Go Search
 
 function Header() {
 
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     //console.log(user);
     const[popProfile, setpopProfile] = useState(false);
+    const[loadingPointer, setLoadingPointer] = useState(false);
     const[popContacts, setpopContacts] = useState(false);
     const[popSubscribers, setpopSubscribers] = useState(false);
     const[popTipNotifications, setPopTipNotifications] = useState(false);
@@ -210,7 +212,7 @@ function Header() {
                     })
                 }, []);
 
-            // useEffect(() => {
+            // useEffect(() => { 
             //     if(user){
             //      //ReviewReplySocket
             //      socketRef.current.on("getReplyReview", reviewData =>{
@@ -251,6 +253,7 @@ function Header() {
               
             }
            const handlePointer = ()=>{
+                setLoadingPointer(true);
                 dispatch(dailyPointsAction(user.result._id, setpopDailyPoints));
                 console.log('awarded');
            }
@@ -532,9 +535,12 @@ function Header() {
                                 </div>  
                                 {/* <p className= "text-gray-500 pt-3 text-center text-lg font-bold">Thank you For Logging in Today</p> */}
                                
-                                <div onClick= {handlePointer} className="bg-teal-400 hover:bg-teal-500 cursor-pointer w-20 mx-auto m-2 rounded-md py-1 items-center"> 
+                                {loadingPointer === false &&<div onClick= {handlePointer} className="bg-teal-400 hover:bg-teal-500 cursor-pointer w-20 mx-auto m-2 rounded-md py-1 items-center"> 
                                         <p className= "p-2 text-gray-100 leading-4 text-center font-bold"> CLAIM </p>                                       
-                                    </div>  
+                                    </div>}
+                                    {loadingPointer === true && <div className="bg-teal-400 hover:bg-teal-500 cursor-pointer w-20 flex justify-center mx-auto m-2 rounded-md py-1 items-center"> 
+                                        <BeatLoader size={7} color='white' loading/>                                      
+                                    </div>}    
 
                                 <p className= "text-gray-700 text-center text-xs font-light p-1">More in the next 24 Hours</p> 
                                 
