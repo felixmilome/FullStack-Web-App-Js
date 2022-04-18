@@ -12,7 +12,7 @@ import {useState} from 'react';
 import {getHallFameAction} from '../components/Midwares/rdx/actions/hallFameAction.js'
 import { useEffect } from 'react';
 import {useDispatch} from 'react-redux';
-import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx'
+import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx' 
 import {Settings} from '../components/Body/Settings.jsx'
 import{SecureVerify} from '../components/Body/SecureVerify.jsx'
 import{ForgotPassword} from '../components/Body/ForgotPassword.jsx'
@@ -41,7 +41,7 @@ function Home({showProfile}) {
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
     return (
-         <div className="m-0 text-gray-700 h-full min-h-screen pb-40 bg-gradient-to-r from-cyan-900 to-gray-900">
+        <div className="m-0 text-gray-700 h-full min-h-screen pb-40 bg-gradient-to-r from-teal-900 to-gray-900">
          {/* <div className=" text-gray-700 h-full min-h-screen pb-40 bg-gray-300"> */}
 
        
@@ -56,7 +56,7 @@ function Home({showProfile}) {
                         <Route exact path ="/securityChange/:change/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
                          
                         <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} setpopContacts={setpopContacts} popContacts={popContacts} />}/>
-                        <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink/>}/>  
+                        <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/>  
                         <Route exact path ="/ForgotPassword" element = {<ForgotPassword/>}/>                 
                         <Route exact path ="*" element ={<NoPage/>}/>
                         {user &&

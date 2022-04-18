@@ -5,7 +5,8 @@ import {BsPeople, BsFillFileEarmarkPostFill} from 'react-icons/bs';
 import OutsideClickHandler from 'react-outside-click-handler';
 import {BeatLoader, DotLoader} from "react-spinners";
 import { useDispatch, useSelector } from 'react-redux';
-import {headSearchAction} from '../Midwares/rdx/actions/searchActions.js'
+import {headSearchAction} from '../Midwares/rdx/actions/searchActions.js';
+import {Link} from 'react-router-dom';
 
 
 
@@ -32,10 +33,10 @@ export const Search = () => {
 
  const handleSearch = (e) => {
 
-   setSearchData({...searchData, term:e.target.value.replace('@', '').trim()});
-   const searchDataObj = {term:e.target.value.replace('@', '').trim(), type:'all'};
+   setSearchData({...searchData, term:e.target.value?.replace('@', '')?.trim()});
+   const searchDataObj = {term:e.target.value?.replace('@', '')?.trim(), type:'all'};
 
-    if(searchDataObj.term.length>0){
+    if(searchDataObj.term?.length>0){
         setSearchDisplay('all');
         (setLoading(true));
         setSearchOptions(true);
@@ -53,10 +54,10 @@ export const Search = () => {
 
   return (
 
-    <div className='flex items-center'>
+    <div className='flex w-full items-center'>
      
                         
-       {searchOptions === false &&
+       {/* {searchOptions === false &&
         <div onClick={(e)=>{
 
            
@@ -66,17 +67,17 @@ export const Search = () => {
             <SearchIcon  className= 'h-6 text-white'/>
             
         </div>
-        }
-        {searchOptions === true &&
+        } */}
+        {/* {searchOptions === true &&
         <div  className="p-1 sm:p-3 bg-gray-300 rounded-full items:center">
             <SearchIcon  className= 'h-6 text-white'/>
             
         </div>
-        }
+        } */}
         <input onChange={(e)=>{
            
             handleSearch(e);
-        }}  className ="bg-transarent w-64 rounded-full m-1 h-7 md:inline-flex p-4 bg-gray items-center outline-none font-light placeholder-gray-400"
+        }}  className ="bg-transarent w-full sm:w-1/2 border rounded-full m-1 h-7 md:inline-flex p-4 bg-gray items-center outline-none font-light placeholder-gray-400"
         type="text"
         placeholder="Search Zoorura"/>
 
@@ -136,16 +137,17 @@ export const Search = () => {
 
                        }
                         <div>
-                       
+                        {/* Post & all Results */}
                         {loading ===false && searchDisplay !=='people' &&
                         <>
                                {
                        
                                 searchResults?.diaryResult.map((diary) =>(
-
+                                    <Link to ={`/DiaryLink/${diary._id}`}>
                                         <div   key={diary._id} className='cursor-pointer p-1  hover:text-gray-700'>
                                             <p>{diary.title}</p>  
                                         </div>
+                                    </Link>
 
                                 ))
                                 } 
@@ -160,16 +162,17 @@ export const Search = () => {
                                     } 
                     
                         </>}
-
+                                     {/* People & all Results */}
                         {loading ===false && searchDisplay !=='posts' &&
                         <>
                                {
                        
                                 searchResults?.peopleResult.map((person) =>(
-
+                                    <Link to ={`/Portfolios/${person.userName}`}>
                                         <div key={person._id} className='cursor-pointer p-1  hover:text-gray-700'>
                                             <p>@{person.userName}</p>  
                                         </div>
+                                    </Link>
 
                                 ))
                                 } 

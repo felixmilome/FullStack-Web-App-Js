@@ -37,7 +37,7 @@ export const diariesReducer = (diaries = [], action) => {
         case 'TIP_DIARY':
         case 'DISPLAY_DIARY':
             return diaries.map((diary) => diary._id === action.payload._id ? action.payload : diary); 
-             return diaries;
+           
              
              default:
                 return diaries;  
@@ -62,6 +62,32 @@ export const diariesReducer = (diaries = [], action) => {
             return diaries.map((diary) => diary._id === action.payload._id ? action.payload : diary); ;
      
 
+             default:
+                return diaries;  
+       
+     }
+     
+ }
+ export const visitedDiariesReducer = (diaries = [], action) => {
+     
+    switch(action.type) {
+         
+        case 'GET_VISITED_DIARY':
+
+             const filteredDiaries = diaries.filter((diary) => diary._id !== action.payload._id);
+              return filteredDiaries.concat (action.payload);
+
+
+     
+        case 'DELETE_DIARY': 
+             return diaries.filter((diary)=> diary._id !== action.payload);
+        case 'PATCH_DIARY':
+        case 'REVIEW_DIARY':
+        case 'TIP_DIARY':
+        case 'DISPLAY_DIARY':
+            return diaries.map((diary) => diary._id === action.payload._id ? action.payload : diary); 
+      
+             
              default:
                 return diaries;  
        

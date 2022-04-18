@@ -2,13 +2,14 @@ import express from 'express';
 
 //import {multerUpload} from "../utils/multer.js"
 
-import { getDiaries, postDiaries, patchDiaries, deleteDiaries, tipDiaries, reviewDiaries } from '../controllers/diariesController.js';
+import { getDiaries, getADiary, postDiaries, patchDiaries, deleteDiaries, tipDiaries, reviewDiaries } from '../controllers/diariesController.js';
 import { auth } from '../middleware/authMiddleware.js';
      
 
 const diariesRouter = express.Router();    
 
-diariesRouter.get('/', auth, getDiaries); 
+diariesRouter.get('/', auth, getDiaries);
+diariesRouter.get('/:diaryId', auth, getADiary); 
 diariesRouter.post('/', auth, postDiaries);     
 diariesRouter.patch('/:id', auth, patchDiaries); 
 diariesRouter.delete('/:id', auth, deleteDiaries);

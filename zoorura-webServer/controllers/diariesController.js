@@ -12,6 +12,21 @@ import { getPopularDiariesHandler, getFollowedDiariesHandler, getRandomDiariesHa
 //Search area: display
  
 //Get  Diariessss===========================================
+export const getADiary = async  (req, res) => {
+    try{ 
+
+        const{diaryId} = req.params;
+        console.log(diaryId); 
+        const visitedDiary = await DiariesModel.findById(diaryId)
+        .populate('diaryMiniProfile', 'dpUrl userName');
+        console.log(visitedDiary);
+         res.status(200).json(visitedDiary);
+          
+    } catch(error){
+        res.status(404).json({message: error.message});
+        console.log(error.message);
+    }
+ }
 export const getDiaries = async  (req, res) => {
    try{ 
        

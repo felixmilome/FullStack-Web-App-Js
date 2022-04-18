@@ -1,5 +1,6 @@
 import{useSelector, useDispatch} from 'react-redux';
 import NotificationsmodalRow from './NotificationsmodalRow';
+import {Link} from 'react-router-dom';
 
 
 function NotificationsModal({popTipNotifications}) {
@@ -28,10 +29,15 @@ function NotificationsModal({popTipNotifications}) {
                 <div className= "mb-60 border-gray-200 border-t">
                 { 
                        
-                       notifications.sort((a, b) => a.dateRank < b.dateRank ? 1 : -1).map((notification) =>(
-   
-                <NotificationsmodalRow key= {notification._id} notification={notification}/>
-                ))
+                    notifications.sort((a, b) => a.dateRank < b.dateRank ? 1 : -1).map((notification) =>(
+
+                    <div key= {notification._id} className= 'w-fit' >
+                         <Link to ={notification.class === 'normal' && notification.type !=='freeConvo' && `/DiaryLink/${notification.postId}`}>
+                        <NotificationsmodalRow notification={notification}  />  
+                        </Link>
+                    </div>
+                
+                 ))
             } 
        
             </div>

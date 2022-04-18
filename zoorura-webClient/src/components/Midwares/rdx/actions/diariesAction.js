@@ -1,5 +1,17 @@
 import * as axs from './axs';
 
+export const getADiaryAction = (diaryId) => async (dispatch) => {
+    try{
+        console.log({diaryId});
+        const {data} = await axs.getADiaryApi(diaryId);
+        console.log(data);
+
+        dispatch ({type: 'GET_VISITED_DIARY', payload: data}); 
+
+    } catch(error) {
+        console.log(error); 
+    }
+}
  
 export const getDiariesAction = () => async (dispatch) => {
     try{

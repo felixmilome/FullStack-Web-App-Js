@@ -1,5 +1,5 @@
  import {combineReducers} from 'redux';
- import {diariesReducer, popularDiariesReducer,
+ import {diariesReducer, visitedDiariesReducer, popularDiariesReducer,
          randomDiariesReducer, usersDiariesReducer} from './diariesReducer';
   import {savedDiariesReducer} from './savedDiariesReducer.js';
  import {googleauthReducer} from './googleauthReducer';
@@ -22,7 +22,7 @@
  
     export default combineReducers({
 
-      diariesReducer, savedDiariesReducer, usersDiariesReducer,
+      diariesReducer, visitedDiariesReducer, savedDiariesReducer, usersDiariesReducer,
       randomDiariesReducer, popularDiariesReducer,
       convoStateReducer, googleauthReducer,
       profileResetReducer, getMiniProfileReducer,

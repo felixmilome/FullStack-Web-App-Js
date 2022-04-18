@@ -7,6 +7,7 @@ import {    SearchIcon,
             HashtagIcon,
             UserAddIcon} from '@heroicons/react/outline'
 import {GiTakeMyMoney, GiMoneyStack} from 'react-icons/gi';
+import{RiVipCrownFill} from 'react-icons/ri';
 
 import HeaderRightIcon from './HeaderRightIcon.jsx'
 import { useState } from 'react';
@@ -32,7 +33,7 @@ import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {io} from 'socket.io-client'
 
-//Search Area.. Go Search
+//Search Area.. Go Search img
 
 function Header() {
 
@@ -285,7 +286,7 @@ function Header() {
             { user && user.result.verified ?
             <>
             <Link to='/'>
-                <div onClick ={(e)=>(setpopContacts(false))}className="cursor-pointer  rounded-full hover:bg-gray-200 bg-transparent flex items-center justify-between">
+                <div onClick ={(e)=>(setpopContacts(false))}className="cursor-pointer  rounded-full hover:bg-gray-300 delay-100 bg-transparent flex items-center justify-between">
                             
                             <div className= 'rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
                                 <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
@@ -293,7 +294,7 @@ function Header() {
 
                             
                             <>
-                                <h1 className= "m-1 pr-2 inline-flex font-bold text-xl text-sm ">Go Home</h1>
+                                <h1 className= "m-1 pr-2 inline-flex font-bold text-sm ">Go Home</h1>
                                
                             </>
                        
@@ -301,7 +302,7 @@ function Header() {
            </Link> 
         
             {/* MID SEARCH COMP */}
-                <div className="hidden lg:flex items-center rounded-full w-1/3 mx-1 bg-gray-100 sm:pr-4">
+                <div className="hidden lg:flex items-center rounded-full w-1/2 mx-1 bg-gray-100 sm:pr-4">
                  
                  <Search/>
             
@@ -354,7 +355,7 @@ function Header() {
                                 setpopContacts(false);
                             }
                             }>
-                            <HeaderRightIcon LgIcon = {GiMoneyStack} badge={unreadTipNotifications?.length} />
+                            <HeaderRightIcon LgIcon = {GiMoneyStack} badge={unreadTipNotifications?.length} active={popTipNotifications}/>
                             </div>
                             {popTipNotifications && <TipNotificationsModal setPopTipNotifications={setPopTipNotifications}/>}
                             
@@ -374,9 +375,9 @@ function Header() {
                                 setpopContacts(false);
                             }
                             }>
-                            <HeaderRightIcon Icon = {BellIcon} badge={unreadNormalNotifications.length}/>
+                            <HeaderRightIcon Icon = {BellIcon} badge={unreadNormalNotifications.length} active={popNotifications}/>
                             </div>
-                            {popNotifications && <NotificationsModal setshowNotifications={setpopNotifications}/>}
+                            {popNotifications && <NotificationsModal setshowNotifications={setpopNotifications} />}
                             
                         </OutsideClickHandler>
 
@@ -393,7 +394,7 @@ function Header() {
                                 
                              }
                             }> 
-                                <HeaderRightIcon Icon = {ChatIcon} badge={unreadMessages.length}/> 
+                                <HeaderRightIcon Icon = {ChatIcon} badge={unreadMessages.length} active={popContacts}/> 
                                 </div>
                             {popContacts &&  <RightbarMob unreadMessages ={unreadMessages} setpopContacts={setpopContacts} user={user} socket = {socket}/>}
                             
@@ -437,7 +438,7 @@ function Header() {
                             setpopProfile(false); 
                         }}
                         >
-                        <div className="cursor-pointer inline-flex items-center justify-center p-1 rounded-full bg-transparent  sm:hover:bg-cyan-300 mx-1"
+                        <div className={`cursor-pointer inline-flex items-center justify-center rounded-full bg-transparent delay-150  hover:bg-gray-300 ${popProfile && 'bg-gray-300'} mx-1`}
                      onClick={ () => 
                          {
                             setpopProfile(!popProfile);
@@ -447,7 +448,7 @@ function Header() {
                      
                         <img src={user.result.dpUrl}  className="rounded-full m-0.5 group-hover:text-white h-8 w-8"/>
                                              
-                        <span className="hidden md:inline-flex w-full text-sm mr-2">@{user.result.userName}</span>
+                        <span className="hidden md:inline-flex w-full text-sm font-semibold mr-2">@{user.result.userName}</span>
                         </div>
 
                      {popProfile && 
@@ -473,11 +474,14 @@ function Header() {
                                 setpopRankings(false);
                             }}
                             >
-                            <div className="bg-transparent hover:bg-cyan-400 rounded-full p-2 group"
+                            <div className={`${popRankings===true && 'bg-cyan-400' } ${popRankings===false && 'bg-transparent' }  bg-transparent hover:bg-cyan-400 rounded-full p-1 group`}
                             onClick={ () => 
                             {setpopRankings(!popRankings)}
                             }>
-                            <HashtagIcon className ="h-6 group-hover:text-white cursor-pointer text-gray-400"/>
+                            {/* <HashtagIcon className ="h-6 group-hover:text-white cursor-pointer text-gray-400"/> */}
+                                <div className="w-8 h-8 bg-gray-800  text-white flex justify-center items-center rounded-full">
+                                <RiVipCrownFill/>
+                                </div>
                             </div>
                             {
                             popRankings &&

@@ -20,7 +20,7 @@ export const BallersArena = () => {
                     <RiVipCrownFill/>
                      </div>
                 
-                <p className= "font-bold text-sm">Ballers Arena</p>
+                <p className= "font-bold text-gray-800 xl:text-gray-200 text-sm">Ballers Arena</p>
                 
             </div> 
 

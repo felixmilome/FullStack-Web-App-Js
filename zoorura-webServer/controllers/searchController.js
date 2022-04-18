@@ -13,11 +13,11 @@ export const headSearch = async  (req, res) => {
         if (type === 'all'){
            // const termSearch= new RegExp(term, 'i'); 
 
-            const diaryResult = await DiariesModel.find({title:{$regex: term, $options:'i'}}, {diaryMiniProfile:1, title:1}).limit(9)
+            const diaryResult = await DiariesModel.find({title:{$regex: term, $options:'i'}}, {_id:1, diaryMiniProfile:1, title:1}).limit(9)
             .populate('diaryMiniProfile', 'userName');
             console.log(diaryResult); 
             
-            const peopleResult = await UsersModel.find({userName:{$regex: term, $options:'i'}},{userName:1, dpUrl:1}).limit(9)
+            const peopleResult = await UsersModel.find({userName:{$regex: term, $options:'i'}},{_id:1, userName:1, dpUrl:1}).limit(9)
         
             console.log(peopleResult);
 

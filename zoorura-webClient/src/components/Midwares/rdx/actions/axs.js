@@ -12,6 +12,7 @@ API.interceptors.request.use((req)=>{
     return req;
 })
 //Diary
+export const getADiaryApi = (diaryId) => API.get(`/diaries/${diaryId}`);
 export const getDiariesApi = () => API.get('/diaries');
 export const postDiariesApi =(newDiary) => API.post('/diaries', newDiary);
 export const patchDiariesApi = (id, diariesEditData) => API.patch(`/diaries/${id}`, diariesEditData);

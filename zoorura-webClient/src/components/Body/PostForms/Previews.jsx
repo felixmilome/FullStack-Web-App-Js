@@ -31,7 +31,7 @@ export const AudioForm = ({Url, DP}) => {
                 /> */}
                   {/* <video src={Url} width='280px' height='50px'  controls controlsList="nodownload">
                 </video> */}
-                <ReactPlayer controls width='280px' height='50px' config={{ file: { attributes: { controlsList: 'nodownload' } } }} url={Url} />
+                <ReactPlayer controls  width='280px' height='50px' config={{ file: { attributes: { controlsList: 'nodownload', preload:'metadata'}} }} url={Url} />
             </div> 
         </div>
     )
@@ -55,7 +55,7 @@ export const VideoForm = ({Url, DP}) => {
                 {/* <iframe src={Url}
                     allow="fullscreen" width="100%" height='400' >
                 </iframe>  */}
-                 <video className= "m-auto" src={Url}  controls controlsList="nodownload">
+                 <video className= "m-auto" preload="metadata" src={Url}  controls controlsList="nodownload">
                 </video>
                 
                   {/* <ReactPlayer width='240px' controls config={{ file: { attributes: { controlsList: 'nodownload' } } }} url={Url} /> */}
