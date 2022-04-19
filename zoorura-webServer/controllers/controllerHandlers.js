@@ -2,6 +2,7 @@ import { UsersModel } from "../models/usersModel.js";
 import {TipsModel} from "../models/tipsModel.js";
 import {NotificationsModel} from "../models/notificationsModel.js";
 import {DiariesModel} from "../models/diariesModel.js";
+import {CurrenciesModel} from "../models/currenciesModel.js";
 
     export const tipHandler = async(amount, giverId, receiverId, postId, type)=>{
                 
@@ -360,5 +361,61 @@ import {DiariesModel} from "../models/diariesModel.js";
 
         }
     }
+
+    export const getWalletHandler = async  (userId) => {
+     
+        try{ 
+            const userWalletArrayObj = await UsersModel.findById(userId, {_id:0, wallet:1});
+            const walletArray = userWalletArrayObj.wallet;
+            console.log(walletArray);
+            const walletValue = Math.round((eval(walletArray.join('+')))* 100) / 100;
+            console.log({walletValue});
+           
+            return walletValue  
+             
+       } catch(error){
+       
+           console.log(error.message);  
+       }
+     };
+
+
+     export const currenciesConverterHandler = async  (walletArray) => {
+
+      const ratesObj = {usd:0.05, kshs:5.77, inr:3.82, ngn:20.73, tzs:116.10, ugx:176.08, zar:14.95, eur:0.046}
+      const {usd, kshs, inr, ngn, tzs, ugx, zar, eur, } = ratesObj;
+
+      const rounder = (num) => {
+          return Math.round((eval(num))* 100) / 100;
+      }
+       
+      try{ 
+            
+         
+            const walletValue =eval(walletArray.join('+'));
+
+            console.log({walletValue});
+
+            const walletValueConverted = {
+                zbx: rounder(walletValue), 
+                usd: rounder (usd * walletValue),
+                kshs: rounder(kshs * walletValue),
+                inr: rounder(inr * walletValue),
+                ngn: rounder(ngn * walletValue),
+                tzs: rounder(tzs * walletValue),
+                ugx: rounder(ugx * walletValue),
+                zar: rounder(zar * walletValue),
+                eur: rounder(eur * walletValue),
+            }
+           
+            return walletValueConverted; 
+             
+       } catch(error){
+       
+           console.log(error.message);  
+       }
+     };
+
+
 
    

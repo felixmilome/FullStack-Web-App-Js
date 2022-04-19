@@ -7,7 +7,7 @@ import {
     BookmarkIcon
    
     } from '@heroicons/react/outline'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {Link} from 'react-router-dom';
 
 import {useNavigate} from 'react-router-dom';
@@ -21,9 +21,10 @@ import { useState } from 'react';
 function ProfileModal({setpopProfile, setPopSaved}) { 
     
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    const walletAmount = useSelector((state) => state.walletReducer);
 
     const dispatch= useDispatch();
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
     const logout =() =>{
         dispatch({type:"LOGOUT"});
@@ -37,7 +38,7 @@ function ProfileModal({setpopProfile, setPopSaved}) {
       //  window.location.reload(true);
     }
     return (
-        <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-3/4 mt-4 rounded-md mt-6 sm:mt-0 right-3 sm:right-1.5 top-20 h-full z-0 flex justify-center bg-gray-200">
+        <div className="fixed border-l-8 border-gray-200 p-4  md:w-1/2 lg:w-1/3 xl:w-1/4 w-3/4 mt-4 rounded-md mt-6 sm:mt-0 right-3 sm:right-1.5 top-20 h-full z-0 flex justify-center bg-gray-200">
 
             <div className="overflow-scroll">
 
@@ -61,11 +62,11 @@ function ProfileModal({setpopProfile, setPopSaved}) {
                 </div>  
             
                 <div className= "mb-60 border-gray-300 border-t">
-                <ProfilemodalRow Icon = {CreditCardIcon} title ="Wallet"/>
+                <ProfilemodalRow Icon = {CreditCardIcon} title ="Wallet" walletAmount={walletAmount}/>
 
                 <Link to= '/Settings'>
                     <div onClick= {()=>setpopProfile(false)}>
-                        <ProfilemodalRow Icon = {AdjustmentsIcon} title ="Settings"/>
+                        <ProfilemodalRow Icon = {AdjustmentsIcon} title ="Settings" />
                     </div>
                 </Link>
 

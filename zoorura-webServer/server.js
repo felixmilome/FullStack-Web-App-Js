@@ -9,6 +9,7 @@ import {convosRouter} from './routes/convosRouter.js';
 import {messagesRouter} from './routes/messagesRouter.js';
 import {notificationsRouter} from './routes/notificationsRouter.js';
 import {tipsRouter} from './routes/tipsRouter.js';
+import {walletRouter} from './routes/walletRouter.js';
 import {tagsRouter} from './routes/tagsRouter.js';
 import {reviewsRouter} from './routes/reviewsRouter.js';
 import {savedDiariesRouter} from './routes/savedDiariesRouter.js';
@@ -23,8 +24,9 @@ app.use(express.json({limit: '500mb'}));
 app.use(express.urlencoded({extended: true, limit: '500mb'})); 
 
 app.use('/system', systemRouter);
-app.use('/diaries', diariesRouter);
+app.use('/diaries', diariesRouter); 
 app.use('/users', usersRouter);
+app.use('/wallet', walletRouter);
 app.use('/convos', convosRouter);
 app.use('/messages', messagesRouter);
 app.use('/notifications/', notificationsRouter);

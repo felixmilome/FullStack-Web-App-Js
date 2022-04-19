@@ -31,6 +31,7 @@ import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
 import {dailyPointsAction} from '../Midwares/rdx/actions/profileAction.js'
 import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
+import {getWalletAction} from '../Midwares/rdx/actions/walletAction.js'
 import {io} from 'socket.io-client'
 
 //Search Area.. Go Search img
@@ -212,6 +213,13 @@ function Header() {
 
                     })
                 }, []);
+               
+                //Wallet
+                useEffect(() => {
+                    if(user){
+                        dispatch(getWalletAction(user.result._id));
+                    }
+                }, []); 
 
             // useEffect(() => { 
             //     if(user){

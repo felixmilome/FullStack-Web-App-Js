@@ -13,6 +13,7 @@
  import {socketReducer} from './socketReducer'; 
  import {notificationsReducer} from './notificationsReducer';
  import {reviewsReducer} from './reviewsReducer';
+ import {walletReducer} from './walletReducer';
  import {tipsReducer} from './tipsReducer';
  import {deleteAccountReducer} from './deleteAccountReducer';
  import {headSearchReducer} from './searchReducer';
@@ -20,7 +21,7 @@
        reviewsOpenedReducer, tipDiaryOpenedReducer,
          tipReviewOpenedReducer} from './openedCheckReducer';
  
-    export default combineReducers({
+    export default combineReducers({ 
 
       diariesReducer, visitedDiariesReducer, savedDiariesReducer, usersDiariesReducer,
       randomDiariesReducer, popularDiariesReducer,
@@ -33,6 +34,6 @@
       forgotPasswordReducer,headSearchReducer,
        messagesOpenedReducer, 
       reviewsOpenedReducer, tipDiaryOpenedReducer,
-       tipReviewOpenedReducer, tagsReducer
+       tipReviewOpenedReducer, tagsReducer, walletReducer,
        
     });  
