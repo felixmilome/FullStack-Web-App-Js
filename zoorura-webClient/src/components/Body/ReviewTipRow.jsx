@@ -1,6 +1,7 @@
 import {useSelector, useDispatch} from 'react-redux';
 import { useEffect, useState} from 'react';
 import {getTipsAction} from "../Midwares/rdx/actions/tipsAction.js"
+import { getWalletAction } from '../Midwares/rdx/actions/walletAction';
 
 
 export const ReviewTipRow = ({reviewId})=>{
@@ -11,6 +12,14 @@ export const ReviewTipRow = ({reviewId})=>{
     console.log(availableReviewTippers);
     const dispatch = useDispatch();
 
+    useEffect(() => {
+      
+        dispatch(getWalletAction()); 
+   
+    }, []); 
+
+    const walletBalance = useSelector((state) => state.walletReducer);
+
     useEffect(() => {     
         
         if(!availableReviewTippers.length){
@@ -18,10 +27,15 @@ export const ReviewTipRow = ({reviewId})=>{
             dispatch(getTipsAction(reviewId));    
         }
 
-    }, [dispatch]); 
+    }, [dispatch]);  
 
-    return(
+    return( 
         <>
+            <div className=' bg-gray-200 w-ful p-2 my-1 text-center rounded'>
+                <p className ='text-gray-500 text-xs font-bold '>wallet balance:</p>
+                <p className ='text-cyan-600 text-sm font-bold '>{walletBalance.zbx} zbx</p>
+                {walletBalance.zbx < 1 && <p className='text-red-600 font-light cursor-pointer'>add funds</p>}
+            </div>   
             {availableReviewTippers.length > 0  && availableReviewTippers.map((reviewTipper) =>(
                 <div className= 'flex justify-center break-words p-1 border text-center font-normal border-gray-300 bg-transparent hover:bg-white'>
                     <p>{reviewTipper.tipperMiniProfile.userName}: </p> 

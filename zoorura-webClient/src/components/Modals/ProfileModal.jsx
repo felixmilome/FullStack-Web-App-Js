@@ -12,7 +12,8 @@ import {Link} from 'react-router-dom';
 
 import {useNavigate} from 'react-router-dom';
 import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
-import { useState } from 'react';
+import {getWalletAction} from "../Midwares/rdx/actions/walletAction.js"
+import { useState, useEffect } from 'react';
 
 
 
@@ -21,6 +22,14 @@ import { useState } from 'react';
 function ProfileModal({setpopProfile, setPopSaved}) { 
     
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+    
+
+    // useEffect(() => {
+    //     if(user){
+    //         dispatch(getWalletAction()); 
+    //     }
+    // }, []); 
+
     const walletAmount = useSelector((state) => state.walletReducer);
 
     const dispatch= useDispatch();
@@ -62,27 +71,30 @@ function ProfileModal({setpopProfile, setPopSaved}) {
                 </div>  
             
                 <div className= "mb-60 border-gray-300 border-t">
-                <ProfilemodalRow Icon = {CreditCardIcon} title ="Wallet" walletAmount={walletAmount}/>
 
-                <Link to= '/Settings'>
-                    <div onClick= {()=>setpopProfile(false)}>
-                        <ProfilemodalRow Icon = {AdjustmentsIcon} title ="Settings" />
-                    </div>
-                </Link>
+                    <Link to= '/Wallet'>
+                        <ProfilemodalRow Icon = {CreditCardIcon} title ="Wallet" walletAmount={walletAmount}/>
+                    </Link>
 
-                <ProfilemodalRow Icon = {QuestionMarkCircleIcon} title ="Help"/>
+                    <Link to= '/Settings'>
+                        <div onClick= {()=>setpopProfile(false)}>
+                            <ProfilemodalRow Icon = {AdjustmentsIcon} title ="Settings" />
+                        </div>
+                    </Link>
+
+                    <ProfilemodalRow Icon = {QuestionMarkCircleIcon} title ="Help"/>
+                    
                 
-               
-                 <div onClick={()=>{
-                     setPopSaved(true);
-                     setpopProfile(false);
-                     }}>
-                    <ProfilemodalRow Icon = {BookmarkIcon} title ="Saved Posts"/>
-                </div>
+                    <div onClick={()=>{
+                        setPopSaved(true);
+                        setpopProfile(false);
+                        }}>
+                        <ProfilemodalRow Icon = {BookmarkIcon} title ="Saved Posts"/>
+                    </div>
 
-                 <div onClick={logout}>
-                    <ProfilemodalRow Icon = {LogoutIcon} title ="Logout"/>
-                </div>
+                    <div onClick={logout}>
+                        <ProfilemodalRow Icon = {LogoutIcon} title ="Logout"/>
+                    </div>
 
        
             </div>

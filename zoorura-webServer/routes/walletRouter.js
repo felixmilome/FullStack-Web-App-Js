@@ -5,5 +5,5 @@ import { auth } from '../middleware/authMiddleware.js';
 
 export const walletRouter = express.Router(); 
 
-walletRouter.get ('/:userId', auth, getWallet); 
+walletRouter.get ('/', auth, getWallet); 
  

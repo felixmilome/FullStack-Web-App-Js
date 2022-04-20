@@ -53,6 +53,7 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
     setTipData ({receiverId:displayed._id, tippedPostId:message._id, type: 'message', amount: displayed.convoTip})
     
    }
+   const walletBalance = useSelector((state) => state.walletReducer);
 
     return (
         <div className="relative mx-1 p-0.5 bg-transparent flex justify-start items-center">
@@ -66,18 +67,30 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                                 setPopTip(false);
                             }}
                             >
+                        
+
                      <div onClick={tipSetter}className="absolute left-0 top-0 flex justify-center items-center bg-gray-100 rounded-full h-7 w-7 hover:bg-gray-800 group cursor-pointer">
                         <GiMoneyStack size={20} className="group-hover:text-cyan-400 text-gray-400 "/>
                     </div>
-                    {popTip && 
+                    {popTip &&  
                         <div className="absolute text-xs font-bold w-fit p-1 left-12 top-0 flex justify-center items-center bg-gray-100 rounded-md  ">
+                            
+                          
+
                             <div className="space-y-2 text-center p-2">
                                 <div>Tip ({displayed.convoTip})?</div>
                                  <div onClick= {(tipMessage)} className='bg-teal-400 rounded-md text-white hover:bg-teal-600 group cursor-pointer'>
                                     Yes
                                 </div>
 
+                             
                             </div>
+                            <div className=' border border-gray-300  w-ful p-2 my-1 text-center rounded '>
+                                     <p className ='text-gray-500 text-xs font-bold '>balance:</p>
+                                     <p className ='text-cyan-600 text-sm font-semibold '>{walletBalance.zbx} zbx</p>
+                                     {walletBalance.zbx < displayed.convoTip && <p className='text-red-600 text-xs font-light cursor-pointer'>add funds</p>}
+                                </div>   
+
                         </div>
                     }
             </OutsideClickHandler>}

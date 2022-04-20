@@ -203,13 +203,13 @@ export const Settings = () => {
         <SurePop action={'Permanently Delete'} token={'Your Zoorura Account'} loadingFunction={loadingDeleteAccount} loadingMessage= {'Verifying Delete Account'} yesFunction ={deleteAccount} noFunction= {()=>setSurePop(false)}/>
         }
         
-    <div className="fixed text-gray-600 font-bold top-12 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-20 max-h-screen overflow-y-scroll">
+    <div className="fixed text-gray-600 font-bold top-24 xl:top-12 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-20 max-h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
  
         
 
-            <div className="w-full lg:w-2/5 bg-gray-100 rounded-md shadow-xl m-2 h-full">
+            <div className="w-11/12 lg:w-1/3 bg-gray-100 rounded-md shadow-xl m-2 h-full">
             
             <form onSubmit={handleSubmit(submitProfile)} className='border-b border-gray-300 m-1'>
   
@@ -222,11 +222,11 @@ export const Settings = () => {
                            </div>
                         </div>
                         } */}
-                        <div className ='flex p-3 bg-gray-200 justify-center items-center'>
+                        <div className ='flex p-3  rounded-md border border-teal-700 text-teal-700 justify-center items-center'>
                                               
                              {/*========= Profile & Security Settings=============== */}
                             <div className= "flex items-center justify-around">
-                                <CgProfile size={20} className= "text-gray-400"/>
+                                {/* <CgProfile size={20} className= ""/> */}
                             </div> 
                             <div className="p-1 text-center bg-transparent">
                                     <p>Profile Settings</p>                        
@@ -256,7 +256,7 @@ export const Settings = () => {
                         
                         <div className='flex items-center justify-left'>
                              <p className='text-sm font-semibold text-gray-600'>Profile Picture:</p>
-                            <div onClick={()=>{setdpCropper(true)}} className='flex sm:m-0 ml-3 w-full cursor-pointer hover:bg-gray-200 border border-gray-300 justify-center space-x-2 p-2 rounded-full items-center bg-gray-100 space-x-1'>                              
+                            <div onClick={()=>{setdpCropper(true)}} className='flex sm:m-0 ml-3 w-full cursor-pointer hover:bg-gray-200  justify-center space-x-2 p-2 rounded-full items-center bg-gray-100 space-x-1'>                              
                                     <img src={user.result.dpUrl} alt="DP" className="rounded-full h-8 w-8 sm:h-10 sm:w-10"/>                   
                                     <p>Change Picture</p>                       
                             </div>
@@ -275,7 +275,7 @@ export const Settings = () => {
                                     }
                                     })}
                                     value= {profileFormData.userName}
-                                    name='userName' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-full" type="text" placeholder= "Change Username"/>
+                                    name='userName' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded" type="text" placeholder= "Change Username"/>
                                     <p className='text-xs text-red-700 font-light' >{errors.userName?.message}</p>
 
                                     <div className='bg-transparent absolute top-2.5 right-2 text-gray-500 text-xs text-center font-light '>
@@ -298,7 +298,7 @@ export const Settings = () => {
                                         onChange: (e) => {setProfileFormData({...profileFormData, bio:e.target.value})}
                                         })}
                                         value= {profileFormData.bio}
-                                        name='bio' className= "w-full resize-none bg-gray-100 border border-gray-300 p-2 rounded-full" type="text" placeholder= "Change Bio"/>
+                                        name='bio' className= "w-full resize-none bg-gray-100 border border-gray-300 p-2 rounded" type="text" placeholder= "Change Bio"/>
                                         <p className='text-xs text-red-700 font-light' >{errors.bio?.message}</p>
                                </div>
                                 </div>
@@ -315,7 +315,7 @@ export const Settings = () => {
                                         onChange: (e) => {setProfileFormData({...profileFormData, convoTip:e.target.value})}
                                         })}
                                         value= {profileFormData.convoTip}
-                                        name='convoTip' className= "w-1/3 bg-gray-100 border border-gray-300 p-2 rounded-full " type="number" placeholder= "Change Convo Request Tip Charge "/>
+                                        name='convoTip' className= "w-1/3 bg-gray-100 border border-gray-300 p-2 rounded " type="number" placeholder= "Change Convo Request Tip Charge "/>
                                          <p className='text-xs text-red-700 font-light' >{errors.convoTip?.message}</p>
                                     </div>
                                 </div>
@@ -369,10 +369,17 @@ export const Settings = () => {
                        <div className ='p-3 bg-gray-200 justify-center items-center'>
                                               
                              {/*========= Security Settings=============== */}
-                            <div className= "flex items-center text-center justify-center space-x-1">
-                                <MdSecurity size={20} className= "text-gray-400"/>
-                                <p>Security Settings</p>    
-                            </div> 
+                             <div className ='flex p-3  rounded-md border border-teal-700 text-teal-700 justify-center items-center'>
+                                              
+                                              {/*========= Profile & Security Settings=============== */}
+                                             <div className= "flex items-center justify-around">
+                                                 {/* <CgProfile size={20} className= ""/> */}
+                                             </div> 
+                                             <div className="p-1 text-center bg-transparent">
+                                                     <p>Security Settings</p>                        
+                                             </div>
+                                            
+                                         </div>
                          
 
                             { securityFeedback && visibleErrorSecurity && 
@@ -410,7 +417,7 @@ export const Settings = () => {
                                                 setDeleteError(false);
                                             }
                                             })}
-                                            name='currentPassword' className= "w-full  bg-gray-100 border border-gray-300 p-2 m-1 rounded-full"
+                                            name='currentPassword' className= "w-full  bg-gray-100 border border-gray-300 p-2 m-1 rounded"
                                              type={visible ? "text" : "password"} placeholder= "Current Password First"/>
                                              
                                              <p className='text-xs text-red-700 font-light' >{errors.currentPassword?.message}</p>
@@ -622,14 +629,16 @@ export const Settings = () => {
                     <div>
                             <div className ='flex p-3 bg-gray-200 justify-center items-center'>
                                               
-                                              {/*========= Profile & Security Settings=============== */}
-                                             <div className= "flex items-center justify-around">
-                                                 <CgProfile size={20} className= "text-gray-400"/>
-                                             </div> 
+                                     
+                                             <div className ='flex p-3  rounded-md border w-full border-teal-700 text-teal-700 justify-center items-center'>
+                                              
+                                              {/*========= Blocked=============== */}
+                                       
                                              <div className="p-1 text-center bg-transparent">
                                                      <p>Blocked Accounts</p>                        
                                              </div>
                                             
+                                         </div>
                             </div>
 
                             <div className='p-2'>

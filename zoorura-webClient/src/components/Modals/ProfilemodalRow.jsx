@@ -23,12 +23,12 @@ function ProfilemodalRow ({Icon,title, walletAmount}) {
                 <p>Balance</p>
         </div> 
         <div className='w-full flex justify-center'>
-        <div className= 'text-left border-l ml-10 text-xs space-y-1 border-gray-400 bg-transparent rounded-md pl-4'>
+        <div className= 'text-left border-l ml-10 w-30 text-xs space-y-1 border-gray-400 bg-transparent rounded-md pl-4'>
 
           
 
-            <div className= "flex font-light ">
-               <p className="font-semibold"> Zbx</p> 
+            <div className= "flex text-sm ">
+               <p className="font-bold"> Zbx</p> 
                <p>: {walletAmount.zbx}</p>
             </div> 
             <div className= "flex font-light ">
@@ -39,14 +39,14 @@ function ProfilemodalRow ({Icon,title, walletAmount}) {
                <p className="font-semibold"> Kshs</p> 
                <p>: {walletAmount.kshs}</p>
             </div> 
-            <div className= "flex  font-light ">
+             {/* <div className= "flex  font-light ">
                <p className="font-semibold"> Ugx</p> 
                <p>: {walletAmount.ugx}</p>
             </div> 
             <div className= "flex  font-light ">
                <p className="font-semibold"> Tzs</p> 
                <p>: {walletAmount.tzs}</p>
-            </div> 
+            </div>  */}
            
           
         </div>

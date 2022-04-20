@@ -10,7 +10,7 @@ function LeftbarRow({Src, title, PersonName, Points}) {
                 <p className= "sm:inline-flex font-light">
                 {PersonName}</p> 
                 <p className= "sm:inline-flex font-bold ">
-                {Points} aps</p>
+                {Points} points</p>
             </div>
         </div>
        

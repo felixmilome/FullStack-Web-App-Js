@@ -46,7 +46,7 @@ import { PostFrameReviews } from "./PostFrameReviews.jsx";
 import {Link} from 'react-router-dom';
 import Picker from 'emoji-picker-react'
 
-//Search Area title
+//Search Area title 5
 
 
 
@@ -83,10 +83,13 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[popDisplayPosted, setPopDisplayPosted] = useState(false); 
     const [chosenEmoji, setChosenEmoji] = useState(null);
     const [emojiBox, setEmojiBox] = useState(false);
+    
 
     const socket = useSelector((state) => state.socketReducer);
+    const walletBalance = useSelector((state) => state.walletReducer);
 
     const navigate = useNavigate();
+      
 
 
 
@@ -719,8 +722,13 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                 
                     { popTip && <>  
 
-                     <div className='absolute top-0 bg-gray-200 w-16 my-1 text-center rounded-r-full cursor-pointer'>
+                     <div className='absolute top-0 bg-gray-200 w-16 my-1 text-center rounded-r-full '>
                         <p onClick= {()=> setpopTip(false)}className ='text-gray-500 text-xs '>hide</p>
+                    </div>   
+                    <div className='absolute top-0 right-4 md:right-28 xl:right-16 border border-gray-300 w-ful p-2 my-1 text-center rounded cursor-pointer'>
+                        <p className ='text-gray-500 text-xs font-bold '>wallet balance:</p>
+                        <p className ='text-cyan-600 text-sm font-bold '>{walletBalance.zbx} zbx</p>
+                        {walletBalance.zbx < 1 && <p className='cursor-pointer text-red-600 font-light text-xs cursor-pointer'>add funds</p>}
                     </div>   
 
 

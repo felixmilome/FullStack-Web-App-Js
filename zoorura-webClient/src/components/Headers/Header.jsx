@@ -34,7 +34,7 @@ import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsActio
 import {getWalletAction} from '../Midwares/rdx/actions/walletAction.js'
 import {io} from 'socket.io-client'
 
-//Search Area.. Go Search img
+//Search Area.. Go Search im Arena
 
 function Header() {
 

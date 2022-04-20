@@ -1,6 +1,7 @@
 import {useSelector, useDispatch} from 'react-redux';
 import { useEffect } from 'react';
 import { getTipsAction } from '../Midwares/rdx/actions/tipsAction';
+import { getWalletAction } from '../Midwares/rdx/actions/walletAction';
 
 export const PostFrameTips = ({diaryId, userId, setpopTip}) => {
 
@@ -17,7 +18,13 @@ export const PostFrameTips = ({diaryId, userId, setpopTip}) => {
             dispatch(getTipsAction(diaryId));    
         }
 
-    }, [dispatch]); 
+    }, [dispatch]);
+    
+    useEffect(() => {
+      
+            dispatch(getWalletAction()); 
+       
+    }, []); 
 
 
     //const availableTippers = tippersAll.filter(tipper => tipper.tippedPostId === diaryId);
@@ -33,7 +40,7 @@ export const PostFrameTips = ({diaryId, userId, setpopTip}) => {
                     {availableTippers && availableTippers.length > 0 &&
                         availableTippers.map((tipper) =>(
                             <div className= "p-0.5"> 
-                                <p>@{tipper.tipperMiniProfile.userName} : <b> {tipper.amount} tips</b></p>
+                                <p>@{tipper.tipperMiniProfile.userName} : <b> {tipper.amount} zbx</b></p>
                             </div>
                             ))
                         }  
