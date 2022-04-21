@@ -37,6 +37,7 @@ import { tipDiariesAction, reviewDiariesAction } from "../Midwares/rdx/actions/d
 import {postTipsAction, getTipsAction} from "../Midwares/rdx/actions/tipsAction.js"
 import {postReviewsAction, getReviewsAction} from "../Midwares/rdx/actions/reviewsAction.js"
 import {postDisplayDiariesAction} from "../Midwares/rdx/actions/diariesAction.js";
+import {quickFollowAction} from "../Midwares/rdx/actions/profileAction.js";
 
 import moment from 'moment'; 
 import {useDispatch,useSelector} from 'react-redux';
@@ -46,12 +47,12 @@ import { PostFrameReviews } from "./PostFrameReviews.jsx";
 import {Link} from 'react-router-dom';
 import Picker from 'emoji-picker-react'
 
-//Search Area title 5
+//Search Area title 5 img follow
 
 
 
 
-function PostFrame({diary, diaryId, setDiaryId}) {
+function PostFrame({diary, diaryId, setDiaryId, params}) {
 
     const user = JSON.parse(localStorage.getItem('profile'));
    const dispatch = useDispatch();
@@ -70,6 +71,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[tip, setTip] = useState({tips:null});
     const[popOptions, setpopOptions] = useState(false);
     const[tipLoading, setTipLoading] = useState(false);
+   // const [followData, setFollowData] = useState({follower:user.result._id, followed:miniProfile._id});
      
     const[tipperView, seTipperview] = useState(false);
     const [miniProfile, setMiniProfile] = useState(null);
@@ -83,10 +85,12 @@ function PostFrame({diary, diaryId, setDiaryId}) {
     const[popDisplayPosted, setPopDisplayPosted] = useState(false); 
     const [chosenEmoji, setChosenEmoji] = useState(null);
     const [emojiBox, setEmojiBox] = useState(false);
+    const [loadingFollow, setLoadingFollow] = useState(false);
     
 
     const socket = useSelector((state) => state.socketReducer);
     const walletBalance = useSelector((state) => state.walletReducer);
+    const follows = useSelector((state) => state.followsReducer);
 
     const navigate = useNavigate();
       
@@ -130,6 +134,15 @@ function PostFrame({diary, diaryId, setDiaryId}) {
         setTipData ({receiverId:diary.creator, tippedPostId:diary._id, type:type, amount: tipAmount});
         setpopSure(true);
         console.log(tipData); 
+
+    }
+
+    const followHandler= (creatorId) => {
+
+        const followDataObj = {follower:user.result._id, followed:creatorId}
+        setLoadingFollow(true);
+        dispatch (quickFollowAction(followDataObj,setLoadingFollow));
+
 
     }
 
@@ -190,7 +203,25 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
                                 <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile[0].userName}</p>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
-                            
+                                
+                                {params !== 'profile' && !follows.includes(diary.miniProfile[0]._id) && 
+                                    <>
+                                        {loadingFollow === false ?
+
+                                            <div onClick={()=>followHandler(diary.miniProfile[0]._id)} className='flex text-sm justify-center items-center w-24 border border-cyan-400 rounded-md font-normal hover:bg-cyan-400  cursor-pointer'>
+                                                <p>subscribe</p>
+                                            </div>
+                                            :
+                                            <div  className='flex text-sm justify-center items-center w-24 border border-cyan-400 rounded-md font-normal hover:bg-cyan-400  cursor-pointer'>
+                                            <BeatLoader size={7} color ='cyan'/>
+                                            </div>
+
+                                        }
+                                    </>
+                                }
+
+
+
                             </div>
                             </>
                             }
@@ -203,10 +234,28 @@ function PostFrame({diary, diaryId, setDiaryId}) {
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
                                 <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName}</p>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
-                            
+                               
+                                {params !== 'profile' && !follows.includes(diary.diaryMiniProfile._id) && 
+                                    <>
+                                        {loadingFollow === false ?
+
+                                            <div onClick={()=>followHandler(diary.diaryMiniProfile._id)} className='flex text-sm justify-center items-center w-24 border border-cyan-400 rounded-md font-normal hover:bg-cyan-400  cursor-pointer'>
+                                                <p>subscribe</p>
+                                            </div>
+                                            :
+                                            <div  className='flex text-sm justify-center items-center w-24 border border-cyan-400 rounded-md font-normal hover:bg-cyan-400  cursor-pointer'>
+                                            <BeatLoader size={7} color ='cyan'/>
+                                            </div>
+
+                                        }
+                                    </>
+                                }
+
                             </div>
                             </>
                             } 
+                             
+                          
                         </div>
                     {/* Top-Menu */}
 
@@ -237,7 +286,7 @@ function PostFrame({diary, diaryId, setDiaryId}) {
 
                     </div>}
 
-
+                  
                     <div>
                     
                     </div>

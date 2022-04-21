@@ -12,6 +12,19 @@ export const getADiaryAction = (diaryId) => async (dispatch) => {
         console.log(error); 
     }
 }
+export const getUsersDiariesAction = (userId) => async (dispatch) => {
+    try{
+        console.log({userId});
+        const {data} = await axs.getUsersDiariesApi(userId); 
+        console.log(data);
+ 
+        dispatch ({type: 'GET_USERS_DIARIES', payload: data}); 
+
+    } catch(error) {
+        console.log(error); 
+    }
+}
+ 
  
 export const getDiariesAction = () => async (dispatch) => {
     try{

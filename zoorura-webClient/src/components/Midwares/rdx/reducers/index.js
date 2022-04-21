@@ -4,7 +4,7 @@
   import {savedDiariesReducer} from './savedDiariesReducer.js';
  import {googleauthReducer} from './googleauthReducer';
  import { hallFameReducer } from './hallFameReducer';
- import {profileResetReducer, getMiniProfileReducer,blockReducer,
+ import {profileResetReducer, getMiniProfileReducer,blockReducer, followsReducer,
          populateBlockReducer, securityResetReducer, forgotPasswordReducer} from './profileReducer';
  import {convosReducer} from './convosReducer';
  import {convoStateReducer} from './stateReducers.js';
@@ -18,18 +18,18 @@
  import {deleteAccountReducer} from './deleteAccountReducer';
  import {headSearchReducer} from './searchReducer';
  import { messagesOpenedReducer,
-       reviewsOpenedReducer, tipDiaryOpenedReducer,
+       reviewsOpenedReducer, tipDiaryOpenedReducer, 
          tipReviewOpenedReducer} from './openedCheckReducer';
  
     export default combineReducers({ 
 
       diariesReducer, visitedDiariesReducer, savedDiariesReducer, usersDiariesReducer,
-      randomDiariesReducer, popularDiariesReducer,
+      randomDiariesReducer, popularDiariesReducer, 
       convoStateReducer, googleauthReducer,
       profileResetReducer, getMiniProfileReducer,
       hallFameReducer, convosReducer, messagesReducer,
       socketReducer, deleteAccountReducer,
-      notificationsReducer, reviewsReducer, tipsReducer,
+      notificationsReducer, reviewsReducer, tipsReducer, followsReducer,
       blockReducer, populateBlockReducer, securityResetReducer,
       forgotPasswordReducer,headSearchReducer,
        messagesOpenedReducer, 

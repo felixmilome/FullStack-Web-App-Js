@@ -135,6 +135,8 @@ function Header() {
 
             }, [user]); 
            
+       
+           
             
             useEffect(() => { 
                 if(user){
@@ -238,6 +240,33 @@ function Header() {
             //         }) 
             //     } 
             // }, []);
+
+            //follows
+            useEffect(() => {
+
+                if(user){
+
+                  dispatch ({type: 'REGISTER_FOLLOWS', data:user.result.follows}); 
+                  console.log(user.result.follows);
+
+                }
+
+            }, [user]); 
+             
+            //UserData
+            //  useEffect(() => {
+
+            //     if(user){
+
+            //       dispatch (getUserDataAction()); 
+              
+
+            //     }
+
+            // }, [user]); 
+
+            const follows = useSelector((state) => state.followsReducer);
+            console.log(follows);
 
 
             const notifications = useSelector((state) => state.notificationsReducer);

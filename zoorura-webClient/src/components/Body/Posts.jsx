@@ -18,7 +18,9 @@ import { useEffect } from 'react';
 
 
 function Posts(diaryId, setDiaryId) { 
+
      const dispatch = useDispatch(); 
+     const user = JSON.parse(localStorage.getItem('profile'));
 
     const followedDiaries = useSelector((state) => state.diariesReducer); //by default followed followedDiaries
     const popularDiaries = useSelector((state) => state.popularDiariesReducer);
@@ -61,9 +63,11 @@ console.log(followedDiaries);
                         {
                             
                             followedDiaries.map((diary) =>(
-
-                                    <PostFrame  key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
-                                     
+                                <>
+                                    {!user.result.blocked.includes(diary.creator) && !user.result.blockers.includes(diary.creator) && 
+                                        <PostFrame  key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId} params ='followed'/>
+                                    } 
+                                </>  
                             ))
                         } 
                 </div>
@@ -82,9 +86,11 @@ console.log(followedDiaries);
                         {
                             
                             popularDiaries.map((diary) =>(
-
-                                    <PostFrame  key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
-                                     
+                                <>
+                                    {!user.result.blocked.includes(diary.creator) && !user.result.blockers.includes(diary.creator) && 
+                                        <PostFrame  key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId} params ='popular'/>
+                                    }
+                                </>    
                             ))
                         } 
                 </div>
@@ -100,9 +106,11 @@ console.log(followedDiaries);
                         {
                             
                             randomDiaries.map((diary) =>(
-
-                                    <PostFrame  key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
-                                     
+                                <>
+                                    {!user.result.blocked.includes(diary.creator) && !user.result.blockers.includes(diary.creator) && 
+                                        <PostFrame  key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId} params ='random'/>
+                                    }
+                                </>
                             ))
                         } 
                 </div>

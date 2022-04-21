@@ -25,6 +25,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
     const[messageData, setmessageData] = useState({convoId:convoId, senderId:viewer._id, receiverId:displayed._id, body:'', file:'', type:''});
     const[online, setOnline] = useState(false);
+    const user = JSON.parse(localStorage.getItem('profile'));
    
     const[loading, setLoading] = useState(false);
     const[progress,setProgress]= useState(0);
@@ -42,6 +43,8 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
 
     const dispatch = useDispatch(); 
+
+    console.log(displayed);
 
    
 
@@ -85,6 +88,8 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         }
      
     }, [unreadConvoNotifications]);
+
+    console.log(user.result.blockers);
     
 
    
@@ -400,7 +405,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
                                   </div>}
                                         
-
+                            {!displayed.blocked.includes(user.result._id) && !displayed.blockers.includes(user.result._id) &&
                                 <div  className=' w-full px-1 sm:w-1/2 lg:w-1/4 fixed bottom-0 z-50 py-2 bg-gray-200  right-0 sm:right-2 mt-6'>
 
                                        
@@ -475,7 +480,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                         }
 
 
-
+                                   
                                         <div className=' pt-2  text-gray-400 m-auto  items-center'>
                                              {/* UPLOAD INPUTS */}
 
@@ -641,7 +646,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                         }
                                       
                                       
-                                </div>
+                                </div>}
                                   
                                 
                     </div>

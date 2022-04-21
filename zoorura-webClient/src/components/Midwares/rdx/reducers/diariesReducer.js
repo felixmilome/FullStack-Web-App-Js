@@ -97,9 +97,10 @@ export const diariesReducer = (diaries = [], action) => {
  export const usersDiariesReducer = (diaries = [], action) => {
      
     switch(action.type) {
-         
+          
         case 'GET_USERS_DIARIES':
-             return action.payload;
+            console.log(action.payload)
+             return diaries.concat(action.payload);
 
         case 'DELETE_DIARY': 
              return diaries.filter((diary)=> diary._id !== action.payload);

@@ -164,6 +164,10 @@ function PostForm() {
         }
     }, [attachment]);
 
+      useEffect(() => {
+       dispatch({type: 'CLEAR_MINI_PROFILE'});
+    }, []);
+
     // useEffect(() => {
     //     if(searchedMiniProfile.userName?.length>0){
     //     setSearchError(false);
@@ -1127,9 +1131,11 @@ function readFile(file, type) {
                                     <div className="flex p-1 flex-wrap w-full bg-transparent rounded-md text-xs space-x-1 justify-center">
                                             {
                                                 tagObjArray.map((tag) =>(
-                                                    <div key={tag._id} >
+                                                    <>
+                                                   {!tag.blocked.includes(user.result._id) && <div key={tag._id} >
                                                         <PostFormTagSearch diariesData= {diariesData} setdiariesData={setdiariesData} tag={tag} tagArray={tagArray} tagObjArray={tagObjArray} setTagObjArray={setTagObjArray} setTagArray={setTagArray} />
-                                                    </div>
+                                                    </div>}
+                                                    </>
                                                 )) 
                                             }
                                     </div>}

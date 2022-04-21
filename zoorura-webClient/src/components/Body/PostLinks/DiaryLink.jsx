@@ -18,6 +18,7 @@ export const DiaryLink = ({setDiaryId}) => {
   }, []);
 
   const visitedDiaries = useSelector((state) => state?.visitedDiariesReducer);
+  const user = JSON.parse(localStorage.getItem('profile'));
   const diaries = visitedDiaries?.filter((diaryItem)=> diaryItem?._id ===diaryId);
   console.log({visitedDiaries});
 
@@ -29,7 +30,9 @@ export const DiaryLink = ({setDiaryId}) => {
                 { diaries.map((diary) =>(
 
                   <div> 
-                    <PostFrame  key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/> 
+                   { !user.result.blocked.includes(diary.creator) && !user.result.blockers.includes(diary.creator) && 
+                    <PostFrame  key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId} params ='link'/> 
+                   }
                   </div>  
                                 
                   ))

@@ -1,5 +1,16 @@
 import * as axs from './axs';
 
+// export const getUserDataAction = () => async (dispatch) => {
+//     try{
+
+//         const {data} = await axs.getUserDataApi(id); 
+//         dispatch ({type: 'USER_DATA', data});
+   
+
+//     } catch(error) {
+//         console.log(error); 
+//     }
+// }
 export const changeDpAction = (dp) => async (dispatch, navigate) => {
     try{
         const {data} = await axs.changeDpApi(dp); 
@@ -133,17 +144,50 @@ export const followAction = (followData, setLoadingButtons, socket, setFollowSpa
             setLoadingButtons(false);
         }else{
             const miniProfile= data.miniProfile;
+            const miniProfileId = data.miniProfile._id;
 
             dispatch ({type: 'FOLLOW', data:miniProfile}); 
+
+            dispatch ({type: 'FOLLOW_REDUCER', data:miniProfileId}); //actual follow reducer
             console.log('followed');
             console.log(data); 
 
             setLoadingButtons(false);
 
-        const socketNotificationData = data.newNotification;
-            socket.current.emit("sendNotification", {
-                socketNotificationData        
-            });
+        // const socketNotificationData = data.newNotification;
+        //     socket.current.emit("sendNotification", {
+        //         socketNotificationData        
+        //     });
+        }
+    
+    } catch(error) { 
+        console.log(error);
+    }
+      
+}
+export const quickFollowAction = (followData, setLoadingFollow) => async (dispatch) => {
+
+    try{
+        const {data} = await axs.followApi(followData);
+
+        if(data==='Spam'){
+          
+            return;
+
+        }else{
+            const miniProfile= data.miniProfile;
+            const miniProfileId = data.miniProfile._id;
+
+            dispatch ({type: 'FOLLOW_REDUCER', data:miniProfileId}); //actual follow reducer
+            console.log('follow Reducer');
+            console.log(data); 
+
+            setLoadingFollow(false);
+
+        // const socketNotificationData = data.newNotification;
+        //     socket.current.emit("sendNotification", {
+        //         socketNotificationData        
+        //     });
         }
     
     } catch(error) { 

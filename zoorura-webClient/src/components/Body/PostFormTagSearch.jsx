@@ -9,7 +9,7 @@ export const PostFormTagSearch = ({diariesData, setdiariesData, tag, tagArray, t
     <p>@{tag.userName}</p>
     <div onClick={ ()=>{
 
-       setTagObjArray(tagObjArray.filter((tagObj)=> tagObj !== tag));
+       setTagObjArray(tagObjArray.filter((tagObj)=> tagObj !== tag)); //remove tag
 
     //    setTagArray(tagArray.filter((tagItem)=> tagItem !== tag._id));
        

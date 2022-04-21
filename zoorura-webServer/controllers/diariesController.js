@@ -49,13 +49,13 @@ export const getDiaries = async  (req, res) => {
 export const getUsersDiaries = async  (req, res) => {
     try{ 
     
-        const{userId} = req.body;
+        const{userId} = req.params;
         const usersDiaries = await getUsersDiariesHandler(userId);
      
          res.status(200).json(usersDiaries);
      
  
-         
+          
     } catch(error){
 
         res.status(404).json({message: error.message});

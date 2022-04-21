@@ -35,7 +35,7 @@ function Feed(diaryId, setDiaryId) {
                             <Link to ='/PostForm'>
                                 <div className="bg-gradient-to-r 
                                 from-pink-500 to-yellow-500 
-                                hover:from-cyan-500 hover:to-yellow-500
+                                hover:from-gray-800 hover:to-gray-800
                                 flex justify-around  
                                  py-2 text-sm px-5  
                                 items-center cursor-pointer 

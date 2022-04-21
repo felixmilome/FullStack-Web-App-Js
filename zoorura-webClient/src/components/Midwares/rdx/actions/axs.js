@@ -11,9 +11,10 @@ API.interceptors.request.use((req)=>{
     }
     return req;
 })
-//Diary
+//Diary 
 export const getADiaryApi = (diaryId) => API.get(`/diaries/${diaryId}`);
 export const getDiariesApi = () => API.get('/diaries');
+export const getUsersDiariesApi = (userId) => API.get(`/diaries/usersDiaries/${userId}`);
 export const postDiariesApi =(newDiary) => API.post('/diaries', newDiary);
 export const patchDiariesApi = (id, diariesEditData) => API.patch(`/diaries/${id}`, diariesEditData);
 export const deleteDiariesApi = (id) => API.delete(`/diaries/${id}`);
@@ -29,6 +30,7 @@ export const checkUsernameApi = (username) => API.get (`/users/checkUsername/${u
 export const checkEmailApi = (email) => API.get (`/users/checkEmail/${email}`, email); 
 //UserProfile
 export const changeDpApi = (dp) => API.patch ('/users/changeDp', dp);
+//export const getUserData = () => API.get ('/users/userData');
 export const getMiniProfileApi = (profileName) => API.get (`/users/getMiniProfile/${profileName}`, profileName);
 export const followApi = (followData) => API.post (`/users/follow/`, followData);
 export const dailyPointsApi =(id) => API.patch (`/users/dailyPoints/${id}`, id);

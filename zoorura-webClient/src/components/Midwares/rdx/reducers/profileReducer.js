@@ -78,6 +78,8 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
         case 'EDIT_MINI_PROFILE':
         case 'FOLLOW':
             return action?.data;
+        case 'CLEAR_MINI_PROFILE':
+            return {};
          
         default:
             return miniProfile;   
@@ -124,7 +126,33 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
      }
      
  }
-//  export const followReducer = (follows = {}, action) => {
+ export const followsReducer = (follows = [], action) => {
+     
+    switch(action.type) {
+        case 'FOLLOW_REDUCER':
+            
+            if (!follows.includes(action.data)){
+
+                return [...follows, action.data];
+
+            } else if(follows.includes(action.data)){
+
+                return follows.filter((followed)=> followed!== action.data);
+
+            }
+
+        case 'REGISTER_FOLLOWS': 
+            console.log(action.data);
+           return follows.concat(action.data);  
+       
+           
+        default:
+            return follows; 
+            
+     }
+     
+ }
+//  export const followersReducer = (followers = {}, action) => {
      
 //     switch(action.type) {
 //         case 'FOLLOW':

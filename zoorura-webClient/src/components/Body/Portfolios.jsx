@@ -10,11 +10,13 @@ import {BeatLoader} from "react-spinners";
 import Portfolio from "./Portfolio";
 import { DpCropper } from "./DpCropper.jsx";
 import {useParams} from "react-router-dom";
-import {getMiniProfileAction, followAction, blockAction} from "../Midwares/rdx/actions/profileAction.js"
+import {getMiniProfileAction, followAction, quickFollowAction, blockAction} from "../Midwares/rdx/actions/profileAction.js";
+import {getUsersDiariesAction} from "../Midwares/rdx/actions/diariesAction.js";
 import { useEffect } from 'react';
 import ConvoForm from './ConvoForm.jsx'; 
-import {SurePop} from "./SurePop.jsx";
+import {SurePop} from "./SurePop.jsx"; 
 import ContactModIndi from "../Modals/ContactModIndi.jsx";
+import PostFrame from "./PostFrame.jsx";
 
 
 function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) { 
@@ -31,6 +33,21 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
         const miniProfile = useSelector((state) => state.getMiniProfileReducer);
 
        console.log(miniProfile);
+
+       const allUsersDiaries = useSelector((state) => state.usersDiariesReducer);
+
+       const usersDiaries =  allUsersDiaries?.filter(diary => diary.creator === miniProfile?._id); //creator part for displays
+        console.log(allUsersDiaries);
+       useEffect(() => {     
+           
+           if(miniProfile?._id?.length >0 && !usersDiaries?.length){
+               console.log(miniProfile)
+               dispatch(getUsersDiariesAction(miniProfile?._id)); 
+               console.log(allUsersDiaries);   
+           }
+   
+       }, [miniProfile]);
+
 
     const user = JSON.parse(localStorage.getItem('profile'));
     const[dpCropper, setdpCropper] = useState(false);
@@ -117,6 +134,11 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
          
     
        <div className="">
+                         <div className='flex justify-start fixed z-40 bottom-2 right-2 items-center w-full  m-auto bg-transparent w-full'>
+                               <div className='bg-gray-800 py-2 px-10 font-bold text-gray-100 text-xs rounded-md'>
+                                   <p>@{profileName}'s profile</p>
+                                </div>
+                            </div>
           
         {contactsIndi && <ContactModIndi convoId={convo[0]._id} setpopChatBox={setContactsIndi} displayed= {miniProfile} viewer = {user.result}/>}
             {blockFeedback !=='Success' && blockError &&
@@ -167,7 +189,8 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                         <></>
                     }
                     
-                        <div className='w-full opacity-90  m-auto  bg-transparent'>
+                        <div className=' w-full opacity-90  m-auto  bg-transparent'>
+                         
                   
                             <div className= 'flex m-auto bg-transparent'>
                             <div className="bg-gray-100 w-full lg:w-2/5 rounded-lg  text-gray-700 m-auto justify-around text-center items-center p-2 ">
@@ -304,17 +327,22 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
 
 
                            {/* //Diaries Map ========================== */}
-                            {/* <div className=''>
+                            {usersDiaries?.length>0 && <div className='m-auto my-2'>
                                 
-                                   { diaries.map((diary) =>(
+                                   { usersDiaries?.map((diary) =>(
                                         
-                                        // <Test key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
                                         
-                                    <Portfolio key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId}/>
-                                        // <PostBox key={diary._id} diary={diary} setDiaryId ={setDiaryId}/>
+                                        
+                                    <PostFrame key={diary._id} diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId} params ='profile'/>
+                                     
                                     ))
                                     }
-                            </div> */}
+                            </div>}
+                            {!usersDiaries?.length>0 && <div className='flex justify-center my-2'>      
+                                     
+                            <BeatLoader size={24} color='gray' loading/>
+                            
+                         </div>}
                         
                     
                 </div>

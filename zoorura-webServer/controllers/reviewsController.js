@@ -40,6 +40,10 @@ export const postReview = async  (req, res) => {
 
                 res.json('Spam'); 
 
+            } else if (user.blockers.includes(reviewedId)){
+
+                res.json('Blocked'); 
+
             }else{
 
             
