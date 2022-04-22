@@ -348,7 +348,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              justify-center 
                             text-white text-sm cursor-pointer
                             font-semibold p-1 mb-4">
-                                {loading === false ? <p>Create Account</p> : <BeatLoader size={10} color='gray' loading/>}
+                                {loading === false ? <p>Create Account</p> : <BeatLoader size={10} color='cyan' loading/>}
                         </button>
                         {/* <GoogleLogin
                         clientId="285886074445-79pdnit476c0enipcvt9cpnsnpn3dida.apps.googleusercontent.com"
@@ -543,7 +543,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                                 font-semibold p-1 mb-8">
                                  
                             
-                            {loading === false ? <p>Log In</p> : <BeatLoader size={10} color='gray' loading/>}
+                            {loading === false ? <p>Log In</p> : <BeatLoader size={10} color='cyan' loading/>}
 
                         </button>
                       

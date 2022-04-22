@@ -73,7 +73,9 @@ function ProfileModal({setpopProfile, setPopSaved}) {
                 <div className= "mb-60 border-gray-300 border-t">
 
                     <Link to= '/Wallet'>
+                        <div onClick= {()=>setpopProfile(false)}>
                         <ProfilemodalRow Icon = {CreditCardIcon} title ="Wallet" walletAmount={walletAmount}/>
+                        </div>
                     </Link>
 
                     <Link to= '/Settings'>

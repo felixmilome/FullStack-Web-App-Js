@@ -2,7 +2,7 @@ import Header from "../components/Headers/Header.jsx";
 import Footer from "../components/Sidebars/Footer.jsx";
 import Feed from "../components/Body/Feed.jsx";
 import Leftbar from "../components/Sidebars/Leftbar.jsx";
-import Rightbar from "../components/Sidebars/Rightbar.jsx";
+import Rightbar from "../components/Sidebars/Rightbar.jsx"; 
 import {Routes, Route} from 'react-router-dom';
 import PostForm from "../components/Body/PostForm.jsx";
 import PostEdit from "../components/Body/PostEdit.jsx";
@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 import {useDispatch} from 'react-redux';
 import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx' 
 import {Settings} from '../components/Body/Settings.jsx'
+import {ChatHunt} from '../components/Body/ChatHunt.jsx'
 import {Wallet} from '../components/Body/Wallet.jsx'
 import{SecureVerify} from '../components/Body/SecureVerify.jsx'
 import{ForgotPassword} from '../components/Body/ForgotPassword.jsx'
@@ -66,6 +67,7 @@ function Home({showProfile}) {
                         <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/> 
                         <Route exact path ="/PostForm" element ={<PostForm />}/>
                         <Route exact path ="/Settings" element = {<Settings/>}/>
+                        <Route exact path ="/ChatHunt" element = {<ChatHunt/>}/>
                         <Route exact path ="/Wallet" element = {<Wallet/>}/>
                         <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         </>

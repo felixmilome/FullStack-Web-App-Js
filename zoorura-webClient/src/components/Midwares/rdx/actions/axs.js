@@ -29,6 +29,7 @@ export const sendOtpApi = (email) => API.get (`/users/sendOtp/${email}`);
 export const checkUsernameApi = (username) => API.get (`/users/checkUsername/${username}`, username);
 export const checkEmailApi = (email) => API.get (`/users/checkEmail/${email}`, email); 
 //UserProfile
+export const getUsersApi = (user) => API.post ('/users/getUsers/', user); 
 export const changeDpApi = (dp) => API.patch ('/users/changeDp', dp);
 //export const getUserData = () => API.get ('/users/userData');
 export const getMiniProfileApi = (profileName) => API.get (`/users/getMiniProfile/${profileName}`, profileName);
@@ -42,6 +43,7 @@ export const dailyPointsApi =(id) => API.patch (`/users/dailyPoints/${id}`, id);
     export const blockApi = (blockData) => API.patch ('/users/block', blockData);
     export const unblockApi = (unblockData) => API.patch ('/users/unblock', unblockData); //has its own reducder
     export const populateBlockApi = () => API.patch ('/users/populateBlock');
+    
     //Delete Account 
     export const deleteAccountApi = (password) => API.post('/users/deleteAccount', password); 
 

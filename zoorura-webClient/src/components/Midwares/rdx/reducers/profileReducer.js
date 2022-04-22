@@ -87,6 +87,54 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
      }
      
  }
+ export const chatHuntReducer = (users = [], action) => {
+     
+    switch(action.type) {
+     
+        case 'CHAT_HUNT':
+            return action?.data;
+
+        case 'CLEAR_CHAT_HUNT':
+            return [];
+         
+        default:
+            return users;   
+            
+     }
+     
+ }
+ export const followersReducer = (users = [], action) => {
+     
+    switch(action.type) {
+     
+        case 'FOLLOWERS':
+            return action?.data;
+
+        case 'CLEAR_FOLLOWERS':
+            return [];
+         
+        default:
+            return users;   
+            
+     }
+     
+ }
+ export const followingReducer = (users = [], action) => {
+     
+    switch(action.type) {
+     
+        case 'FOLLOWING':
+            return action?.data;
+
+        case 'CLEAR_FOLLOWING':
+            return [];
+         
+        default:
+            return users;   
+            
+     }
+     
+ }
 
  export const blockReducer = (feedback = {}, action) => {
    
@@ -126,7 +174,7 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
      }
      
  }
- export const followsReducer = (follows = [], action) => {
+ export const followsReducer = (follows = [], action) => { //check if u have followed someone
      
     switch(action.type) {
         case 'FOLLOW_REDUCER':

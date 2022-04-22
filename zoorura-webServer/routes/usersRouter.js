@@ -1,5 +1,5 @@
 import express from 'express';
-import{register, login, verify,sendOtp, block,unblock, populateBlock, changeDp,getMiniProfile,follow, dailyPoints, deleteAccount, checkEmail,checkUsername, editProfile, editSecurity, forgotPassword} from '../controllers/usersController.js';
+import{register, login, verify,sendOtp, block,unblock, getUsers, populateBlock, changeDp,getMiniProfile,follow, dailyPoints, deleteAccount, checkEmail,checkUsername, editProfile, editSecurity, forgotPassword} from '../controllers/usersController.js';
 import { auth } from '../middleware/authMiddleware.js';
 
 
@@ -8,6 +8,7 @@ export const usersRouter = express.Router();
 usersRouter.post ('/register', register);
 usersRouter.post ('/login', login);
 usersRouter.patch ('/verify', verify);
+usersRouter.post ('/getUsers', auth, getUsers); //post coz it carries object
 usersRouter.get ('/sendOtp/:email', auth, sendOtp);
 usersRouter.get ('/checkEmail/:email', checkEmail);
 usersRouter.get ('/checkUsername/:username', checkUsername);

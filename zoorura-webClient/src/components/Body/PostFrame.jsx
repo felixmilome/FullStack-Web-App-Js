@@ -47,7 +47,7 @@ import { PostFrameReviews } from "./PostFrameReviews.jsx";
 import {Link} from 'react-router-dom';
 import Picker from 'emoji-picker-react'
 
-//Search Area title 5 img follow
+//Search Area title 5 img follow subscribe
 
 
 
@@ -141,7 +141,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
 
         const followDataObj = {follower:user.result._id, followed:creatorId}
         setLoadingFollow(true);
-        dispatch (quickFollowAction(followDataObj,setLoadingFollow));
+        dispatch (quickFollowAction(followDataObj));
 
 
     }

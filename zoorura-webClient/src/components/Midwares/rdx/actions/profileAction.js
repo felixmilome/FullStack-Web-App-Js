@@ -1,6 +1,6 @@
 import * as axs from './axs';
 
-// export const getUserDataAction = () => async (dispatch) => {
+// export const getUserDataAction = (id) => async (dispatch) => {
 //     try{
 
 //         const {data} = await axs.getUserDataApi(id); 
@@ -11,6 +11,35 @@ import * as axs from './axs';
 //         console.log(error); 
 //     }
 // }
+
+export const getUsersAction = (user) => async (dispatch) => {
+    try{
+        console.log(user)
+        const {data} = await axs.getUsersApi(user);
+        const {users, message} = data;
+        console.log(data);
+      
+
+        if (message === 'ChatHunt'){ 
+
+             dispatch ({type: 'CHAT_HUNT', data:users});
+
+        } else if (message === 'Followers'){ 
+
+            dispatch ({type: 'FOLLOWERS', data:users});
+
+       }else if (message === 'Following'){ 
+
+        dispatch ({type: 'FOLLOWING', data:users});
+
+   }
+   
+
+    } catch(error) {
+        console.log(error); 
+    }
+}
+
 export const changeDpAction = (dp) => async (dispatch, navigate) => {
     try{
         const {data} = await axs.changeDpApi(dp); 
@@ -182,7 +211,7 @@ export const quickFollowAction = (followData, setLoadingFollow) => async (dispat
             console.log('follow Reducer');
             console.log(data); 
 
-            setLoadingFollow(false);
+           // setLoadingFollow(false);
 
         // const socketNotificationData = data.newNotification;
         //     socket.current.emit("sendNotification", {

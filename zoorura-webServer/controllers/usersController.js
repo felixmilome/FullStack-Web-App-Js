@@ -120,6 +120,47 @@ function getCodec() {
       }
   }
 
+  export const getUsers = async (req,res) => {
+
+   
+    console.log(req.body);
+    console.log('getUsers')
+    const {type} = req.body;
+    console.log(type);
+    
+      try{ 
+
+        if(type === 'ChatHunt'){
+
+          const users = await UsersModel.find({},{_id:1, dpUrl:1, userName:1, blockers:1, blocked:1}).limit(40);
+          console.log(users);
+          res.json({users: users, message:'ChatHunt'});
+
+        }else if(type === 'Following'){
+
+          const {userId} = req.body;
+ 
+          const users = await UsersModel.findById(userId, {follows:1, blockers:1, blocked:1})
+          .populate('follows', 'dpUrl userName');
+
+          res.json({users: users, message:'Following'});
+
+        }else if(type === 'Following'){
+
+          const {userId} = req.body;
+ 
+          const users = await UsersModel.findById(userId, {followers:1, blockers:1, blocked:1})
+          .populate('followers', 'dpUrl userName');
+
+          res.json({users: users, message:'Followers'});
+
+        }
+      
+      } catch (error){
+          res.status(404).json({message: 'Something went wrong'});
+      }
+ 
+  }
 
   export const checkEmail = async (req,res) => {
     const {email} = req.params;
@@ -721,7 +762,7 @@ export const getMiniProfile = async(req,res) => {
 
 export const follow =  async (req, res)=> {
 
-  const {follower, followed} = req.body;
+  const { followed} = req.body;
   
       
     try{
@@ -734,12 +775,12 @@ export const follow =  async (req, res)=> {
           res.json('Spam');
 
       }else{
-          const followerUser = await UsersModel.findById (follower);
+          const followerUser = await UsersModel.findById (req.userId);
           console.log(followerUser.follows);
 
           if (followerUser.follows.includes(followed)){
             
-            const updatedFollower= await UsersModel.findByIdAndUpdate (follower, { $pull: { "follows": followed }}, { new: true });
+            const updatedFollower= await UsersModel.findByIdAndUpdate (req.userId, { $pull: { "follows": followed }}, { new: true });
             const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $pull: { "followers": updatedFollower._id }}, { new: true });
             const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
             res.json({miniProfile}); 
@@ -750,7 +791,7 @@ export const follow =  async (req, res)=> {
         
         } else {
 
-            const updatedFollower = await UsersModel.findByIdAndUpdate (follower, { $push: { "follows": followed }}, { new: true });
+            const updatedFollower = await UsersModel.findByIdAndUpdate (req.userId, { $push: { "follows": followed }}, { new: true });
             const updatedFollowed= await UsersModel.findByIdAndUpdate (followed, { $push: { "followers": updatedFollower._id }}, { new: true });
             const miniProfile = await UsersModel.findById (updatedFollowed._id , {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
             

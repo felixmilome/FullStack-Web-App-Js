@@ -5,7 +5,8 @@
  import {googleauthReducer} from './googleauthReducer';
  import { hallFameReducer } from './hallFameReducer';
  import {profileResetReducer, getMiniProfileReducer,blockReducer, followsReducer,
-         populateBlockReducer, securityResetReducer, forgotPasswordReducer} from './profileReducer';
+         populateBlockReducer, securityResetReducer, forgotPasswordReducer,
+        chatHuntReducer, followersReducer, followingReducer} from './profileReducer';
  import {convosReducer} from './convosReducer';
  import {convoStateReducer} from './stateReducers.js';
  import {messagesReducer} from './messagesReducer';
@@ -30,6 +31,7 @@
       hallFameReducer, convosReducer, messagesReducer,
       socketReducer, deleteAccountReducer,
       notificationsReducer, reviewsReducer, tipsReducer, followsReducer,
+      chatHuntReducer,followersReducer,followingReducer,
       blockReducer, populateBlockReducer, securityResetReducer,
       forgotPasswordReducer,headSearchReducer,
        messagesOpenedReducer, 

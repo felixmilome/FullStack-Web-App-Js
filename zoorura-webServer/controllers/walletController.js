@@ -9,10 +9,10 @@ export const getWallet = async  (req, res) => {
     try{ 
         const userWalletArrayObj = await UsersModel.findById(userId, {_id:0, wallet:1});
         const walletArray = userWalletArrayObj.wallet;
-        console.log(walletArray);
+        // console.log(walletArray);
         const walletValueConverted = await currenciesConverterHandler(walletArray)
         
-        console.log(walletValueConverted); 
+        // console.log(walletValueConverted); 
        
         res.status(200).json(walletValueConverted);    
          
