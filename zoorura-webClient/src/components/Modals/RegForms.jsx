@@ -14,7 +14,7 @@ import {Link} from "react-router-dom"
 import VideoPlayer from 'react-video-js-player';
 
 
-
+// SearchArea: Agree
 
 
 import {loginAction, registerAction, verifyAction} from '../Midwares/rdx/actions/auth.js';

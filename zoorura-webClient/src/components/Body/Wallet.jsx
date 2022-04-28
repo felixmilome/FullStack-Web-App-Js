@@ -26,12 +26,12 @@ export const Wallet = () => {
                 <div className='space-y-2'> 
 
                     <div className='flex m-3 text-sm items-center justify-center space-x-0.5 cursor-pointer'>
-                         <div onClick={()=>setMpesa(true)} className={`${mpesa === true && 'bg-gray-800 text-gray-100'} w-32 flex justify-center flex bg-gray-400 items-center border-gray-300  hover:bg-gray-800 hover:text-gray-100 border p-1 rounded-md`}>
+                         <div onClick={()=>setMpesa(true)} className={`${mpesa === true && 'bg-green-400 text-gray-100'} w-32 flex justify-center flex items-center border-gray-300  hover:bg-gray-800 hover:text-gray-100 border p-1 rounded-md`}>
                             <img src="./assets/images/mpesa.png" alt="DP" className="p-0.5 rounded-full h-7 w-7 "/>
                             <p>M-Pesa</p>
                         </div>
 
-                        <div onClick={()=>setMpesa(false)} className={`${mpesa === false && 'bg-gray-800 text-gray-100'} w-32 flex justify-center flex bg-gray-400 text-sm items-center border-gray-300 ${mpesa===false && 'bg-gray-800 text-gray-100'} hover:bg-gray-800 hover:text-gray-100 border p-1 rounded-md cursor-pointer`}>
+                        <div onClick={()=>setMpesa(false)} className={`${mpesa === false && 'bg-blue-400 text-gray-100'} w-32 flex justify-center flex text-sm items-center border-gray-300 ${mpesa===false && 'bg-gray-800 text-gray-100'} hover:bg-gray-800 hover:text-gray-100 border p-1 rounded-md cursor-pointer`}>
                             <img src="./assets/images/paypal.png" alt="DP" className="p-0.5 rounded-full h-7 w-7 "/>
                             <p>Paypal</p>
                         </div>
@@ -41,13 +41,28 @@ export const Wallet = () => {
                     <div className='flex text-xs items-center justify-center space-x-0.5 cursor-pointer'>
 
                         
-                         <div onClick={()=>setDeposit(true)}  className={`${deposit === true && ' bg-gray-800 text-gray-100'} w-24 flex justify-center text-center flex items-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
-                            <p>Deposit</p>
-                        </div>
+                        {mpesa===true &&
+                            <>
+                                <div onClick={()=>setDeposit(true)}  className={`${deposit === true && ' bg-green-400 text-gray-100'} w-24 flex justify-center text-center flex items-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
+                                    <p>Deposit</p>
+                                </div>
 
-                        <div onClick={()=>setDeposit(false)} className={`${deposit === false && ' bg-gray-800 text-gray-100'} w-24 flex justify-center text-center flex tems-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
-                            <p>Withdraw</p>
-                        </div>
+                                <div onClick={()=>setDeposit(false)} className={`${deposit === false &&  ' bg-green-400 text-gray-100'} w-24 flex justify-center text-center flex tems-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
+                                    <p>Withdraw</p>
+                                </div>
+                            </>
+                        }
+                        {mpesa===false &&
+                            <>
+                                <div onClick={()=>setDeposit(true)}  className={`${deposit === true && ' bg-blue-400 text-gray-100'} w-24 flex justify-center text-center flex items-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
+                                    <p>Deposit</p>
+                                </div>
+
+                                <div onClick={()=>setDeposit(false)} className={`${deposit === false &&  ' bg-blue-400 text-gray-100'} w-24 flex justify-center text-center flex tems-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
+                                    <p>Withdraw</p>
+                                </div>
+                            </>
+                        }
                         
                     </div>
 

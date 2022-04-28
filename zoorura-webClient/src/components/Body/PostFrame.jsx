@@ -47,7 +47,7 @@ import { PostFrameReviews } from "./PostFrameReviews.jsx";
 import {Link} from 'react-router-dom';
 import Picker from 'emoji-picker-react'
 
-//Search Area title 5 img follow subscribe
+//Search Area title 5 img follow subscribe 
 
 
 

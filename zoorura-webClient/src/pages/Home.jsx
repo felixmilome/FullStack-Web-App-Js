@@ -67,7 +67,7 @@ function Home({showProfile}) {
                         <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/> 
                         <Route exact path ="/PostForm" element ={<PostForm />}/>
                         <Route exact path ="/Settings" element = {<Settings/>}/>
-                        <Route exact path ="/ChatHunt" element = {<ChatHunt/>}/>
+                        <Route exact path ="/ChatHunt" element = {<ChatHunt setpopContacts={setpopContacts} />}/>
                         <Route exact path ="/Wallet" element = {<Wallet/>}/>
                         <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
                         </>

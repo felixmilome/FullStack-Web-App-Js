@@ -33,17 +33,22 @@ export const getConvos = async  (req, res) => {
             const editedGuest = await UsersModel.findByIdAndUpdate(guest, { $push: { "convoRequesters": req.userId }});
             const guestMiniProfile = await UsersModel.findById(editedGuest._id, {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
 
+            const newConvo = await ConvosModel.create({members:members, guest:guest, host: req.userId, createdOn: new Date(), approved:true, dateRank: Date.now(), type: type, tip:tip});
+            const introMessage = await MessagesModel.create({convoId:newConvo._id, senderId: newConvo.host, receiverId:newConvo.guest, body: intro, type:'text' });
+            const newConvoPopulated = await ConvosModel.findById(introMessage.convoId)
+            .populate('host', 'dpUrl userName blocked blockers convoTip')
+            .populate('guest', 'dpUrl userName blocked blockers convoTip')
+            .populate('members', 'dpUrl userName blocked blockers convoTip');
+            
+            const unpopulatedNewMsgNotification = await NotificationsModel.create({sender:req.userId, receiver:guest, receiverId:guest, body:intro, postId:newConvo._id, read: false, class:'message',  type: 'message', createdOn: new Date(), dateRank: Date.now()});
+            const newMsgNotification = await NotificationsModel.findById(unpopulatedNewMsgNotification._id)
+            .populate('sender', 'dpUrl userName'); 
          
             
             if (tip>0){
-                const newConvo = await ConvosModel.create({members:members, guest:guest, host: req.userId, createdOn: new Date(), approved:true, dateRank: Date.now(), type: type, tip:tip});
-                const introMessage = await MessagesModel.create({convoId:newConvo._id, senderId: newConvo.host, receiverId:newConvo.guest, body: intro, type:'text' });
-                const newConvoPopulated = await ConvosModel.findById(introMessage.convoId)
-                .populate('host', 'dpUrl userName blocked blockers convoTip')
-                .populate('guest', 'dpUrl userName blocked blockers convoTip')
-                .populate('members', 'dpUrl userName blocked blockers convoTip');
+               
 
-            //WITHDRAW DATAS==============-----------------------------------------
+            //WITHDRAW DATAS==============----------------------------------------- 
 
                 const walletCut = 0 - amount;
                 const withdrawalData = {type:`(${amount}) Tip On Convo`, receiverId: guest, postId: newConvo._id, amount:amount};
@@ -71,7 +76,7 @@ export const getConvos = async  (req, res) => {
                 const walletPush = Math.trunc(unroundedTaxedAmount * Math.pow(10, 2)) / Math.pow(10, 2);
                 const depositData = {type:`(${amount}) Tip on Convo`, giverId: req.userId, postId: newConvo._id, amount:walletPush};
                
-               
+                
                 
                 //ACTUAL DEPOSIT---------------
                 
@@ -82,15 +87,17 @@ export const getConvos = async  (req, res) => {
                 const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                 .populate('sender', 'dpUrl userName ');
 
-                res.status(200).json({miniProfile:guestMiniProfile, newNotification: newNotification, newConvo:newConvoPopulated});
+                
+
+                res.status(200).json({miniProfile:guestMiniProfile, newNotification: newNotification, newMsgNotification: newMsgNotification, newConvo:newConvoPopulated});
             } 
-
+ 
             else if (tip===0){
-                const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:guest, receiverId:guest, tipAmount: 0, body:intro, read: false, class:'normal', type:  'freeConvo', createdOn: new Date(), dateRank: Date.now()});
-                const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
-                .populate('sender', 'dpUrl userName');
+                // const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:guest, receiverId:guest, tipAmount: 0, body:intro, read: false, class:'normal', type:  'freeConvo', createdOn: new Date(), dateRank: Date.now()});
+                // const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
+                // .populate('sender', 'dpUrl userName');
 
-                res.status(200).json({miniProfile:guestMiniProfile, newNotification: newNotification});
+                res.status(200).json({miniProfile:guestMiniProfile, newMsgNotification:newMsgNotification,  newConvo:newConvoPopulated});
             } 
            
             

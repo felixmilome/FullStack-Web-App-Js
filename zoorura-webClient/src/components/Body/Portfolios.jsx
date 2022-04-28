@@ -13,11 +13,13 @@ import {useParams} from "react-router-dom";
 import {getMiniProfileAction, followAction, quickFollowAction, blockAction} from "../Midwares/rdx/actions/profileAction.js";
 import {getUsersDiariesAction} from "../Midwares/rdx/actions/diariesAction.js";
 import { useEffect } from 'react';
-import ConvoForm from './ConvoForm.jsx'; 
+import ConvoForm from './ConvoForm.jsx';
+import ContactMod from '../Modals/ContactMod.jsx';
 import {SurePop} from "./SurePop.jsx"; 
 import ContactModIndi from "../Modals/ContactModIndi.jsx";
 import PostFrame from "./PostFrame.jsx";
 
+// Search Area  Chat
 
 function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) { 
 
@@ -71,9 +73,9 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
     
     const socket = useSelector((state) => state.socketReducer);
 
-    const convo = convosAll.filter(convo =>
-     (convo.guest._id == user.result._id && convo.host._id === miniProfile._id)
-     ||(convo.host._id == user.result._id && convo.guest._id === miniProfile._id)
+    const  Chat = convosAll.filter( Chat =>
+     ( Chat.guest._id == user.result._id &&  Chat.host._id === miniProfile._id)
+     ||( Chat.host._id == user.result._id &&  Chat.guest._id === miniProfile._id)
      );
     
 
@@ -107,14 +109,14 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
     console.log(blockData);
 
 }
-   const handleConvo = async() =>{
-    //    console.log (convo[0]._id);
+const handleConvo = async() =>{
+    //    console.log ( Chat[0]._id);
     //    console.log(convosAll);
     //    console.log (convoState);
-    if(convo.length < 1 && convoState !== 'SearchingConvo'){  
-        setMembers([user.result._id, miniProfile.Id]);
+    if( Chat.length < 1 && convoState !== 'SearchingConvo'){  
+       // setMembers([user.result._id, miniProfile.Id]); //Revisist
         setpopConvoForm(true);
-    }else if (convo.length > 0 && convoState === 'YesConvo'){
+    }else if ( Chat.length > 0 && convoState === 'YesConvo'){
        setpopContacts(false);
        setContactsIndi(true);
     }
@@ -140,7 +142,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                 </div>
                             </div>
           
-        {contactsIndi && <ContactModIndi convoId={convo[0]._id} setpopChatBox={setContactsIndi} displayed= {miniProfile} viewer = {user.result}/>}
+        {contactsIndi && Chat[0]?._id && <ContactMod convoId={ Chat[0]?._id} setpopChatBox={setContactsIndi} displayed= {miniProfile} viewer = {user.result}/>}
             {blockFeedback !=='Success' && blockError &&
                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
                            <div className= 'flex p-2 m-2 rounded-md bg-red-100 text-xs' > 
@@ -252,7 +254,7 @@ function Portfolios({diaryId, setDiaryId, setpopContacts, popContacts}) {
                                                                         <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">
                                                                             {miniProfile?.convoRequesters.includes(user.result._id) ? "Requested" : "Convo/Chat"}
                                                                             </p> 
-                                                                        <HiOutlineChatAlt2 />
+                                                                        <HiOutlineChatAlt2 />  
                                                                       
                                                                        
                                                                      

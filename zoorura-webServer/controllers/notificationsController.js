@@ -54,14 +54,14 @@ export const postNotifications = async  (req, res) => {
  }
  export const readConvoNotifications = async  (req, res) => {
 
-    const {convoId} = req.params;
+    const {convoId} = req.params; 
     console.log(req.params); 
 
     try{  
     
-        const updatedNotifications = await NotificationsModel.deleteMany({postId: { $in: [ convoId ] } })
+        const updatedNotifications = await NotificationsModel.deleteMany({'postId':convoId, 'type':'message'});
         
-        console.log('deleted all');
+        console.log('deleted all messages');
         console.log(updatedNotifications);
 
   

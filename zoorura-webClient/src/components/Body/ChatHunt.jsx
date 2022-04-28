@@ -7,7 +7,7 @@ import {getUsersAction} from '../Midwares/rdx/actions/profileAction.js';
 
 
 
-export const ChatHunt = () => { 
+export const ChatHunt = ({setpopContacts}) => { 
     const user = JSON.parse(localStorage.getItem('profile'));
     const follows = useSelector((state) => state.followsReducer);
     const dispatch = useDispatch ();
@@ -17,6 +17,12 @@ export const ChatHunt = () => {
         dispatch(getUsersAction(userObj));
       }, []);
 
+    const setpopContactsFalse = () => {
+
+        setpopContacts(false);
+        console.log('setCons');
+
+    }
 
 
       const chatPeople = useSelector((state) => state.chatHuntReducer);
@@ -24,8 +30,8 @@ export const ChatHunt = () => {
   return (
     <div className= 'top-0  w-screen h-full'>
 
-            <div className='fixed h-16 top-24 z-40  xl:top-16 items-center  top-0 flex justify-center  w-full m-auto space-x-1 '>
-                <div className='flex justify-center p-2 bg-gray-200 lg:w-2/5 w-full'>
+            <div className='fixed h-16 top-28 z-40  xl:top-16 items-center  flex justify-center  w-full m-auto space-x-1 '>
+                <div className='flex justify-center p-2 bg-gray-200 rounded-md  lg:w-2/5 w-full shadow-xl'>
                     <div className='p-2 bg-gray-800 rounded-full'>
                     <IoMdChatboxes className=" h-4 w-4 text-white"/> 
                     </div> 
@@ -34,21 +40,21 @@ export const ChatHunt = () => {
                     </div>
                 </div>
 
-            </div>
+            </div> 
        
         <div className='flex justify-center'>
 
-            <div className= 'border border-gray-200 rounded-xl grid grid-cols-2 mx-auto mt-14   w-full lg:w-2/5 '>    
+            <div className= '  grid grid-cols-2 mx-auto mt-14   w-full lg:w-2/5 '>    
                 {/* Person Box MAPS */}
 
                 {
                             
-                            chatPeople.map((person) =>(
+                            chatPeople.map((miniProfile) =>(
                                 <>
-                                    {!user.result.blocked.includes(person._id) && !user.result.blockers.includes(person)  &&
-                                    !person.blockers.includes(user.result._id) && !person.blocked.includes(user.result._id) && 
-                                    !follows.includes(person._id) &&  person._id !== user.result._id &&
-                                        <ChatHuntRow  key={person._id} person={person} />
+                                    {!user.result.blocked.includes(miniProfile._id) && !user.result.blockers.includes(miniProfile)  &&
+                                    !miniProfile.blockers.includes(user.result._id) && !miniProfile.blocked.includes(user.result._id) && 
+                                    !follows.includes(miniProfile._id) &&  miniProfile._id !== user.result._id &&
+                                        <ChatHuntRow  key={miniProfile._id} miniProfile={miniProfile} setpopContactsFalse={setpopContactsFalse} />
                                     } 
                                 </>  
                             ))

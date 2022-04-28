@@ -25,44 +25,42 @@ export const getConvosAction = (id) => async (dispatch) => {
 
 export const postConvosAction = (convoData, setLoading, setpopConvoForm, socket) => async (dispatch) => {
     try{
+
         const {data} = await axs.postConvosApi(convoData);
         dispatch ({type: 'EDIT_MINI_PROFILE', data: data?.miniProfile});
         setLoading(false);
         setpopConvoForm(false);
-        const socketNotificationData = data?.newNotification;
-        console.log(data);
        
+        const socketConvoData = data?.newConvo;
+        const newConvo = data?.newConvo;
 
-        if (socketNotificationData.type === 'tipConvo'){
+        console.log(data);
 
-                
-                const socketConvoData = data?.newConvo;
-                const newConvo = data?.newConvo;
-                console.log(data);
-                dispatch ({type: 'POST_CONVO', payload: newConvo}); 
-                dispatch ({type: 'YES_CONVO'}); 
+         
+        console.log(data);
+        dispatch ({type: 'POST_CONVO', payload: newConvo}); 
+        dispatch ({type: 'YES_CONVO'}); //to maark that convos exist and not 0 convos.
+
+        socket.current.emit("sendConvo", { 
+            socketConvoData        
+        });
+        console.log('Convo Sent'); 
+        
+        var socketNotificationData = data?.newMsgNotification;
+       
+        socket.current.emit("sendNotification", { 
+            socketNotificationData        
+        });  
+
+        if (convoData.tip > 0){
+
+            var socketNotificationData = data?.newNotification;
 
                 socket.current.emit("sendNotification", { 
                     socketNotificationData        
-                }); 
-                socket.current.emit("sendConvo", { 
-                    socketConvoData        
-                });
-                console.log('tipConvo Sent');
-
-        } else if (socketNotificationData.type === 'freeConvo'){
-
-
-                console.log(data);
-
-                socket.current.emit("sendNotification", { 
-                    socketNotificationData        
-                });
-          
-        }
+                });        
         
-        
-        
+            } 
 
     } catch(error) { 
         console.log(error?.message);

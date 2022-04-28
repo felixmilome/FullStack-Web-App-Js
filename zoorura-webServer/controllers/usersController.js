@@ -17,7 +17,7 @@ import {MessagesModel} from '../models/messagesModel.js';
 import {ReviewsModel} from '../models/reviewsModel.js';
 import {NotificationsModel} from '../models/notificationsModel.js';
 
-//Search Area: follow 
+//Search Area: follow getUsers
 
 
 import dotenv from 'dotenv';
@@ -132,7 +132,7 @@ function getCodec() {
 
         if(type === 'ChatHunt'){
 
-          const users = await UsersModel.find({},{_id:1, dpUrl:1, userName:1, blockers:1, blocked:1}).limit(40);
+          const users = await UsersModel.find({},{_id:1, dpUrl:1, userName:1, blockers:1, blocked:1, convoTip:1}).limit(40);
           console.log(users);
           res.json({users: users, message:'ChatHunt'});
 
@@ -140,7 +140,7 @@ function getCodec() {
 
           const {userId} = req.body;
  
-          const users = await UsersModel.findById(userId, {follows:1, blockers:1, blocked:1})
+          const users = await UsersModel.findById(userId, {follows:1, blockers:1, blocked:1, convoTip:1})
           .populate('follows', 'dpUrl userName');
 
           res.json({users: users, message:'Following'});
@@ -149,7 +149,7 @@ function getCodec() {
 
           const {userId} = req.body;
  
-          const users = await UsersModel.findById(userId, {followers:1, blockers:1, blocked:1})
+          const users = await UsersModel.findById(userId, {followers:1, blockers:1, blocked:1, convoTip:1})
           .populate('followers', 'dpUrl userName');
 
           res.json({users: users, message:'Followers'});
@@ -442,7 +442,7 @@ export const register = async (req,res) => {
               console.log(uniqueStr);
               const uniqueStrEncrypted = await bcrypt.hash (uniqueStr, 12);
               
-              const resultX = await UsersModel.create({email, userName, password: hashedPassword, verCode: uniqueStrEncrypted, verTime: Date.now(), verExpiry: Date.now() + 172800000});
+              const resultX = await UsersModel.create({email, userName, password: hashedPassword, convoTip:5, verCode: uniqueStrEncrypted, verTime: Date.now(), verExpiry: Date.now() + 172800000});
               const result = await UsersModel.findById(resultX._id, {password:0, verCode:0});
                 
               console.log(result);

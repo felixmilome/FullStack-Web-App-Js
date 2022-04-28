@@ -224,10 +224,10 @@ export const deleteDiaries = async (req,res) =>{
 
     if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
     await DiariesModel.findByIdAndRemove(id);
-    await ReviewsModel.deleteMany({'reviewedPostId': id});
-    await SavedDiariesModel.deleteMany({'diaryId': id});
-    await TipsModel.deleteMany({'tippedPostId:': id});
-    await DiariesModel.deleteMany({'originalId:': id});
+    await ReviewsModel.deleteMany({'reviewedPostId':id});
+    await SavedDiariesModel.deleteMany({'diaryId':id});
+    await TipsModel.deleteMany({'tippedPostId':id});
+    await DiariesModel.deleteMany({'originalId':id});
     console.log("Diary Deleted!")
     res.json({message: "Post Deleted Successfully"});
 

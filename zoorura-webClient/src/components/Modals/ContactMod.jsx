@@ -19,7 +19,7 @@ import { SurePop } from "../Body/SurePop.jsx";
 import{readConvoNotificationsAction} from "../Midwares/rdx/actions/notificationsAction.js" 
 import Picker from 'emoji-picker-react';
 
-//Search Area: textarea
+//Search Area: textarea delete
 
 function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
@@ -87,7 +87,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
             dispatch(readConvoNotificationsAction(convoId));
         }
      
-    }, [unreadConvoNotifications]);
+    }, [unreadConvoNotifications]); 
 
     console.log(user.result.blockers);
     
