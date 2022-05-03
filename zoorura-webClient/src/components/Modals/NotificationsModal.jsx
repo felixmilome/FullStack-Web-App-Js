@@ -32,7 +32,7 @@ function NotificationsModal({popTipNotifications}) {
                     notifications.sort((a, b) => a.dateRank < b.dateRank ? 1 : -1).map((notification) =>(
 
                     <div key= {notification._id} className= 'w-fit' >
-                         <Link to ={notification.class === 'normal' && notification.type !=='freeConvo' && `/DiaryLink/${notification.postId}`}>
+                         <Link to ={notification.class === 'normal' && `/DiaryLink/${notification.postId}`}>
                         <NotificationsmodalRow notification={notification}  />  
                         </Link>
                     </div>

@@ -181,7 +181,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-        <div className="flex justify-center items-center fixed top-0 left-0 z-50 w-full h-screen overflow-y-scroll">
+        <div className="flex justify-center items-center fixed top-0 left-0 z-50  w-full h-screen overflow-y-scroll">
              
         {/* ============Floating FORM BOX ======== */}
     {/* <iframe src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"

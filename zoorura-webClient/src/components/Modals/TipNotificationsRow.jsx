@@ -58,6 +58,13 @@ function TipsNotificationsRow ({notification}) {
                             <p className= "font-light text-left">"{notification.body}"</p>
                         </>      
                     }
+                    
+                    {notification.type ==='displayNotificationTip' && 
+                        <>
+                            <p className= "font-semibold ">tipped ({notification.tipAmount}) for endorsing his post:</p>
+                            <p className= "font-light text-left">"{notification.body}"</p>
+                        </>      
+                    }
 
 
 

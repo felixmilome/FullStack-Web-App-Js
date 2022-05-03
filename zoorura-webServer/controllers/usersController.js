@@ -553,6 +553,8 @@ export const verify = async(req,res) => {
                       try {
                       const verifiedUser = await UsersModel.findByIdAndUpdate (id, {verified: true, dailyLogin: Date.now()}, { new: true });
                       
+                      const newDiary = await DiariesModel.create({creator:id, postType:'diary', diaryMiniProfile:id, publicity:'public', title:"Hello There!👋 ", caption:"I Have Joined Zoorura", time: new Date().toISOString(), newComer:true, dateRank: (Date.now()/360000) });
+                      
 
                       const result = await UsersModel.findById(verifiedUser._id, {password:0, verCode:0});
 

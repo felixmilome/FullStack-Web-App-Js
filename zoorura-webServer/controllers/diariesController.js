@@ -133,8 +133,11 @@ export const postDiaries =  async (req, res)=> {
                                     console.log(newDisplay); 
                             
                                     await newDisplay.save();
-
-                                    const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:displayedDiary.creator, receiverId:displayedDiary.creator, body:displayedDiary.title, postId:newDisplay._id, read: false, class:'normal',  type: 'display', createdOn: new Date(), dateRank: Date.now()});
+                                    
+                                    const updatedUser = await UsersModel.findByIdAndUpdate(req.userId, { $set: {postSpam:newPostSpam}}, { new: true });
+                                    const unroundedTipAmount = (user.followers.length)/100 + 1;
+                                    const tipAmount = Math.trunc(unroundedTipAmount * Math.pow(10, 2)) / Math.pow(10, 2);
+                                    const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:displayedDiary.creator, receiverId:displayedDiary.creator, body:displayedDiary.title, postId:newDisplay._id, read: false, class:'normal',  type: 'display', tipAmount:tipAmount, createdOn: new Date(), dateRank: Date.now()});
                                     const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
                                     .populate('sender', 'dpUrl userName');
 
@@ -183,7 +186,7 @@ export const patchDiaries = async (req, res) =>{
 
             res.json('Spam');
 
-        }else if(newPostSpam <10 && newDiary.title.length>0 && newDiary.title.length<50
+        }else if(newPostSpam <10 && newDiary.title.length>0 && newDiary.title.length<50 && oldDiary.postType !== 'display'
             && newDiary.caption.length>0 && newDiary.caption.length<500 
             && oldDiary.creator === req.userId
             ){
@@ -193,11 +196,6 @@ export const patchDiaries = async (req, res) =>{
                console.log({patchedDiary});
                console.log({updatedUser}) 
                res.json('Success');
-                console.log('Updated');
-
-        }else if(newPostSpam >10){
-
-                res.json('Spam');
                 console.log('Updated');
 
         }
@@ -213,7 +211,7 @@ export const patchDiaries = async (req, res) =>{
 //Delete  Diariessss===========================================
 export const deleteDiaries = async (req,res) =>{
     const {id} = req.params;
-    const requester = req.userId;
+    const requester = req.userId; 
    const diary = await DiariesModel.findById(id);
    const creator = diary.creator;
 

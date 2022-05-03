@@ -93,7 +93,7 @@ function Home({showProfile}) {
                                     backgroundSize: 'contain',
                                     backgroundRepeat: 'repeat',
                                     pointerEvents: 'none',
-                                    opacity: 0.04,
+                                    opacity: 0.03,
                                 }}
                 className=" fixed top-0 z-20  w-screen h-screen ">  
                     

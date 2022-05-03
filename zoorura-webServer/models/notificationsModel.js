@@ -20,7 +20,7 @@ const notificationsSchema = mongoose.Schema({
         body: {
                 type: String,
                 default: null,
-                }, 
+        }, 
         postId: {
                 type: String,
                 default: null
@@ -31,19 +31,23 @@ const notificationsSchema = mongoose.Schema({
         },
         tipAmount: {
                 type: String,
-                default: null,
+                default: 0,
+        },
+        tipped: {
+                type: Boolean,
+                default: false,
         },
         read: {
                 type: Boolean,
                 default: false,
         }, 
-        type: {
+        type: { 
                 type: String,
                 required:true
         },
         class:{
                 type:String,
-                required:true
+                required:true 
                 
         },
         link: {

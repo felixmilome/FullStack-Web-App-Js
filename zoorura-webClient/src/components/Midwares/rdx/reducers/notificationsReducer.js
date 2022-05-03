@@ -5,13 +5,14 @@ export const notificationsReducer = (notifications = [], action) => {
             return notifications;
         case 'GET_NOTIFICATIONS': 
             return action.payload;
+            
+        case 'TIP_DISPLAY_NOTIFICATION':
+            return notifications.map((notification) => notification._id === action.payload._id ? action.payload : notification);
+       
         case 'READ_NOTIFICATIONS': 
 
-           //const remaining = notifications.filter((notification)=> notification._id !== action.payload._id);
             const markedRead = notifications.map((notification) => notification._id === action.payload._id ? action.payload : notification);
-            //return [...notifications, action.payload];
             console.log(markedRead);
-            //return remaining.concat(action.payload); 
             return markedRead;
        
         case 'READ_CONVO_NOTIFICATIONS': 

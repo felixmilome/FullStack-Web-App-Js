@@ -7,7 +7,7 @@ export const getNotifications = async  (req, res) => {
 
     try{ 
         const notifications = await NotificationsModel.find({receiver: { $in: [ id ] } }).sort({"dateRank":-1})
-        .populate('sender', 'dpUrl userName');
+        .populate('sender', 'dpUrl userName followers');
        // console.log(notifications);
         res.status(200).json(notifications);
 
@@ -41,9 +41,9 @@ export const postNotifications = async  (req, res) => {
         
         console.log(updateNotification);
         
-        const unpopulatedNewNotification = await NotificationsModel.findById(id).populate('sender', 'dpUrl userName'); ;
-        const newNotification = await NotificationsModel.findById(unpopulatedNewNotification._id)
-        .populate('sender', 'dpUrl userName'); 
+       // const unpopulatedNewNotification = await NotificationsModel.findById(id).populate('sender', 'dpUrl userName'); ;
+        const newNotification = await NotificationsModel.findById(id)
+        .populate('sender', 'dpUrl userName followers'); 
 
         res.status(200).json(newNotification);
 

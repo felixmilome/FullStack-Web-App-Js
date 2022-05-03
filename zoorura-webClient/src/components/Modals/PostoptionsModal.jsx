@@ -27,6 +27,8 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
     const[tags, setTags] = useState([]);
     const[savedDiaryData, setSavedDiaryData] = useState({diaryId:diary._id});
 
+    const user = JSON.parse(localStorage.getItem('profile'));
+
 
 
     const dispatch = useDispatch();
@@ -115,18 +117,20 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
             
             </div>
 
+            {user.result._id === diary.creator && 
             <div onClick = {()=> setPopDelete(true)} > 
             <PostOptionsRow 
              Icon = {TrashIcon} title ="Delete"/>
-            </div>
+            </div>}
             <div>  
             <PostOptionsRow Icon = {ExclamationIcon}  title ="Report"/>
             </div>
+            {user.result._id === diary.creator && 
             <div onClick = {()=> setPopEdit(true)}>
                 <div onClick = {()=> setPostId(diary._id)}>  
                 <PostOptionsRow Icon = {AiOutlineEdit} title ="Edit"/>
                 </div> 
-            </div>
+            </div>}
            
 
             {/* </Link> */}
@@ -135,7 +139,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
 
         {/* ====DELETER ========*/}
 
-        { popDelete &&  <div className=" fixed left-0 top-0 flex justify-center items-center z-40 w-full h-screen  bg-transparent text-base font-light text-gray-700">
+        { popDelete && user.result._id !== diary.creator &&  <div className=" fixed left-0 top-0 flex justify-center items-center z-40 w-full h-screen  bg-transparent text-base font-light text-gray-700">
                <div className= "z-40 bg-gray-100 rounded-xl p-8 text-center">
               
                     <p> <span className="font-bold">Delete the post: {diary.title}?</span></p>

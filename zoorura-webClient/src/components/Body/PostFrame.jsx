@@ -47,7 +47,7 @@ import { PostFrameReviews } from "./PostFrameReviews.jsx";
 import {Link} from 'react-router-dom';
 import Picker from 'emoji-picker-react'
 
-//Search Area title 5 img follow subscribe 
+//Search Area Original
 
 
 
@@ -201,14 +201,20 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                             </div> 
                            
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile[0].userName}</p>
+                                <div className='flex justify-center items-center space-x-2'>
+                                    <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile[0].userName}</p>
+                                    {diary.newComer===true &&
+                                     <div className='items-center p-1 text-xs text-yellow-500 border-yellow-500 border font-semibold bg-gray-100 rounded'>
+                                       🤩  : Newbie Post
+                                    </div>}
+                                </div>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                                 
                                 {params !== 'profile' && !follows.includes(diary.miniProfile[0]._id) && 
                                     <>
                                         {loadingFollow === false ?
 
-                                            <div onClick={()=>followHandler(diary.miniProfile[0]._id)} className='flex text-sm justify-center items-center w-24 border border-cyan-400 rounded-md font-normal hover:bg-cyan-400  cursor-pointer'>
+                                            <div onClick={()=>followHandler(diary.miniProfile[0]._id)} className='flex text-xs justify-center items-center w-24 border border-cyan-400 rounded-full font-normal hover:bg-cyan-400  cursor-pointer'>
                                                 <p>subscribe</p>
                                             </div>
                                             :
@@ -232,14 +238,20 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                             </div> 
                            
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName}</p>
+                                <div className='flex justify-center items-center space-x-2'>
+                                    <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName}</p>
+                                    {diary.newComer===true && 
+                                    <div className='items-center p-1 text-xs text-yellow-500 border-yellow-500 border font-semibold bg-gray-100 rounded'>
+                                        🤩  : Newbie Post
+                                    </div>}
+                                </div>
                                 <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                                
                                 {params !== 'profile' && !follows.includes(diary.diaryMiniProfile._id) && 
                                     <>
                                         {loadingFollow === false ?
 
-                                            <div onClick={()=>followHandler(diary.diaryMiniProfile._id)} className='flex text-sm justify-center items-center w-24 border border-cyan-400 rounded-md font-normal hover:bg-cyan-400  cursor-pointer'>
+                                            <div onClick={()=>followHandler(diary.diaryMiniProfile._id)} className='flex text-xs justify-center items-center w-24 border border-cyan-400 rounded-full font-normal hover:bg-cyan-400  cursor-pointer'>
                                                 <p>subscribe</p>
                                             </div>
                                             :
@@ -899,7 +911,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         </div></>}
         {diary.postType === 'display' &&
             <div className="w-full  justify-around transition delay-50 flex items-center  bg-gray-100 rounded-b-lg border-t border-gray-300 font-bold p-3">
-              <Link to={'/DiaryLink/'+diary._id}>
+              <Link to={'/DiaryLink/'+ diary.originalId}>
                 <div className="relative flex items-center rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
                                 onClick={ () => {setpopTip(!popTip)}}>
                                 

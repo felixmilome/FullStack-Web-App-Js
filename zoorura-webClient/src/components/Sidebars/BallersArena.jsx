@@ -41,7 +41,7 @@ export const BallersArena = () => {
                     { hallFame.map((rank) =>(
                         <Link to={'/Portfolios/' + rank.userName} key={rank._id}>
                            
-                             <LeftbarRow Src = {rank.dpUrl} title ={(hallFame.indexOf(rank)+1)} PersonName= {rank.userName} Points= {rank.activityPointsTotal}/>
+                             <LeftbarRow Src = {rank.dpUrl} title ={(hallFame.indexOf(rank)+1)} PersonName= {rank.userName} Points= {Math.trunc(rank.activityPointsTotal * Math.pow(10, 2)) / Math.pow(10, 2)}/>
                           
                         </Link>
                         ))

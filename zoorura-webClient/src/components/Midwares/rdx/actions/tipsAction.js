@@ -84,6 +84,13 @@ export const postTipsAction = (tipData, setpopSure, setpopTip, setTipLoading, se
                 socket.current.emit("sendNotification", {
                     socketNotificationData        
                 });
+        }  else if (newTip.type === 'displayNotificationTip'){
+
+            dispatch ({type: 'TIP_DISPLAY_NOTIFICATION', payload: tippedPost});
+
+                socket.current.emit("sendNotification", {
+                    socketNotificationData        
+                });
         }
  
        
