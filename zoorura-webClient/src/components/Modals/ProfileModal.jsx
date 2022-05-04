@@ -14,6 +14,7 @@ import {useNavigate} from 'react-router-dom';
 import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
 import {getWalletAction} from "../Midwares/rdx/actions/walletAction.js"
 import { useState, useEffect } from 'react';
+import { Spring, animated } from 'react-spring';
 
 
 
@@ -47,6 +48,18 @@ function ProfileModal({setpopProfile, setPopSaved}) {
       //  window.location.reload(true);
     }
     return (
+        <Spring
+        
+        from={
+            { opacity: 0}
+        }
+        
+        to={
+          { opacity: 1}
+         
+        }>
+        {styles => (
+          <animated.div style={styles}>
         <div className="fixed border-l-8 border-gray-200 p-4  md:w-1/2 lg:w-1/3 xl:w-1/4 w-3/4 mt-4 rounded-md mt-6 sm:mt-0 right-3 sm:right-1.5 top-20 h-full z-0 flex justify-center bg-gray-200">
 
             <div className="overflow-scroll">
@@ -103,6 +116,9 @@ function ProfileModal({setpopProfile, setPopSaved}) {
             </div>
 
         </div> 
+        </animated.div>
+        )}
+      </Spring>
     )
 }
 

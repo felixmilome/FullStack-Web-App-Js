@@ -3,6 +3,7 @@ import {IoMdChatboxes} from 'react-icons/io';
 import { useDispatch, useSelector } from "react-redux";
 import {useEffect} from 'react';
 import {getUsersAction} from '../Midwares/rdx/actions/profileAction.js';
+import { SkelChatHunt } from "./SkelChatHunt.jsx";
 
 
 
@@ -11,6 +12,8 @@ export const ChatHunt = ({setpopContacts}) => {
     const user = JSON.parse(localStorage.getItem('profile'));
     const follows = useSelector((state) => state.followsReducer);
     const dispatch = useDispatch ();
+
+   
 
     useEffect(() => {
         const userObj = {type:'ChatHunt'}; 
@@ -46,8 +49,14 @@ export const ChatHunt = ({setpopContacts}) => {
 
             <div className= '  grid grid-cols-2 mx-auto mt-14   w-full lg:w-2/5 '>    
                 {/* Person Box MAPS */}
+              
+                        {!chatPeople?.length > 0 &&
+                            
+                            <SkelChatHunt/>
+                            
+                        } 
 
-                {
+                        {chatPeople?.length > 0 &&
                             
                             chatPeople.map((miniProfile) =>(
                                 <>
@@ -59,6 +68,7 @@ export const ChatHunt = ({setpopContacts}) => {
                                 </>  
                             ))
                         } 
+                       
             
 
             </div>

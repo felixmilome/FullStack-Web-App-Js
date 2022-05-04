@@ -1,5 +1,6 @@
 import TipNotificationsRow from './TipNotificationsRow';
 import {useSelector} from 'react-redux';
+import { Spring, animated } from 'react-spring';
 
 function TipNotificationsModal({setshowSubscribers}) { 
 
@@ -7,6 +8,19 @@ function TipNotificationsModal({setshowSubscribers}) {
     const tipNotifications = allNotifications.filter(notification => notification.class === 'tip' ); 
 
     return (
+
+        <Spring
+        
+        from={
+            { opacity: 0, marginTop:-20}
+        }
+        
+        to={
+          { opacity: 1, marginTop:0}
+         
+        }>
+        {styles => (
+          <animated.div style={styles}>
         <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-2/3 mt-4 sm:rounded-none sm:mt-2 right-0 sm:right-2 top-20 h-full z-0 flex justify-center bg-gray-200">
 
             <div className="overflow-scroll">
@@ -37,6 +51,9 @@ function TipNotificationsModal({setshowSubscribers}) {
             </div>
 
         </div>
+        </animated.div>
+        )}
+      </Spring>
     )
 }
 

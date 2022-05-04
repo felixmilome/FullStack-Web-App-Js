@@ -34,7 +34,7 @@ function Feed(diaryId, setDiaryId) {
 
                         {user && user.result.verified == true &&
                             <Link to ='/PostForm'>
-                                <div className="bg-gradient-to-r 
+                                <button type='button' className="bg-gradient-to-r 
                                 from-pink-500 to-yellow-500 
                                 hover:from-gray-800 hover:to-gray-800
                                 flex justify-center 
@@ -47,13 +47,13 @@ function Feed(diaryId, setDiaryId) {
                                     {/* <LinkIcon className=" h-6 text-white"/>   */}
                                     <p className="text-white"> Post</p>
                                     
-                                </div>
+                                </button>
                             </Link>
                         }
 
                         {user && user.result.verified == true &&
                         <Link to ='/ChatHunt'>
-                            <div className="bg-gradient-to-r 
+                            <button type='button'className="bg-gradient-to-r 
                             from-cyan-400 to-cyan-500 
                             hover:from-gray-800 hover:to-gray-800
                             flex justify-center 
@@ -65,7 +65,7 @@ function Feed(diaryId, setDiaryId) {
                                 <IoMdChatboxes className=" h-6 w-6 text-white"/>  
                                 <p className="text-white"> Chat Hunt</p>
                                
-                            </div>
+                                </button>
                          </Link>
                         }
                            

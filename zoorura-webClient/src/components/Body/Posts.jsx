@@ -1,6 +1,7 @@
 
 import PostBox from "./PostBox";
 import {BeatLoader} from "react-spinners";
+import { SkeletonPosts } from "./SkeletonPosts";
 
 
 import {getMiniProfileAction} from "../Midwares/rdx/actions/profileAction.js"
@@ -35,16 +36,21 @@ console.log(followedDiaries);
  
        <div>
 
+           
+           
+ 
+
             { followedDiaries.length < 1 && followedDiaries.length < 1 && popularDiaries.length < 1 &&
 
-            <div className="p-3 flex ">   
-                <div className="text-center text-sm text-gray-400 p-3 m-auto rounded-xl">
+            // <div className="p-3 flex ">   
+            //     <div className="text-center text-sm text-gray-400 p-3 m-auto rounded-xl">
                     
-                    <BeatLoader size={24} color='pink' loading/>
-                    <p className= 'text-sm'>fetching posts..</p>
+            //         <BeatLoader size={24} color='pink' loading/>
+            //         <p className= 'text-sm'>fetching posts..</p>
                     
-                </div>
-            </div>
+            //     </div>
+            // </div>
+            <SkeletonPosts/> 
 
             }
 

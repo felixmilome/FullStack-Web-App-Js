@@ -4,6 +4,8 @@ import { SurePop } from "../Body/SurePop.jsx";
 
 
 function SentBubble({SentMessage, message, Type, File}) {
+    const dateNow = new Date(message.createdOn);
+    console.log(dateNow);
     return (
         <div className="relative py-1 bg-transparent space-x-1 flex justify-end items-center">
                     {/* <div className="absolute right-0 top-0 flex justify-center items-center bg-gray-100 rounded-full h-7 w-7 hover:bg-cyan-400 group cursor-pointer">
@@ -45,8 +47,9 @@ function SentBubble({SentMessage, message, Type, File}) {
                     })}
 
                       
-                    <div style={{wordBreak: 'break-word'}} className="text-xs text-cyan-200 text-right pt-2">
-                    <p>14.4.23, 4.32 pm</p>
+                    <div style={{wordBreak: 'break-word'}} className="text-xs text-cyan-200 text-left pt-2">
+                                    <p>{dateNow.toDateString()}</p>
+                                    <p>{dateNow.toLocaleTimeString()}</p>
                     </div>
                 </div>
  
@@ -74,8 +77,9 @@ function SentBubble({SentMessage, message, Type, File}) {
                                 
                             
                             </div>
-                            <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-500 text-right pt-2 pr-2">
-                                    <p>14.4.23, 4.32 pm</p>
+                            <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-500 text-left pt-2 pr-2">
+                                    <p>{dateNow.toDateString()}</p>
+                                    <p>{dateNow.toLocaleTimeString()}</p>       
                             </div>
             
                         </div>

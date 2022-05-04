@@ -25,6 +25,10 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
     const socket = useSelector((state) => state.socketReducer);
     const [thisUnread, setThisUnread] = useState(false);  
     
+    const dateNow = new Date(message.createdOn);
+    console.log(dateNow);
+
+ 
   
 
     useEffect(() => {    
@@ -128,9 +132,11 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                                         )
                                 })}
 
-                                <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-400 text-right pt-2">
-                                <p>14.4.23, 4.32 pm</p>
+                                <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-400 text-left pt-2">
+                                    <p>{dateNow.toDateString()}</p>
+                                    <p>{dateNow.toLocaleTimeString()}</p>
                                 </div>
+                                
                                 {thisUnread=== true &&  contactViewed === false &&
                                     <div className= 'w-full text-cyan-600 font-bold flex justify-end items-center font-light text-xs '>
                                     <p>new</p>
@@ -163,8 +169,9 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                                 
                             
                             </div>
-                            <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-500 text-right pt-2 pr-2">
-                                    <p>14.4.23, 4.32 pm</p>
+                            <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-500 text-left pt-2 pr-2">
+                                    <p>{dateNow.toDateString()}</p>
+                                    <p>{dateNow.toLocaleTimeString()}</p>
                             </div>
                             {thisUnread=== true && contactViewed === false &&
                                     <div className= 'w-full text-cyan-600 font-bold flex justify-end items-center font-light text-xs '>

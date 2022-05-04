@@ -92,7 +92,7 @@ export const ChatHuntRow = ({miniProfile, setpopContactsFalse}) => {
     }, []);
 
   return (
-        <>
+        <> 
           
             <div className= 'z-30 m-auto my-2 flex justify-center items-center rounded-xl sm:h-80 h-64 p-2  text-xs w-5/6 p-1 bg-gray-100 shadow-xl'>
                 <div className='m-auto'>

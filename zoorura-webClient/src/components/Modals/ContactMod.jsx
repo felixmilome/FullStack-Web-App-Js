@@ -18,6 +18,8 @@ import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 import { SurePop } from "../Body/SurePop.jsx";
 import{readConvoNotificationsAction} from "../Midwares/rdx/actions/notificationsAction.js" 
 import Picker from 'emoji-picker-react';
+import {Link} from 'react-router-dom';
+import { Spring, animated } from 'react-spring';
 
 //Search Area: textarea delete
 
@@ -97,6 +99,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     //const messages = useSelector((state) => state.messagesReducer);
 
      const messages = messagesAll.filter(message => message.convoId === convoId);
+     console.log(messages);
      
 
     
@@ -282,6 +285,17 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     }
 
     return (
+        <Spring
+        
+        from={
+            { opacity:0}
+        }
+        
+        to={
+          {opacity:1}
+        }>
+        {styles => (
+          <animated.div style={styles}>
         <div  className="z-20 border-gray-300 fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
             {/* Top Part */}
             <div className="fixed z-20 
@@ -653,6 +667,9 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
             </div>
         </div>
+        </animated.div>
+        )}
+      </Spring>
     )
 }
 

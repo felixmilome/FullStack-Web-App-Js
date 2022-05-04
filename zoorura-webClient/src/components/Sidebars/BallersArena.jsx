@@ -4,7 +4,7 @@ import {BeatLoader} from "react-spinners";
 import {Link} from 'react-router-dom';
 import{GiArena, GiSuitcase} from 'react-icons/gi';
 import{RiVipCrownFill} from 'react-icons/ri';
-
+import { SkeletonSimple } from '../Body/SkeletonSimple';
 export const BallersArena = () => {
     const hallFame = useSelector((state) => state.hallFameReducer);
     console.log(hallFame); 
@@ -26,16 +26,19 @@ export const BallersArena = () => {
 
             {/* Hall OF FAME */}
             <div className="mb-60">
+             
                 { !hallFame.length ?
-                    <div className="p-3 flex">   
-                      <div className="text-center text-sm text-gray-400 p-3 m-auto bg-transparent rounded-xl">
+                 <SkeletonSimple/>
+                  //   <div className="p-3 flex">   
+                  //     <div className="text-center text-sm text-gray-400 p-3 m-auto bg-transparent rounded-xl">
                           
-                          <BeatLoader size={15} color='cyan' loading/>
-                          <p className= 'text-xs'>Preparing Hall Of Fame Ranks...</p>
+                  //         <BeatLoader size={15} color='cyan' loading/>
+                  //         <p className= 'text-xs'>Preparing Hall Of Fame Ranks...</p>
                           
-                      </div>
-                  </div>  
-                  :
+                  //     </div>
+                  // </div>  
+
+                  : 
                  
                     <>
                     { hallFame.map((rank) =>(

@@ -1,6 +1,7 @@
 import{useSelector, useDispatch} from 'react-redux';
 import NotificationsmodalRow from './NotificationsmodalRow';
 import {Link} from 'react-router-dom';
+import { Spring, animated } from 'react-spring';
 
 
 function NotificationsModal({popTipNotifications}) {
@@ -9,6 +10,21 @@ function NotificationsModal({popTipNotifications}) {
     const notifications = allNotifications.filter(notification => notification.class === 'normal' );
     console.log(notifications);
     return (
+
+        <Spring
+        
+        from={
+            { opacity: 0, marginTop:-20}
+        }
+        
+        to={
+          { opacity: 1, marginTop:0}
+         
+        }>
+        {styles => (
+          <animated.div style={styles}>
+
+
         <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-2/3 mt-4  sm:mt-2 right-0 sm:right-1.5 rounded-md top-20 h-full z-0 flex justify-center bg-gray-200">
 
             <div className="overflow-scroll">
@@ -44,6 +60,9 @@ function NotificationsModal({popTipNotifications}) {
             </div>
 
         </div>
+        </animated.div>
+        )}
+      </Spring>
     )
 }
 

@@ -30,7 +30,7 @@ function RightbarmobRow({Src, guestId, title, GuestName, Points, setpopChatBox})
             console.log(checkDataResponse);
             console.log("User Online");
 
-            if (checkDataResponse.checkedId === guestId){
+            if (checkDataResponse?.checkedId === guestId){
               setOnline(true);
             }
 
@@ -41,7 +41,7 @@ function RightbarmobRow({Src, guestId, title, GuestName, Points, setpopChatBox})
             console.log(checkDataResponse);
             console.log("User Offline");
 
-            if (checkDataResponse.checkedId === guestId){
+            if (checkDataResponse?.checkedId === guestId){
               setOnline(false);
             }
 
