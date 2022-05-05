@@ -34,7 +34,7 @@ export const getConvos = async  (req, res) => {
             const guestMiniProfile = await UsersModel.findById(editedGuest._id, {userName:1, dpUrl:1, follows:1, followers:1, blockers:1, blocked:1, bio:1, postTotal:1, convoTip:1, convoRequesters:1});
 
             const newConvo = await ConvosModel.create({members:members, guest:guest, host: req.userId, createdOn: new Date(), approved:true, dateRank: Date.now(), type: type, tip:tip});
-            const introMessage = await MessagesModel.create({convoId:newConvo._id, senderId: newConvo.host, receiverId:newConvo.guest, body: intro, type:'text' });
+            const introMessage = await MessagesModel.create({convoId:newConvo._id, senderId: newConvo.host, receiverId:newConvo.guest, body: intro, type:'text', createdOn:new Date(), dateRank: Date.now() });
             const newConvoPopulated = await ConvosModel.findById(introMessage.convoId)
             .populate('host', 'dpUrl userName blocked blockers convoTip')
             .populate('guest', 'dpUrl userName blocked blockers convoTip')

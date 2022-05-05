@@ -30,6 +30,7 @@ export const checkUsernameApi = (username) => API.get (`/users/checkUsername/${u
 export const checkEmailApi = (email) => API.get (`/users/checkEmail/${email}`, email); 
 //UserProfile
 export const getUsersApi = (user) => API.post ('/users/getUsers/', user); 
+export const getUserProfileApi = () => API.get ('/users/getUserProfile/'); 
 export const changeDpApi = (dp) => API.patch ('/users/changeDp', dp);
 //export const getUserData = () => API.get ('/users/userData');
 export const getMiniProfileApi = (profileName) => API.get (`/users/getMiniProfile/${profileName}`, profileName);

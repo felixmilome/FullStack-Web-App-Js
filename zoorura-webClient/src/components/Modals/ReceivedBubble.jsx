@@ -134,7 +134,7 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
 
                                 <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-400 text-left pt-2">
                                     <p>{dateNow.toDateString()}</p>
-                                    <p>{dateNow.toLocaleTimeString()}</p>
+                                    <p>{dateNow.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</p>
                                 </div>
                                 
                                 {thisUnread=== true &&  contactViewed === false &&
@@ -171,7 +171,7 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                             </div>
                             <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-500 text-left pt-2 pr-2">
                                     <p>{dateNow.toDateString()}</p>
-                                    <p>{dateNow.toLocaleTimeString()}</p>
+                                    <p>{dateNow.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</p>
                             </div>
                             {thisUnread=== true && contactViewed === false &&
                                     <div className= 'w-full text-cyan-600 font-bold flex justify-end items-center font-light text-xs '>

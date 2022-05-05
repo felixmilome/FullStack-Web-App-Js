@@ -1,4 +1,5 @@
 import * as axs from './axs';
+//search FOLLOWS
 
 // export const getUserDataAction = (id) => async (dispatch) => {
 //     try{
@@ -22,7 +23,7 @@ export const getUsersAction = (user) => async (dispatch) => {
 
         if (message === 'ChatHunt'){ 
 
-             dispatch ({type: 'CHAT_HUNT', data:users});
+             dispatch ({type: 'CHAT_HUNT', data:users}); 
 
         } else if (message === 'Followers'){ 
 
@@ -142,6 +143,23 @@ export const getMiniProfileAction = (profileName) => async (dispatch) => {
         }
           
 }
+export const getUserProfileAction = () => async (dispatch) => {
+
+    try{
+        const {data} = await axs.getUserProfileApi();
+        console.log(data);
+        const follows = data.follows;
+        dispatch ({type: 'REGISTER_FOLLOWS', data:follows});
+        console.log('user profile fetched');
+        
+    
+    } catch(error) { 
+
+        console.log(error);
+
+    }
+      
+}
 export const searchMiniProfileAction = (searchedName, setSearchingName, setSearchError) => async (dispatch) => {
 
     try{
@@ -211,7 +229,7 @@ export const quickFollowAction = (followData, setLoadingFollow) => async (dispat
             console.log('follow Reducer');
             console.log(data); 
 
-           // setLoadingFollow(false);
+           setLoadingFollow(false);
 
         // const socketNotificationData = data.newNotification;
         //     socket.current.emit("sendNotification", {

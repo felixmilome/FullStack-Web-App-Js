@@ -28,13 +28,13 @@ import {BeatLoader} from "react-spinners";
 
 
 import{SignupForm, LoginForm, VerifyForm} from '../Modals/RegForms.jsx'
-import {dailyPointsAction} from '../Midwares/rdx/actions/profileAction.js'
+import {dailyPointsAction, getUserProfileAction} from '../Midwares/rdx/actions/profileAction.js'
 import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {getWalletAction} from '../Midwares/rdx/actions/walletAction.js'
 import {io} from 'socket.io-client'
 
-//Search Area.. Go Search im Arena img
+//Search Area.. Go Search im Arena img follows
 
 function Header() {
 
@@ -245,9 +245,10 @@ function Header() {
             useEffect(() => {
 
                 if(user){
-
-                  dispatch ({type: 'REGISTER_FOLLOWS', data:user.result.follows}); 
-                  console.log(user.result.follows);
+                    dispatch(getUserProfileAction()); 
+                //   dispatch ({type: 'REGISTER_FOLLOWS', data:user.result.follows});
+                //   dispatch(registerFollowsAction(user.result._id)); 
+                //   console.log(user.result.follows);
 
                 }
 

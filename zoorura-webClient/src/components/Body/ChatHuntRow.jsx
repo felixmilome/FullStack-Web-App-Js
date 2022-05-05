@@ -113,12 +113,12 @@ export const ChatHuntRow = ({miniProfile, setpopContactsFalse}) => {
                         <div className='flex justify-center mx-auto text-center font-bold bg-gray-200 hover:bg-cyan-400 rounded-full w-32 p-1'>
                            <BeatLoader size={5} color ='cyan'/>
                         </div>}
-                        <div onClick={convoHandler}  className={`flex justify-center mx-auto flex items-center text-center ${online ===true && `border border-gray-300` }  border border-gray-300 hover:bg-white rounded-full py-1 px-2 w-32 cursor-pointer`}>
+                        {miniProfile._id !== user.result._id &&  <div onClick={convoHandler}  className={`flex justify-center mx-auto flex items-center text-center ${online ===true && `border border-gray-300` }  border border-gray-300 hover:bg-white rounded-full py-1 px-2 w-32 cursor-pointer`}>
                             <HiOutlineChatAlt2 className=" h-4 w-4 text-gray-700"/> 
                             <p>Chat</p>
                             {online ===true && <p className='text-cyan-500'>: online</p>}
                             {online ===false && <p className='text-gray-400'>: offline</p>}
-                        </div>
+                        </div>}
 
             
                     </div>

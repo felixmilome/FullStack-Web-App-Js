@@ -15,8 +15,8 @@ export const postMessage = async  (req, res) => {
             //     res.status(200).json(newMessage);  //done in CONVO CREATE CONTRL
 
             // }else{
-                const newMessage = await MessagesModel.create({convoId:convoId, senderId:senderId, receiverId:receiverId, body:body, file:file, type:type});
-                console.log("Message Added to Convo: "+ newMessage);
+                const newMessage = await MessagesModel.create({convoId:convoId, senderId:senderId, receiverId:receiverId, body:body, file:file, type:type, createdOn:new Date(), dateRank: Date.now()});
+                console.log("Message Added to Convo: "+ newMessage); 
 
                  
                 const unpopulatedNewNotification = await NotificationsModel.create({sender:req.userId, receiver:receiverId, receiverId:receiverId, body:body, postId:convoId, read: false, class:'message',  type: 'message', createdOn: new Date(), dateRank: Date.now()});
@@ -35,7 +35,7 @@ export const postMessage = async  (req, res) => {
  export const getMessages = async  (req, res) => {
     const{convoId} = req.params
     console.log(convoId);
-    console.log('getMessage active');
+    console.log('getMessage active'); 
         try{ 
            
                 const messages = await MessagesModel.find({convoId: { $in: [ convoId ] } });

@@ -103,6 +103,7 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
      }
      
  }
+
  export const followersReducer = (users = [], action) => {
      
     switch(action.type) {
@@ -110,7 +111,7 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
         case 'FOLLOWERS':
             return action?.data;
 
-        case 'CLEAR_FOLLOWERS':
+        case 'CLEAR_FOLLOWERS': 
             return [];
          
         default:

@@ -2,6 +2,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 import { useState } from 'react';
 import OutsideClickHandler from 'react-outside-click-handler';
+import {Link} from 'react-router-dom';
 
 import {RiUserAddLine, RiUserUnfollowLine} from "react-icons/ri";
 import {MdOutlineBlock} from "react-icons/md";
@@ -18,6 +19,7 @@ import ContactMod from '../Modals/ContactMod.jsx';
 import {SurePop} from "./SurePop.jsx"; 
 import ContactModIndi from "../Modals/ContactModIndi.jsx";
 import PostFrame from "./PostFrame.jsx";
+import { SkeletonPosts } from "./SkeletonPosts";
 
 // Search Area  Chat
 
@@ -246,7 +248,7 @@ const handleConvo = async() =>{
                                                                 <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Subscribe</p> 
                                                                 <RiUserAddLine/>
                                                             </div>
-                                                            }
+                                                            } 
                                                             {miniProfile._id != user.result._id &&
                                                                 <>
                                                             
@@ -290,20 +292,24 @@ const handleConvo = async() =>{
                                                 <div className='text-base flex justify-around items-center py-2'>
                                                     <div className='leading-4'>
                                                         <p className= 'font-bold '>{miniProfile.convoTip}</p>
-                                                        <p className= 'font-light text-sm'>Convo Request Charge</p>
+                                                        <p className= 'font-light text-sm'>Chat Tip</p>
                                                     </div>
                                                     <div className='leading-4'>
                                                         <p className= 'font-bold '>{miniProfile.postTotal}</p>
                                                         <p className= 'font-light text-sm'>Posts</p>
                                                     </div>
-                                                    <div className='leading-4'>
-                                                        <p className= 'font-bold '>{miniProfile.followers.length}</p>
-                                                        <p className= 'font-light text-sm'>Subscribers</p>
-                                                    </div>
-                                                    <div className='leading-4'>
-                                                        <p className= 'font-bold '>{miniProfile.follows.length}</p>
-                                                        <p className= 'font-light text-sm'>Subscriptions</p>
-                                                    </div>
+                                                    <Link to ={`/Portfolios/${miniProfile.userName}/Followers`}> 
+                                                        <div className='leading-4 hover:bg-gray-200 rounded-md border border-gray-200  cursor-pointer p-1'>
+                                                            <p className= 'font-bold '>{miniProfile.followers.length}</p>
+                                                            <p className= 'font-light text-sm'>Subscribers</p>
+                                                        </div>
+                                                    </Link>
+                                                    <Link to ={`/Portfolios/${miniProfile.userName}/Following`}> 
+                                                        <div className='leading-4 hover:bg-gray-200 rounded-md border border-gray-200 cursor-pointer p-1'>
+                                                            <p className= 'font-bold '>{miniProfile.follows.length}</p>
+                                                            <p className= 'font-light text-sm'>Subscriptions</p>
+                                                        </div>
+                                                    </Link>
 
                                                 </div> 
                                     
@@ -340,9 +346,9 @@ const handleConvo = async() =>{
                                     ))
                                     }
                             </div>}
-                            {!usersDiaries?.length>0 && <div className='flex justify-center my-2'>      
+                            {!usersDiaries?.length>0 && <div className='m-auto my-2'>      
                                      
-                            <BeatLoader size={24} color='gray' loading/>
+                            <SkeletonPosts/> 
                             
                          </div>}
                         

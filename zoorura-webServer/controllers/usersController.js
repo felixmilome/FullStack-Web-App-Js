@@ -17,7 +17,7 @@ import {MessagesModel} from '../models/messagesModel.js';
 import {ReviewsModel} from '../models/reviewsModel.js';
 import {NotificationsModel} from '../models/notificationsModel.js';
 
-//Search Area: follow getUsers
+//Search Area: follow getUsers miniProfile
 
 
 import dotenv from 'dotenv';
@@ -137,29 +137,55 @@ function getCodec() {
           res.json({users: users, message:'ChatHunt'});
 
         }else if(type === 'Following'){
-
-          const {userId} = req.body;
  
-          const users = await UsersModel.findById(userId, {follows:1, blockers:1, blocked:1, convoTip:1})
-          .populate('follows', 'dpUrl userName');
-
-          res.json({users: users, message:'Following'});
-
-        }else if(type === 'Following'){
-
-          const {userId} = req.body;
+          const profileName = req.body.profileName.toLowerCase();
+          console.log({profileName});
  
-          const users = await UsersModel.findById(userId, {followers:1, blockers:1, blocked:1, convoTip:1})
-          .populate('followers', 'dpUrl userName');
+          const user = await UsersModel.findOne({userName: { $in: [ profileName ] } }, {follows:1})
+          .populate('follows', '_id dpUrl userName blockers blocked convoTip'); //use findOne and not Find so as to avoid array
+          const following = user.follows;
+          console.log(user);
+          console.log(following);
 
-          res.json({users: users, message:'Followers'});
+          res.json({users:following, message:'Following'});
+
+        }else if(type === 'Followers'){
+
+          const profileName = req.body.profileName.toLowerCase();
+          console.log({profileName});
+ 
+          const user = await UsersModel.findOne({userName: { $in: [ profileName ] } }, {followers:1})
+          .populate('followers', '_id dpUrl userName blockers blocked convoTip');
+          const followers = user.followers;
+          console.log(user);
+          console.log(followers);
+
+          res.json({users:followers, message:'Followers'});
 
         }
       
       } catch (error){
           res.status(404).json({message: 'Something went wrong'});
+          console.log(error.message)
       }
  
+  }
+  export const getUserProfile = async (req,res) => {
+
+    console.log(req.userId);
+
+  
+      try{ 
+      
+          const user = await UsersModel.findById(req.userId);
+          console.log(user);
+          res.json (user);
+          
+    
+      } catch (error){
+          res.status(500).json({message: 'Something went wrong'});
+      }
+
   }
 
   export const checkEmail = async (req,res) => {
@@ -737,7 +763,7 @@ export const populateBlock = async(req,res) => {
 export const getMiniProfile = async(req,res) => {
 
    
-    const profileName = req.params.profileName.toLowerCase();
+    const profileName = req.params.profileName?.toLowerCase();
     console.log(req.params);
     
     try{
@@ -756,7 +782,7 @@ export const getMiniProfile = async(req,res) => {
     }
 
     } catch(error){
-      console.log(error)
+      console.log(error.message);
     }
  
 }

@@ -21,7 +21,7 @@ function TipNotificationsModal({setshowSubscribers}) {
         }>
         {styles => (
           <animated.div style={styles}>
-        <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/4 w-2/3 mt-4 sm:rounded-none sm:mt-2 right-0 sm:right-2 top-20 h-full z-0 flex justify-center bg-gray-200">
+        <div className="fixed border-l-8 border-gray-200 p-4 sm:w-1/3 xl:w-1/4 w-2/3 mt-4 sm:mt-0 right-0 sm:right-2 top-20 h-full z-0 flex justify-center bg-gray-200 rounded-md">
 
             <div className="overflow-scroll">
 

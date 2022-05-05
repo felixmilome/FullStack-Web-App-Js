@@ -18,6 +18,7 @@ import {ChatHunt} from '../components/Body/ChatHunt.jsx'
 import {Wallet} from '../components/Body/Wallet.jsx'
 import{SecureVerify} from '../components/Body/SecureVerify.jsx'
 import{ForgotPassword} from '../components/Body/ForgotPassword.jsx'
+import { Follows } from "../components/Body/Follows.jsx";
 
 
 
@@ -57,14 +58,16 @@ function Home({showProfile}) {
                     <Routes>
                         <Route exact path ="/securityChange/:change/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
                          
-                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} setpopContacts={setpopContacts} popContacts={popContacts} />}/>
-                         
+                       
                         <Route exact path ="/ForgotPassword" element = {<ForgotPassword/>}/>                 
                         <Route exact path ="*" element ={<NoPage/>}/>
                         {user &&
                         <>
                         <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} setpopContacts={setpopContacts} popContacts={popContacts} />}/>
+                        <Route exact path ="/Portfolios/:profileName/:getItem" element = {<Follows setpopContacts={setpopContacts} popContacts={popContacts} />}/>
                         <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/> 
+                        <Route exact path ="/Portfolios/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/>
                         <Route exact path ="/PostForm" element ={<PostForm />}/>
                         <Route exact path ="/Settings" element = {<Settings/>}/>
                         <Route exact path ="/ChatHunt" element = {<ChatHunt setpopContacts={setpopContacts} />}/>

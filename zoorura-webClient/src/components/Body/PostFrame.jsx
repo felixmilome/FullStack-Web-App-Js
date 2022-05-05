@@ -93,7 +93,8 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
     const follows = useSelector((state) => state.followsReducer);
 
     const navigate = useNavigate();
-      
+    
+    const dateNow = new Date(diary.time); 
 
 
 
@@ -192,29 +193,32 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                 {/* Top-Cyan */}
                 <div className="rounded-t-xl w-full transition delay-50 py-0.5 flex items-center font-bold justify-between">
                         {/*Top-Mid*/}
+                        
                         <div className="flex items-center justify-between">
                             {/* Top-Mid Img*/}
                             {diary.miniProfile &&
                             <>
+
+                                   
+                  
                             <div className="ml-3 bg-white rounded-full">
                                 <img src={diary.miniProfile[0].dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
                             </div> 
                            
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <div className='flex justify-center items-center space-x-2'>
-                                    <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile[0].userName}</p>
-                                    {diary.newComer===true &&
-                                     <div className='items-center p-1 text-xs text-yellow-500 border-yellow-500 border font-semibold bg-gray-100 rounded'>
-                                       🤩  : Newbie Post
-                                    </div>}
+                            
+                                <div className='p-0.5 leading-1 text-xs font-extralight my-1'>
+                                    <p className=" text-sm font-medium ">@{diary.miniProfile[0].userName}</p>
+                                   
+                                    <p className="font-light"><b></b>{moment (diary.time).fromNow()}</p>
+                                    
                                 </div>
-                                <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
                                 
                                 {params !== 'profile' && !follows.includes(diary.miniProfile[0]._id) && 
                                     <>
                                         {loadingFollow === false ?
 
-                                            <div onClick={()=>followHandler(diary.miniProfile[0]._id)} className='flex text-xs justify-center items-center w-24 border border-cyan-400 rounded-full font-normal hover:bg-cyan-400  cursor-pointer'>
+                                            <div onClick={()=>followHandler(diary.miniProfile[0]._id)} className='flex text-xs justify-center text-cyan-500 items-center w-20 border border-cyan-400 rounded-tr-md font-normal hover:bg-cyan-400 hover:text-black cursor-pointer'>
                                                 <p>subscribe</p>
                                             </div>
                                             :
@@ -238,20 +242,17 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                             </div> 
                            
                             <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                <div className='flex justify-center items-center space-x-2'>
-                                    <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName}</p>
-                                    {diary.newComer===true && 
-                                    <div className='items-center p-1 text-xs text-yellow-500 border-yellow-500 border font-semibold bg-gray-100 rounded'>
-                                        🤩  : Newbie Post
-                                    </div>}
+                                
+                                <div className='p-0.5 leading-1 text-xs font-extralight my-1'>
+                                    <p className=" text-sm font-medium ">@{diary.diaryMiniProfile.userName}</p>
+                                    <p className="font-light"><b></b>{moment (diary.time).fromNow()}</p>
+                                    
                                 </div>
-                                <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
-                               
                                 {params !== 'profile' && !follows.includes(diary.diaryMiniProfile._id) && 
                                     <>
                                         {loadingFollow === false ?
 
-                                            <div onClick={()=>followHandler(diary.diaryMiniProfile._id)} className='flex text-xs justify-center items-center w-24 border border-cyan-400 rounded-full font-normal hover:bg-cyan-400  cursor-pointer'>
+                                            <div onClick={()=>followHandler(diary.diaryMiniProfile._id)} className='flex text-xs justify-center text-cyan-500 items-center w-20 border border-cyan-400 rounded-tr-md font-normal hover:bg-cyan-400 hover:text-black cursor-pointer'>
                                                 <p>subscribe</p>
                                             </div>
                                             :
@@ -333,13 +334,23 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         <div className="relative flex justify-center   my-0.5">
             {/* Post Mid Frame*/}
             <div onClick= {()=> {console.log(diary.reviewers)}} className="max-h-screen overflow-scroll w-full items-center p-4 text-sm rounded-t-xl break-words"> 
-                    <p className="leading-5 font-semibold my-1 text-gray-700">{diary.title}</p>
+                    <div className='text-left mb-4'>
+                        <p className='text-xs  font-light'><span className='font-bold'>Created On:</span> {dateNow.toDateString()}, {dateNow.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</p>
+                
+                    </div>
+                         <p className="leading-5 font-semibold my-1 text-gray-700">{diary.title}</p>
+                    
+                  
                     
                     {diary.caption.split('\n').map(function(item) {
                     return (
                         <p key={item} className="leading-5 font-light text-gray-700">{item}</p> 
                         )
                     })}
+                      {diary.newComer===true &&
+                                     <div className='items-center p-1 text-xs text-yellow-500 font-semibold bg-gray-100 rounded'>
+                                       🤩  : Newbie Post
+                    </div>}
 
 
             </div>  

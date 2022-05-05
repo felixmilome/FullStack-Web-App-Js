@@ -8,10 +8,11 @@ import { SkelChatHunt } from "./SkelChatHunt.jsx";
 
 
 
+
 export const ChatHunt = ({setpopContacts}) => { 
     const user = JSON.parse(localStorage.getItem('profile'));
     const follows = useSelector((state) => state.followsReducer);
-    const dispatch = useDispatch ();
+    const dispatch = useDispatch (); 
 
    
 
@@ -68,6 +69,7 @@ export const ChatHunt = ({setpopContacts}) => {
                                 </>  
                             ))
                         } 
+                        
                        
             
 

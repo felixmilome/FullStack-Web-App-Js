@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react';
 function TipsNotificationsRow ({notification}) {
     
     const [unread, setUnread] = useState(false);
-
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     const dispatch = useDispatch();  
 
@@ -27,8 +27,13 @@ function TipsNotificationsRow ({notification}) {
             <div className="space-x-1">
                 {/* <p className= "inline-flex font-bold">
                 {title}</p> */}
-                <p className= "inline-flex ">
-                @{notification.sender.userName}</p> 
+               
+               {notification.sender._id !== user.result._id &&  <p className= "inline-flex ">
+                @{notification.sender.userName}
+                </p> }
+                {notification.sender._id === user.result._id &&  <p className= "inline-flex ">
+                    You
+                </p> }
 
             
   
@@ -61,7 +66,7 @@ function TipsNotificationsRow ({notification}) {
                     
                     {notification.type ==='displayNotificationTip' && 
                         <>
-                            <p className= "font-semibold ">tipped ({notification.tipAmount}) for endorsing his post:</p>
+                            <p className= "font-semibold ">tipped ({notification.tipAmount}) for endorsing the post:</p>
                             <p className= "font-light text-left">"{notification.body}"</p>
                         </>      
                     }

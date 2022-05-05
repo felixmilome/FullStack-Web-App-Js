@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 import {SurePop} from '../Body/SurePop';
 import{DeliveryPop} from '../Modals/DeliveryPop';
 
-
+//search his
 
 function NotificationsmodalRow ({notification}) {  
 
@@ -16,7 +16,9 @@ function NotificationsmodalRow ({notification}) {
     const [tipLoading, setTipLoading] = useState(false);
     const [popSure, setPopSure] = useState(false);
     const [tipData, setTipData] = useState({receiverId:'', tippedPostId:'', type:'', amount: null});
-    
+   
+    const user = JSON.parse(localStorage.getItem('profile'));
+
     const socket = useSelector((state) => state.socketReducer);
     
  
@@ -64,8 +66,13 @@ function NotificationsmodalRow ({notification}) {
                 <div className="space-x-1">
                     {/* <p className= "inline-flex font-bold">
                     {title}</p> */}
-                    <p className= "inline-flex ">
-                    @{notification?.sender?.userName}</p> 
+                    
+                    {notification.sender._id !== user.result._id &&  <p className= "inline-flex ">
+                    @{notification.sender.userName}
+                    </p> }
+                    {notification.sender._id === user.result._id &&  <p className= "inline-flex ">
+                        You
+                    </p> }
 
                 
     

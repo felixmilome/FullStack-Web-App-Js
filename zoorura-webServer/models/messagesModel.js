@@ -28,11 +28,11 @@ const messagesSchema = mongoose.Schema({
                 },       
         createdOn: {
                 type: Date,
-                default: new Date()
+                required:true
                 }, 
         dateRank:{
                 type: Number,
-                default: Date.now()
+                required:true
         },
         tipAmount:{
                 type: Number,

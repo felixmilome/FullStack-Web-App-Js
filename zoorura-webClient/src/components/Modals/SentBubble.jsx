@@ -4,8 +4,9 @@ import { SurePop } from "../Body/SurePop.jsx";
 
 
 function SentBubble({SentMessage, message, Type, File}) {
-    const dateNow = new Date(message.createdOn);
-    console.log(dateNow);
+    const dateNow = new Date(message.dateRank);
+    const dateNowReally = new Date(); 
+  
     return (
         <div className="relative py-1 bg-transparent space-x-1 flex justify-end items-center">
                     {/* <div className="absolute right-0 top-0 flex justify-center items-center bg-gray-100 rounded-full h-7 w-7 hover:bg-cyan-400 group cursor-pointer">
@@ -21,7 +22,7 @@ function SentBubble({SentMessage, message, Type, File}) {
 {/*                 
                 <div className="flex justify-center items-center bg-gray-100 rounded-full h-10 w-10 hover:bg-cyan-400 group cursor-pointer">
                     <FontAwesomeIcon icon={faPrayingHands} size ={'2x'} className="group-hover:text-white text-gray-300 p-1.5"/>
-                </div> */}
+                </div> */} 
                 
                     {/* <div className="flex justify-center items-center bg-gray-100 rounded-full h-9 w-9 hover:bg-cyan-400 group cursor-pointer">
                         <DotsVerticalIcon className="group-hover:text-white text-gray-300 p-1.5"/>
@@ -44,12 +45,13 @@ function SentBubble({SentMessage, message, Type, File}) {
                         return (
                             <p key={item} >{item}</p> 
                             )
-                    })}
+                    })} 
 
                       
                     <div style={{wordBreak: 'break-word'}} className="text-xs text-cyan-200 text-left pt-2">
                                     <p>{dateNow.toDateString()}</p>
-                                    <p>{dateNow.toLocaleTimeString()}</p>
+                                    <p>{dateNow.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</p>
+                                  
                     </div>
                 </div>
  
@@ -79,7 +81,7 @@ function SentBubble({SentMessage, message, Type, File}) {
                             </div>
                             <div style={{wordBreak: 'break-word'}} className="text-xs text-gray-500 text-left pt-2 pr-2">
                                     <p>{dateNow.toDateString()}</p>
-                                    <p>{dateNow.toLocaleTimeString()}</p>       
+                                    <p>{dateNow.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</p>       
                             </div>
             
                         </div>

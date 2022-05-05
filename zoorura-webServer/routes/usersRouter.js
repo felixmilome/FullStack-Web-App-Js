@@ -1,5 +1,5 @@
 import express from 'express';
-import{register, login, verify,sendOtp, block,unblock, getUsers, populateBlock, changeDp,getMiniProfile,follow, dailyPoints, deleteAccount, checkEmail,checkUsername, editProfile, editSecurity, forgotPassword} from '../controllers/usersController.js';
+import{register, login, verify,sendOtp, block,unblock, getUsers,getUserProfile, populateBlock, changeDp,getMiniProfile,follow, dailyPoints, deleteAccount, checkEmail,checkUsername, editProfile, editSecurity, forgotPassword} from '../controllers/usersController.js';
 import { auth } from '../middleware/authMiddleware.js';
 
 
@@ -15,6 +15,7 @@ usersRouter.get ('/checkUsername/:username', checkUsername);
 
 
 usersRouter.get ('/getMiniProfile/:profileName',auth, getMiniProfile); 
+usersRouter.get ('/getUserProfile/',auth, getUserProfile); 
 usersRouter.patch ('/changeDp', auth, changeDp);
 usersRouter.patch ('/dailyPoints/:id', auth, dailyPoints);
 usersRouter.post ('/follow/', auth, follow);
