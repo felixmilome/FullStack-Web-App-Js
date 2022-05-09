@@ -14,7 +14,7 @@ import {BeatLoader} from "react-spinners";
 
 
 
-
+//search pink
 
 function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, message, Type, displayed, File}) {
     const[popTip,setPopTip] = useState(false);
@@ -73,38 +73,38 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                             >
                         
 
-                     <div onClick={tipSetter}className="absolute left-0 top-0 flex justify-center items-center bg-gray-100 rounded-full h-7 w-7 hover:bg-gray-800 group cursor-pointer">
+                     <div onClick={tipSetter}className="absolute left-0 top-0 flex justify-center items-center bg-gray-100 dark:bg-gray-700 rounded-full h-7 w-7 hover:bg-gray-800 group cursor-pointer">
                         <GiMoneyStack size={20} className="group-hover:text-cyan-400 text-gray-400 "/>
                     </div>
                     {popTip &&  
-                        <div className="absolute text-xs font-bold w-fit p-1 left-12 top-0 flex justify-center items-center bg-gray-100 rounded-md  ">
+                        <div className="absolute text-xs font-bold w-fit p-1 left-12 top-0 flex justify-center items-center bg-gray-100 dark:bg-cyan-900 rounded-md  ">
                             
                           
 
                             <div className="space-y-2 text-center p-2">
                                 <div>Tip ({displayed.convoTip})?</div>
-                                 <div onClick= {(tipMessage)} className='bg-teal-400 rounded-md text-white hover:bg-teal-600 group cursor-pointer'>
+                                 <div onClick= {(tipMessage)} className='bg-teal-400 rounded-md text-white dark:text-gray-900 hover:bg-teal-600 group cursor-pointer'>
                                     Yes
                                 </div>
 
                              
                             </div>
                             <div className=' border border-gray-300  w-ful p-2 my-1 text-center rounded '>
-                                     <p className ='text-gray-500 text-xs font-bold '>balance:</p>
-                                     <p className ='text-cyan-600 text-sm font-semibold '>{walletBalance.zbx} zbx</p>
-                                     {walletBalance.zbx < displayed.convoTip && <p className='text-red-600 text-xs font-light cursor-pointer'>add funds</p>}
+                                     <p className ='text-gray-500 dark:text-gray-200 text-xs font-bold '>balance:</p>
+                                     <p className ='text-cyan-600 dark:text-cyan-400 text-sm font-semibold '>{walletBalance.zbx} zbx</p>
+                                     {walletBalance.zbx < displayed.convoTip && <p className='text-red-600 dark:text-red-500 text-xs font-light cursor-pointer'>add funds</p>}
                                 </div>   
 
                         </div>
                     }
             </OutsideClickHandler>}
             {tipLoading === true && message.tipAmount === 0 &&
-                     <div onClick={()=>setPopTip(!popTip)}className="absolute  left-0 top-0 flex justify-center items-center bg-gray-100 rounded-full w-fit">
+                     <div onClick={()=>setPopTip(!popTip)}className="absolute  left-0 top-0 flex justify-center items-center bg-gray-100 dark:bg-gray-700 rounded-full w-fit">
                        <BeatLoader size={12} color='pink' loading/>
                     </div>
             }
             {message.tipAmount > 0 &&
-                     <div className="absolute text-xs text-cyan-400 left-0 top-0 flex justify-center items-center bg-gray-700 rounded p-0.5 w-fit">
+                     <div className="absolute text-xs text-cyan-400 left-0 top-0 flex justify-center items-center bg-gray-700  rounded p-0.5 w-fit">
                        <p>tipped:</p>
                        <p className='font-bold'>{message.tipAmount}</p>
                     </div>
@@ -119,9 +119,9 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
             {Type === 'text' &&
             <div className="flex justify-start max-w-3/4 bg-transparent p-0.5 sm:w-2/3">
                 
-                    <div className="rounded-full bg-pink-100">
+                    <div className="rounded-full bg-pink-100 dark:bg-pink-300">
                         <div className="flex justify-start p-1 text-sm font-light">
-                            <div style={{wordBreak: 'break-word'}}  className="p-3 max-w-xs  bg-gray-100 rounded-t-xl rounded-br-xl bg-gray-100 text-gray-600">
+                            <div style={{wordBreak: 'break-word'}}  className="p-3 max-w-xs  bg-gray-100 dark:bg-gray-700 rounded-t-xl rounded-br-xl bg-gray-100 text-gray-600 dark:text-gray-200">
                                 
                                 <p className='font-bold text-xs'>@{displayed.userName}:</p>
                                
@@ -138,7 +138,7 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                                 </div>
                                 
                                 {thisUnread=== true &&  contactViewed === false &&
-                                    <div className= 'w-full text-cyan-600 font-bold flex justify-end items-center font-light text-xs '>
+                                    <div className= 'w-full text-cyan-600 dark:text-cyan-400 font-bold flex justify-end items-center font-light text-xs '>
                                     <p>new</p>
                                     </div>
                                 }
@@ -153,7 +153,7 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                     <div className="flex w-4/5 h-fit my-8 p-2  rounded-md  justify-start text-sm font-light">
                         <div className='bg-transparent m-auto'>
                         <p className='text-xs font-light text-center'>@{displayed.userName}</p>
-                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-r-xl rounded-tl-xl  bg-gray-100 border border-pink-300 text-white">
+                            <div style={{wordBreak: 'break-word'}} className=" flex w-full  justify-center my-0 p-0.5 rounded-r-xl rounded-tl-xl  bg-gray-100 dark:bg-gray-800 border border-pink-300 text-white">
 
                             
                                         {Type ==='video' &&
@@ -174,7 +174,7 @@ function  ReceivedBubble({ReceivedMessage, contactViewed, setContactViewed, mess
                                     <p>{dateNow.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit'})}</p>
                             </div>
                             {thisUnread=== true && contactViewed === false &&
-                                    <div className= 'w-full text-cyan-600 font-bold flex justify-end items-center font-light text-xs '>
+                                    <div className= 'w-full text-cyan-600 dark:text-cyan-400 font-bold flex justify-end items-center font-light text-xs '>
                                     <p>new</p>
                                     </div>
                                 }

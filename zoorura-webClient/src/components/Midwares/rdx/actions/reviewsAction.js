@@ -28,6 +28,7 @@ export const postReviewsAction = (reviewData1, setreviewData, setReviewLoading, 
         if(data==='Spam'){
             setSpam(true);
             setTimeout( function() {setSpam(false)}, 3000);
+            setReviewLoading(false);
         }else {
         console.log(data);
         const newReview = data.newReview;

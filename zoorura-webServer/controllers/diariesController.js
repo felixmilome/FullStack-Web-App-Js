@@ -211,25 +211,31 @@ export const patchDiaries = async (req, res) =>{
 //Delete  Diariessss===========================================
 export const deleteDiaries = async (req,res) =>{
     const {id} = req.params;
-    const requester = req.userId; 
-   const diary = await DiariesModel.findById(id);
-   const creator = diary.creator;
+    const requester = req.userId;
+    try{ 
+        const diary = await DiariesModel.findById(id);
+        const creator = diary.creator;
 
-   console.log(requester); 
-   console.log(creator); 
+        console.log(requester); 
+        console.log(creator); 
 
-   if (requester === creator) {
+        if (requester === creator) {
 
-    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
-    await DiariesModel.findByIdAndRemove(id);
-    await ReviewsModel.deleteMany({'reviewedPostId':id});
-    await SavedDiariesModel.deleteMany({'diaryId':id});
-    await TipsModel.deleteMany({'tippedPostId':id});
-    await DiariesModel.deleteMany({'originalId':id});
-    console.log("Diary Deleted!")
-    res.json({message: "Post Deleted Successfully"});
+            if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send("Invalid Id");
+            await DiariesModel.findByIdAndRemove(id);
+            await ReviewsModel.deleteMany({'reviewedPostId':id});
+            await SavedDiariesModel.deleteMany({'diaryId':id});
+            await TipsModel.deleteMany({'tippedPostId':id});
+            await DiariesModel.deleteMany({'originalId':id});
+            console.log("Diary Deleted!")
+            res.json({message: "Post Deleted Successfully"});
 
-   }
+        }
+    }catch(error){
+
+        console.log(error.message);
+
+    }
 
 
 }

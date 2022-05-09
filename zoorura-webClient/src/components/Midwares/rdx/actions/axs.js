@@ -11,6 +11,8 @@ API.interceptors.request.use((req)=>{
     }
     return req;
 })
+
+
 //Diary 
 export const getADiaryApi = (diaryId) => API.get(`/diaries/${diaryId}`);
 export const getDiariesApi = () => API.get('/diaries');

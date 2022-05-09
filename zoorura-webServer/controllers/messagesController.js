@@ -38,9 +38,9 @@ export const postMessage = async  (req, res) => {
     console.log('getMessage active'); 
         try{ 
            
-                const messages = await MessagesModel.find({convoId: { $in: [ convoId ] } });
+                const messages = await MessagesModel.find({convoId: { $eq:convoId} }).sort({"dateRank":-1}).limit(200).sort({"dateRank":1}); // sort in descending... then ascending
                 console.log("Message inCONVO: "+ messages);
-                res.status(200).json(messages); 
+                res.status(200).json(messages);  
             } 
             
         catch(error){

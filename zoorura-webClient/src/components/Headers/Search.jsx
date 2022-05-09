@@ -54,7 +54,7 @@ export const Search = () => {
 
   return (
 
-    <div className='flex w-full items-center'>
+    <div className='flex w-full  items-center'>
      
                         
        {/* {searchOptions === false &&
@@ -77,7 +77,7 @@ export const Search = () => {
         <input onChange={(e)=>{
            
             handleSearch(e);
-        }}  className ="bg-transarent w-full sm:w-1/2 border rounded-full m-1 h-7 md:inline-flex p-4 bg-gray items-center outline-none font-light placeholder-gray-400"
+        }}  className =" w-full sm:w-1/2 dark:border-gray-600 dark:bg-black rounded-full  h-7 md:inline-flex p-4 items-center outline-none font-light placeholder-gray-400 dark:placeholder-cyan-400"
         type="text"
         placeholder="Search Zoorura"/>
 
@@ -85,7 +85,7 @@ export const Search = () => {
         <>
         
             
-                <div className= 'items-center fixed  top-24 sm:top-16 text-sm text-gray-400 bg-gray-100 z-40 shadow-md h-fit lg:w-1/4 w-fit rounded-b-md p-5'>
+                <div className= 'items-center fixed  top-24 sm:top-16 text-sm text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 z-40 shadow-md h-fit lg:w-1/4 w-fit rounded-b-md p-5'>
                 
                 
 
@@ -99,7 +99,7 @@ export const Search = () => {
                          onOutsideClick={() => {
                              setSearchAll(false);
                          }}>
-                        <button className= 'flex border  items-center m-1 space-x-2 px-3 py-1 rounded hover:shadow-md bg-gray-500 text-gray-100 cursor-pointer'>
+                        <button className= 'flex border dark:border-gray-600 dark:bg-gray-900  dark:border-gray-200 items-center m-1 space-x-2 px-3 py-1 rounded hover:shadow-md bg-gray-600  text-gray-100  cursor-pointer'>
                     
                             <p>All</p> 
 
@@ -111,18 +111,18 @@ export const Search = () => {
                         <button onClick={()=>{
                             setSearchAll(true);
                             setSearchDisplay('all');
-                            }} className= 'flex border border-gray-300  items-center m-1 space-x-2 px-3 py-1 rounded hover:shadow-md hover:bg-gray-500 hover:text-gray-100 bg-gray-100 cursor-pointer'>
+                            }} className= 'flex border border-gray-300 dark:border-gray-900  items-center m-1 space-x-2 px-3 py-1 rounded hover:shadow-md hover:bg-gray-900  hover:text-gray-100 dark:hover:bg-gray-900   bg-gray-100 dark:bg-transparent cursor-pointer'>
                     
                             <p>All</p> 
 
                         </button>
                         }
             
-                        <button onClick={()=>setSearchDisplay('posts')} className= 'flex border border-gray-300 focus:bg-gray-500 focus:text-gray-100 items-center m-1 space-x-2 px-3 py-1 rounded hover:shadow-md hover:bg-gray-500 hover:text-gray-100 bg-gray-100 cursor-pointer'>
+                        <button onClick={()=>setSearchDisplay('posts')} className= 'flex border text-gray-600 dark:text-gray-200 border-gray-300  bg-transparent dark:focus:border-gray-600  dark:border-gray-900 focus:bg-gray-600 dark:focus:bg-gray-900 focus:text-gray-100 items-center m-1 space-x-2 px-3 py-1 rounded hover:shadow-md hover:bg-gray-900 hover:text-gray-100  cursor-pointer'>
                             <div><BsFillFileEarmarkPostFill size={20}/></div>
                             <p>Posts</p>      
                         </button>
-                        <button onClick={()=>setSearchDisplay('people')} className= 'flex border border-gray-300 focus:bg-gray-500 focus:text-gray-100 items-center m-1 space-x-2 px-3 py-1 rounded hover:shadow-md hover:bg-gray-500 hover:text-gray-100 bg-gray-100 cursor-pointer'>
+                        <button onClick={()=>setSearchDisplay('people')} className= 'flex border text-gray-600 dark:text-gray-200 border-gray-300  bg-transparent dark:focus:border-gray-600  dark:border-gray-900 focus:bg-gray-600 dark:focus:bg-gray-900 focus:text-gray-100 items-center m-1 space-x-2 px-3 py-1 rounded hover:shadow-md hover:bg-gray-900 hover:text-gray-100  cursor-pointer'>
                             <div><BsPeople size={20}/></div>
                             <p>People</p>      
                         </button>
@@ -144,7 +144,7 @@ export const Search = () => {
                        
                                 searchResults?.diaryResult.map((diary) =>(
                                     <Link to ={`/DiaryLink/${diary._id}`}>
-                                        <div   key={diary._id} className='cursor-pointer p-1  hover:text-gray-700'>
+                                        <div   key={diary._id} className='cursor-pointer p-1 dark:hover:text-gray-200  hover:text-gray-800'>
                                             <p>{diary.title}</p>  
                                         </div>
                                     </Link>
@@ -169,7 +169,7 @@ export const Search = () => {
                        
                                 searchResults?.peopleResult.map((person) =>(
                                     <Link to ={`/Portfolios/${person.userName}`}>
-                                        <div key={person._id} className='cursor-pointer p-1  hover:text-gray-700'>
+                                        <div key={person._id} className='cursor-pointer p-1 dark:hover:text-gray-200  hover:text-gray-800'>
                                             <p>@{person.userName}</p>  
                                         </div>
                                     </Link>

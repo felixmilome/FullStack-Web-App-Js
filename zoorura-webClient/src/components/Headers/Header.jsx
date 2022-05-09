@@ -34,7 +34,8 @@ import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsActio
 import {getWalletAction} from '../Midwares/rdx/actions/walletAction.js'
 import {io} from 'socket.io-client'
 
-//Search Area.. Go Search im Arena img follows
+
+//Search Area.. Go Search im Arena img follows Search
 
 function Header() {
 
@@ -134,6 +135,8 @@ function Header() {
                 }
 
             }, [user]); 
+
+   
            
        
            
@@ -252,7 +255,7 @@ function Header() {
 
                 }
 
-            }, [user]); 
+            }, []); 
              
             //UserData
             //  useEffect(() => {
@@ -318,13 +321,13 @@ function Header() {
             { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
             {popLogin && !user ? <LoginForm  popLogin = {popLogin} popSignup ={popSignup}  setpopLogin ={setpopLogin} setpopSignup = {setpopSignup} />: <></>}
        
-        <div className= "sticky top-0 z-50 bg-gray-100 border-b border-gray-400 p-2 lg:px-6 lg:py-3 shadow-md ">
+        <div className= "sticky top-0 z-50 bg-gray-100 dark:bg-gray-900 border-b border-cyan-400 dark:border-gray-600 p-2 lg:px-6 lg:py-3 shadow-md ">
         <div className= "flex items-center  p-0  space-x-2 justify-between">
             {/*Left*/}
             { user && user.result.verified ?
             <>
             <Link to='/'>
-                <div onClick ={(e)=>(setpopContacts(false))}className="cursor-pointer  rounded-full hover:bg-gray-300 delay-100 bg-transparent flex items-center justify-between">
+                <div onClick ={(e)=>(setpopContacts(false))}className="cursor-pointer  rounded-full hover:bg-gray-300 dark:hover:bg-cyan-500 dark:hover:text-gray-900 delay-100 bg-transparent flex items-center justify-between">
                             
                             <div className= 'rounded-full items-center text-gray-200 bg-gray-100 object-cover'>
                                 <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 sm:h-10 sm:w-10"/>
@@ -340,7 +343,7 @@ function Header() {
            </Link> 
         
             {/* MID SEARCH COMP */}
-                <div className="hidden lg:flex items-center rounded-full w-1/2 mx-1 bg-gray-100 sm:pr-4">
+                <div className="hidden lg:flex items-center rounded-full w-1/2 mx-1  sm:pr-4">
                  
                  <Search/>
             
@@ -469,14 +472,14 @@ function Header() {
                             
                         </OutsideClickHandler>
 
-                    {/*Profile Pic Modal && Button*/}
+                    {/*Profile Pic Modal && Button*/} 
                   
                     <OutsideClickHandler     
                         onOutsideClick={() => {
                             setpopProfile(false); 
                         }}
                         >
-                        <div className={`cursor-pointer inline-flex items-center justify-center rounded-full bg-transparent delay-150  hover:bg-gray-300 ${popProfile && 'bg-gray-300'} mx-1`}
+                        <div className={`cursor-pointer inline-flex items-center dark:hover:text-gray-800 justify-center rounded-full bg-transparent delay-150  hover:bg-gray-300 dark:hover:bg-cyan-400 ${popProfile && 'bg-gray-300 dark:text-gray-800 dark:bg-cyan-400'} mx-1`}
                      onClick={ () => 
                          {
                             setpopProfile(!popProfile);
@@ -534,7 +537,7 @@ function Header() {
 
                 {/* // SEARCH============ */}
                 
-                <div className="lg:hidden flex justify-center items-center rounded-full w-full mx-2 my-1 bg-gray-100">
+                <div className="lg:hidden flex justify-center items-center rounded-full w-full mx-2 my-2 ">
                     <Search/>
                 </div>
 

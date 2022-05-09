@@ -60,7 +60,7 @@ function ProfileModal({setpopProfile, setPopSaved}) {
         }>
         {styles => (
           <animated.div style={styles}>
-        <div className="fixed border-l-8 border-gray-200 p-4  md:w-1/2 lg:w-1/3 xl:w-1/4 w-3/4 mt-4 rounded-md mt-6 sm:mt-0 right-3 sm:right-1.5 top-20 h-full z-0 flex justify-center bg-gray-200">
+        <div className="fixed p-4  md:w-1/2 lg:w-1/3 xl:w-1/4 w-3/4 mt-4 rounded-md mt-6 sm:mt-0 right-3 sm:right-1.5 top-20 h-full z-0 flex justify-center bg-gray-200 dark:bg-gray-800">
 
             <div className="overflow-scroll">
 
@@ -73,17 +73,17 @@ function ProfileModal({setpopProfile, setPopSaved}) {
 
             {/* Heading */}
       
-                <div onClick={ profileLoader} className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl hover:bg-gray-300  bg-transparent items-center mt-4 mb-3 group">
+                <div onClick={ profileLoader} className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-900  bg-transparent items-center mt-4 mb-3 group">
                 <img src={user.result.dpUrl} alt="DP" className="mx-auto rounded-full group-hover:text-white h-8 w-8"/>
                     <p className= " leading-3 text-center text-sm font-bold">Visit Portfolio</p> 
-                   <div className="bg-gray-100 rounded-md py-1 items-center"> 
+                   <div className="bg-gray-100 dark:bg-gray-900 rounded-md py-1 items-center"> 
                     <p className= " leading-4 text-center text-xs font-light">Rank: #3</p> 
                     <p className= " leading-3 text-center text-xs font-semibold">30b aps</p>
                     </div>
                     
                 </div>  
             
-                <div className= "mb-60 border-gray-300 border-t">
+                <div className= "mb-60 border-gray-300 border-t"> 
 
                     <Link to= '/Wallet'>
                         <div onClick= {()=>setpopProfile(false)}>

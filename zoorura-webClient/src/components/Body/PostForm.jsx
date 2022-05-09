@@ -2,6 +2,8 @@
 import{useState, useEffect} from 'react';
 //import FileBase from 'react-file-base64';
 
+ 
+
 import {useNavigate} from 'react-router-dom';
 
 import { urIg, urTk, urYt, urSn, urPn, urRd, urFb, urDr, urTch } from "../Midwares/cleaners/cleaner.js";
@@ -12,7 +14,7 @@ import {BiUnlink} from 'react-icons/bi';
 import {BeatLoader} from "react-spinners";
 import{BsFillEmojiLaughingFill} from 'react-icons/bs';
 
-import{ImReddit, ImWordpress, ImYoutube2} from "react-icons/im";
+import{ImReddit, ImWordpress, ImYoutube2} from "react-icons/im"; 
 import{SiFacebook, SiTiktok, SiTwitter} from "react-icons/si";
 import { FaGoogleDrive } from "react-icons/fa";
 import { CgWebsite } from "react-icons/cg";
@@ -29,30 +31,49 @@ import VideoPlayer from 'react-video-js-player'
 
 import * as yup from "yup";
 import axios from 'axios';
-
+ 
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 
 //firebase
 import {storage} from "../Midwares/firebase/config";
 import { ref, getDownloadURL, uploadBytesResumable } from '@firebase/storage';
+
 import { PostFormTagSearch } from './PostFormTagSearch.jsx';
 import Picker from 'emoji-picker-react';
+import {createFFmpeg} from '@ffmpeg/ffmpeg';
+import cors from 'cors';
 
-//Search Area: Clear
+// const ffmpeg = createFFmpeg({
+//     corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+//     log:true
+// });
+// ffmpeg.use(cors());
+
+// const load = async() => {
+//     await ffmpeg.load();
+// }
+
+
+
+//Search Area: Clear Audio Post
 
 
 
 function PostForm() {
+
+ 
+
     const [tagObjArray, setTagObjArray] = useState([])
     const [tagArray, setTagArray] = useState([])
     const [spam, setSpam] = useState(false)
+    const [urlInput, setUrlInput] = useState(true);
     const [diariesData, setdiariesData] = useState({
         title:'', caption:'', file: '', media: '', type: 'diary',  publicity:'public', tags:[]
     }); 
    const[imageBlob, setImageBlob] = useState('');
    const[mediaType, setMediaType] = useState('');
-  
+   
    const[fileData, setFileData] = useState('');
     const dispatch = useDispatch();
 
@@ -76,9 +97,17 @@ function PostForm() {
     const[types, setTypes] = useState({image:'image', audio:'audio', video:'video', pdf:'pdf' });
 
     const searchedMiniProfile = useSelector((state) => state.getMiniProfileReducer);
-   
-  
+    const postSpam = useSelector((state) => state.postSpamReducer);
     
+   
+   
+    
+    // useEffect(() => {
+    //   load()
+    // }, []);
+
+
+
     const postSchema = yup.object().shape({
         title: yup.string().strict(false).trim().required('Title required').max(50),
         caption: yup.string().strict(false).trim().required('Caption required').max(500),
@@ -150,12 +179,12 @@ function PostForm() {
         setdiariesData({...diariesData, media:'', file:''});
         setAttachment('file')
     }
-    const clearUrl_NoSwitch = ()=> {
-        //Useeffect cleared Url.value  
-        setdiariesData({...diariesData, media:'', file:''});
-        document.getElementById('url').value = '';
+//     const clearUrl_NoSwitch = ()=> {
+//         //Useeffect cleared Url.value  
+//         setdiariesData({...diariesData, media:'', file:''});
+//         document.getElementById('url').value = null;
      
-}
+// }
 
 
     useEffect(() => {
@@ -368,9 +397,9 @@ function readFile(file, type) {
         }
     }
 
-    const getDiaries = async()=>{
-        dispatch(getDiariesAction()); 
-    }
+    // const getDiaries = async()=>{
+    //     dispatch(getDiariesAction()); 
+    // }
     const searchName = async()=>{
         setSearchingName(true);
         dispatch(searchMiniProfileAction(searchedName,setSearchingName, setSearchError));  
@@ -378,37 +407,37 @@ function readFile(file, type) {
 
     const uploadLink = async (url)=>{
 
+            const constructor = async(url) => {
 
-       const constructor = async(url) => {
+                    const diariesDataConstruct = { 
+                        ...diariesData, file:url
+                            // title: diariesData.title,
+                            // caption: diariesData.caption,
+                            // file: url,
+                            // media: diariesData.media,
+                            // type:'diary',
+                            // tags:[],
+                            // publicity: diariesData.publicity
+                        };
 
-            const diariesDataConstruct = { 
-                ...diariesData, file:url
-                    // title: diariesData.title,
-                    // caption: diariesData.caption,
-                    // file: url,
-                    // media: diariesData.media,
-                    // type:'diary',
-                    // tags:[],
-                    // publicity: diariesData.publicity
-                };
+                        return diariesDataConstruct;
+        
+                    }
 
-                return diariesDataConstruct;
- 
-            }
+                try{ 
+                
+                        const diariesData = await constructor (url);
+                        console.log(diariesData);
 
-           try{ 
-           
-                const diariesData = await constructor (url);
-                console.log(diariesData);
+                    dispatch(postDiariesAction (diariesData, setpopPosted, setSpam));  
 
-              dispatch(postDiariesAction (diariesData, setpopPosted, navigate)); 
+                    }
+                    catch(err){
 
-            }
-            catch(err){
+                        console.log(err)
 
-                console.log(err)
-
-            }
+                    }
+      
     }
     const uploadLinkPost = async ()=>{
  
@@ -416,7 +445,7 @@ function readFile(file, type) {
             
                  console.log(diariesData);
  
-               dispatch(postDiariesAction (diariesData, setpopPosted, navigate, getDiaries, setSpam)); 
+               dispatch(postDiariesAction (diariesData, setpopPosted, setSpam)); 
  
              }
              catch(err){
@@ -430,17 +459,18 @@ function readFile(file, type) {
 
     const uploadFile = async (image) =>{
             if (!image) return;
+           
             const uploadDate = Date.now();
             const fileOwner = user.result._id;
             const fileType = diariesData.media;
 
-            const storageRef = ref (storage, `/diaryfiles/${fileType}-${uploadDate}-${fileOwner}`);
+            const storageRef = ref (storage, `/diaryFiles/${fileType}-${uploadDate}-${fileOwner}`);
             const uploadTask=uploadBytesResumable(storageRef,image);
         
             uploadTask.on("state-changed", (snapshot)=>{
                 const prog = Math.round(
                     (snapshot.bytesTransferred/ snapshot.totalBytes)* 100
-                    );
+                    ); 
                 setProgress(prog);
             },
             (err) => console.log(err),
@@ -461,17 +491,24 @@ function readFile(file, type) {
 
 
 
-    const post = (data)=>{
+    const P = (data)=>{
         
 
-        if (imageBlob.includes('blob')){
+        if (postSpam > 10){
 
-         uploadFile(fileData);
+            setSpam(true);
+            setTimeout( function() {setSpam (false)}, 4000); 
 
-             
-        } else {
-            setProgress(90);
-            uploadLinkPost();
+        }else{ 
+            if (imageBlob.includes('blob')){
+
+            uploadFile(fileData);
+
+                
+            } else {
+                setProgress(90);
+                uploadLinkPost();
+            }
         }
             
     }
@@ -491,7 +528,7 @@ function readFile(file, type) {
 
             { spam == true &&
                         <div className=" bg-gray-700 py-4 rounded-full px-20 flex justify-center fixed z-40 top-40 m-auto text-center font-bold text-white">
-                           <p> Todays Posting Limit(10) reached! Try Tomorrow </p>
+                           <p> You've posted enough today! Save some for tomorrow </p>
                         </div>
                  } 
                
@@ -524,7 +561,7 @@ function readFile(file, type) {
                         </div>
 
                     {/*----- FORM------------------------- */}
-                    <form onSubmit={handleSubmit(post)}>
+                    <form onSubmit={handleSubmit(P)}>
                         <div className= "flex justify-center items-center p-0.5">
                             <img src={user.result.dpUrl} alt="DP" className="rounded-full h-7 w-7"/>
                         
@@ -604,7 +641,7 @@ function readFile(file, type) {
 
 
                                 {/*-- URL------------ */}
-                                    {attachment === 'link' &&
+                                    {attachment === 'link' && urlInput &&
                                     
                                     <div className="flex justify-center">
                                         <div className='m-auto bg-transparent w-full p-3'>
@@ -704,14 +741,14 @@ function readFile(file, type) {
                      
                                 {/* Clear Button */}
 
-                                {diariesData.media === "url" && 
-                                        <div onClick= {clearUrl_NoSwitch} className= 'flex  w-1/4 border my-2 justify-center items-center font-semibold text-xs mx-auto bg-transparent p-1 text-gray-300 hover:text-red-400 cursor-pointer'>
+                                {/* {diariesData.media === "url" && 
+                                        <div onClick= {clearUrl_NoSwitch} className= 'flex  w-1/3 sm:w-1/4 border my-2 justify-center items-center font-semibold text-xs mx-auto bg-transparent p-1 text-gray-300 hover:text-red-400 cursor-pointer'>
                                             <BiUnlink size={20}/> 
                                             Clear Url
                                         </div>                              
-                                }
+                                } */}
                                 {diariesData.media.length>1 && diariesData.media !== "url" && 
-                                        <div onClick= {clearInput} className= 'flex w-1/4 border my-2 justify-center items-center font-semibold text-xs mx-auto bg-transparent p-1 text-gray-300  hover:text-red-400 cursor-pointer'>
+                                        <div onClick= {clearInput} className= 'flex w-1/3 sm:w-1/4 border my-2 justify-center items-center font-semibold text-xs mx-auto bg-transparent p-1 text-gray-300  hover:text-red-400 cursor-pointer'>
                                             <BsFileEarmarkMinus size={20}/> 
                                            Remove File
                                         </div>                              
@@ -725,7 +762,7 @@ function readFile(file, type) {
                                         <div >
                                           
                                             <div className="relative flex justify-center m-auto w-full p-2 lg:p-0">
-                                                <PicForm Url= {imageBlob}/>
+                                                <PicForm Url= {imageBlob}/> 
                                             </div>
                                        </div> : 
                                        <>
@@ -1075,7 +1112,7 @@ function readFile(file, type) {
                                     </div>
                                 {/* TAGG------------- */}
                                     <div className="m-auto w-3/4">
-                                        <div className='flex bg-transparent h-10'>
+                                        <div className='flex bg-transparent h-10 my-3'>
                                         <input name= "endorsement" onChange={(e)=>{
                                             setSearchedName(e.target.value.toLocaleLowerCase().replace('@', '').trim());
                                             setSearchError(false);
@@ -1139,17 +1176,21 @@ function readFile(file, type) {
                                                 )) 
                                             }
                                     </div>}
-                                    
-                                    
+                                   <div className= 'mt-3'> 
+                                    {diariesData.media ==='image' &&  <p className='mx-3 text-xs text-center text-red-700 font-light' >{errors.ImageUpload?.message}</p>} 
+                                        {diariesData.media ==='video' &&  <p className='mx-3 text-xs text-center text-red-700 font-light' >{errors.VideoUpload?.message}</p>}
+                                        {diariesData.media ==='audio' && <p className='mx-3 text-xs text-center text-red-700 font-light' >{errors.AudioUpload?.message}</p>}
+                                        {attachment === 'link' && <p className='mx-3 text-xs text-center text-red-700 font-light' >{errors.url?.message}</p>}
+                                    </div>
                                 {/* Button------------- */}
-                                    <button type= {progress > 0 ? 'button' : 'submit'} className="items-center mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
-                                    bg-gradient-to-r hover:from-pink-500
-                                    hover:to-yellow-500 my-3 flex
-                                    mx-auto w-1/3 rounded-md
-                                        my-2 justify-center 
-                                        text-white cursor-pointer
-                                        font-semibold p-1">
-                                        {progress === 0 ?<p>Post</p>:
+                                    <button type= {progress > 0 ? 'button' : 'submit'} className="items-center mx-auto
+  
+                                   mb-3 flex
+                                    mx-auto w-3/4 rounded-full border border-teal-400
+                                         justify-center 
+                                        text-gray-800 cursor-pointer hover:bg-teal-400 hover:text-white
+                                        font-normal  p-1">
+                                        {progress === 0 ?<p>POST</p>:
                                       <p>Uploading...</p>}
                                     </button>
                                 

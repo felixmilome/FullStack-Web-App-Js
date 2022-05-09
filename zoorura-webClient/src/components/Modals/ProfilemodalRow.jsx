@@ -3,9 +3,9 @@ function ProfilemodalRow ({Icon,title, walletAmount}) {
     return (
         <>
 
-        <div className="z-30 items-center flex space-x-1 justify-start m-3 bg-transparent py-1 px-1  hover:bg-cyan-500 rounded-full cursor-pointer group">
+        <div className="z-30 items-center flex space-x-1 justify-start m-3 bg-transparent py-1 px-1  hover:bg-cyan-500 dark:hover:bg-cyan-800 rounded-full cursor-pointer group">
            <div className="p-2 bg-gray-100 rounded-full items-center flex justify-center">
-               {Icon && <Icon className="h-5 w-5 m-auto "/>}
+               {Icon && <Icon className="h-5 dark:text-gray-700 w-5 m-auto "/>}
             </div>
            <p className= "inline-block px-1 text-sm sm:inline-flex font-medium  group-hover:text-white">
                {title}</p> 

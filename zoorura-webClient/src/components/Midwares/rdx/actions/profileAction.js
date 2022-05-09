@@ -149,8 +149,11 @@ export const getUserProfileAction = () => async (dispatch) => {
         const {data} = await axs.getUserProfileApi();
         console.log(data);
         const follows = data.follows;
+        const spam = data.postSpam;
         dispatch ({type: 'REGISTER_FOLLOWS', data:follows});
         console.log('user profile fetched');
+        dispatch ({type: 'REGISTER_POST_SPAM', data:spam});  
+      
         
     
     } catch(error) { 

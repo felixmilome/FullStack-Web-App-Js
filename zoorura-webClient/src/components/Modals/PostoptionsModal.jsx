@@ -46,6 +46,8 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
         
         try{
 
+            console.log('del');
+
             dispatch(deleteDiariesAction(diary._id));
             
             setPopDeleted(true);
@@ -105,7 +107,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
              { popSaved &&
                <DeliveryPop message='Post Saved'/>
              } 
-        <div className="absolute z-40 right-4 sm:right-12 top-20 opacity-90 rounded-b-xl bg-gray-100">
+        <div className="absolute z-40 right-4 sm:right-12 top-20 opacity-90 rounded-b-xl bg-gray-100 dark:bg-gray-800">
 
           
             {saver && <div onClick= {saveDiary}>
@@ -139,7 +141,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
 
         {/* ====DELETER ========*/}
 
-        { popDelete && user.result._id !== diary.creator &&  <div className=" fixed left-0 top-0 flex justify-center items-center z-40 w-full h-screen  bg-transparent text-base font-light text-gray-700">
+        { popDelete && user.result._id === diary.creator &&  <div className=" fixed left-0 top-0 flex justify-center items-center z-40 w-full h-screen  bg-transparent text-base font-light text-gray-700">
                <div className= "z-40 bg-gray-100 rounded-xl p-8 text-center">
               
                     <p> <span className="font-bold">Delete the post: {diary.title}?</span></p>

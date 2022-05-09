@@ -295,12 +295,12 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
           {opacity:1}
         }>
         {styles => (
-          <animated.div style={styles}>
-        <div  className="z-20 border-gray-300 fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200">
+          <animated.div style={styles}> 
+        <div  className="z-20 rounded-md  fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200 dark:bg-gray-800">
             {/* Top Part */}
             <div className="fixed z-20 
-            border-b-2 border-gray-200
-             bg-gray-100 p-1
+            border-b dark:border-b rounded-t-md dark:border-gray-700 border-gray-200
+             bg-gray-100 dark:bg-gray-800 p-1
              w-full xl:w-1/4  flex  
              justify-between items-center">
                  
@@ -311,7 +311,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                  p-0.5 px-2 rounded-full 
                  text-xs
                   font-bold 
-                   text-gray-500">
+                   text-gray-500 dark:text-gray-300">
                     <div className='relative'>
                         <img src={displayed.dpUrl} alt="DP" className="rounded-full object-cover h-8 w-8 m-0.5"/>    
                          {online ===true && <div className= 'absolute top-0 right-0 w-3 h-3 justify-center text-white items-center p-1 rounded-full border-2 border-white bg-cyan-400'>
@@ -336,7 +336,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                      p-1 rounded-full cursor-pointer group">
                         <PhoneIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
                     </div>
-                    <div onClick ={(e)=> setpopChatBox(false)} className="hover:bg-gray-300
+                    <div onClick ={(e)=> setpopChatBox(false)} className="hover:bg-gray-300 dark:hover:bg-gray-700
                      p-1 rounded-full cursor-pointer group">
                         <XCircleIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
                     </div>
@@ -420,7 +420,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                   </div>}
                                         
                             {!displayed.blocked.includes(user.result._id) && !displayed.blockers.includes(user.result._id) &&
-                                <div  className=' w-full px-1 sm:w-1/2 lg:w-1/4 fixed bottom-0 z-50 py-2 bg-gray-200  right-0 sm:right-2 mt-6'>
+                                <div  className=' w-full px-1 sm:w-1/2 lg:w-1/4 fixed bottom-0 z-50 py-2 bg-gray-200 dark:bg-gray-800  right-0 sm:right-2 mt-6'>
 
                                        
                                     {messageData.type !== 'image' &&messageData.type !== 'video' && messageData.type !== 'audio' &&
@@ -434,7 +434,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                 <div className={`${messageData.body.length < 25 && `h-12`}
                                                             ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
                                                             ${messageData.body.length > 80 && `h-32`}
-                                                            p-2 bg-gray-100 rounded-xl w-full`}>
+                                                            p-2 bg-gray-100 dark:bg-gray-700 rounded-xl w-full`}>
                                             
                                                 <textarea 
                                                 value={messageData.body}
@@ -451,11 +451,11 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                 className={`${messageData.body.length < 25 && `h-12`}
                                                             ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
                                                             ${messageData.body.length > 80 && `h-32`}
-                                                            resize-none h-full w-full m-auto text-gray-700 font-medium outline-none bg-gray-100 text-sm rounded`}/>
+                                                            resize-none h-full w-full m-auto text-gray-700 dark:text-gray-300 font-medium outline-none bg-gray-100 dark:bg-gray-700 text-sm rounded`}/>
                                             
                                                 </div> 
                                                 <div className='flex p-1 items-center'>
-                                                            <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-cyan-400 bg-gray-100 hover:bg-gray-800 rounded-full p-1'>
+                                                            <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-cyan-400 bg-gray-100 dark:bg-gray-700 dark:hover:bg-black hover:bg-gray-800 rounded-full p-1'>
                                                                         <BsFillEmojiLaughingFill/>
                                                             </div>
                                                         </div>
@@ -495,7 +495,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
 
                                    
-                                        <div className=' pt-2  text-gray-400 m-auto  items-center'>
+                                        <div className=' pt-2  text-gray-400 dark:text-gray-300 m-auto  items-center'>
                                              {/* UPLOAD INPUTS */}
 
                                                     <div className='w-full p-4'>
@@ -518,7 +518,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                                                     // setFileData('');
                                                                                     setmessageData({...messageData, type:''});
                                                                                     }}   className='bg-gray-100 my-3 hover:bg-red-400 rounded-full p-2 group'>
-                                                                                    <XCircleIcon  className='text-gray-300 group-hover:text-white h-5 w-5 '/>
+                                                                                    <XCircleIcon  className='text-gray-400 group-hover:text-white h-5 w-5 '/>
                                                                                 </div>
                                                                                 </>
                                                                             }
@@ -541,7 +541,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                         </div> }
                                                         {imageBlob.length>0 && messageData.type === 'audio' &&
                                                         <div className='pt-3 w-full h-full h-8 flex justify-center'>
-                                                            <div className=' font-semibold text-gray-500 items-center border-2 border-gray-300 rounded-md0 space-x-1 py-1 px-3 '>
+                                                            <div className=' font-semibold text-gray-500 items-center border-2 border-gray-300 rounded-md space-x-1 py-1 px-3 '>
                                                                 <div className='flex justify-center'>
                                                                  <AudioForm Url={imageBlob} DP={viewer.dpUrl}/>
                                                                 </div>
@@ -569,7 +569,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                                                 // setImageBlob('');
                                                                                 // setFileData('');
                                                                                 setmessageData({...messageData, type:''});
-                                                                                }}  className='bg-gray-100 my-3 hover:bg-red-400 rounded-full p-2 group'>
+                                                                                }}  className='bg-gray-100 dark:bg-gray-800 my-3 hover:bg-red-400 rounded-full p-2 group'>
                                                                                 <XCircleIcon  className='text-gray-300 group-hover:text-white h-5 w-5 '/>
                                                                             </div>
                                                                             
@@ -654,8 +654,8 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                         </div>
                                         
                                         {emojiBox && 
-                                                    <div className='flex m-2 p-2 rounded-md justify-center bg-gray-300'>
-                                                        <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
+                                                    <div className='flex m-2 p-2 rounded-md justify-center bg-gray-300 dark:bg-gray-800'>
+                                                        <Picker className= 'bg-gray-300 ' onEmojiClick={onEmojiClick} />
                                                     </div>
                                         }
                                       

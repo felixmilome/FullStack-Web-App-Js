@@ -15,6 +15,7 @@ import {BeatLoader} from "react-spinners";
 import {useNavigate} from 'react-router-dom';
 
 
+
 import {FbForm, IgForm, PnForm, RdForm, SnForm, TchForm, TkForm, TwForm, WpForm, YtForm, PicForm, PicFrame, VideoFrame, AudioForm, VideoForm} from "./PostForms/Previews.jsx";
 
 
@@ -67,7 +68,8 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         title:diary.title, caption:diary.caption, media:diary.media, creator:diary.creator, file: diary.file, type: 'display', originalId:diary._id
     }); 
     const[popSure, setpopSure] = useState(false);
-    const[spam, setSpam] = useState(false);
+    const[spamReview, setSpamReview] = useState(false);
+    const[spamDisplay, setSpamDisplay] = useState(false);
     const[tip, setTip] = useState({tips:null});
     const[popOptions, setpopOptions] = useState(false);
     const[tipLoading, setTipLoading] = useState(false);
@@ -96,6 +98,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
     
     const dateNow = new Date(diary.time); 
 
+    const postSpam = useSelector((state) => state.postSpamReducer);
 
 
         function getSum(total, num) { 
@@ -117,11 +120,11 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
 
     const reviewDiary = () =>{
 
-        setReviewLoading(true);
+        setReviewLoading(true); 
         setEmojiBox(false);
        
         try{
-            dispatch(postReviewsAction(reviewData, setreviewData, setReviewLoading, setReviewDelivery, socket));
+            dispatch(postReviewsAction(reviewData, setreviewData, setReviewLoading, setReviewDelivery, socket, setSpamReview));
             console.log(reviewData);
         }
         catch(error){
@@ -164,11 +167,22 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
 
     const handleDisplay = () =>{
 
-        setLoadingDisplay(true);
-        console.log(socket);
-       
-        dispatch(postDisplayDiariesAction(displayData, setPopDisplayPosted, navigate, setSpam, socket));
-        console.log(displayData);
+        console.log(postSpam);
+
+        if (postSpam > 10){
+
+            setSpamDisplay(true);
+            setTimeout( function() {setSpamDisplay (false)}, 2000); 
+
+        }else{ 
+
+            if(spamDisplay)
+            setLoadingDisplay(true);
+            console.log(socket);
+        
+            dispatch(postDisplayDiariesAction(displayData, setPopDisplayPosted, navigate, setSpamDisplay, socket));
+            console.log(displayData);
+        }
 
     }
   
@@ -182,8 +196,11 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         {reviewDelivery &&
         <DeliveryPop message='Review Sent'/>
         }
-        {spam ==true &&
-        <DeliveryPop message='Todays Review Limit(25) reached! Try Tomorrow '/>
+        {spamDisplay ==true &&
+        <DeliveryPop message="You've posted enough today! Save some for tomorrow"/>
+         } 
+          {spamReview ==true &&
+        <DeliveryPop message="You've Reviewed enough today! Save some for tomorrow"/>
          } 
         <div className="text-black p-2 sm:px-12 py-4 rounded-md sm:rounded-xl bg-gray-100 relative sm:w-3/4 xl:w-2/5 mx-auto mb-6"> 
          
@@ -333,12 +350,12 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         {/* Post Caption Invisible Parent */}
         <div className="relative flex justify-center   my-0.5">
             {/* Post Mid Frame*/}
-            <div onClick= {()=> {console.log(diary.reviewers)}} className="max-h-screen overflow-scroll w-full items-center p-4 text-sm rounded-t-xl break-words"> 
-                    <div className='text-left mb-4'>
+            <div onClick= {()=> {console.log(diary.reviewers)}} className="max-h-screen overflow-scroll w-full items-center px-4 text-sm rounded-t-xl break-words"> 
+                    <div className='text-left '>
                         <p className='text-xs  font-light'><span className='font-bold'>Created On:</span> {dateNow.toDateString()}, {dateNow.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</p>
                 
                     </div>
-                         <p className="leading-5 font-semibold my-1 text-gray-700">{diary.title}</p>
+                         <p className="leading-5 font-semibold  text-gray-700">{diary.title}</p>
                     
                   
                     
@@ -365,17 +382,21 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
             {/*=============================IFRAMES========================================*/}
                                    {/* ======IMAGE FILE====== */}
                                    { diary.file.length && diary.media === 'image' && diary.file.includes('zooruraweb.appspot.com') &&
-                                        <div className =" w-full">
-                                            <div className="relative z-50 flex justify-center m-auto w-full lg:p-0">
+                                        <div className ="w-full h-full"> 
+                                            <div className="relative max-h-screen bg-red-900 z-50 flex justify-center m-auto w-full lg:p-0">
                                                 <PicFrame Url= {diary.file}/>
-                                            </div>     
+                                              
+                                            </div>  
+                                           
+                                          
                                        </div> 
                                     }
                                      {/* ======VIDEO FILE====== */}
                                    { diary.file.length && diary.media === 'video' && diary.file.includes('zooruraweb.appspot.com') &&
                                         <div className =" w-full">
-                                            <div className="relative z-10 flex justify-center m-auto w-full lg:p-0">
+                                            <div className="relative max-h-screen z-10 flex justify-center m-auto w-full lg:p-0">
                                                 <VideoForm Url= {diary.file} DP={user.result.dpUrl}/>
+                                             
                                             </div>  
                                        </div> 
                                     }
@@ -388,6 +409,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
  
                                        </div> 
                                     }
+                               
                                     
                                 {/* ======YOUTUBE======== */}
                                 {diary.media === 'url' &&

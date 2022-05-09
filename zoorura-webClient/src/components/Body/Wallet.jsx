@@ -9,7 +9,7 @@ export const Wallet = () => {
     const[mpesa, setMpesa] = useState(true);
 
   return (
-    <div className='fixed top-32 sm:top-24 w-full flex items-center h-screen  text-gray-800 overflow-scroll'>
+    <div className='fixed top-32 sm:top-24 w-full flex items-center h-screen  text-gray-800 dark:text-gray-200 overflow-scroll'>
         <div className='w-11/12 m-auto space-y-3 max-h-screen pb-80 overflow-scroll'>
             <div className='space-y-3 rounded-xl text-gray-100 p-6 text-xl text-center font-bold h-fit bg-gray-900 w-full sm:w-1/3 m-auto'>
                 <div className='flex justify-center text-sm items-center space-x-2'>
@@ -22,16 +22,16 @@ export const Wallet = () => {
                 </div>
             </div>
 
-            <div className=' rounded-md p-2 text-xl flex justify-center  font-bold h-fit bg-gray-100 w-full sm:w-1/3 m-auto'>
+            <div className=' rounded-md p-2 text-xl flex justify-center  font-bold h-fit bg-gray-100 dark:bg-cyan-900 w-full sm:w-1/3 m-auto'>
                 <div className='space-y-2'> 
 
                     <div className='flex m-3 text-sm items-center justify-center space-x-0.5 cursor-pointer'>
-                         <div onClick={()=>setMpesa(true)} className={`${mpesa === true && 'bg-green-400 text-gray-100'} w-32 flex justify-center flex items-center border-gray-300  hover:bg-gray-800 hover:text-gray-100 border p-1 rounded-md`}>
+                         <div onClick={()=>setMpesa(true)} className={`${mpesa === true && 'bg-green-400 dark:bg-green-900 text-gray-100'} w-32 flex justify-center flex items-center border-gray-300  hover:bg-gray-800 dark:hover:bg-gray-900 hover:text-gray-100 border p-1 rounded-md`}>
                             <img src="./assets/images/mpesa.png" alt="DP" className="p-0.5 rounded-full h-7 w-7 "/>
                             <p>M-Pesa</p>
                         </div>
 
-                        <div onClick={()=>setMpesa(false)} className={`${mpesa === false && 'bg-blue-400 text-gray-100'} w-32 flex justify-center flex text-sm items-center border-gray-300 ${mpesa===false && 'bg-gray-800 text-gray-100'} hover:bg-gray-800 hover:text-gray-100 border p-1 rounded-md cursor-pointer`}>
+                        <div onClick={()=>setMpesa(false)} className={`${mpesa === false && 'bg-blue-400 dark:bg-blue-900 text-gray-100'} w-32 flex justify-center flex text-sm items-center border-gray-300 ${mpesa===false && 'bg-gray-800 text-gray-100'} hover:bg-gray-800 dark:hover:bg-gray-900 hover:text-gray-100 border p-1 rounded-md cursor-pointer`}>
                             <img src="./assets/images/paypal.png" alt="DP" className="p-0.5 rounded-full h-7 w-7 "/>
                             <p>Paypal</p>
                         </div>
@@ -43,22 +43,22 @@ export const Wallet = () => {
                         
                         {mpesa===true &&
                             <>
-                                <div onClick={()=>setDeposit(true)}  className={`${deposit === true && ' bg-green-400 text-gray-100'} w-24 flex justify-center text-center flex items-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
+                                <div onClick={()=>setDeposit(true)}  className={`${deposit === true && ' bg-green-400 dark:bg-green-900 text-gray-100'} w-24 flex justify-center text-center flex items-center border-gray-400 hover:bg-gray-800 dark:hover:bg-gray-900 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
                                     <p>Deposit</p>
                                 </div>
 
-                                <div onClick={()=>setDeposit(false)} className={`${deposit === false &&  ' bg-green-400 text-gray-100'} w-24 flex justify-center text-center flex tems-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
+                                <div onClick={()=>setDeposit(false)} className={`${deposit === false &&  ' bg-green-400 dark:bg-green-900 text-gray-100'} w-24 flex justify-center text-center flex tems-center border-gray-400 hover:bg-gray-800 dark:hover:bg-gray-900 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
                                     <p>Withdraw</p>
                                 </div>
                             </>
                         }
                         {mpesa===false &&
                             <>
-                                <div onClick={()=>setDeposit(true)}  className={`${deposit === true && ' bg-blue-400 text-gray-100'} w-24 flex justify-center text-center flex items-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
+                                <div onClick={()=>setDeposit(true)}  className={`${deposit === true && ' bg-blue-400 dark:bg-blue-900 text-gray-100'} w-24 flex justify-center text-center flex items-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 dark:hover:bg-gray-900 border px-3 p-1 rounded-full cursor-pointer`}>
                                     <p>Deposit</p>
                                 </div>
 
-                                <div onClick={()=>setDeposit(false)} className={`${deposit === false &&  ' bg-blue-400 text-gray-100'} w-24 flex justify-center text-center flex tems-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 border px-3 p-1 rounded-full cursor-pointer`}>
+                                <div onClick={()=>setDeposit(false)} className={`${deposit === false &&  ' bg-blue-400 dark:bg-blue-900 text-gray-100'} w-24 flex justify-center text-center flex tems-center border-gray-400 hover:bg-gray-800 hover:text-gray-100 dark:hover:bg-gray-900 border px-3 p-1 rounded-full cursor-pointer`}>
                                     <p>Withdraw</p>
                                 </div>
                             </>
@@ -81,9 +81,9 @@ export const Wallet = () => {
                           
                             <p className='text-sm'>DEPOSIT to Zoorura Wallet:</p> 
                             <p className='text-sm font-light'>M-Pesa Number:</p> 
-                            <input type='number' placeholder='Enter M-Pesa Number' className='w-48 bg-gray-200 py-2 px-4 text-sm rounded-full'/>
+                            <input type='number' placeholder='Enter M-Pesa Number' className='w-48 bg-gray-200 dark:bg-gray-900 py-2 px-4 text-sm rounded-full'/>
                             <p className='text-sm font-light'>Amount:</p> 
-                            <input type='number' placeholder='Kshs 200-100,000' className='w-48 bg-gray-200 py-2 px-4 text-sm rounded-full'/>
+                            <input type='number' placeholder='Kshs 200-100,000' className='w-48 bg-gray-200 dark:bg-gray-900 py-2 px-4 text-sm rounded-full'/>
                             
                             <div className='m-auto w-48 text-green-500 text-sm p-2 rounded-full border border-green-500'>
                                 <p>Deposit</p>
@@ -96,9 +96,9 @@ export const Wallet = () => {
                           
                             <p className='text-sm'>WITHDRAW from Zoorura Wallet:</p> 
                             <p className='text-sm font-light'>M-Pesa Number:</p> 
-                            <input type='number' placeholder='Enter M-Pesa Number' className='w-48 bg-gray-200 py-2 px-4 text-sm rounded-full'/>
+                            <input type='number' placeholder='Enter M-Pesa Number' className='w-48 bg-gray-200 dark:bg-gray-900 py-2 px-4 text-sm rounded-full'/>
                             <p className='text-sm font-light'>Amount:</p> 
-                            <input type='number' placeholder='Kshs 200-100,000' className='w-48 bg-gray-200 py-2 px-4 text-sm rounded-full'/>
+                            <input type='number' placeholder='Kshs 200-100,000' className='w-48 bg-gray-200 dark:bg-gray-900 py-2 px-4 text-sm rounded-full'/>
                             
                             <div className='m-auto w-48 text-green-500 text-sm p-2 rounded-full border border-green-500'>
                                 <p>Withdraw</p>
@@ -122,9 +122,9 @@ export const Wallet = () => {
                           
                             <p className='text-sm'>DEPOSIT to Zoorura Wallet:</p> 
                             <p className='text-sm font-light'>Paypal Email:</p> 
-                            <input type='email' placeholder='Enter Paypal Email' className='w-48 bg-gray-200 py-2 px-4 text-sm rounded-full'/>
+                            <input type='email' placeholder='Enter Paypal Email' className='w-48 bg-gray-200 py-2 dark:bg-gray-900 px-4 text-sm rounded-full'/>
                             <p className='text-sm font-light'>Amount:</p> 
-                            <input type='number' placeholder='Kshs 200-100,000' className='w-48 bg-gray-200 py-2 px-4 text-sm rounded-full'/>
+                            <input type='number' placeholder='Kshs 200-100,000' className='w-48 bg-gray-200 py-2 dark:bg-gray-900 px-4 text-sm rounded-full'/>
                             
                             <div className='m-auto w-48 text-blue-500 text-sm p-2 rounded-full border border-blue-500'>
                                 <p>Deposit</p>
@@ -137,9 +137,9 @@ export const Wallet = () => {
                           
                             <p className='text-sm'>WITHDRAW from Zoorura Wallet:</p> 
                             <p className='text-sm font-light'>Paypal Email:</p> 
-                            <input type='email' placeholder='Enter Paypal Email' className='w-48 bg-gray-200 py-2 px-4 text-sm rounded-full'/>
+                            <input type='email' placeholder='Enter Paypal Email' className='w-48 bg-gray-200 py-2 dark:bg-gray-900 px-4 text-sm rounded-full'/>
                             <p className='text-sm font-light'>Amount:</p> 
-                            <input type='number' placeholder='Kshs 200-100,000' className='w-48 bg-gray-200 py-2 px-4 text-sm rounded-full'/>
+                            <input type='number' placeholder='Kshs 200-100,000' className='w-48 bg-gray-200 py-2 dark:bg-gray-900 px-4 text-sm rounded-full'/>
                             
                             <div className='m-auto w-48 text-blue-500 text-sm p-2 rounded-full border border-blue-500'>
                                 <p>Withdraw</p>

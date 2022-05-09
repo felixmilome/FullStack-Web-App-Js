@@ -69,14 +69,14 @@ return (
         {styles => (
         <animated.div style={styles}>
         
-            <div className=" p-7 sm:w-1/3 xl:w-1/4 w-2/3 m-x-4 bg-gray-100 z-10 fixed right-0 sm:right-1.5 top-0 sm:top-20 rounded-md h-screen overflow-y-auto overflow-x-hidden">
+            <div className=" p-7 sm:w-1/3 xl:w-1/4 w-2/3 m-x-4 bg-gray-100 dark:bg-gray-800 z-10 fixed right-0 sm:right-1.5 top-0 sm:top-20 rounded-md h-screen overflow-y-auto overflow-x-hidden">
                 <div className="overflow-scroll">
                 <div className='flex justify-between p-3 items-center'>
-                        <div className="ml-1 font-bold text-gray-500 p-1">
+                        <div className="ml-1 font-bold text-gray-500 dark:text-gray-300 p-1">
                         Contacts 
                         </div>
-                        <div onClick={()=>setpopContacts(false)} className="ml-1 hover:bg-gray-400 rounded-full font-bold text-gray-400 p-1 cursor-pointer group">
-                        <MdOutlineCancel size={20} className='group-hover:text-gray-100'/>
+                        <div onClick={()=>setpopContacts(false)} className="ml-1 hover:bg-gray-400 dark:hover:bg-gray-600 rounded-full font-bold text-gray-400 p-1 cursor-pointer group">
+                        <MdOutlineCancel size={20} className='group-hover:text-gray-100 dark:group-hover:text-gray-900 '/>
                         </div>
                 </div>
                 
@@ -115,7 +115,7 @@ return (
                                                 
                                                     {/* {popChatBox && 
                                                         <ContactMod setpopChatBox={setpopChatBox} convoId={convo?._id} guest?={JSON.parse(guest?)} host?={JSON.parse(host?)}/>
-                                                    }   */}
+                                                    }   */} 
                                                 </div> 
                                             )
                                         }

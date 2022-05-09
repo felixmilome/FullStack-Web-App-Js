@@ -27,6 +27,7 @@ import { Follows } from "../components/Body/Follows.jsx";
 function Home({showProfile}) {
 
      const[popContacts, setpopContacts] = useState(false);
+     const[mode, setMode] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -42,67 +43,93 @@ function Home({showProfile}) {
 
     const [diaryId, setDiaryId]= useState(null);
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  
+    const modeSetter =()=> {
+        if (
+            //localStorage.theme === 'dark' || (!('theme' in localStorage) && 
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+        //)
+        ) {
+            //document.documentElement.classList.add('dark') //work on it later
+            setMode('dark');
+        } else {
+            //document.documentElement.classList.remove('dark')
+            setMode(null);
+        }
+    }
+    console.log(localStorage.theme);
+
+    useEffect(() => {
+        modeSetter()
+      }, [dispatch]);
 
     return (
+        // ${mode === 'dark' ? 'bg-gradient-to-r from-cyan-900 to-gray-900': 'bg-gray-300'}
         //<div className="m-0 text-gray-700 h-full min-h-screen pb-40 bg-gradient-to-r from-teal-900 to-gray-900">
-        <div className=" text-gray-700 h-full min-h-screen pb-40 bg-gray-300"> 
-
-       
-    
-            
-                <Header setpopContacts= {setpopContacts} popContacts={popContacts}/>  
-                <Leftbar/>  
-             
-               
-           
-                    <Routes>
-                        <Route exact path ="/securityChange/:change/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
-                         
-                       
-                        <Route exact path ="/ForgotPassword" element = {<ForgotPassword/>}/>                 
-                        <Route exact path ="*" element ={<NoPage/>}/>
-                        {user &&
-                        <>
-                        <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
-                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} setpopContacts={setpopContacts} popContacts={popContacts} />}/>
-                        <Route exact path ="/Portfolios/:profileName/:getItem" element = {<Follows setpopContacts={setpopContacts} popContacts={popContacts} />}/>
-                        <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/> 
-                        <Route exact path ="/Portfolios/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/>
-                        <Route exact path ="/PostForm" element ={<PostForm />}/>
-                        <Route exact path ="/Settings" element = {<Settings/>}/>
-                        <Route exact path ="/ChatHunt" element = {<ChatHunt setpopContacts={setpopContacts} />}/>
-                        <Route exact path ="/Wallet" element = {<Wallet/>}/>
-                        <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
-                        </>
-                        }
-                       
-                    </Routes> 
+        <div className={`${mode}`}>
+                <div className={`text-gray-800 dark:text-gray-200 h-full min-h-screen pb-40 bg-gray-300 dark:bg-gray-900 
 
                 
-                {user &&
-                <>
-                <Rightbar/>             
-                {/* <Footer/> */}
-                </>
-                }
-            
-            <div 
-                        
-                        style={{  
-                                // backgroundImage: "url(" + "https://thumbs.dreamstime.com/z/cartoon-cute-doodles-hand-drawn-african-illustration-sketchy-picture-doodle-inscription-africa-74329506.jpg" + ")",
-                                backgroundImage: "url(" + "./assets/images/zooruraBGquad.jpg" + ")", 
-                                backgroundPosition: 'center',
-                                    //backgroundSize: 'cover',
-                                    backgroundSize: 'contain',
-                                    backgroundRepeat: 'repeat',
-                                    pointerEvents: 'none',
-                                    opacity: 0.03,
-                                }}
-                className=" fixed top-0 z-20  w-screen h-screen ">  
-                    
-            </div>
-           
 
+                 `}> 
+
+            
+            
+                    
+                        <Header setpopContacts= {setpopContacts} popContacts={popContacts}/>  
+                        <Leftbar/>  
+                    
+                    
+                
+                            <Routes>
+                                <Route exact path ="/securityChange/:change/:userId/:uniqueStr" element = {<SecureVerify/>}/> 
+                                
+                            
+                                <Route exact path ="/ForgotPassword" element = {<ForgotPassword/>}/>                 
+                                <Route exact path ="*" element ={<NoPage/>}/>
+                                {user &&
+                                <>
+                                <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                                <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} setpopContacts={setpopContacts} popContacts={popContacts} />}/>
+                                <Route exact path ="/Portfolios/:profileName/:getItem" element = {<Follows setpopContacts={setpopContacts} popContacts={popContacts} />}/>
+                                <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/> 
+                                <Route exact path ="/Portfolios/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/>
+                                <Route exact path ="/PostForm" element ={<PostForm />}/>
+                                <Route exact path ="/Settings" element = {<Settings/>}/>
+                                <Route exact path ="/ChatHunt" element = {<ChatHunt setpopContacts={setpopContacts} />}/>
+                                <Route exact path ="/Wallet" element = {<Wallet/>}/>
+                                <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                                </>
+                                }
+                            
+                            </Routes> 
+
+                        
+                        {user &&
+                        <>
+                        <Rightbar/>             
+                        {/* <Footer/> */}
+                        </>
+                        }
+                    
+                    <div 
+                                
+                                style={{  
+                                        // backgroundImage: "url(" + "https://thumbs.dreamstime.com/z/cartoon-cute-doodles-hand-drawn-african-illustration-sketchy-picture-doodle-inscription-africa-74329506.jpg" + ")",
+                                        backgroundImage: "url(" + "./assets/images/zooruraBGquad.jpg" + ")", 
+                                        backgroundPosition: 'center',
+                                            //backgroundSize: 'cover',
+                                            backgroundSize: 'contain',
+                                            backgroundRepeat: 'repeat',
+                                            pointerEvents: 'none',
+                                            opacity: 0.03,
+                                        }}
+                        className=" fixed top-0 z-20  w-screen h-screen ">  
+                            
+                    </div>
+                
+
+                </div>
         </div>
     )
 }

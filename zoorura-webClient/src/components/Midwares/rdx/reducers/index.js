@@ -6,7 +6,7 @@
  import { hallFameReducer } from './hallFameReducer';
  import {profileResetReducer, getMiniProfileReducer,blockReducer, followsReducer,
          populateBlockReducer, securityResetReducer, forgotPasswordReducer,
-        chatHuntReducer, followersReducer, followingReducer} from './profileReducer';
+        chatHuntReducer, followersReducer, followingReducer, postSpamReducer} from './profileReducer';
  import {convosReducer} from './convosReducer';
  import {convoStateReducer} from './stateReducers.js';
  import {messagesReducer} from './messagesReducer';
@@ -24,7 +24,8 @@
  
     export default combineReducers({ 
 
-      diariesReducer, visitedDiariesReducer, savedDiariesReducer, usersDiariesReducer,
+      diariesReducer, visitedDiariesReducer, savedDiariesReducer,
+       postSpamReducer, usersDiariesReducer,
       randomDiariesReducer, popularDiariesReducer, 
       convoStateReducer, googleauthReducer,
       profileResetReducer, getMiniProfileReducer,

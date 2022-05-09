@@ -177,9 +177,9 @@ function getCodec() {
   
       try{ 
       
-          const user = await UsersModel.findById(req.userId);
+          const user = await UsersModel.findById(req.userId, {_id:1, follows:1, postSpam:1});
           console.log(user);
-          res.json (user);
+          res.json (user); 
           
     
       } catch (error){

@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.15/libexec/bin/yarn.js add @hookform/resolvers/yup
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.15/libexec/bin/yarn.js add http-proxy-middleware
 
 PATH: 
   /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
@@ -14,39 +14,42 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@hookform%2fresolvers/yup: Request "https://registry.yarnpkg.com/@hookform%2fresolvers/yup" returned a 405
-      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:67040:18)
-      at Request.self.callback (/usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:140885:22)
-      at Request.emit (node:events:394:28)
-      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:141857:10)
-      at Request.emit (node:events:394:28)
-      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:141779:12)
+  Error: https://registry.npmjs.org/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.15.4.tgz: ESOCKETTIMEDOUT
+      at ClientRequest.<anonymous> (/usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:141512:19)
       at Object.onceWrapper (node:events:513:28)
-      at IncomingMessage.emit (node:events:406:35)
-      at endReadableNT (node:internal/streams/readable:1343:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+      at ClientRequest.emit (node:events:394:28)
+      at TLSSocket.emitRequestTimeout (node:_http_client:761:9)
+      at Object.onceWrapper (node:events:513:28)
+      at TLSSocket.emit (node:events:406:35)
+      at TLSSocket.Socket._onTimeout (node:net:486:8)
+      at listOnTimeout (node:internal/timers:557:17)
+      at processTimers (node:internal/timers:500:7)
 
 npm manifest: 
   {
     "name": "zoorura-web",
     "version": "0.1.0",
-    "license": "UNLICENSED",
+    "license": "MIT",
     "private": true,
     "proxy": "http://localhost:5000",
     "dependencies": {
       "@craco/craco": "^6.3.0",
+      "@ffmpeg/core": "^0.10.0",
+      "@ffmpeg/ffmpeg": "^0.10.1",
       "@fortawesome/fontawesome-svg-core": "^1.2.36",
       "@fortawesome/free-brands-svg-icons": "^5.15.4",
       "@fortawesome/free-regular-svg-icons": "^5.15.4",
       "@fortawesome/free-solid-svg-icons": "^5.15.4",
       "@fortawesome/react-fontawesome": "^0.1.15",
       "@heroicons/react": "^1.0.4",
+      "@hookform/resolvers": "^2.8.8",
       "@testing-library/jest-dom": "^5.11.4",
       "@testing-library/react": "^11.1.0",
       "@testing-library/user-event": "^12.1.10",
       "axios": "^0.24.0",
       "cors": "^2.8.5",
       "dom": "^0.0.3",
+      "emoji-picker-react": "^3.5.1",
       "express": "^4.17.1",
       "firebase": "^9.6.1",
       "jwt-decode": "^3.1.2",
@@ -56,7 +59,9 @@ npm manifest:
       "react-easy-crop": "^4.0.1",
       "react-file-base64": "^1.0.3",
       "react-google-login": "^5.2.2",
+      "react-h5-audio-player": "^3.8.2",
       "react-helmet": "^6.1.0",
+      "react-hook-form": "^7.25.3",
       "react-icons": "^4.3.1",
       "react-iframe": "^1.8.0",
       "react-outside-click-handler": "^1.3.0",
@@ -66,9 +71,11 @@ npm manifest:
       "react-script-tag": "^1.1.2",
       "react-scripts": "4.0.3",
       "react-spinners": "^0.11.0",
+      "react-video-js-player": "^1.1.1",
       "redux": "^4.1.2",
       "redux-thunk": "^2.4.0",
       "socket.io-client": "^4.4.1",
+      "video-react": "^0.15.0",
       "web-vitals": "^1.0.1",
       "yup": "^0.32.11"
     },
@@ -1207,6 +1214,13 @@ Lockfile:
     dependencies:
       regenerator-runtime "^0.13.4"
   
+  "@babel/runtime@^7.4.5":
+    version "7.17.2"
+    resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.2.tgz#66f68591605e59da47523c631416b18508779941"
+    integrity sha512-hzeyJyMA1YGdJTuWU0e/j4wKXrU4OMFvY2MSlaI9B7VQb0r5cxTE3EAIS2Q7Tn2RIcDkRvTA/v2JsAEhxe99uw==
+    dependencies:
+      regenerator-runtime "^0.13.4"
+  
   "@babel/runtime@^7.7.6":
     version "7.16.3"
     resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
@@ -1360,6 +1374,21 @@ Lockfile:
       lodash "^4.17.20"
       minimatch "^3.0.4"
       strip-json-comments "^3.1.1"
+  
+  "@ffmpeg/core@^0.10.0":
+    version "0.10.0"
+    resolved "https://registry.yarnpkg.com/@ffmpeg/core/-/core-0.10.0.tgz#f6a58361b22d7c23c6f7071b9fff6d572bc3f499"
+    integrity sha512-qunWJl5PezpXEm31tb8Qu5z37B5KVA1VYZCpXchMhuAb3X9T7PuE3SlhOwphEoRhzaOa3lpofDfzihAUMFaVPQ==
+  
+  "@ffmpeg/ffmpeg@^0.10.1":
+    version "0.10.1"
+    resolved "https://registry.yarnpkg.com/@ffmpeg/ffmpeg/-/ffmpeg-0.10.1.tgz#3dacf3985de9c83a95fbf79fe709920cc009b00a"
+    integrity sha512-ChQkH7Rh57hmVo1LhfQFibWX/xqneolJKSwItwZdKPcLZuKigtYAYDIvB55pDfP17VtR1R77SxgkB2/UApB+Og==
+    dependencies:
+      is-url "^1.2.4"
+      node-fetch "^2.6.1"
+      regenerator-runtime "^0.13.7"
+      resolve-url "^0.2.1"
   
   "@firebase/analytics-compat@0.1.5":
     version "0.1.5"
@@ -1816,6 +1845,23 @@ Lockfile:
     version "1.0.5"
     resolved "https://registry.npmjs.org/@heroicons/react/-/react-1.0.5.tgz"
     integrity sha512-UDMyLM2KavIu2vlWfMspapw9yii7aoLwzI2Hudx4fyoPwfKfxU8r3cL8dEBXOjcLG0/oOONZzbT14M1HoNtEcg==
+  
+  "@hookform/resolvers@^2.8.8":
+    version "2.8.8"
+    resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-2.8.8.tgz#17cf806485435877fdafce9f3bee6ff68f7f87b6"
+    integrity sha512-meAEDur1IJBfKyTo9yPYAuzjIfrxA7m9Ov+1nxaW/YupsqMeseWifoUjWK03+hz/RJizsVQAaUjVxFEkyu0GWg==
+  
+  "@iconify/icons-mdi@^1.0.46":
+    version "1.1.46"
+    resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.1.46.tgz#217337abd2c9111b2a4ff8e9afbe93b54ea68951"
+    integrity sha512-J6O1KO/CKFEcCJ3lfYO5PNPj1n8AljOzsQTnGvaNXnHkppdOmDagYRD6xWgurNADfdmXtR6N8bceEOhN9yPRKA==
+  
+  "@iconify/react@^3.1.3":
+    version "3.1.3"
+    resolved "https://registry.yarnpkg.com/@iconify/react/-/react-3.1.3.tgz#c8c774c0e114da163bca338382f9ef0c0c7b1f96"
+    integrity sha512-5InPUQlFXNP2BHrZyN4qoIweEqiFKewUHLSQ5KT1fjqHzh7MO8T6v3GAh5tAbuhzIv5Iz7RKL2+Sb7dtNhIO8A==
+    dependencies:
+      cross-fetch "^3.1.5"
   
   "@istanbuljs/load-nyc-config@^1.0.0":
     version "1.1.0"
@@ -2699,6 +2745,38 @@ Lockfile:
       "@typescript-eslint/types" "4.15.2"
       eslint-visitor-keys "^2.0.0"
   
+  "@videojs/http-streaming@2.12.0":
+    version "2.12.0"
+    resolved "https://registry.yarnpkg.com/@videojs/http-streaming/-/http-streaming-2.12.0.tgz#850069e063e26cf2fa5ed9bb3addfc92fa899f78"
+    integrity sha512-vdQA0lDYBXGJqV2T02AGqg1w4dcgyRoN+bYG+G8uF4DpCEMhEtUI0BA4tRu4/Njar8w/9D5k0a1KX40pcvM3fA==
+    dependencies:
+      "@babel/runtime" "^7.12.5"
+      "@videojs/vhs-utils" "3.0.4"
+      aes-decrypter "3.1.2"
+      global "^4.4.0"
+      m3u8-parser "4.7.0"
+      mpd-parser "0.19.2"
+      mux.js "5.14.1"
+      video.js "^6 || ^7"
+  
+  "@videojs/vhs-utils@3.0.4", "@videojs/vhs-utils@^3.0.0", "@videojs/vhs-utils@^3.0.2", "@videojs/vhs-utils@^3.0.3":
+    version "3.0.4"
+    resolved "https://registry.yarnpkg.com/@videojs/vhs-utils/-/vhs-utils-3.0.4.tgz#e253eecd8e9318f767e752010d213587f94bb03a"
+    integrity sha512-hui4zOj2I1kLzDgf8QDVxD3IzrwjS/43KiS8IHQO0OeeSsb4pB/lgNt1NG7Dv0wMQfCccUpMVLGcK618s890Yg==
+    dependencies:
+      "@babel/runtime" "^7.12.5"
+      global "^4.4.0"
+      url-toolkit "^2.2.1"
+  
+  "@videojs/xhr@2.6.0":
+    version "2.6.0"
+    resolved "https://registry.yarnpkg.com/@videojs/xhr/-/xhr-2.6.0.tgz#cd897e0ad54faf497961bcce3fa16dc15a26bb80"
+    integrity sha512-7J361GiN1tXpm+gd0xz2QWr3xNWBE+rytvo8J3KuggFaLg+U37gZQ2BuPLcnkfGffy2e+ozY70RHC8jt7zjA6Q==
+    dependencies:
+      "@babel/runtime" "^7.5.5"
+      global "~4.4.0"
+      is-function "^1.0.1"
+  
   "@webassemblyjs/ast@1.9.0":
     version "1.9.0"
     resolved "https://registry.npmjs.org/@webassemblyjs/ast/-/ast-1.9.0.tgz"
@@ -2844,6 +2922,11 @@ Lockfile:
       "@webassemblyjs/wast-parser" "1.9.0"
       "@xtuc/long" "4.2.2"
   
+  "@xmldom/xmldom@^0.7.2":
+    version "0.7.5"
+    resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.5.tgz#09fa51e356d07d0be200642b0e4f91d8e6dd408d"
+    integrity sha512-V3BIhmY36fXZ1OtVcI9W+FxQqxVLsPKcNjWigIaa81dLC9IolJl5Mt4Cvhmr0flUnjSpTdrbMTSbXqYqV5dT6A==
+  
   "@xtuc/ieee754@^1.2.0":
     version "1.2.0"
     resolved "https://registry.npmjs.org/@xtuc/ieee754/-/ieee754-1.2.0.tgz"
@@ -2906,7 +2989,7 @@ Lockfile:
   
   address@1.1.2, address@^1.0.1:
     version "1.1.2"
-    resolved "https://registry.npmjs.org/address/-/address-1.1.2.tgz"
+    resolved "https://registry.yarnpkg.com/address/-/address-1.1.2.tgz#bf1116c9c758c51b7a933d296b72c221ed9428b6"
     integrity sha512-aT6camzM4xEA54YVJYSqxz1kv4IHnQZRtThJJHhUMRExaU5spC7jX5ugSwTaTgJliIgs4VhZOk7htClvQ/LmRA==
   
   adjust-sourcemap-loader@3.0.0:
@@ -2916,6 +2999,16 @@ Lockfile:
     dependencies:
       loader-utils "^2.0.0"
       regex-parser "^2.2.11"
+  
+  aes-decrypter@3.1.2:
+    version "3.1.2"
+    resolved "https://registry.yarnpkg.com/aes-decrypter/-/aes-decrypter-3.1.2.tgz#3545546f8e9f6b878640339a242efe221ba7a7cb"
+    integrity sha512-42nRwfQuPRj9R1zqZBdoxnaAmnIFyDi0MNyTVhjdFOd8fifXKKRfwIHIZ6AMn1or4x5WONzjwRTbTWcsIQ0O4A==
+    dependencies:
+      "@babel/runtime" "^7.12.5"
+      "@videojs/vhs-utils" "^3.0.0"
+      global "^4.4.0"
+      pkcs7 "^1.0.4"
   
   aggregate-error@^3.0.0:
     version "3.1.0"
@@ -4036,6 +4129,11 @@ Lockfile:
       isobject "^3.0.0"
       static-extend "^0.1.1"
   
+  classnames@^2.2.6:
+    version "2.3.1"
+    resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
+    integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
+  
   clean-css@^4.2.3:
     version "4.2.3"
     resolved "https://registry.npmjs.org/clean-css/-/clean-css-4.2.3.tgz"
@@ -4442,6 +4540,13 @@ Lockfile:
     dependencies:
       loose-envify "^1.3.1"
       object-assign "^4.1.1"
+  
+  cross-fetch@^3.1.5:
+    version "3.1.5"
+    resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
+    integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
+    dependencies:
+      node-fetch "2.6.7"
   
   cross-spawn@7.0.3, cross-spawn@^7.0.0, cross-spawn@^7.0.2:
     version "7.0.3"
@@ -5029,6 +5134,11 @@ Lockfile:
       domelementtype "^2.0.1"
       entities "^2.0.0"
   
+  dom-walk@^0.1.0:
+    version "0.1.2"
+    resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.2.tgz#0c548bef048f4d1f2a97249002236060daa3fd84"
+    integrity sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==
+  
   dom@^0.0.3:
     version "0.0.3"
     resolved "https://registry.yarnpkg.com/dom/-/dom-0.0.3.tgz#16e0c225a0553d8e4362cc4bcd78d8fde59af67b"
@@ -5152,6 +5262,11 @@ Lockfile:
     resolved "https://registry.npmjs.org/emittery/-/emittery-0.7.2.tgz"
     integrity sha512-A8OG5SR/ij3SsJdWDJdkkSYUjQdCUx6APQXem0SaEePBSRg4eymGYwBkKo1Y6DU+af/Jn2dBQqDBvjnr9Vi8nQ==
   
+  emoji-picker-react@^3.5.1:
+    version "3.5.1"
+    resolved "https://registry.yarnpkg.com/emoji-picker-react/-/emoji-picker-react-3.5.1.tgz#dbb4cda675a58dc86624d2fc488f75c2f4fc377d"
+    integrity sha512-cuSthFAvUO8Q1N7KJPEgZ7N0JNIWPKgN5GUmKe71UlSD4qFYI/p05RT9nohlWOq6YSFhEy2mI/60zBZiaku4mg==
+  
   emoji-regex@^7.0.1:
     version "7.0.3"
     resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-7.0.3.tgz"
@@ -5218,7 +5333,7 @@ Lockfile:
     dependencies:
       "@socket.io/base64-arraybuffer" "~1.0.2"
   
-  enhanced-resolve@^4.3.0:
+  enhanced-resolve@^4.3.0, enhanced-resolve@^4.5.0:
     version "4.5.0"
     resolved "https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-4.5.0.tgz"
     integrity sha512-Nv9m36S/vxpsI+Hc4/ZGRs0n9mXqSWGGq49zxb/cJfPAQMbUtttJAlNPS4AQzaBdw/pKskw5bMbekT/Y7W/Wlg==
@@ -6278,6 +6393,14 @@ Lockfile:
       kind-of "^6.0.2"
       which "^1.3.1"
   
+  global@^4.3.1, global@^4.4.0, global@~4.4.0:
+    version "4.4.0"
+    resolved "https://registry.yarnpkg.com/global/-/global-4.4.0.tgz#3e7b105179006a323ed71aafca3e9c57a5cc6406"
+    integrity sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==
+    dependencies:
+      min-document "^2.19.0"
+      process "^0.11.10"
+  
   globals@^11.1.0:
     version "11.12.0"
     resolved "https://registry.npmjs.org/globals/-/globals-11.12.0.tgz"
@@ -6801,6 +6924,11 @@ Lockfile:
     resolved "https://registry.npmjs.org/indexes-of/-/indexes-of-1.0.1.tgz"
     integrity sha1-8w9xbI4r00bHtn0985FVZqfAVgc=
   
+  individual@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/individual/-/individual-2.0.0.tgz#833b097dad23294e76117a98fb38e0d9ad61bb97"
+    integrity sha1-gzsJfa0jKU52EXqY+zjg2a1hu5c=
+  
   infer-owner@^1.0.3, infer-owner@^1.0.4:
     version "1.0.4"
     resolved "https://registry.npmjs.org/infer-owner/-/infer-owner-1.0.4.tgz"
@@ -7046,6 +7174,11 @@ Lockfile:
     resolved "https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz"
     integrity sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==
   
+  is-function@^1.0.1:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/is-function/-/is-function-1.0.2.tgz#4f097f30abf6efadac9833b17ca5dc03f8144e08"
+    integrity sha512-lw7DUp0aWXYg+CBCN+JKkcE0Q2RayZnSvnZBlwgxHBQhqt5pZNVy4Ri7H9GmmXkdu7LUthszM+Tor1u/2iBcpQ==
+  
   is-generator-fn@^2.0.0:
     version "2.1.0"
     resolved "https://registry.npmjs.org/is-generator-fn/-/is-generator-fn-2.1.0.tgz"
@@ -7203,6 +7336,11 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.npmjs.org/is-typedarray/-/is-typedarray-1.0.0.tgz"
     integrity sha1-5HnICFjfDBsR3dppQPlgEfzaSpo=
+  
+  is-url@^1.2.4:
+    version "1.2.4"
+    resolved "https://registry.yarnpkg.com/is-url/-/is-url-1.2.4.tgz#04a4df46d28c4cff3d73d01ff06abeb318a1aa52"
+    integrity sha512-ITvGim8FhRiYe4IQ5uHSkj7pVaPDrCTkNd3yq3cV7iZAcJdHTUMPMEHcqSOy9xZ9qFenQCvi+2wjH9a1nXqHww==
   
   is-weakref@^1.0.1:
     version "1.0.1"
@@ -7917,6 +8055,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
     integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
   
+  keycode@^2.2.0:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.1.tgz#09c23b2be0611d26117ea2501c2c391a01f39eff"
+    integrity sha512-Rdgz9Hl9Iv4QKi8b0OlCRQEzp4AgVxyCtz5S/+VIHezDmrDhkp2N2TqBWOLz0/gbeREXOOiI9/4b8BY9uw2vFg==
+  
   killable@^1.0.1:
     version "1.0.1"
     resolved "https://registry.npmjs.org/killable/-/killable-1.0.1.tgz"
@@ -8119,6 +8262,11 @@ Lockfile:
     dependencies:
       lodash._reinterpolate "^3.0.0"
   
+  lodash.throttle@^4.1.1:
+    version "4.1.1"
+    resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+    integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+  
   lodash.topath@^4.5.2:
     version "4.5.2"
     resolved "https://registry.npmjs.org/lodash.topath/-/lodash.topath-4.5.2.tgz"
@@ -8176,6 +8324,15 @@ Lockfile:
     version "1.4.4"
     resolved "https://registry.npmjs.org/lz-string/-/lz-string-1.4.4.tgz"
     integrity sha1-wNjq82BZ9wV5bh40SBHPTEmNOiY=
+  
+  m3u8-parser@4.7.0:
+    version "4.7.0"
+    resolved "https://registry.yarnpkg.com/m3u8-parser/-/m3u8-parser-4.7.0.tgz#e01e8ce136098ade1b14ee691ea20fc4dc60abf6"
+    integrity sha512-48l/OwRyjBm+QhNNigEEcRcgbRvnUjL7rxs597HmW9QSNbyNvt+RcZ9T/d9vxi9A9z7EZrB1POtZYhdRlwYQkQ==
+    dependencies:
+      "@babel/runtime" "^7.12.5"
+      "@videojs/vhs-utils" "^3.0.0"
+      global "^4.4.0"
   
   magic-string@^0.25.0, magic-string@^0.25.7:
     version "0.25.7"
@@ -8345,6 +8502,13 @@ Lockfile:
     resolved "https://registry.npmjs.org/mimic-fn/-/mimic-fn-2.1.0.tgz"
     integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
   
+  min-document@^2.19.0:
+    version "2.19.0"
+    resolved "https://registry.yarnpkg.com/min-document/-/min-document-2.19.0.tgz#7bd282e3f5842ed295bb748cdd9f1ffa2c824685"
+    integrity sha1-e9KC4/WELtKVu3SM3Z8f+iyCRoU=
+    dependencies:
+      dom-walk "^0.1.0"
+  
   min-indent@^1.0.0:
     version "1.0.1"
     resolved "https://registry.npmjs.org/min-indent/-/min-indent-1.0.1.tgz"
@@ -8476,6 +8640,16 @@ Lockfile:
       rimraf "^2.5.4"
       run-queue "^1.0.3"
   
+  mpd-parser@0.19.2:
+    version "0.19.2"
+    resolved "https://registry.yarnpkg.com/mpd-parser/-/mpd-parser-0.19.2.tgz#68611e653cdf2cc1e90688825c4a129b7f9007e0"
+    integrity sha512-M5tAIdtBM2TN+OSTz/37T7V+h9ZLvhyNqq4TNIdtjAQ/Hg8UnMRf5nJQDjffcXag3POXi31yUJQEKOXdcAM/nw==
+    dependencies:
+      "@babel/runtime" "^7.12.5"
+      "@videojs/vhs-utils" "^3.0.2"
+      "@xmldom/xmldom" "^0.7.2"
+      global "^4.4.0"
+  
   ms@2.0.0:
     version "2.0.0"
     resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -8508,6 +8682,13 @@ Lockfile:
     dependencies:
       dns-packet "^1.3.1"
       thunky "^1.0.2"
+  
+  mux.js@5.14.1:
+    version "5.14.1"
+    resolved "https://registry.yarnpkg.com/mux.js/-/mux.js-5.14.1.tgz#209583f454255d9ba2ff1bb61ad5a6867cf61878"
+    integrity sha512-38kA/xjWRDzMbcpHQfhKbJAME8eTZVsb9U2Puk890oGvGqnyu8B/AkKdICKPHkigfqYX9MY20vje88TP14nhog==
+    dependencies:
+      "@babel/runtime" "^7.11.2"
   
   nan@^2.12.1:
     version "2.14.2"
@@ -8592,6 +8773,13 @@ Lockfile:
     version "2.6.5"
     resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.5.tgz#42735537d7f080a7e5f78b6c549b7146be1742fd"
     integrity sha512-mmlIVHJEu5rnIxgEgez6b9GgWXbkZj5YZ7fx+2r94a2E+Uirsp6HsPTPlomfdHtpt/B0cdKviwkoaM6pyvUOpQ==
+    dependencies:
+      whatwg-url "^5.0.0"
+  
+  node-fetch@2.6.7, node-fetch@^2.6.1:
+    version "2.6.7"
+    resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+    integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
     dependencies:
       whatwg-url "^5.0.0"
   
@@ -9232,6 +9420,13 @@ Lockfile:
     integrity sha512-WuNqLTbMI3tmfef2TKxlQmAiLHKtFhlsCZnPIpuv2Ow0RDVO8lfy1Opf4NUzlMXLjPl+Men7AuVdX6TA+s+uGA==
     dependencies:
       node-modules-regexp "^1.0.0"
+  
+  pkcs7@^1.0.4:
+    version "1.0.4"
+    resolved "https://registry.yarnpkg.com/pkcs7/-/pkcs7-1.0.4.tgz#6090b9e71160dabf69209d719cbafa538b00a1cb"
+    integrity sha512-afRERtHn54AlwaF2/+LFszyAANTCggGilmcmILUzEjvs3XgFZT+xE6+QWQcAGmu4xajy+Xtj7acLOPdx5/eXWQ==
+    dependencies:
+      "@babel/runtime" "^7.5.5"
   
   pkg-dir@^2.0.0:
     version "2.0.0"
@@ -10131,6 +10326,15 @@ Lockfile:
       object-assign "^4.1.1"
       react-is "^16.8.1"
   
+  prop-types@^15.6.2:
+    version "15.8.1"
+    resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+    integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+    dependencies:
+      loose-envify "^1.4.0"
+      object-assign "^4.1.1"
+      react-is "^16.13.1"
+  
   property-expr@^2.0.4:
     version "2.0.5"
     resolved "https://registry.yarnpkg.com/property-expr/-/property-expr-2.0.5.tgz#278bdb15308ae16af3e3b9640024524f4dc02cb4"
@@ -10409,6 +10613,15 @@ Lockfile:
       "@types/react" "*"
       prop-types "^15.6.0"
   
+  react-h5-audio-player@^3.8.2:
+    version "3.8.2"
+    resolved "https://registry.yarnpkg.com/react-h5-audio-player/-/react-h5-audio-player-3.8.2.tgz#ef3288adcf0ca9f42ffa891158433d9572431a13"
+    integrity sha512-X+qWKgmEC9mlRKSpR1XYnL0pI4oHAVLKYucPkgBQewxBH9pJkhoHuhpzv7egvnFuB3jW/TDXN7eRxkzgIDyU/A==
+    dependencies:
+      "@babel/runtime" "^7.10.2"
+      "@iconify/icons-mdi" "^1.0.46"
+      "@iconify/react" "^3.1.3"
+  
   react-helmet@^6.1.0:
     version "6.1.0"
     resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-6.1.0.tgz#a750d5165cb13cf213e44747502652e794468726"
@@ -10418,6 +10631,11 @@ Lockfile:
       prop-types "^15.7.2"
       react-fast-compare "^3.1.1"
       react-side-effect "^2.1.0"
+  
+  react-hook-form@^7.25.3:
+    version "7.25.3"
+    resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.25.3.tgz#1475fd52398e905e1f6d88835f96aaa1144635c3"
+    integrity sha512-jL4SByMaC8U3Vhu9s7CwgJBP4M6I3Kpwxib9LrCwWSRPnXDrNQL4uihSTqLLoDICqSUhwwvian9uVYfv+ITtGg==
   
   react-icons@^4.3.1:
     version "4.3.1"
@@ -10572,6 +10790,16 @@ Lockfile:
     dependencies:
       "@emotion/react" "^11.1.4"
   
+  react-video-js-player@^1.1.1:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/react-video-js-player/-/react-video-js-player-1.1.1.tgz#7123537b39a8cb6a0a3e3dcd3bea8187a8fcac27"
+    integrity sha512-IjbZkYC29DkXId+I0hP4vfaqdG8vZh7rB73vLbyYMSHKK6BmSdVtpbt1C97vRlyBXhNLuX3P/Fkxfoxx/SZJtw==
+    dependencies:
+      prop-types "^15.6.2"
+      react "^16.6.3"
+      video.js "^7.4.1"
+      webpack "^4.26.1"
+  
   react@^15.6.1:
     version "15.7.0"
     resolved "https://registry.npmjs.org/react/-/react-15.7.0.tgz"
@@ -10582,6 +10810,15 @@ Lockfile:
       loose-envify "^1.1.0"
       object-assign "^4.1.0"
       prop-types "^15.5.10"
+  
+  react@^16.6.3:
+    version "16.14.0"
+    resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
+    integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+    dependencies:
+      loose-envify "^1.1.0"
+      object-assign "^4.1.1"
+      prop-types "^15.6.2"
   
   react@^17.0.2:
     version "17.0.2"
@@ -10700,7 +10937,7 @@ Lockfile:
     resolved "https://registry.npmjs.org/redux-thunk/-/redux-thunk-2.4.0.tgz"
     integrity sha512-/y6ZKQNU/0u8Bm7ROLq9Pt/7lU93cT0IucYMrubo89ENjxPa7i8pqLKu6V4X7/TvYovQ6x01unTeyeZ9lgXiTA==
   
-  redux@^4.0.0, redux@^4.1.2:
+  redux@^4.0.0, redux@^4.0.1, redux@^4.1.2:
     version "4.1.2"
     resolved "https://registry.npmjs.org/redux/-/redux-4.1.2.tgz"
     integrity sha512-SH8PglcebESbd/shgf6mii6EIoRM0zrQyjcuQ+ojmfxjTtE0z9Y8pa62iA/OJ58qjP6j27uyW4kUF4jl/jd6sw==
@@ -11064,6 +11301,13 @@ Lockfile:
     dependencies:
       aproba "^1.1.1"
   
+  rust-result@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/rust-result/-/rust-result-1.0.0.tgz#34c75b2e6dc39fe5875e5bdec85b5e0f91536f72"
+    integrity sha1-NMdbLm3Dn+WHXlveyFteD5FTb3I=
+    dependencies:
+      individual "^2.0.0"
+  
   safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
     version "5.1.2"
     resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz"
@@ -11073,6 +11317,13 @@ Lockfile:
     version "5.2.1"
     resolved "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz"
     integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
+  
+  safe-json-parse@4.0.0:
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/safe-json-parse/-/safe-json-parse-4.0.0.tgz#7c0f578cfccd12d33a71c0e05413e2eca171eaac"
+    integrity sha1-fA9XjPzNEtM6ccDgVBPi7KFx6qw=
+    dependencies:
+      rust-result "^1.0.0"
   
   safe-regex@^1.1.0:
     version "1.1.0"
@@ -12478,6 +12729,11 @@ Lockfile:
       querystringify "^2.1.1"
       requires-port "^1.0.0"
   
+  url-toolkit@^2.2.1:
+    version "2.2.5"
+    resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.2.5.tgz#58406b18e12c58803e14624df5e374f638b0f607"
+    integrity sha512-mtN6xk+Nac+oyJ/PrI7tzfmomRVNFIWKUbG8jdYFt52hxbiReFAXIjYskvu64/dvuW71IcB7lV8l0HvZMac6Jg==
+  
   url@^0.11.0:
     version "0.11.0"
     resolved "https://registry.npmjs.org/url/-/url-0.11.0.tgz"
@@ -12588,6 +12844,48 @@ Lockfile:
       assert-plus "^1.0.0"
       core-util-is "1.0.2"
       extsprintf "^1.2.0"
+  
+  video-react@^0.15.0:
+    version "0.15.0"
+    resolved "https://registry.yarnpkg.com/video-react/-/video-react-0.15.0.tgz#82794a0f862e08c5f3ac2660747360f5ecc735cb"
+    integrity sha512-wF3BwG1qikkSX11nu0KsygxeWehzMaYpd4Uvy1sKLFnCNk794f9TPL4q/+mMmLJ8uYb5DSlgg6VraTHyihiMHQ==
+    dependencies:
+      "@babel/runtime" "^7.4.5"
+      classnames "^2.2.6"
+      lodash.throttle "^4.1.1"
+      prop-types "^15.7.2"
+      redux "^4.0.1"
+  
+  "video.js@^6 || ^7", video.js@^7.4.1:
+    version "7.17.0"
+    resolved "https://registry.yarnpkg.com/video.js/-/video.js-7.17.0.tgz#35918cc03748a5680f5d5f1da410e06eeea7786e"
+    integrity sha512-8RbLu9+Pdpep9OTPncUHIvZXFgn/7hKdPnSTE/lGSnlFSucXtTUBp41R7NDwncscMLQ0WgazUbmFlvr4MNWMbA==
+    dependencies:
+      "@babel/runtime" "^7.12.5"
+      "@videojs/http-streaming" "2.12.0"
+      "@videojs/vhs-utils" "^3.0.3"
+      "@videojs/xhr" "2.6.0"
+      aes-decrypter "3.1.2"
+      global "^4.4.0"
+      keycode "^2.2.0"
+      m3u8-parser "4.7.0"
+      mpd-parser "0.19.2"
+      mux.js "5.14.1"
+      safe-json-parse "4.0.0"
+      videojs-font "3.2.0"
+      videojs-vtt.js "^0.15.3"
+  
+  videojs-font@3.2.0:
+    version "3.2.0"
+    resolved "https://registry.yarnpkg.com/videojs-font/-/videojs-font-3.2.0.tgz#212c9d3f4e4ec3fa7345167d64316add35e92232"
+    integrity sha512-g8vHMKK2/JGorSfqAZQUmYYNnXmfec4MLhwtEFS+mMs2IDY398GLysy6BH6K+aS1KMNu/xWZ8Sue/X/mdQPliA==
+  
+  videojs-vtt.js@^0.15.3:
+    version "0.15.3"
+    resolved "https://registry.yarnpkg.com/videojs-vtt.js/-/videojs-vtt.js-0.15.3.tgz#84260393b79487fcf195d9372f812d7fab83a993"
+    integrity sha512-5FvVsICuMRx6Hd7H/Y9s9GDeEtYcXQWzGMS+sl4UX3t/zoHp3y+isSfIPRochnTH7h+Bh1ILyC639xy9Z6kPag==
+    dependencies:
+      global "^4.3.1"
   
   vm-browserify@^1.0.1:
     version "1.1.2"
@@ -12757,6 +13055,35 @@ Lockfile:
       ajv-keywords "^3.4.1"
       chrome-trace-event "^1.0.2"
       enhanced-resolve "^4.3.0"
+      eslint-scope "^4.0.3"
+      json-parse-better-errors "^1.0.2"
+      loader-runner "^2.4.0"
+      loader-utils "^1.2.3"
+      memory-fs "^0.4.1"
+      micromatch "^3.1.10"
+      mkdirp "^0.5.3"
+      neo-async "^2.6.1"
+      node-libs-browser "^2.2.1"
+      schema-utils "^1.0.0"
+      tapable "^1.1.3"
+      terser-webpack-plugin "^1.4.3"
+      watchpack "^1.7.4"
+      webpack-sources "^1.4.1"
+  
+  webpack@^4.26.1:
+    version "4.46.0"
+    resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.46.0.tgz#bf9b4404ea20a073605e0a011d188d77cb6ad542"
+    integrity sha512-6jJuJjg8znb/xRItk7bkT0+Q7AHCYjjFnvKIWQPkNIOyRqoCGvkOs0ipeQzrqz4l5FtN5ZI/ukEHroeX/o1/5Q==
+    dependencies:
+      "@webassemblyjs/ast" "1.9.0"
+      "@webassemblyjs/helper-module-context" "1.9.0"
+      "@webassemblyjs/wasm-edit" "1.9.0"
+      "@webassemblyjs/wasm-parser" "1.9.0"
+      acorn "^6.4.1"
+      ajv "^6.10.2"
+      ajv-keywords "^3.4.1"
+      chrome-trace-event "^1.0.2"
+      enhanced-resolve "^4.5.0"
       eslint-scope "^4.0.3"
       json-parse-better-errors "^1.0.2"
       loader-runner "^2.4.0"

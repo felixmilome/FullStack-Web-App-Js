@@ -41,7 +41,7 @@ export const getDiariesAction = () => async (dispatch) => {
         console.log(error); 
     }
 }
-export const postDiariesAction = (diary, setpopPosted, navigate, setDisplayer, setSpam) => async (dispatch) => {
+export const postDiariesAction = (diary, setpopPosted, setSpam) => async (dispatch) => {
     try{
         
 

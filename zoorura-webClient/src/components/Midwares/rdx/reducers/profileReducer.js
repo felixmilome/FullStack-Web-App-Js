@@ -201,16 +201,22 @@ export const profileResetReducer = (state ={googleauthData: null}, action) => { 
      }
      
  }
-//  export const followersReducer = (followers = {}, action) => {
+ export const postSpamReducer = (spam = {}, action) => {   
      
-//     switch(action.type) {
-//         case 'FOLLOW':
+    switch(action.type) {
+
+        case 'REGISTER_POST_SPAM': 
+        console.log(action?.data);  
+            return action?.data;
+        // case 'ADD_POST_SPAM':   
+        //     const total = spam + 1; No need since theres refresh after postng
+        //     console.log(total);
+        //     return total;
+
            
-//             return action?.data;
-           
-//         default:
-//             return follows; 
+        default:
+            return spam; 
             
-//      }
+     }
      
-//  }
+ }

@@ -48,7 +48,7 @@ export const AudioForm = ({Url, DP}) => {
 export const VideoForm = ({Url, DP}) => {
    
     return (
-        <div className='flex justify-center max-h-screen w-11/12 bg-black p-1 py-2'>
+        <div className='flex justify-center max-h-screen  py-2'>
             <div className= "flex m-auto bg-gray-800 z-10 h-full w-full"> 
             {/* <VideoPlayer src={Url}
             onLoad= {(console.log(Url))}/>     */}
@@ -78,9 +78,9 @@ export const PdfForm = ({Url}) => {
 }
 export const PicFrame = ({Url}) => {
     return (
-        <div className='max-h-screen w-4/5 bg-gray-200 p-1'>
-            <div className= "z-10 h-full w-full">     
-                <img src= {Url} className="object-container h-full w-full"/>
+        <div className='max-h-screen w-full bg-gray-200 p-1'>
+            <div className= "z-10 w-full h-full">     
+                <img src= {Url} className="object-container h-full w-full "/>
             </div> 
         </div>
     )
