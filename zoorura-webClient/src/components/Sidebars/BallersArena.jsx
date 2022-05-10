@@ -14,13 +14,13 @@ export const BallersArena = () => {
             {/* space */}
     
             {/* Heading */}
-            <div className="bg-transparent text-gray-200  my-2 p-3 cursor-pointer  items-center flex  space-x-2 justify-center">
+            <div className="bg-transparent text-gray-200 dark:text-gray-800  my-2 p-3 cursor-pointer  items-center flex  space-x-2 justify-center">
                 
-                   <div className="w-8 h-8 bg-gray-800 flex justify-center items-center rounded-full">
-                    <RiVipCrownFill/>
+                   <div className="w-8 h-8 bg-gray-800 dark:bg-gray-300 flex justify-center items-center rounded-full">
+                    <RiVipCrownFill/> 
                      </div>
                 
-                <p className= "font-bold text-gray-800  text-sm">Ballers Arena</p>
+                <p className= "font-bold text-gray-800 dark:text-gray-300  text-sm">Ballers Arena</p>
                 
             </div> 
 
@@ -38,7 +38,7 @@ export const BallersArena = () => {
                   //     </div>
                   // </div>  
 
-                  : 
+                  :  
                  
                     <>
                     { hallFame.map((rank) =>(

@@ -32,11 +32,11 @@ export const PostFrameTips = ({diaryId, userId, setpopTip}) => {
 
     return (
         <div className ='h-28 '>
-        <div className='flex max-h-28 text-xs text-gray-600  z-30 top-6 left-0 max-w-1/2 absolute overflow-scroll'>
+        <div className='flex max-h-28 text-xs text-gray-600 dark:text-gray-200  z-30 top-6 left-0 max-w-1/2 absolute overflow-scroll'>
                       
                     
                     
-                    <div className="border border-gray-300 p-2 mx-auto h-full bg-gray-200 rounded"> 
+                    <div className="border border-gray-300 p-2 mx-auto h-full bg-gray-200 dark:bg-gray-900 rounded"> 
                     {availableTippers && availableTippers.length > 0 &&
                         availableTippers.map((tipper) =>(
                             <div className= "p-0.5"> 

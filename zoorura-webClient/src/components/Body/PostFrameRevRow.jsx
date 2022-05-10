@@ -17,7 +17,7 @@ import {ReviewTipRow} from "./ReviewTipRow.jsx"
 import { PostRevReply } from './PostRevReply';
 import Picker from 'emoji-picker-react'
 
-//SearchArea: textarea replied
+//SearchArea: 
 
 export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
 
@@ -145,7 +145,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                     
         
             
-                <div key={reviewer._id}  className='relative bg-gray-100 border-gray-300 rounded-md '>
+                <div key={reviewer._id}  className='relative bg-gray-100 dark:bg-black border-gray-300 rounded-md '>
 
          
                 {reviewDelivery &&
@@ -170,7 +170,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                     
             
                 
-                    <div className=" relative p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 rounded-md lg:max-w-none">
+                    <div className=" relative p-0.5 flex w-full justify-start items-center text-xs font-bold text-gray-600 dark:text-gray-400 rounded-md lg:max-w-none">
                         
                             {/* EMoji & Pic */}
                             <div className="space-y-3 mb-7 items-center inline-block items-center p-1">
@@ -183,7 +183,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                             {/* Name and Comment*/}
                             <div className="items-center m-1 bg-transparent w-5/6">  
                             <div className="flex bg-transparentrounded-2xl w-fit">
-                                <div  className= "max-h-96 overflow-scroll bg-gray-100 border  border-gray-300 p-3 rounded-2xl max-w-3/4">
+                                <div  className= "max-h-96 overflow-scroll bg-gray-100 dark:bg-gray-900 border  border-gray-300 p-3 rounded-2xl max-w-3/4">
                                     
                                     <div className= ' bg-transparent rounded-md w-full '> 
 
@@ -200,7 +200,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                               
                                     {reviewer.body.split('\n').map(function(item) {
                                     return (
-                                        <p style={{wordBreak: 'break-word'}} key={item} className="leading-5 font-light text-gray-700">{item}</p> 
+                                        <p style={{wordBreak: 'break-word'}} key={item} className="leading-5 font-light text-gray-700 dark:text-gray-200">{item}</p> 
                                         )
                                     })}
 
@@ -217,7 +217,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                             setpopTip(false);
                                         }}
                                         >
-                                        <div onClick = {()=> setpopTip(!popTip)} className="bg-transparent rounded-full flex justify-center cursor-pointer items-center hover:bg-gray-200 px-2 group">
+                                        <div onClick = {()=> setpopTip(!popTip)} className="bg-transparent rounded-full flex justify-center cursor-pointer items-center hover:bg-gray-200 dark:hover:bg-cyan-500 dark:hover:text-black px-2 group">
                                             {/* <GiTakeMyMoney size ={24} className="text-gray-400"/> */}
                                             <div className= 'flex items-center'>
                                                 <p>tips</p>
@@ -227,25 +227,25 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                  
                                             {popTip && 
                                             <div className='flex  space-x-0.5'>
-                                                <div className= 'flex absolute bottom-6 left-0 justify-right space-x-2 font-bold bg-gray-200 border border-gray-300 p-1'>
+                                                <div className= 'flex absolute bottom-6 left-0 justify-right space-x-2 dark:text-gray-200 font-bold bg-gray-200 dark:bg-gray-900 border border-gray-300 p-1'>
                                                 
-                                                        <div onClick={()=> prepareTip(1, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                        <div onClick={()=> prepareTip(1, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 dark:bg-gray-900 hover:bg-white'>
                                                             <p>1</p>
                                                         </div>
-                                                        <div onClick={()=> prepareTip(5, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                        <div onClick={()=> prepareTip(5, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 dark:bg-gray-900 hover:bg-white'>
                                                             <p>5</p>
                                                         </div>
-                                                        <div onClick={()=> prepareTip(10, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                        <div onClick={()=> prepareTip(10, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 dark:bg-gray-900 hover:bg-white'>
                                                             <p>10</p>
                                                         </div>
-                                                        <div onClick={()=> prepareTip(25, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                        <div onClick={()=> prepareTip(25, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 dark:bg-gray-900 hover:bg-white'>
                                                             <p>25</p>
                                                         </div>
-                                                        <div onClick={()=> prepareTip(50, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 hover:bg-white'>
+                                                        <div onClick={()=> prepareTip(50, 'review')} className= 'p-1 border border-gray-300 bg-gray-100 dark:bg-gray-900 hover:bg-white'>
                                                             <p>50</p>
                                                         </div>
                                                 </div>
-                                                <div className= 'w-1/2 text-xs justify-around absolute  bottom-6 right-0 font-bold bg-gray-200 '>
+                                                <div className= 'w-1/2 text-xs justify-around absolute  bottom-6 right-0 font-bold bg-gray-200 dark:bg-gray-800 '>
                                                       <ReviewTipRow reviewId={reviewer._id}/>                 
                                                 </div>
                                                
@@ -264,7 +264,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                             <div onClick= {()=>{
                                                 setReplyInput(!replyInput);
                                                 setreviewData({...reviewData, body:'', replied:reviewer.reviewerId});
-                                                }}className= 'inline-flex items-center hover:bg-gray-200 rounded-xl px-1 cursor-pointer'>
+                                                }}className= 'inline-flex items-center hover:bg-gray-200 rounded-xl px-1 dark:hover:bg-cyan-500 dark:hover:text-black cursor-pointer'>
                                                         <p>reply {thisReplies.length>0 && (thisReplies.length)}</p>
                                             </div>
                                         }
@@ -275,7 +275,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                                 <div onClick= {()=>{
                                                     setReplyInput(!replyInput);
                                                     setreviewData({...reviewData, body:'', replied:reviewer.reviewerId});
-                                                    }}className= 'inline-flex items-center hover:bg-gray-200 rounded-xl px-1 cursor-pointer'>
+                                                    }}className= 'inline-flex items-center hover:bg-gray-200 rounded-xl px-1 dark:hover:bg-cyan-500 dark:hover:text-black cursor-pointer'>
                                                             <p>reply</p>
                                                 </div>
                                                 
@@ -292,17 +292,17 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                             setreviewData({...reviewData, body:reviewer.body});
                                             setReviewEditor(true);
                                             setReplyInput(false);
-                                            }} className="bg-transparent rounded-full flex justify-center cursor-pointer hover:bg-gray-200 px-2 items-center  group">
+                                            }} className="bg-transparent rounded-full flex justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-cyan-500 dark:hover:text-black px-2 items-center  group">
                                             {/* <BiCommentEdit  size ={20} className="text-gray-400"/> */}
                                             <p>edit</p>
                                         </div>}
-                                        {reviewer.reviewerId === userId && <div onClick = {() => setDeleteReviewSurePop(true)}className="bg-transparent rounded-full flex justify-center cursor-pointer hover:bg-gray-200 px-2 items-center  group ">
+                                        {reviewer.reviewerId === userId && <div onClick = {() => setDeleteReviewSurePop(true)}className="bg-transparent rounded-full flex justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-cyan-500 dark:hover:text-black px-2 items-center  group ">
                                             {/* <GiTakeMyMoney size ={24} className="text-gray-400"/> */}
                                             <p>delete</p>
                                         </div>}
                                     </div>: 
                                     <div className='ml-5'>
-                                        <BeatLoader size={7} color='black' loading/>
+                                        <BeatLoader size={7} color='gray' loading/>
                                     </div>
                                     }
 
@@ -322,7 +322,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
 
 
                                         {/* EDITOR */}
-                    {reviewEditor &&  <div className=" w-2/3 bg-gray-100 items-center">
+                    {reviewEditor &&  <div className=" w-2/3 bg-gray-100 dark:bg-black items-center">
                             
                             <OutsideClickHandler     
                                     onOutsideClick={() => {
@@ -337,9 +337,9 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                                 
                                         <textarea value= {reviewData.body}
                                         onChange={(e)=> setreviewData({reviewId:reviewer._id, body: e.target.value})}
-                                        type="text" placeholder="Edit Review Here..." className="h-16 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                                        type="text" placeholder="Edit Review Here..." className="h-16 w-full text-gray-700 dark:text-gray-200 font-light outline-none bg-gray-100 dark:bg-gray-900 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                                            <div className='w-full flex justify-end'>
-                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 dark:text-gray-200 bg-gray-400 dark:bg-cyan-500 hover:bg-gray-500 rounded-full p-1'>
                                                             <BsFillEmojiLaughingFill/>
                                                 </div>
                                             </div>
@@ -347,7 +347,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                             <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
                                             </div>}
                                         <div className='flex items-center justify-around'>
-                                            <div onClick= {()=> setReviewEditor(false)}className='flex bg-gray-100 px-3 rounded-t-md cursor-pointer justify-center'>
+                                            <div onClick= {()=> setReviewEditor(false)}className='flex bg-gray-100 dark:bg-gray-800 px-3 rounded-t-md cursor-pointer justify-center'>
                                             <p className='text-xs'>Cancel</p>
                                             </div>
         
@@ -355,7 +355,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                                     {reviewData && reviewData.body.length > 0 && reviewData.body.length < 2000 &&
                                                     <>
                                                         {!loading &&
-                                                        <div className='flex bg-gray-100 px-3 rounded-t-md cursor-pointer justify-center'>
+                                                        <div className='flex bg-gray-100 dark:bg-gray-800 px-3 rounded-t-md cursor-pointer justify-center'>
                                                         <p className= 'text-xs'>Edit </p>
                                                         <MdSend onClick= {patchReview}/> 
                                                         </div>
@@ -363,7 +363,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                                         {loading && 
                                                         <>
                                                         {/* <p className= 'text-xs font-extralight'>sending review</p> */}
-                                                        <BeatLoader size={7} color='black' loading/>
+                                                        <BeatLoader size={7} color='gray' loading/>
                                                         </> }
                                                     </>
                                                     } 
@@ -387,7 +387,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                  
                                                                 }}
                                                                 type="text" placeholder={`reply @${reviewer.reviewerMiniProfile.userName}`} className="max-h-screen
-                                                                w-full ml-8 text-gray-700 outline-none bg-gray-100
+                                                                w-full ml-8 text-gray-700 dark:text-gray-200 outline-none bg-gray-100 dark:bg-gray-900
                                                                 text-xs  border border-gray-300 rounded-md py-3 pl-3 pr-8" 
                                                                 
                                                                 />
@@ -399,7 +399,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                                                             {loading && 
                                                                             <>
                                                                             {/* <p className= 'text-xs font-extralight'>sending review</p> */}
-                                                                            <BeatLoader size={7} color='black' loading/>
+                                                                            <BeatLoader size={7} color='gray' loading/>
                                                                             </> }
                                                                         </> 
                                                                         } 
@@ -439,7 +439,7 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
 
                                                 }}
                                                 type="text" placeholder={`reply @${reviewer.reviewerMiniProfile.userName}`} className="max-h-screen
-                                                w-full ml-8 text-gray-700 outline-none bg-gray-100
+                                                w-full ml-8 text-gray-700 dark:text-gray-200 outline-none bg-gray-100 dark:bg-gray-900
                                                 text-xs  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
 
                                                     <div  className=''>
@@ -449,14 +449,14 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                                                             {loading && 
                                                             <>
                                                             {/* <p className= 'text-xs font-extralight'>sending review</p> */}
-                                                            <BeatLoader size={7} color='black' loading/>
+                                                            <BeatLoader size={7} color='gray' loading/>
                                                             </> }
                                                         </> 
                                                         } 
                                                     </div>
                                             
                                             <div className='w-full'>
-                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 dark:bg-cyan-600 hover:bg-gray-500 rounded-full p-1'>
                                                             <BsFillEmojiLaughingFill/>
                                                 </div>
                                             </div>
@@ -469,11 +469,11 @@ export const PostFrameRevRow = ({ diaryId, diaryCreator, userId, reviewer}) => {
                         </div>
                         }
                          {replyInput===true && availableRepliers?.length > 0 &&
-                         <div className='max-h-80 overflow-scroll bg-gray-200  w-fit rounded-xl'>  
+                         <div className='max-h-80 overflow-scroll bg-gray-200 dark:bg-gray-900  w-fit rounded-xl'>  
                                 {availableRepliers?.map((replier) =>(
                                     <> 
                                         {replier.repliedPostId === reviewer._id && 
-                                        <div key={replier._id}  className='ml-20 bg-gray-100'>            
+                                        <div key={replier._id}  className='ml-20 bg-gray-100 dark:bg-black'>            
                                             <PostRevReply diaryId={diaryId} diaryCreator={diaryCreator} userId= {userId} reviewer= {replier}/>
                                         </div>
                                         } 

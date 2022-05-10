@@ -12,6 +12,7 @@ import PostEdit from "../Body/PostEdit.jsx";
 import { DeliveryPop } from "./DeliveryPop.jsx";
 import { PostTagRow } from "./PostTagRow.jsx";
 import * as axs from '../Midwares/rdx/actions/axs';
+import { Spring, animated } from 'react-spring';
 
 //search area: tags
 
@@ -93,13 +94,16 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
 
             }
    
-        }
+        } 
 
     }
 
    
 
     return (
+
+
+
        <div>
                { popDeleted &&
                <DeliveryPop message='Post Deleted'/>
@@ -107,8 +111,21 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
              { popSaved &&
                <DeliveryPop message='Post Saved'/>
              } 
-        <div className="absolute z-40 right-4 sm:right-12 top-20 opacity-90 rounded-b-xl bg-gray-100 dark:bg-gray-800">
+        <div className="absolute z-40 right-4 sm:right-12 top-20  rounded-b-xl bg-gray-100 dark:bg-gray-900">
 
+
+                <Spring
+                
+                from={
+                    { opacity: 0, x:-20}
+                }
+                
+                to={
+                { opacity: 1, x:0}
+                
+                }> 
+                {styles => (
+                <animated.div style={styles}>
           
             {saver && <div onClick= {saveDiary}>
             <PostOptionsRow Icon = {BookmarkIcon} title ="Save"/>
@@ -133,6 +150,10 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
                 <PostOptionsRow Icon = {AiOutlineEdit} title ="Edit"/>
                 </div> 
             </div>}
+
+            </animated.div>
+                      )}
+                    </Spring>
            
 
             {/* </Link> */}
@@ -199,9 +220,10 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
         <div className="bg-gray-200 absolute top-20 left-0 z-40 w-full">
            {popEdit && <PostEdit diary={diary} setpopOptions ={setpopOptions}/>}
            </div>
+                   
+                     
         </div>
-        
-       
+   
     )
 }
 

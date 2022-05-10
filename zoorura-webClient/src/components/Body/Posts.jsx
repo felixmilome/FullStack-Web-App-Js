@@ -60,9 +60,9 @@ console.log(followedDiaries);
             {followedDiaries.length>0 && 
                 <div>
 
-                <div className= ' opacity-40 m-auto p-4 flex justify-center items-center text-xs text-gray-600 font-light'>
-                                        <div className='w-3/4 sm:w-1/4  flex  justify-center  p-3  border-b border-gray-600  items-center'>
-                                            <p>Subscription Posts</p>
+                <div className= 'opacity-90 m-auto p-4 flex justify-center items-center text-xs text-gray-500 font-normal'>
+                                        <div className='w-3/4 sm:w-1/4  flex  justify-center  p-3 items-center'>
+                                            <p>-Subscription Posts-</p>
                                         </div>
                     </div>
 
@@ -83,9 +83,9 @@ console.log(followedDiaries);
             {popularDiaries.length>0 && 
                 <div>
 
-                    <div className= ' opacity-40 m-auto p-4 flex justify-center items-center text-xs text-gray-600 font-light'>
-                                <div className='w-3/4 sm:w-1/4  flex  justify-center  p-3  border-b border-gray-600  items-center'>
-                                    <p>Popular Posts</p>
+                    <div className= 'opacity-90 m-auto p-4 flex justify-center items-center text-xs text-gray-500 font-normal'>
+                                <div className='w-3/4 sm:w-1/4  flex  justify-center  p-3  items-center'>
+                                    <p>-Popular Posts-</p>
                                 </div>
                     </div>
 
@@ -104,9 +104,9 @@ console.log(followedDiaries);
              {randomDiaries.length>0 && 
                 <div>
 
-                <div className= ' opacity-40 m-auto p-4 flex justify-center items-center text-xs text-gray-600 font-light'>
-                            <div className='w-3/4 sm:w-1/4  flex  justify-center  p-3  border-b border-gray-600  items-center'>
-                                <p>Random Posts</p>
+                <div className= 'opacity-90 m-auto p-4 flex justify-center items-center text-xs text-gray-500 font-normal'>
+                            <div className='w-3/4 sm:w-1/5  flex  justify-center  p-3    items-center'>
+                                <p>-Random Posts-</p>
                             </div>
                 </div>
                         {

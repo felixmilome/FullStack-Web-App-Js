@@ -40,7 +40,7 @@ export const PostFrameReviews = ({diary, diaryId, diaryCreator, userId}) => {
            
             {availableReviewers.length > 0  && availableReviewers.map((reviewer) =>(
               
-                <div key={reviewer._id}  className='ml-5 bg-gray-100  rounded-md '>
+                <div key={reviewer._id}  className='ml-5 bg-gray-100 dark:bg-gray-900  rounded-md '>
             
                      <PostFrameRevRow diaryId={diaryId} diaryCreator={diaryCreator} userId= {userId} reviewer= {reviewer}/>
                    

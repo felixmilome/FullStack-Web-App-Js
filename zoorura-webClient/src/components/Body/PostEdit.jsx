@@ -63,7 +63,7 @@ function PostEdit({diary, setpopOptions}) {
              
     }
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center dark:bg-gray-800">
 
                 { popPosted &&
                         <div className=" bg-gray-700 py-4 top-28 rounded-full px-20 flex justify-center fixed z-40 m-auto text-center font-bold text-white">
@@ -76,14 +76,14 @@ function PostEdit({diary, setpopOptions}) {
                         </div>
                     }
                
-                <div className="space-y-5 w-full bg-transparent items-center  z-30  m-4">
+                <div className="space-y-5 w-full bg-transparent  items-center  z-30  m-4">
                         
                        
                        
                         {/* Cyan Heading */}
-                        <div className="bg-transparent border-b-2 border-gray-300">
+                        <div className="bg-transparent ">
                             <p className="text-center text-sm font-bold ">Edit This Post</p>
-                            <p className="text-center text-sm font-light ">(Only title and Caption allowed)</p>
+                            <p className="text-center text-sm font-light ">(Only Title and Caption Edits Allowed)</p>
                           
                         </div>
 
@@ -105,7 +105,7 @@ function PostEdit({diary, setpopOptions}) {
                                     
                                     }}
                                     
-                                    className="m-2 flex text-center justify-center items-center font-light text-xs text-gray-600 outline-none bg-gray-200 rounded-full p-1 border-none">
+                                    className="m-2 flex text-center justify-center items-center font-light text-xs text-gray-600 dark:text-gray-200 outline-none bg-gray-200 dark:bg-gray-900 rounded-full p-1 border-none">
                                         <option value="public"> Public </option>
                                         <option value="subscribers">My Subscribers </option>
                                         <option value="private"> Private/Only Me </option>
@@ -118,14 +118,14 @@ function PostEdit({diary, setpopOptions}) {
                                 <input name= "title"
                                 value= {diariesData.title}
                                 onChange={(e)=> setdiariesData({...diariesData, title: e.target.value})}
-                                placeholder="Enter Title" className="text-gray-700 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border-2 border-gray-300 rounded-md bg-gray-200"/>
+                                placeholder="Enter Title" className="text-gray-700 dark:text-gray-200 font-medium outline-none  mx-4 my-3 w-full px-4 p-1 sm:py-2 border border-gray-300 rounded-md bg-gray-200 dark:bg-gray-900"/>
                             </div>
                             {/* ---Content---------------  */}
                             <div className="px-3 items-center flex justify-center">
                                 <textarea name= "caption"
                                 value= {diariesData.caption}
                                 onChange={(e)=> setdiariesData({...diariesData, caption: e.target.value})}
-                                placeholder=" Enter Caption" className="resize-none h-14 sm:h-24 text-gray-700 font-light outline-none  m-1 w-full  px-4 py-2 border-2 border-gray-300 rounded-md bg-gray-200"/>
+                                placeholder=" Enter Caption" className="resize-none h-14 sm:h-24 text-gray-700  dark:text-gray-200 font-light outline-none  m-1 w-full  px-4 py-2 border border-gray-300 rounded-md bg-gray-200 dark:bg-gray-900 "/>
                             </div>
 
                             
@@ -138,7 +138,7 @@ function PostEdit({diary, setpopOptions}) {
                             mx-auto w-1/3 rounded-full
                                 my-2 justify-center 
                                 cursor-pointer
-                                font-semibold p-1 hover:bg-white">
+                                font-semibold p-1 hover:bg-white dark:hover:bg-gray-900">
                                 Edit Post
                             </button>}
                             
@@ -147,7 +147,7 @@ function PostEdit({diary, setpopOptions}) {
                             mx-auto w-1/3 rounded-full
                                 my-2 justify-center 
                                 cursor-pointer
-                                font-semibold p-1 text-gray-400 hover:bg-white">
+                                font-semibold p-1 text-gray-400 ">
                                 Editting...
                             </button>}
 

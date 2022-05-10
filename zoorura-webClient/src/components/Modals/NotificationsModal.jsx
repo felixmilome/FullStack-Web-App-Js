@@ -25,7 +25,7 @@ function NotificationsModal({popTipNotifications}) {
           <animated.div style={styles}>
 
 
-        <div className="fixed border-gray-200 p-4 sm:w-1/3 xl:w-1/4 w-2/3 mt-4  sm:mt-0 right-0 sm:right-1.5 rounded-md top-20 h-full z-0 flex justify-center bg-gray-200 dark:bg-gray-800">
+        <div className="fixed border-gray-200 p-4 sm:w-1/3 xl:w-1/4 w-2/3 mt-4  sm:mt-0 right-0 sm:right-1.5 rounded-md top-20 h-full z-0 flex justify-center bg-gray-200 dark:bg-gray-900">
 
             <div className="overflow-scroll">
 
@@ -38,7 +38,7 @@ function NotificationsModal({popTipNotifications}) {
 
             {/* Heading */}  
            
-                <div className= "mx-3 p-3 space-y-2 rounded-xl  bg-gray-100 dark:bg-gray-900 items-center mt-4 mb-3 group">
+                <div className= "mx-3 p-3 space-y-2 rounded-xl  bg-gray-100 dark:bg-gray-800 items-center mt-4 mb-3 group">
                     <p className= "text-gray-500 dark:text-gray-300 text-center text-sm font-semibold ">Notifications</p> 
                 </div>  
             

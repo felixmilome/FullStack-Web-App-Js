@@ -69,7 +69,7 @@ return (
         {styles => (
         <animated.div style={styles}>
         
-            <div className=" p-7 sm:w-1/3 xl:w-1/4 w-2/3 m-x-4 bg-gray-100 dark:bg-gray-800 z-10 fixed right-0 sm:right-1.5 top-0 sm:top-20 rounded-md h-screen overflow-y-auto overflow-x-hidden">
+            <div className=" p-7 sm:w-1/3 xl:w-1/4 w-2/3 m-x-4 bg-gray-100 dark:bg-gray-900 z-10 fixed right-0 sm:right-1.5 top-0 sm:top-20 rounded-md h-screen overflow-y-auto overflow-x-hidden">
                 <div className="overflow-scroll">
                 <div className='flex justify-between p-3 items-center'>
                         <div className="ml-1 font-bold text-gray-500 dark:text-gray-300 p-1">

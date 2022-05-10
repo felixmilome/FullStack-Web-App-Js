@@ -47,8 +47,9 @@ import { DeliveryPop } from "../Modals/DeliveryPop.jsx";
 import { PostFrameReviews } from "./PostFrameReviews.jsx";
 import {Link} from 'react-router-dom';
 import Picker from 'emoji-picker-react'
+import PostFrameIndi from "./PostFrameIndi.jsx";
 
-//Search Area Original
+//Search Area Original Reviews
 
 
 
@@ -163,7 +164,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         catch(error){
             console.log(error);
         }
-    }
+    } 
 
     const handleDisplay = () =>{
 
@@ -176,7 +177,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
 
         }else{ 
 
-            if(spamDisplay)
+          
             setLoadingDisplay(true);
             console.log(socket);
         
@@ -197,12 +198,12 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         <DeliveryPop message='Review Sent'/>
         }
         {spamDisplay ==true &&
-        <DeliveryPop message="You've posted enough today! Save some for tomorrow"/>
+        <DeliveryPop message="You've posted enough today! Save some for tomorrow"/> 
          } 
           {spamReview ==true &&
         <DeliveryPop message="You've Reviewed enough today! Save some for tomorrow"/>
          } 
-        <div className="text-black p-2 sm:px-12 py-4 rounded-md sm:rounded-xl bg-gray-100 relative sm:w-3/4 xl:w-2/5 mx-auto mb-6"> 
+        <div className="text-black dark:text-gray-200 p-2 sm:px-12 py-4 rounded-md sm:rounded-xl bg-gray-100 dark:bg-gray-900 relative sm:w-3/4 xl:w-2/5 mx-auto mb-6"> 
          
 
             {/* Post-Top-Cyan Invisible Parent*/}
@@ -292,7 +293,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                     {diary.postType === 'display' &&
                     <div className=" items-center bg-transparent ">
                               
-                              <div className=" m-auto bg-gray-200 p-0.5 w-10/12 sm:px-3 rounded-full w-full">
+                              <div className=" m-auto bg-gray-200 dark:bg-gray-800 p-0.5 w-10/12 sm:px-3 rounded-full w-full">
                               {/* <div className="flex justify-start bg-white w-1/3 rounded-full">
                                   <img src={user.result.dpUrl} alt="DP" className=" rounded-full object-cover h-6 w-6 m-0.5"/>
                                   <div className= 'flex justify-center bg-transparent p-1 rounded-full items-center'>
@@ -304,7 +305,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                   <div className=" items-center"> 
                                       <div className='flex items-center justify-center space-x-2 w-full'>
                                           <GoMegaphone size ={20} className="text-yellow-500"/> 
-                                          <p className="leading-3 text-xs text-gray-700 font-medium my-1 ">@{diary.displayerMiniProfile[0].userName}</p>
+                                          <p className="leading-3 text-xs text-gray-700 dark:text-gray-400 font-medium my-1 ">@{diary.displayerMiniProfile[0].userName}</p>
                                       </div>
                                   
                                   
@@ -320,24 +321,29 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                     <div>
                     
                     </div>
-                    <OutsideClickHandler     
-                            onOutsideClick={() => {
-                                setpopOptions(false);
-                            }}
-                            >
-                            <div className="h-10 w-10 m-1 
-                            rounded-full flex justify-around 
-                             items-center bg-transparent"
-                            onClick={ () => 
-                            {setpopOptions(!popOptions)}
-                            }>
-                                <DotsCircleHorizontalIcon className=" h-8 w-8
-                                 items-center cursor-pointer
-                                  hover:text-gray-600 text-gray-300"/>
-                    </div>
-                            {popOptions && <PostoptionsModal setpopOptions={setpopOptions} diary= {diary} creator={diary.creator} setDiaryId = {setDiaryId}/>}
-                            
-                        </OutsideClickHandler>    
+                        
+                        {params!=='displayer' &&
+                        
+                            <OutsideClickHandler     
+                                onOutsideClick={() => {
+                                    setpopOptions(false);
+                                }}
+                                >
+                                    <div className="h-10 w-10 m-1 
+                                    rounded-full flex justify-around 
+                                    items-center bg-transparent"
+                                    onClick={ () => 
+                                    {setpopOptions(!popOptions)}
+                                    }>
+                                        <DotsCircleHorizontalIcon className=" h-8 w-8
+                                        items-center cursor-pointer
+                                        hover:text-gray-600 text-gray-300"/>
+                                    </div>
+
+                                {popOptions && <PostoptionsModal setpopOptions={setpopOptions} diary= {diary} creator={diary.creator} setDiaryId = {setDiaryId}/>}
+                                
+                            </OutsideClickHandler>
+                        }   
                 
                 </div> 
 
@@ -351,17 +357,17 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         <div className="relative flex justify-center   my-0.5">
             {/* Post Mid Frame*/}
             <div onClick= {()=> {console.log(diary.reviewers)}} className="max-h-screen overflow-scroll w-full items-center px-4 text-sm rounded-t-xl break-words"> 
-                    <div className='text-left '>
+                    <div className='text-left mb-2'>
                         <p className='text-xs  font-light'><span className='font-bold'>Created On:</span> {dateNow.toDateString()}, {dateNow.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</p>
                 
                     </div>
-                         <p className="leading-5 font-semibold  text-gray-700">{diary.title}</p>
+                         <p className="leading-5 font-semibold dark:text-gray-200 text-gray-700">{diary.title}</p>
                     
                   
                     
                     {diary.caption.split('\n').map(function(item) {
                     return (
-                        <p key={item} className="leading-5 font-light text-gray-700">{item}</p> 
+                        <p key={item} className="leading-5 font-light dark:text-gray-200 text-gray-700">{item}</p> 
                         )
                     })}
                       {diary.newComer===true &&
@@ -376,14 +382,14 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
 
         <div className="flex p-1 justify-center ">
             {/* Post Mid Frame*/}
-            {diary.file && diary.file.length > 0 && <div className="max-h-screen w-full transition delay-50 flex z-30 justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
+            {diary.file && diary.file.length > 0 && <div className="max-h-screen w-full transition delay-50 flex z-30 justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 dark:bg-gray-800 text-gray-400 font-bold hover:bg-gray-300 dark:hover:bg-black">
                             
             
             {/*=============================IFRAMES========================================*/}
                                    {/* ======IMAGE FILE====== */}
                                    { diary.file.length && diary.media === 'image' && diary.file.includes('zooruraweb.appspot.com') &&
                                         <div className ="w-full h-full"> 
-                                            <div className="relative max-h-screen bg-red-900 z-50 flex justify-center m-auto w-full lg:p-0">
+                                            <div className="relative max-h-screen  z-50 flex justify-center m-auto w-full lg:p-0">
                                                 <PicFrame Url= {diary.file}/>
                                               
                                             </div>  
@@ -416,13 +422,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                 <>
                                 { diary.file.length && diary.file.includes('youtube.com/')?
                                         <div className ="w-full">
-                                            <div className=' w-full flex justify-center text-gray-400'>
+                                            <div className=' w-full flex justify-center '>
                                            <ImYoutube2 size={40}/>
                                            </div>
                                       {/* <p className= 'text-center  text-gray-400 p-1 text-xs' >Youtube Attachment</p> */}
                                             <div className="flex justify-center m-auto w-full  lg:p-0">
                                                  <YtForm Url= {diary.file}/>
-                                                 <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                 <div className="absolute text-sm  z-0 mt-20">
                                                     Attaching Youtube Post...
                                                 </div>
                                             </div>
@@ -434,14 +440,14 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                     {/* ======INSTAGRAM======== */}
                                      { diary.file.length && diary.file.includes('www.instagram.com')?
                                         <div className ="w-full">
-                                            <div className='p-3 flex justify-center text-gray-400'>
+                                            <div className='p-3 flex justify-center '>
                                                 <BsInstagram/>
                                                 
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Instagram Attachment</p> */}
                                             <div className="relative flex justify-center m-auto w-full lg:p-0">
                                                 <IgForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm z-0 mt-20">
                                                     Attaching Instagram Post...
                                                 </div>
                                             </div>
@@ -453,13 +459,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                     {/* ======TIKTOK======== */}
                                     { diary.file.length && diary.file.includes('www.tiktok.com')?
                                         <div >
-                                            <div className='p-3 flex justify-center text-gray-400'>
+                                            <div className='p-3 flex justify-center '>
                                                 <SiTiktok/>
                                             </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Tiktok Attachment</p> */}
                                             <div className="relative flex justify-center m-auto lg:p-0">
                                                  <TkForm Url= {diary.file}/>
-                                                 <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                 <div className="absolute text-sm  z-0 mt-20">
                                                     Attaching Tiktok Post...
                                                 </div>
                                             </div>
@@ -471,7 +477,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                     {/* tiktok app */}
                                     { diary.file.length && diary.file.includes('vm.tiktok.com') || diary.file.includes('vt.tiktok.com') ?
                                             <div >
-                                            <div className='relative flex justify-center text-gray-400'>
+                                            <div className='relative flex justify-center '>
                                                 <SiTiktok/>
                                             </div>
                                           
@@ -485,13 +491,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                     {/* ======Twitter======== */}
                                     { diary.file.length && diary.file.includes('twitter.com')?
                                         <div className ="w-full" >
-                                            <div className='p-3 flex justify-center text-gray-400'>
+                                            <div className='p-3 flex justify-center '>
                                            <SiTwitter/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Twitter Attachment</p> */}
                                             <div className="relative flex justify-center m-auto lg:p-0">
                                              <TwForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm  z-0 mt-20">
                                                     Attaching Tweet...
                                                 </div>
                                             </div>
@@ -503,13 +509,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                        {/* ======SOUNDCLOUD======== */}
                                        { diary.file.length && diary.file.includes('soundcloud.com')?
                                         <div >
-                                            <div className='flex p-3 justify-center text-gray-400'>
+                                            <div className='flex p-3 justify-center '>
                                            <RiSoundcloudLine/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Soundcloud Attachment</p> */}
                                             <div className="relative flex justify-center m-auto p-2 lg:p-0">
                                              <SnForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm z-0 mt-20">
                                                     Attaching Soundcloud Post...
                                                 </div>
                                             </div>
@@ -521,13 +527,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                      {/* ======PINTEREST======== */}
                                      { diary.file.length && diary.file.includes('pinterest.com')?
                                         <div >
-                                            <div className='flex p-3 justify-center text-gray-400'>
+                                            <div className='flex p-3 justify-center '>
                                            <RiPinterestLine/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Pinterest Attachment</p> */}
                                             <div className="relative flex justify-center m-auto lg:p-0">
                                              <PnForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm z-0 mt-20">
                                                     Attaching Pin...
                                                 </div>
                                             </div>
@@ -540,7 +546,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                             {/* pin app */}
                                             { diary.file.length && diary.file.includes('pin.it')?
                                                     <div >
-                                                    <div className='relative p-3  flex justify-center text-gray-400'>
+                                                    <div className='relative p-3  flex justify-center '>
                                                         <RiPinterestLine/>
                                                     </div>
                                                 
@@ -555,13 +561,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                      {/* ======REDDIT======== */}
                                      { diary.file.length && diary.file.includes('www.redditmedia')?
                                         <div className ="w-full">
-                                            <div className='flex p-3 justify-center text-gray-400'>
+                                            <div className='flex p-3 justify-center '>
                                            <RiRedditFill/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Reddit Attachment</p> */}
                                             <div className="relative flex justify-center m-auto lg:p-0">
                                              <RdForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm z-0 mt-20">
                                                     Attaching Reddit Post...
                                                 </div>
                                             </div>
@@ -573,13 +579,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                        {/* ======FACEBOOK======== */}
                                        { diary.file.length && diary.file.includes('facebook.com')?
                                         <div className ="w-full">
-                                            <div className='flex p-3 justify-center text-gray-400'>
+                                            <div className='flex p-3 justify-center '>
                                            <SiFacebook/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Facebook Attachment</p> */}
                                             <div className="relative flex justify-center m-auto  lg:p-0">
                                              <FbForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm z-0 mt-20">
                                                     Attaching Facebook Post...
                                                 </div>
                                             </div>
@@ -591,13 +597,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                      {/* ======GOOGLE DRIVE======== */}
                                      { diary.file.length && diary.file.includes('drive.google.com')?
                                         <div >
-                                            <div className='flex p-3 justify-center text-gray-400'>
+                                            <div className='flex p-3 justify-center '>
                                            <FaGoogleDrive/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Google Drive Attachment</p> */}
                                             <div className="relative flex justify-center m-auto lg:p-0">
                                              <FbForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm z-0 mt-20">
                                                     Attaching Google Drive File...
                                                 </div>
                                             </div>
@@ -609,13 +615,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                      {/* ======TWITCH======== */}
                                      { diary.file.length && diary.file.includes('player.twitch.tv')?
                                         <div >
-                                            <div className='flex p-3 justify-center text-gray-400'>
+                                            <div className='flex p-3 justify-center '>
                                            <BsTwitch/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Twitch Attachment</p> */}
                                             <div className="relative flex justify-center m-auto  lg:p-0">
                                              <TchForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm  z-0 mt-20">
                                                     Attaching Twitch Post...
                                                 </div>
                                             </div>
@@ -627,13 +633,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                      {/* ======WORDPRESS======== */}
                                      { diary.file.length && diary.file.includes('wordpress.com')?
                                         <div >
-                                            <div className='flex p-3 justify-center text-gray-400'>
+                                            <div className='flex p-3 justify-center '>
                                            <ImWordpress/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Wordpress Attachment</p> */}
                                             <div className="relative flex justify-center m-auto lg:p-0">
                                              <WpForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm  z-0 mt-20">
                                                     Attaching Wordpress Post...
                                                 </div>
                                             </div> 
@@ -661,13 +667,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                         
                                       ?
                                         <div >
-                                            <div className='flex p-3 justify-center text-gray-400'>
+                                            <div className='flex p-3 justify-center '>
                                            <CgWebsite/>
                                            </div>
                                             {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Website Attachment</p> */}
                                             <div className="relative flex justify-center m-auto  lg:p-0">
                                              <WpForm Url= {diary.file}/>
-                                                <div className="absolute text-sm text-gray-400 z-0 mt-20">
+                                                <div className="absolute text-sm  z-0 mt-20">
                                                     Attaching Webpage...
                                                 </div>
                                             </div>
@@ -688,11 +694,12 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         {/*Bottom Icon invisible Parent*/}
         <div className="">
             {/* Post Bottom Icons*/}
-         {diary.postType !== 'display' && <>
-            <div className="w-full  justify-around transition delay-50 flex items-center border-b border-t border-gray-300 font-bold p-3">
+         {diary.postType !== 'display' && params!=='displayer' &&
+          <>
+            <div className="w-full  justify-around transition delay-50 flex items-center border-b border-t border-gray-300 dark:border-gray-700 font-bold p-3">
           
 
-{/* TIIIIPPPPZZZZZ=+===================== */}
+        {/* TIIIIPPPPZZZZZ=+===================== */}
                                     {/* are you sure */}
         { popSure &&  <div className="flex justify-center  fixed left-0 z-40 flex w-full  bg-transparent text-base font-light text-gray-700">
                     <div className= "fixed z-40 top-80 bg-gray-100 rounded-xl p-8 text-center">
@@ -735,11 +742,11 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         {/*========== ENDTIPZZZZZZZZ======================== */}
                     <div className='sm:flex'>
 
-                        <div className="relative flex items-center border border-cyan-400 rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
+                        <div className="relative flex items-center border border-cyan-400 dark:border-cyan-800 rounded-full p-1 m-1 cursor-pointer bg-white dark:bg-gray-900 dark:hover:bg-black hover:bg-gray-200"
                             onClick={ () => {setpopTip(!popTip)}}>
                             
-                            <GiTakeMyMoney  size ={29} className="text-gray-600"/> 
-                            <p className="font-light text-xs m-1 text-gray-800">Promote</p>
+                            <GiTakeMyMoney  size ={29} className="text-gray-600 dark:text-gray-200"/> 
+                            <p className="font-light text-xs m-1 text-gray-800 dark:text-gray-200">Promote</p>
                             
                         </div>   
                          {/* Tip Amount box */}
@@ -769,9 +776,9 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                 {/* Other Icon */}
                 <div className ='sm:flex '>
                     
-                    <div onClick={()=>setReviewDisplay(!reviewDisplay)} className="flex items-center border border-cyan-400 rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
-                                    <AiOutlineComment  size ={22} className="text-gray-500"/>
-                                    <p className="font-light  text-xs text-gray-800">Reviews:</p>
+                    <div onClick={()=>setReviewDisplay(!reviewDisplay)} className="flex items-center border border-cyan-400 dark:border-cyan-800 rounded-full p-2 m-1 cursor-pointer bg-white dark:bg-gray-900 dark:hover:bg-black hover:bg-gray-200">
+                                    <AiOutlineComment  size ={22} className="text-gray-500 dark:text-gray-200"/>
+                                    <p className="font-light  text-xs text-gray-800 dark:text-gray-200">Reviews:</p>
                     </div>
                     
                     {diary.reviewers && diary.reviewers.length > 0 && 
@@ -788,9 +795,9 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                 
                     <div className ='flex'>
 
-                            <div onClick= {()=> setDisplayer(true)} className="flex items-center border border-cyan-400 rounded bg-white p-2 m-1 rounded-full cursor-pointer hover:bg-gray-200">
-                                    <GoMegaphone size ={22} className="text-gray-500"/>
-                                    <p className="font-light text-xs m-1 text-gray-800">Endorse</p>  
+                            <div onClick= {()=> setDisplayer(true)} className="flex items-center border border-cyan-400 dark:border-cyan-800 rounded-full p-2 m-1 cursor-pointer bg-white dark:bg-gray-900 dark:hover:bg-black hover:bg-gray-200">
+                                    <GoMegaphone size ={22} className="text-gray-500 dark:text-gray-200"/>
+                                    <p className="font-light text-xs m-1 text-gray-800 dark:text-gray-200">Endorse</p>  
                             </div>
 
                             {diary.displays && diary.displays.length>0 && 
@@ -816,10 +823,10 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                 
                     { popTip && <>  
 
-                     <div className='absolute top-0 bg-gray-200 w-16 my-1 text-center rounded-r-full '>
-                        <p onClick= {()=> setpopTip(false)}className ='text-gray-500 text-xs '>hide</p>
+                     <div className='absolute top-0 bg-gray-200 dark:bg-cyan-500 w-16 my-1 text-center rounded-r-full cursor-pointer '>
+                        <p onClick= {()=> setpopTip(false)}className ='text-gray-500 dark:text-black text-xs '>hide</p>
                     </div>   
-                    <div className='absolute top-0 right-4 md:right-28 xl:right-16 border border-gray-300 w-ful p-2 my-1 text-center rounded cursor-pointer'>
+                    <div className='absolute top-0 right-4 md:right-28 xl:right-16 border border-gray-300 dark:border-gray-600 w-ful p-2 my-1 text-center rounded cursor-pointer'>
                         <p className ='text-gray-500 text-xs font-bold '>wallet balance:</p>
                         <p className ='text-cyan-600 text-sm font-bold '>{walletBalance.zbx} zbx</p>
                         {walletBalance.zbx < 1 && <p className='cursor-pointer text-red-600 font-light text-xs cursor-pointer'>add funds</p>}
@@ -830,29 +837,29 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                         <div className='flex w-96 bg-transparent left-2 absolute bottom-2.5 z-30 sm:p-1'>
                     <div className= "bg-transparent items-center justify-center">
                             {/* <div className="font-mono flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-80 m-1 p-1 bg-gradient-to-r from-cyan-300 to-teal-700 font-bold text-lg text-teal-300"> */}
-                            <div className="flex items-center space-x-3 w-full rounded-r-full rounded-tl-full opacity-90 m-1 p-1 border border-gray-400 bg-gray-100 font-medium text-lg text-gray-300 shadow-md">
+                            <div className="flex items-center space-x-3 w-full rounded-r-full rounded-tl-full m-1 p-1 border border-gray-400 bg-gray-100 dark:bg-gray-900 font-medium text-lg text-gray-300 shadow-md">
                             
-                                <div onClick={()=> prepareTip(1, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                <div onClick={()=> prepareTip(1, 'post')} className="cursor-pointer rounded-full bg-gray-700 dark:bg-black hover:bg-gray-800 hover:text-white p-1 group">
                                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                                         1
                                     </div>
                                 </div>
-                                <div onClick={()=> prepareTip(5, 'post')}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                <div onClick={()=> prepareTip(5, 'post')}  className="cursor-pointer rounded-full bg-gray-700 dark:bg-black hover:bg-gray-800 hover:text-white p-1 group">
                                     <div className= " items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                                         5
                                     </div>
                                 </div>
-                                <div onClick={()=> prepareTip(10, 'post')}  className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                <div onClick={()=> prepareTip(10, 'post')}  className="cursor-pointer rounded-full bg-gray-700 dark:bg-black hover:bg-gray-800 hover:text-white p-1 group">
                                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-cyan-600 rounded-full h-9 w-9">
                                         10
                                     </div>
                                 </div>
-                                <div onClick={()=> prepareTip(25, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                <div onClick={()=> prepareTip(25, 'post')} className="cursor-pointer rounded-full bg-gray-700 dark:bg-black hover:bg-gray-800 hover:text-white p-1 group">
                                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
                                         25
                                     </div>
                                 </div>
-                                <div onClick={()=> prepareTip(50, 'post')} className="cursor-pointer rounded-full bg-gray-700 hover:bg-gray-800 hover:text-white p-1 group">
+                                <div onClick={()=> prepareTip(50, 'post')} className="cursor-pointer rounded-full bg-gray-700 dark:bg-black hover:bg-gray-800 hover:text-white p-1 group">
                                     <div className= "items-center flex justify-center border-2 border-gray-700 group-hover:border-teal-600 rounded-full h-9 w-9">
                                         50
                                     </div>
@@ -878,9 +885,9 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                     {reviewDisplay &&
                     <div className= 'fixed top-0 bg-gray-200 left-0 w-full z-50 h-screen overflow-scroll'>
                        
-                       <div className='flex justify-center items-center fixed top-0 z-50 bg-gray-200 w-full'>
+                       <div className='flex justify-center items-center fixed top-0 z-50 bg-gray-200 dark:bg-gray-900 w-full'>
 
-                            <div className='rounded  border border-cyan-400 bg-gray-100 w-20 hover:bg-gray-200 text-center cursor-pointer'>
+                            <div className='rounded  border border-cyan-400 bg-gray-100 dark:bg-gray-900 w-20 hover:bg-gray-200 text-center cursor-pointer'>
                                 <p onClick= {()=> setReviewDisplay(false)}className ='text-gray-500 text-xs '>Go back</p>
                                 
                             </div> 
@@ -891,7 +898,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
 
                         </div>
 
-                        <div  className= 'pt-28 pb-80 bg-gray-100 h-screen overflow-scroll'>
+                        <div  className= 'pt-28 pb-80 bg-gray-100 dark:bg-black h-screen overflow-scroll'>
                             <PostFrameReviews diary ={diary} diaryId={diary._id} diaryCreator={diary.creator} userId={user.result._id} setpopTip={setpopTip}/>
                         </div>
                    
@@ -910,7 +917,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                 
 
                                 }}
-                                type="text" placeholder="Write Review Here..." className="h-20 w-full text-gray-700 font-light outline-none bg-gray-100 text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
+                                type="text" placeholder="Write Review Here..." className="h-20 w-full text-gray-700 dark:text-gray-200 font-light outline-none bg-gray-100 dark:bg-black text-sm  border border-gray-300 rounded-md py-3 pl-3 pr-8"/>
                                 <div  className=''>
                                     { reviewData.body.length > 0 && reviewData.body.length < 2000 &&
                                     <>
@@ -925,14 +932,14 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                                 </div>
                                 
                                 <div className=''>
-                                    <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                    <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-gray-100 bg-gray-400 dark:bg-cyan-600 hover:bg-gray-500 rounded-full p-1'>
                                                 <BsFillEmojiLaughingFill/>
                                     </div>
                                 </div>
                             </div>
                           
                             {emojiBox && 
-                                            <div className='flex justify-center bg-gray-300'>
+                                            <div className='flex justify-center bg-gray-300 dark:bg-gray-900'>
                                                 <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
                                             </div>
                                 } 
@@ -943,13 +950,13 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                 </div>
         </div></>}
         {diary.postType === 'display' &&
-            <div className="w-full  justify-around transition delay-50 flex items-center  bg-gray-100 rounded-b-lg border-t border-gray-300 font-bold p-3">
+            <div className="w-full  justify-around transition delay-50 flex items-center rounded-b-lg border-t border-gray-300 dark:border-gray-700 font-bold p-3">
               <Link to={'/DiaryLink/'+ diary.originalId}>
-                <div className="relative flex items-center rounded-full p-1 m-1 cursor-pointer bg-white hover:bg-gray-200"
+                <div className="relative flex items-center rounded-full p-1 m-1 cursor-pointer bg-white dark:bg-gray-800 dark:hover:bg-black hover:bg-gray-200"
                                 onClick={ () => {setpopTip(!popTip)}}>
                                 
-                                <AiOutlineFolderView  size ={24} className="text-gray-600"/> 
-                                <p className="font-light text-xs m-1 text-gray-800">See Original</p>
+                                <AiOutlineFolderView  size ={24} className="text-gray-600 dark:text-gray-200"/> 
+                                <p className="font-light text-xs m-1 text-gray-800 dark:text-gray-200">See Original</p>
                                 
                 </div> 
             </Link> 
@@ -959,421 +966,49 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
         </div>
     </div>
 
-
-
-
-
+    {displayer && 
     
-
-                     
-
-{displayer &&
-
-       <div className= "fixed top-0 py-20 z-40 bg-gray-900 opacity-90 w-full h-screen overflow-scroll"> 
+    
+    <div className= "fixed top-0 py-20 z-40 bg-gray-300 dark:bg-gray-900 w-full h-screen overflow-scroll"> 
      
                        
-        <div className="p-2 sm:px-12 py-4 rounded-xl bg-transparent xl:w-1/2 mx-auto my-1"> 
+            <div className=" sm:px-12 py-8 sm:py-4 rounded-xl bg-transparent mx-auto my-1"> 
 
-                                <div className="w-full bg-transparent flex justify-center">
-                                {loadingDisplay ===false && 
-                                    <>
-                                    <div onClick= {handleDisplay} className= 'flex bg-cyan-500 hover:bg-teal-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
-                                        <GoMegaphone size ={20} className="text-gray-100"/>
-                                        <p className= 'text-lg'>Endorse</p>                                
-                                    </div>
-                                    
-                                    <div onClick= {()=> setDisplayer(false)}className= 'flex bg-red-500 hover:bg-red-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
-                                        <MdOutlineCancel size ={22} className="text-gray-100"/>
-                                        <p className= 'text-lg'>Cancel</p>                                
-                                    </div>
-                                    </>
-                                }
+                    <div className="w-full bg-transparent flex justify-center">
+                             {loadingDisplay ===false && 
+                                 <>
+                                 <div onClick= {handleDisplay} className= 'flex bg-cyan-500 hover:bg-teal-600 cursor-pointer rounded-full p-2 space-x-2 w-40  text-gray-100  justify-center items-center m-4'>      
+                                     <GoMegaphone size ={20} className="text-gray-100"/>
+                                     <p className= 'text-lg'>Endorse</p>                                
+                                 </div>
+                                 
+                                 <div onClick= {()=> setDisplayer(false)}className= 'flex bg-red-500 hover:bg-red-600 cursor-pointer rounded-full p-2 space-x-2  w-40  text-gray-100  justify-center items-center m-4'>      
+                                     <MdOutlineCancel size ={22} className="text-gray-100"/>
+                                     <p className= 'text-lg'>Cancel</p>                                
+                                 </div>
+                                 </>
+                             }
 
-                                {loadingDisplay ===true && 
-                                <div className= 'flex bg-cyan-500 hover:bg-teal-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
-                                    <p className= 'text-lg'>Endorsing</p> 
-                                    <BeatLoader size={7} color='white' loading/>                                       
-                                </div>}
+                             {loadingDisplay ===true && 
+                             <div className= 'flex bg-cyan-500 hover:bg-teal-600 cursor-pointer rounded-full p-2 space-x-2 w-2/5  text-gray-100  justify-center items-center m-4'>      
+                                 <p className= 'text-lg'>Endorsing</p> 
+                                 <BeatLoader size={7} color='white' loading/>                                       
+                             </div>}
 
-                                </div>   
+                    </div>   
 
-                {/* Post-Top-Cyan Invisible Parent*/}
-                <div className="flex  justify-end">
-                    
-                    
-                    {/* Top-Cyan */}
-                    <div className="bg-gray-100 rounded-t-xl w-full transition delay-50 py-0.5 flex items-center font-bold justify-between">
-                           
-                             
-                           
-                            {/*Top-Mid*/}
-                            <div className="flex items-center justify-between">
-                                {/* Top-Mid Img*/}
-                                {diary.miniProfile &&
-                                <>
-                                <div className="ml-3 bg-white rounded-full"> 
-                                    <img src={diary.miniProfile[0].dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
-                                </div> 
-                            
-                                <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                    <p className="leading-3 text-sm font-medium my-1 ">@{diary.miniProfile[0].userName}</p>
-                                    <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
-                                
-                                </div>
-                                
-                                </>
-                                }
-                                {!diary.miniProfile &&
-                                <>
-                                <div className="ml-3 bg-white rounded-full">
-                                    <img src={diary.diaryMiniProfile.dpUrl} alt="DP" className=" rounded-full object-cover h-10 w-10 m-0.5"/>
-                                </div> 
-                            
-                                <div className="sm:ml-2 items-center ml-0.5 py-3"> 
-                                    <p className="leading-3 text-sm font-medium my-1 ">@{diary.diaryMiniProfile.userName}</p>
-                                    <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>{moment (diary.time).fromNow()}</p>
-                                
-                                </div>
+                    {/* PostFrame*/}
+                  
 
-                              
-                                </>
-                                }
-                            </div>
-                        {/* Top-Menu */}
-                        <div className=" items-center ">
-                              
-                                <div className=" m-auto bg-gray-200 p-0.5 w-10/12 sm:px-3 rounded-md">
-                                {/* <div className="flex justify-start bg-white w-1/3 rounded-full">
-                                    <img src={user.result.dpUrl} alt="DP" className=" rounded-full object-cover h-6 w-6 m-0.5"/>
-                                    <div className= 'flex justify-center bg-transparent p-1 rounded-full items-center'>
-                                        <GoMegaphone size ={15} className="text-gray-400"/>    
-                                    </div> 
+                        <PostFrameIndi diary={diary} diaryId={diaryId} setDiaryId ={setDiaryId} params='displayer'/>
 
-                                </div>  */}
-                                
-                                    <div className=" items-center"> 
-                                        <div className='flex items-center justify-center space-x-2'>
-                                            <GoMegaphone size ={20} className="text-yellow-500"/> 
-                                            <p className="leading-3 text-xs text-gray-700 font-medium my-1 ">@{user.result.userName}</p>
-                                        </div>
-                                    
-                                    
-                                    </div>
-                                
-                                </div>
-                                    
-                                <p className="p-0.5 leading-3 text-xs font-extralight my-1"><b></b>Endorsed: {moment (Date.now()).fromNow()}</p>
+                   
 
-                        </div>
-                     
-                        <div className="h-10 w-10 m-1 
-                        rounded-full flex justify-around
-                        items-center bg-transparent">
-                             
-                                    <DotsCircleHorizontalIcon className=" h-8 w-8
-                                    items-center cursor-pointer
-                                    hover:text-gray-600 text-gray-300"/>
-                        </div>
-                                
-                         
-                    
-                    </div> 
-
-                </div>
-
-
-            {/* Post Mid Invisible Parent */}
-            <div className="bg-gray-100 rounded-b-xl break-words">
-
-            {/* Post Caption Invisible Parent */}
-            <div className="relative flex justify-center bg-gray-100  my-0.5">
-                {/* Post Mid Frame*/}
-                <div className="w-full items-center text-sm p-4 rounded-t-xl break-words"> 
-                        <p className="leading-5  font-semibold my-1 text-gray-700">{diary.title}</p>
-                        <p className="leading-5  font-light text-gray-700">{diary.caption}</p>                 
-                </div>  
+                 </div>
 
             </div>
-
-            <div className="flex p-1 justify-center bg-gray-600 rounded-b-xl ">
-                {/* Post Mid Frame*/}
-                <div className="max-h-screen w-full transition delay-50 flex justify-center p-1 rounded-md shadow-md items-center cursor-pointer bg-gray-200 font-bold hover:bg-gray-300">
-                                
-                
-                {/*=============================IFRAMES========================================*/}
-                                        
-                                    {/* ======YOUTUBE======== */}
-                                    { diary.file.length && diary.file.includes('youtube.com/')?
-                                            <div className ="w-full">
-                                                <div className=' w-full flex justify-center text-gray-400'>
-                                            <ImYoutube2 size={40}/>
-                                            </div>
-                                        {/* <p className= 'text-center  text-gray-400 p-1 text-xs' >Youtube Attachment</p> */}
-                                                <div className="flex justify-center m-auto w-full  lg:p-0">
-                                                    <YtForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Youtube Post...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======INSTAGRAM======== */}
-                                        { diary.file.length && diary.file.includes('www.instagram.com')?
-                                            <div className ="w-full">
-                                                <div className='p-3 flex justify-center text-gray-400'>
-                                                    <BsInstagram/>
-                                                    
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Instagram Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto w-full lg:p-0">
-                                                    <IgForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Instagram Post...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======TIKTOK======== */}
-                                        { diary.file.length && diary.file.includes('www.tiktok.com')?
-                                            <div >
-                                                <div className='p-3 flex justify-center text-gray-400'>
-                                                    <SiTiktok/>
-                                                </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Tiktok Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto lg:p-0">
-                                                    <TkForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Tiktok Post...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* tiktok app */}
-                                        { diary.file.length && diary.file.includes('vm.tiktok.com') || diary.file.includes('vt.tiktok.com') ?
-                                                <div >
-                                                <div className='relative flex justify-center text-gray-400'>
-                                                    <SiTiktok/>
-                                                </div>
-                                            
-                                                <p className= 'text-center text-red-400 p-1 text-xs' >Apologies. Tiktok Id not found. fetch Tiktok Link from <b>WEB-BROWSER</b> and <b>NOT APP</b></p>
-                                                </div>
-                                        : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======Twitter======== */}
-                                        { diary.file.length && diary.file.includes('twitter.com')?
-                                            <div className ="w-full" >
-                                                <div className='p-3 flex justify-center text-gray-400'>
-                                            <SiTwitter/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Twitter Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto lg:p-0">
-                                                <TwForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Tweet...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======SOUNDCLOUD======== */}
-                                        { diary.file.length && diary.file.includes('soundcloud.com')?
-                                            <div >
-                                                <div className='flex p-3 justify-center text-gray-400'>
-                                            <RiSoundcloudLine/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Soundcloud Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto p-2 lg:p-0">
-                                                <SnForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Soundcloud Post...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======PINTEREST======== */}
-                                        { diary.file.length && diary.file.includes('pinterest.com')?
-                                            <div >
-                                                <div className='flex p-3 justify-center text-gray-400'>
-                                            <RiPinterestLine/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Pinterest Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto lg:p-0">
-                                                <PnForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Pin...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                                
-                                            </>
-                                        } 
-                                        
-                                                {/* pin app */}
-                                                { diary.file.length && diary.file.includes('pin.it')?
-                                                        <div >
-                                                        <div className='relative p-3  flex justify-center text-gray-400'>
-                                                            <RiPinterestLine/>
-                                                        </div>
-                                                    
-                                                        <p className= 'text-center text-red-400 p-1 text-xs' >Apologies! Pin Id not found. Kindly fetch Pinterest Link from Web-Browser ADDRESS BAR</p>
-                                                        </div>
-                                                : 
-                                                <>
-                                                    
-                                                    </>
-                                                }
-                                                
-                                        {/* ======REDDIT======== */}
-                                        { diary.file.length && diary.file.includes('www.redditmedia')?
-                                            <div className ="w-full">
-                                                <div className='flex p-3 justify-center text-gray-400'>
-                                            <RiRedditFill/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Reddit Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto lg:p-0">
-                                                <RdForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Reddit Post...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======FACEBOOK======== */}
-                                        { diary.file.length && diary.file.includes('facebook.com')?
-                                            <div className ="w-full">
-                                                <div className='flex p-3 justify-center text-gray-400'>
-                                            <SiFacebook/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Facebook Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto  lg:p-0">
-                                                <FbForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Facebook Post...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======GOOGLE DRIVE======== */}
-                                        { diary.file.length && diary.file.includes('drive.google.com')?
-                                            <div >
-                                                <div className='flex p-3 justify-center text-gray-400'>
-                                            <FaGoogleDrive/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Google Drive Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto lg:p-0">
-                                                <FbForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Google Drive File...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======TWITCH======== */}
-                                        { diary.file.length && diary.file.includes('player.twitch.tv')?
-                                            <div >
-                                                <div className='flex p-3 justify-center text-gray-400'>
-                                            <BsTwitch/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Twitch Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto  lg:p-0">
-                                                <TchForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Twitch Post...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-                                        {/* ======WORDPRESS======== */}
-                                        { diary.file.length && diary.file.includes('wordpress.com')?
-                                            <div >
-                                                <div className='flex p-3 justify-center text-gray-400'>
-                                            <ImWordpress/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Wordpress Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto lg:p-0">
-                                                <WpForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Wordpress Post...
-                                                    </div>
-                                                </div>
-                                        </div> : 
-                                        <>
-                                        
-                                            </> 
-                                        }
-                                        { diary.file.length && diary.file.includes('https://')
-                                        && !diary.file.includes('/youtube.com')
-                                        && !diary.file.includes('zooruraweb.appspot.com')
-                                        && !diary.file.includes('www.instagram.com')
-                                        && !diary.file.includes('www.tiktok.com')
-                                        && !diary.file.includes('twitter.com')
-                                        && !diary.file.includes('www.soundcloud.com')
-                                        && !diary.file.includes('redditmedia.com')
-                                        && !diary.file.includes('www.facebook.com')
-                                        && !diary.file.includes('drive.google.com')
-                                        && !diary.file.includes('player.twitch.com')
-                                        && !diary.file.includes('wordpress.com')
-                                        && !diary.file.includes('pin.it')
-                                        && !diary.file.includes('pinterest.com')
-                                        && !diary.file.includes('vt.tiktok.com')
-                                        && !diary.file.includes('vm.tiktok.com')
-                            
-                                        ?
-                                            <div >
-                                                <div className='flex p-3 justify-center text-gray-400'>
-                                            <CgWebsite/>
-                                            </div>
-                                                {/* <p className= 'text-center text-gray-400 p-1 text-xs' >Website Attachment</p> */}
-                                                <div className="relative flex justify-center m-auto  lg:p-0">
-                                                <WpForm Url= {diary.file}/>
-                                                    <div className="absolute text-sm text-gray-400 z-0 mt-20">
-                                                        Attaching Webpage...
-                                                    </div>
-                                                </div> 
-                                        </div> : 
-                                        <>
-                                            
-                                            </>
-                                        }
-            {/* ====================================IFRAMES END====================================== */}
-                </div>     
-            </div>
-            </div> 
             
-            </div> 
-        
-        </div>
-    }
+            }
 
 
 </>

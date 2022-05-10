@@ -2,7 +2,7 @@ import{MdOutlineCancel} from 'react-icons/md';
 
 function SavedPostsModalRow ({Src, title, PersonName, Note, Time, savedId}) {
     return (
-        <div className= "relative w-full items-center text-gray-500 hover:bg-white rounded-md shadow-md cursor-pointer group p-1">
+        <div className= "relative w-full items-center text-gray-500 hover:bg-white dark:hover:bg-gray-800 rounded-md shadow-md cursor-pointer group p-1">
            
                     <div className="flex text-xs sm:text-sm bg-transparent items-center space-x-2 mt-2  ">
                         {Src && <img src= {Src} alt="dp" className= "inline-flex w-10 h-10 bg-white group-hover:bg-gray-600 cursor-pointer object-cover rounded-full "/>}

@@ -532,12 +532,12 @@ function readFile(file, type) {
                         </div>
                  } 
                
-                <div className="p-5 space-y-5 w-full sm:w-3/4 xl:w-2/5 bg-gray-100 items-center  z-30  m-4 rounded-xl">
+                <div className="p-5 space-y-5 w-full sm:w-3/4 xl:w-2/5 bg-gray-100 dark:bg-gray-900 items-center  z-30  m-4 rounded-xl">
                         
                        
                        
                         {/* Cyan Heading */}
-                        <div className="bg-transparent border-b border-gray-300">
+                        <div className="bg-transparent border-b border-gray-300 dark:border-gray-800 ">
                             <p className="text-center p-3 font-bold text-gray-400 ">Attach Post From</p>
                             <div className ="text-center  items-center p-1 flex flex-wrap text-gray-400 justify-around">
                                <PostFRow sizing={45} Icon={ImYoutube2}/>
@@ -575,7 +575,7 @@ function readFile(file, type) {
                         
                         }}
                         
-                        className="m-2 flex text-center justify-center items-center font-light text-xs text-gray-600 outline-none bg-gray-200 rounded-full p-1 border-none">
+                        className="m-2 flex text-center justify-center items-center font-light text-xs text-gray-600 dark:text-gray-300 outline-none bg-gray-200 dark:bg-black rounded-full p-1 border-none">
                             <option value="public"> Public </option>
                             <option value="subscribers">My Subscribers </option>
                             <option value="private"> Private/Only Me </option>
@@ -588,14 +588,14 @@ function readFile(file, type) {
 
                                    { attachment === 'link' &&
                                         <>
-                                            <div className= ' items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-400 text-white' >
+                                            <div className= ' items-center border border-gray-400 dark:border-cyan-400 rounded-full  text-xs py-1 px-2 bg-gray-900  text-white dark:text-cyan-500' >
                                              <div className= 'items-center flex'>
                                               <BsLink45Deg size={20}/> 
-                                               link Site
+                                               Link Site Below
                                               </div>
                                             </div>
                                            
-                                                <div onClick ={clearUrl} className= ' items-center bg-transparent border border-gray-300 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
+                                                <div onClick ={clearUrl} className= ' items-center bg-transparent border border-gray-300 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 dark:hover:bg-cyan-600 dark:hover:text-black hover:text-white' >
                                                 <div className= 'items-center flex'>
                                                     <MdFileUpload size={20}/>
                                                         Upload File Instead
@@ -613,18 +613,18 @@ function readFile(file, type) {
                                                
                                               
         
-                                        }} className= ' items-center bg-transparent border border-gray-300 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer hover:bg-gray-500 hover:text-white' >
+                                        }} className= ' items-center bg-transparent border border-gray-300 rounded-full text-gray-500 text-xs py-1 px-2 cursor-pointer dark:hover:bg-cyan-600 dark:hover:text-black hover:bg-gray-500 hover:text-white' > 
                                                 <div className= 'items-center flex'>
                                               <BsLink45Deg size={20}/> 
-                                               link Site Instead
+                                               Link Site Instead
                                               </div>
                                             </div>
 
                         
-                                            <div className= 'items-center border border-gray-400 rounded-full  text-xs py-1 px-2 bg-gray-400 text-white'>
+                                            <div className= 'items-center border border-gray-400 dark:border-cyan-400 rounded-full  text-xs py-1 px-2 bg-gray-900  text-white dark:text-cyan-500'>
                                                <div className= 'items-center flex'>
                                                     <MdFileUpload size={20}/>
-                                                        Upload File
+                                                        Upload File Below
                                                 </div>
                                             </div>
                                        
@@ -653,7 +653,7 @@ function readFile(file, type) {
                                             })}  
                                         
                             
-                                        placeholder="Paste Url Here (Optional)" className="rounded-full text-center w-full text-gray-700 font-light outline-none text-sm px-4 p-1 sm:py-2 border border-gray-300 bg-gray-100"/>
+                                        placeholder="Paste Url Here (Optional)" className="rounded-full text-center w-full text-gray-700 dark:text-gray-200 font-light outline-none text-sm px-4 p-1 sm:py-2 border border-gray-300 bg-gray-100 dark:bg-gray-900"/>
                                          <p className='mx-3 text-xs text-red-700 font-light' >{errors.url?.message}</p>
                                          </div>
                                     </div>
@@ -686,9 +686,9 @@ function readFile(file, type) {
                                           {/* LABELSSSS */}
 
                                         <label htmlFor= 'ImageUpload' className='py-3'>
-                                                    <div onClick ={clearInput} className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-full  text-xs font bg-gray-100 border border-gray-300 text-gray-500 p-1'>
-                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-1'>
-                                                            <BsFileEarmarkImageFill size={20}/> 
+                                                    <div onClick ={clearInput} className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-md text-xs font bg-gray-100 dark:bg-gray-900 border border-gray-300 text-gray-500 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-0.5'>
+                                                            <BsFileEarmarkImageFill size={15}/> 
                                                          Image
                                                         </div>
                                                         
@@ -697,18 +697,18 @@ function readFile(file, type) {
                                         </label>
 
                                         <label htmlFor= 'VideoUpload' className='py-3'>
-                                        <div onClick ={clearInput} className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-full  text-xs font  bg-gray-100 border border-gray-300 text-gray-500 p-1'>
-                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-1'>
-                                                            <MdVideoLibrary size={20}/> 
+                                        <div onClick ={clearInput} className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-md  text-xs font  bg-gray-100 dark:bg-gray-900 border border-gray-300 text-gray-500 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-0.5'>
+                                                            <MdVideoLibrary size={15}/> 
                                                          Video
                                                         </div>          
                                                     </div>
                                         </label>
                                       
                                          <label htmlFor= 'AudioUpload' className='py-3'>
-                                         <div onClick ={clearInput}className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-full  text-xs font  bg-gray-100 border border-gray-300 text-gray-500 p-1'>
-                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-1'>
-                                                            <MdLibraryMusic size={20}/> 
+                                         <div onClick ={clearInput}className= 'm-auto items-center  hover:bg-gray-500 hover:text-white  rounded-md  text-xs font  bg-gray-100 dark:bg-gray-900 border border-gray-300 text-gray-500 p-1'>
+                                                        <div className= 'flex justify-center items-center font-semibold text-xs m-auto bg-transparent p-0.5'>
+                                                            <MdLibraryMusic size={15}/> 
                                                          Audio
                                                         </div>
                                                     </div>
@@ -1081,7 +1081,7 @@ function readFile(file, type) {
                                         onChange: (e) => {setdiariesData({...diariesData, title: e.target.value})}
                                         })}  
                         
-                                        placeholder="Enter Title" className="text-gray-700 font-light outline-none my-1 w-full px-4 p-1 sm:py-2 border border-gray-300 rounded-md bg-gray-100"/>
+                                        placeholder="Enter Title" className="text-gray-700 dark:text-gray-200 font-light outline-none my-1 w-full px-4 p-1 sm:py-2 border border-gray-300 rounded-md dark:bg-gray-900 bg-gray-100"/>
                                         <p className='mx-3 text-xs text-red-700 font-light' >{errors.title?.message}</p>
                                         </div>
                                     </div>
@@ -1096,16 +1096,16 @@ function readFile(file, type) {
                                                 onChange: (e) => {setdiariesData({...diariesData, caption: e.target.value})}
                                                 })}   
                                 
-                                                placeholder="Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 font-light outline-none  mt-1 w-full  px-4 py-2 border border-gray-300 rounded-md bg-gray-100"/>
+                                                placeholder="Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 dark:text-gray-200 font-light outline-none  mt-1 w-full  px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-900 bg-gray-100"/>
                                                 <p className='text-xs text-red-700 font-light' >{errors.caption?.message}</p>
-                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max mx-auto my-1 text-gray-100 bg-gray-400 hover:bg-gray-500 rounded-full p-1'>
+                                                <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max mx-auto my-1 text-gray-100 bg-gray-400 dark:bg-gray-800 hover:bg-gray-500 dark:hover:bg-cyan-500 rounded-full cursor-pointer p-1'>
                                                     <BsFillEmojiLaughingFill/>
                                                 </div>
                                        
                                         </div>
 
                                         {emojiBox && 
-                                                    <div className='flex justify-center bg-gray-300'>
+                                                    <div className='flex justify-center bg-gray-300 dark:bg-gray-900'>
                                                         <Picker className= 'bg-gray-300' onEmojiClick={onEmojiClick} />
                                                     </div>
                                         }
@@ -1118,21 +1118,21 @@ function readFile(file, type) {
                                             setSearchError(false);
                                             console.log(diariesData);
                                         }}
-                                        placeholder="Mentions(Optional): Enter a name, click Search" className="text-gray-700 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100"/>
+                                        placeholder="Mentions(Optional): Enter a name, click Search" className="text-gray-700 dark:text-gray-200 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100 dark:bg-gray-900"/>
                                         {/* <p className='mx-3 text-xs text-red-700 font-light' >error</p> */}  
                                             {searchingName===false && 
-                                                <div onClick={searchedName.length > 0 ? searchName: ''} className="flex justify-center items-center p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
+                                                <div onClick={searchedName.length > 0 ? searchName: ''} className="flex justify-center items-center p-1 m-1  bg-gray-400 dark:bg-gray-800 cursor-pointer text-gray-100 dark:hover:text-gray-900 rounded-full hover:bg-gray-600 dark:hover:bg-cyan-600 items-center">
                                                     <MdSearch size={24}/>
                                                 </div> 
                                             }
                                             {searchingName===true &&
-                                                <div className=" flex justify-center w-16 p-1 m-1  bg-gray-400 cursor-pointer text-gray-100 rounded-full hover:bg-gray-600 items-center">
+                                                <div className=" flex justify-center w-16 p-1 m-1  bg-gray-400 dark:bg-cyan-600 cursor-pointer text-gray-100 dark:text-gray-900 rounded-full items-center">
                                                     <BeatLoader size={7} color='white' loading/>
                                                 </div> 
                                             }
                                         </div>
-                                      {searchedMiniProfile.userName?.length > 0 && searchedName !== user.result.userName && searchedMiniProfile._id !== user.result._id &&
-                                        <div className='flex  justify-center text-xs items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
+                                      {searchedMiniProfile.userName?.length > 0 && searchedName.length>0 && searchedName !== user.result.userName && searchedMiniProfile._id !== user.result._id &&
+                                        <div className='flex  justify-center text-xs items-center space-x-1 bg-gray-300 dark:bg-gray-800 rounded-md p-1 m-1'>
                                         <img src={searchedMiniProfile.dpUrl} alt="DP" className="rounded-full h-7 w-7"/>
                                             <p>@{searchedMiniProfile.userName}</p>
                                             <div onClick={()=>{
@@ -1150,16 +1150,16 @@ function readFile(file, type) {
                                                     });
                                                     
                                                 }
-                                            }} className="p-0.5 bg-gray-400 cursor-pointer text-gray-100 rounded-md hover:bg-gray-400 items-center">
+                                            }} className="p-0.5 bg-gray-400 dark:bg-gray-700 cursor-pointer text-gray-100  rounded-md hover:bg-gray-500 dark:hover:bg-cyan-700 items-center">
                                                 <p>add</p>
                                             </div>
                                         </div>}
                                         {searchError===true && searchedMiniProfile ==="NO_USER" && 
-                                        <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
+                                        <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 dark:bg-gray-800 rounded-md p-1 m-1'>
                                             <p>@{searchedName} not found. Ensure they exist</p>
                                         </div>}
                                         {searchedName === user.result.userName && 
-                                        <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 rounded-md p-1 m-1'>
+                                        <div className='flex text-xs text-red-600 items-center space-x-1 bg-gray-300 dark:bg-gray-800  rounded-md p-1 m-1'>
                                             <p>You cant mention yourself!</p>
                                         </div>}
                                     </div>
@@ -1188,10 +1188,10 @@ function readFile(file, type) {
                                    mb-3 flex
                                     mx-auto w-3/4 rounded-full border border-teal-400
                                          justify-center 
-                                        text-gray-800 cursor-pointer hover:bg-teal-400 hover:text-white
+                                        text-gray-800 dark:text-teal-500 dark:hover:text-gray-900 cursor-pointer hover:bg-teal-400 hover:text-white
                                         font-normal  p-1">
                                         {progress === 0 ?<p>POST</p>:
-                                      <p>Uploading...</p>}
+                                      <p>Uploading {progress}% ...</p>}
                                     </button>
                                 
 

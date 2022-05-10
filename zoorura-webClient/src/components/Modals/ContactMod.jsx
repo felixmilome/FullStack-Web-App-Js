@@ -296,11 +296,11 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
         }>
         {styles => (
           <animated.div style={styles}> 
-        <div  className="z-20 rounded-md  fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200 dark:bg-gray-800">
+        <div  className="z-20 rounded-md  fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200 dark:bg-gray-900">
             {/* Top Part */}
             <div className="fixed z-20 
             border-b dark:border-b rounded-t-md dark:border-gray-700 border-gray-200
-             bg-gray-100 dark:bg-gray-800 p-1
+             bg-gray-100 dark:bg-gray-900 p-1
              w-full xl:w-1/4  flex  
              justify-between items-center">
                  
@@ -317,10 +317,10 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                          {online ===true && <div className= 'absolute top-0 right-0 w-3 h-3 justify-center text-white items-center p-1 rounded-full border-2 border-white bg-cyan-400'>
                         {/* dot */}
                         </div>}
-                         {online ===false && <div className= 'absolute top-0 right-0 w-3 h-3 justify-center text-white items-center p-1 rounded-full border-2 border-white bg-gray-400'>
+                         {online ===false && <div className= 'absolute top-0 right-0 w-3 h-3 justify-center text-white items-center p-1 rounded-full border-2 border-white dark:border-gray-900 bg-gray-400'>
                         {/* dot */}
                         </div>}
-                    </div>
+                    </div> 
                     <div className='items-center '>
                     <p>@{displayed.userName}</p>
                     {typingNotifier && <p className='text-cyan-500' >Typing...</p>}
@@ -420,7 +420,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                   </div>}
                                         
                             {!displayed.blocked.includes(user.result._id) && !displayed.blockers.includes(user.result._id) &&
-                                <div  className=' w-full px-1 sm:w-1/2 lg:w-1/4 fixed bottom-0 z-50 py-2 bg-gray-200 dark:bg-gray-800  right-0 sm:right-2 mt-6'>
+                                <div  className=' w-full px-1 sm:w-1/2 lg:w-1/4 fixed bottom-0 z-50 py-2 bg-gray-200 dark:bg-gray-900  right-0 sm:right-2 mt-6'>
 
                                        
                                     {messageData.type !== 'image' &&messageData.type !== 'video' && messageData.type !== 'audio' &&
@@ -434,7 +434,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                 <div className={`${messageData.body.length < 25 && `h-12`}
                                                             ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
                                                             ${messageData.body.length > 80 && `h-32`}
-                                                            p-2 bg-gray-100 dark:bg-gray-700 rounded-xl w-full`}>
+                                                            p-2 bg-gray-100 dark:bg-gray-800 rounded-xl w-full`}>
                                             
                                                 <textarea 
                                                 value={messageData.body}
@@ -451,11 +451,11 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                                                 className={`${messageData.body.length < 25 && `h-12`}
                                                             ${messageData.body.length > 25 && messageData.body.length < 80 && `h-20`}
                                                             ${messageData.body.length > 80 && `h-32`}
-                                                            resize-none h-full w-full m-auto text-gray-700 dark:text-gray-300 font-medium outline-none bg-gray-100 dark:bg-gray-700 text-sm rounded`}/>
+                                                            resize-none h-full w-full m-auto text-gray-700 dark:text-gray-300 font-medium outline-none bg-gray-100 dark:bg-gray-800 text-sm rounded`}/>
                                             
                                                 </div> 
                                                 <div className='flex p-1 items-center'>
-                                                            <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-cyan-400 bg-gray-100 dark:bg-gray-700 dark:hover:bg-black hover:bg-gray-800 rounded-full p-1'>
+                                                            <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max text-left text-cyan-400 bg-gray-100 dark:bg-gray-800 dark:hover:bg-black hover:bg-gray-800 rounded-full p-1'>
                                                                         <BsFillEmojiLaughingFill/>
                                                             </div>
                                                         </div>

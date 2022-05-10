@@ -35,11 +35,11 @@ export const ChatHunt = ({setpopContacts}) => {
     <div className= 'top-0  w-screen h-full'>
 
             <div className='fixed h-16 top-28 z-40  xl:top-16 items-center  flex justify-center  w-full m-auto space-x-1 '>
-                <div className='flex justify-center p-2 bg-gray-200 rounded-md  lg:w-2/5 w-full shadow-xl'>
-                    <div className='p-2 bg-gray-800 rounded-full'>
-                    <IoMdChatboxes className=" h-4 w-4 text-white"/> 
+                <div className='flex justify-center p-2 bg-gray-200 dark:bg-gray-900 rounded-md  lg:w-2/5 w-full shadow-xl'>
+                    <div className='p-2 bg-gray-800 dark:bg-gray-300 rounded-full'>
+                    <IoMdChatboxes className=" h-4 w-4 text-white dark:text-gray-900"/> 
                     </div> 
-                    <div className=' font-bold text-normal text-gray-800 p-1 rounded-md text-center'>
+                    <div className=' font-bold text-normal text-gray-800 dark:text-gray-300 p-1 rounded-md text-center'>
                             Chat Hunt
                     </div>
                 </div>

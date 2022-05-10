@@ -35,7 +35,7 @@ import {getWalletAction} from '../Midwares/rdx/actions/walletAction.js'
 import {io} from 'socket.io-client'
 
 
-//Search Area.. Go Search im Arena img follows Search
+//Search Area.. Go Search im Arena img follows Search CLAIM
 
 function Header() {
 
@@ -564,30 +564,30 @@ function Header() {
                                     
 
 
-                    {/* POINTERRRRRRRRR */}
+                    {/* POINTERRRRRRRRR */} 
 
                  {popDailyPoints &&
-                    <div className="fixed border-l-8 border-gray-200 p-4  w-full rounded-xl sm:rounded-none mt-6 h-full sm:mt-2  top-0 z-0 flex justify-center bg-gray-200 opacity-80">
+                    <div className="fixed p-4  w-full rounded-xl sm:rounded-none mt-6 h-full sm:mt-2  top-0 z-0 flex justify-center bg-gray-200 dark:bg-black">
                             <div className="p-1 m-auto overflow-scroll">
 
-                                <div className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl bg-gray-100 items-center mt-0 mb-3 group">
+                                <div className= "cursor-pointer mx-3 p-3 space-y-2 rounded-xl bg-gray-100 dark:bg-gray-800 items-center mt-0 mb-3 group">
                                     <img src={user.result.dpUrl} alt="DP" className="mx-auto rounded-full group-hover:text-white h-12 w-12"/>
-                                    <p className= "text-gray-500 leading-4 text-center text-sm font-bold"> CONGRATULATIONS!</p> 
-                                    <div className="bg-gray-200 rounded-md p-3 items-center"> 
-                                        <p className= "text-gray-800 leading-4 text-center text-xs font-light">We are happy to Award You</p> 
-                                        <p className= "text-gray-600 leading-4 text-center text-sm font-bold"> 10 Daily Points </p>                                       
+                                    <p className= "text-gray-500 dark:text-gray-300 leading-4 text-center text-sm font-bold"> CONGRATULATIONS!</p> 
+                                    <div className="bg-gray-200 dark:bg-gray-900 rounded-md p-3 items-center"> 
+                                        <p className= "text-gray-800 dark:text-gray-400 leading-4 text-center text-xs font-light">We are happy to Award You</p> 
+                                        <p className= "text-gray-600 dark:text-gray-400 leading-4 text-center text-sm font-bold"> 10 Daily Points </p>                                       
                                     </div>                                   
                                 </div>  
                                 {/* <p className= "text-gray-500 pt-3 text-center text-lg font-bold">Thank you For Logging in Today</p> */}
                                
                                 {loadingPointer === false &&<div onClick= {handlePointer} className="bg-teal-400 hover:bg-teal-500 cursor-pointer w-20 mx-auto m-2 rounded-md py-1 items-center"> 
-                                        <p className= "p-2 text-gray-100 leading-4 text-center font-bold"> CLAIM </p>                                       
+                                        <p className= "p-2 text-gray-100 dark:text-gray-900 leading-4 text-center font-bold"> CLAIM </p>                                       
                                     </div>}
                                     {loadingPointer === true && <div className="bg-teal-400 hover:bg-teal-500 cursor-pointer w-20 flex justify-center mx-auto m-2 rounded-md py-1 items-center"> 
                                         <BeatLoader size={7} color='white' loading/>                                      
                                     </div>}    
 
-                                <p className= "text-gray-700 text-center text-xs font-light p-1">More in the next 24 Hours</p> 
+                                <p className= "text-gray-700 dark:text-gray-400 text-center text-xs font-light p-1">More in the next 24 Hours</p> 
                                 
                             </div>
                         </div>

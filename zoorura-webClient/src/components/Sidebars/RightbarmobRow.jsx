@@ -52,8 +52,8 @@ function RightbarmobRow({Src, guestId, title, GuestName, Points, setpopChatBox})
       <>
    
         <div onClick= {(e)=> setpopChatBox(true)} > 
-        <div className="flex items-center space-x-2
-         mt-0.5 p-2 text-gray-500 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-900 
+        <div className="flex items-center space-x-2 dark:bg-gray-800
+         mt-0.5 p-2 text-gray-500 dark:text-gray-300 hover:bg-white dark:hover:bg-black
           rounded-l-full rounded-tr-full shadow-xl
            cursor-pointer  text-xs group">
             {Src && 

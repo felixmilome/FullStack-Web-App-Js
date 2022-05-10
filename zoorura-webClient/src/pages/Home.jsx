@@ -46,7 +46,7 @@ function Home({showProfile}) {
   
     const modeSetter =()=> {
         if (
-            //localStorage.theme === 'dark' || (!('theme' in localStorage) && 
+            //localStorage.theme === 'dark' || (!('theme' in localStorage) &&       //localstorage.createItem use this 
         window.matchMedia('(prefers-color-scheme: dark)').matches
         //)
         ) {
@@ -67,7 +67,7 @@ function Home({showProfile}) {
         // ${mode === 'dark' ? 'bg-gradient-to-r from-cyan-900 to-gray-900': 'bg-gray-300'}
         //<div className="m-0 text-gray-700 h-full min-h-screen pb-40 bg-gradient-to-r from-teal-900 to-gray-900">
         <div className={`${mode}`}>
-                <div className={`text-gray-800 dark:text-gray-200 h-full min-h-screen pb-40 bg-gray-300 dark:bg-gray-900 
+                <div className={`text-gray-800 dark:text-gray-200 h-full min-h-screen pb-40  ${mode === 'dark' ? 'bg-black': 'bg-gray-300'} 
 
                 
 

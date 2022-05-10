@@ -20,7 +20,7 @@ function TipsNotificationsRow ({notification}) {
     }, [notification]); 
 
     return (
-        <div style={{wordBreak: 'break-word'}}  className= {`items-center my-1 text-gray-500 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-900 ${unread === true && 'border-b-2 border-cyan-400'} rounded-md shadow-md cursor-pointer group p-3`}>
+        <div style={{wordBreak: 'break-word'}}  className= {`items-center my-1 text-gray-500 dark:text-gray-300 hover:bg-white dark:hover:bg-black ${unread === true && 'border-b-2 border-cyan-400'} rounded-md shadow-md cursor-pointer group p-3`}>
            
             <div className="flex text-xs  items-center space-x-2 mt-2 ">
                 <img src= {notification.sender.dpUrl} alt="dp" className= "inline-flex w-10 h-10 bg-white group-hover:bg-gray-600 cursor-pointer object-cover rounded-full "/>

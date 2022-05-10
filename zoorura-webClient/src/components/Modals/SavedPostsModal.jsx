@@ -33,7 +33,7 @@ const[popError, setPopError] = useState(false);
 
 
     return (
-        <div className="fixed  p-4 sm:w-1/4 w-2/3 mt-4  sm:mt-2 right-0 sm:right-1.5 rounded-md top-20 h-full z-0 flex justify-center bg-gray-200 dark:bg-gray-800">
+        <div className="fixed  p-4 sm:w-1/4 w-2/3 mt-4  sm:mt-2 right-0 sm:right-1.5 rounded-md top-20 h-full z-0 flex justify-center bg-gray-200 dark:bg-gray-900">
            
          {popDeleted &&     
             <DeliveryPop message='Saved Post Removed'/>
@@ -55,8 +55,8 @@ const[popError, setPopError] = useState(false);
 
             {/* Heading */}
            
-                <div className= " mx-3 p-3 space-y-2 rounded-xl  bg-gray-100 dark:bg-gray-700 items-center mt-4 mb-3">
-                    <p className= "text-gray-500 dark:text-gray-400 text-center text-sm font-semibold ">Saved Posts</p> 
+                <div className= " mx-3 p-3 space-y-2 rounded-xl  bg-gray-100 dark:bg-gray-800 items-center mt-4 mb-3">
+                    <p className= "text-gray-500 dark:text-gray-400 text-center text-sm font-semibold ">Saved Posts</p>  
                 </div>  
                 
                 <div className= "mb-60 w-full  ">
