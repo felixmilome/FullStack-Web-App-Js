@@ -51,23 +51,23 @@ export const Follows = ({setpopContacts, userName}) => {
       const followings = useSelector((state) => state.followingReducer);
 
   return (
-    <div className= 'top-0  w-screen h-full'>
+    <div className= 'top-0  w-screen h-full'> 
 
             <div className='fixed h-16 top-28 z-40  xl:top-16 items-center  flex justify-center  w-full m-auto space-x-1 '>
-                <div className='flex justify-center items-center p-2 bg-gray-200 rounded-md  lg:w-2/5 w-full shadow-xl'>
+                <div className='flex justify-center items-center dark:text-gray-300 p-2 bg-gray-200 dark:bg-gray-900 rounded-md  lg:w-2/5 w-full shadow-xl'>
                    
                     <Link to ={`/Portfolios/${profileName}`}> 
-                        <div className='flex justify-center px-4 items-center border border-cyan-400 rounded-md font-light text-xs text-gray-800 mx-4 h-6 rounded-md text-center '>
+                        <div className='flex justify-center px-4 items-center border border-cyan-400 rounded-md font-light text-xs mx-4 h-6 rounded-md text-center '>
                             @{profileName}
                         </div>
                     </Link>
                    
                    {followersOn ==='Followers' &&
-                    <div className=' font-semibold text-sm text-gray-800 p-1 rounded-md text-center'>
+                    <div className=' font-semibold text-sm  p-1 rounded-md text-center'>
                          Subscribers
                     </div>}
                     {followersOn ==='Following' &&
-                    <div className=' font-semibold text-sm text-gray-800 p-1 rounded-md text-center'>
+                    <div className=' font-semibold text-sm  p-1 rounded-md text-center'>
                          Subscriptions
                     </div>}
                 </div>

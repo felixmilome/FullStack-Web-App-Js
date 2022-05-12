@@ -3,6 +3,8 @@ import {GoogleLogin} from 'react-google-login';
 import {FcGoogle } from "react-icons/fc";
 import {BiLogInCircle } from "react-icons/bi";
 
+
+
 import {BsEyeFill,BsEyeSlashFill, BsCheck2Circle,BsShieldCheck} from "react-icons/bs";
 import { MdOutlineCancel, MdSecurity } from "react-icons/md";
 import {useDispatch, useSelector} from 'react-redux';
@@ -12,6 +14,7 @@ import {BeatLoader} from "react-spinners";
 import {Link} from "react-router-dom"
 
 import VideoPlayer from 'react-video-js-player';
+import { Spring, animated } from 'react-spring';
 
 
 // SearchArea: Agree
@@ -181,29 +184,41 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
     }
 
     return (
-        <div className="flex justify-center items-center fixed top-0 left-0 z-50  w-full h-screen overflow-y-scroll">
+        <div className="flex justify-center items-center fixed top-0 left-0 z-50 w-full h-screen overflow-y-scroll">
              
         {/* ============Floating FORM BOX ======== */}
     {/* <iframe src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"
      allow="fullscreen" width="100%" height="700" >
     </iframe> */}
     {/* <VideoPlayer src="https://firebasestorage.googleapis.com/v0/b/zooruraweb.appspot.com/o/diaryfiles%2Fvideo-1644936849536-62003d347a640b4c46627650?alt=media&token=84abd2ec-a45a-4aff-85a7-bfd7a0234cc0"/> */}
-            <div className="rounded-xl p-2 sm:p-6 w-full font-bold lg:w-2/5 bg-gray-100
-              shadow-md border border-gray-300">
+            <div className="rounded-xl px-2  sm:px-6 w-full font-bold sm:w-3/4 h-screen flex justify-center items-center lg:w-2/5 bg-gray-100 dark:bg-gray-900
+              shadow-md border dark:border-gray-700">
 
-                 <form onSubmit={handleSubmit(signUp)}>
+                 <form className='w-full' onSubmit={handleSubmit(signUp)}>
+                 <Spring
+                
+                from={
+                    { opacity: 0, x:-20}
+                }
+                
+                to={
+                { opacity: 1, x:0}
+                
+                }> 
+                {styles => (
+                <animated.div style={styles}>
                         <div className= "pt-3 pb-1 flex items-center bg-transparent justify-around">
-                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-md bg-transparent h-16 w-16 "/>
+                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-md bg-transparent h-40 w-40 "/>
                         </div>  
                         <div className="p-1 text-center bg-transparent">
                             
-                            <h1 className='text-3xl'>Register to Join Zoorura</h1>
+                            <h1 className='text-4xl text-gray-600 dark:text-gray-300'>Join Zoorura</h1>
                             <div className="p-1 font-light text-xs flex justify-center items-center space-x-1"> 
                                <div>
                                    Already have an account?
                                </div>
-                                <div onClick={switchLogin} className="bg-gray-100 border border-gray-400 text-gray-800 cursor-ponter hover:bg-white font-bold p-1 rounded">
-                                <p className="cursor-pointer"> Log In </p>
+                                <div onClick={switchLogin} className="cursor-ponter text-cyan-500 hover:text-teal-600 font-bold p-0.5">
+                                <p className="cursor-pointer"> Log In</p>
                                 </div>
                             </div>
                         </div>
@@ -254,7 +269,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              {...register('userName',{
                                  onChange: (e) => {setFormData({...formData, userName: e.target.value.trim().toLowerCase()})}
                                 })} 
-                                 className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full" type="text" placeholder= "Username" />
+                                 className= "w-full bg-gray-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-2 rounded-full" type="text" placeholder= "Username" />
                             <p className='text-xs text-red-700 text-center font-light' >{errors.userName?.message}</p>
                             {formData.userName.length >0 && <p className='absolute top-2.5 right-2 text-gray-400 text-xs text-center font-light'>Username:</p>}
                             
@@ -272,7 +287,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              {...register('email',{
                                  onChange: (e) => {setFormData({...formData, email: e.target.value.trim().toLowerCase()})}
                                 })} 
-                                name='email' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full" type="text" placeholder= "Email"  />
+                                name='email' className= "w-full bg-gray-200 dark:bg-gray-800 border dark:border-gray-700 border-gray-200 px-4 py-2 rounded-full" type="text" placeholder= "Email"  />
                             <p className='text-xs text-red-700 text-center font-light' >{errors.email?.message}</p>
                             {formData.email.length >0 && <p className='absolute top-2.5 right-2 text-gray-400 text-xs text-center font-light'>Email:</p>}
                            
@@ -289,7 +304,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                             <input {...register('password',{
                                  onChange: (e) => {setFormData({...formData, password: e.target.value})}
                                 })}
-                            name='password' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full"
+                            name='password' className= "w-full bg-gray-200 dark:bg-gray-800 border dark:border-gray-700 border-gray-200 px-4 py-2 rounded-full"
                              type= {visible ? "text" : "password"} placeholder= "Password" />
                              <p className='text-xs text-red-700 text-center font-light' >{errors.password?.message}</p>
                               {formData.password.length >0 && <p className='absolute top-3 right-10 text-gray-400 text-xs text-center font-light'>Password:</p>}
@@ -304,7 +319,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                              {...register('confirmPassword',{
                                  onChange: (e) => {setFormData({...formData, confirmPassword: e.target.value})}
                                 })} 
-                            name='confirmPassword' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full"
+                            name='confirmPassword' className= "w-full bg-gray-200 dark:bg-gray-800 border dark:border-gray-700 border-gray-200 px-4 py-2 rounded-full"
                              type= {visible ? "text" : "password"}  placeholder= "Confirm Password"/>
                              <p className='text-xs text-red-700 text-center font-light' >{errors.confirmPassword && "Passwords Should Match"}</p>
                              {formData.confirmPassword.length >0 && <p className='absolute top-3 right-10 text-gray-400 text-xs text-center font-light'>Confirm Password:</p>}
@@ -318,7 +333,7 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                             <input
                             
                             onClick={(e) =>  {
-                                console.log(e.target.value);
+                                console.log(e.target.value); 
                                     if (formData.isChecked === true){ 
                                     setFormData({...formData, isChecked: false});
                                     } else {
@@ -340,11 +355,11 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
 
                             setVisibleError(false);
                             setRequired(true);
+                             
                             
-                            
-                        }} type={loading === false ? 'submit' : 'button'} className="items-center  px-4 py-2 mx-auto bg-transparent border border-cyan-400 text-cyan-500
-                        hover:bg-white flex 
-                        mx-auto rounded-full w-1/2
+                        }} type={loading === false ? 'submit' : 'button'} className="items-center  px-4 py-2 mx-auto bg-gradient-to-r  text-black
+                        from-teal-200 to-cyan-500 hover:from-pink-400 hover:to-yellow-500   flex 
+                        mx-auto rounded-full w-1/2 dark:text-black
                              justify-center 
                             text-white text-sm cursor-pointer
                             font-semibold p-1 mb-4">
@@ -372,6 +387,11 @@ export const SignupForm = ({setpopSignup, setpopLogin}) => {
                         cookiePolicy='single_host_origin'
                         /> */}
                 </div>
+
+            </animated.div>
+                      )}
+                    </Spring>
+           
                  </form>
             </div>
       
@@ -430,20 +450,35 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                     
         {/* ============Floating Box======== */}
 
-            <div className="w-full lg:w-2/5 bg-gray-100  p-1 rounded-xl shadow-xl m-2 font-bold">
+            <div className="rounded-xl px-2  sm:px-6 w-full font-bold sm:w-3/4 h-screen flex justify-center items-center lg:w-2/5 bg-gray-100 dark:bg-gray-900
+              shadow-md border dark:border-gray-700">
             
-            <form onSubmit={handleSubmit(logIn)}>
-                        <div className= "pt-3 pb-1 flex items-center justify-around">
-                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-md h-16 w-16 "/>
+            <form className='' onSubmit={handleSubmit(logIn)}>
+            
+            <Spring
+                
+                from={
+                    { opacity: 0, x:-20}
+                }
+                
+                to={
+                { opacity: 1, x:0}
+                
+                }> 
+                {styles => (
+                <animated.div style={styles}>
+
+                        <div className= "pt-3 pb-1 flex items-center bg-transparent justify-around">
+                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-md bg-transparent h-48 w-48 "/>
                         </div>  
                         <div className="p-1 text-center bg-transparent">
-                            <p className='text-2xl p-1'>Log In</p>
+                            <p className='text-2xl p-1 text-gray-600'>Zoorura Log In</p>
 
                            <div className=" font-light text-xs flex justify-center items-center space-x-1"> 
                                <div>
                                    Don't have an account?
                                </div>
-                                <div onClick={switchSignup} className="bg-gray-100 border border-gray-400 text-gray-800 cursor-ponter hover:bg-white font-bold p-1 rounded">
+                                <div onClick={switchSignup} className="cursor-ponter text-cyan-500 hover:text-teal-600 font-bold p-0.5">
                                    <p className="cursor-pointer"> Register</p>
                                 </div>
                             </div>
@@ -474,23 +509,23 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
 
 
                         {/*========= Inputs=============== */}
-                        <div className="p-3 text-sm">
+                        <div className="p-3 text-sm ">
                         {/* Email*/}
                         <div className ='bg-transparent flex items-center justify-around'>
-                            <div className= "relative w-full sm:w-3/4 m-2 ">
+                            <div className= "relative w-full  my-1 ">
                                 <input {...register('email',{
                                     onChange: (e) => {setFormData({...formData, email: e.target.value})}
-                                    })} name='email' className= "w-full bg-gray-200 border-b border-gray-200  px-4 py-2 rounded-full" type="text" placeholder= "Email/Username"/>
+                                    })} name='email' className= "w-full bg-gray-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-2 rounded-full" type="text" placeholder= "Email/Username"/>
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.email?.message}</p>
                                     {formData.email.length >0 && <p className='absolute top-1 right-2 text-gray-400 text-xs text-center font-light'>Email:</p>}
                             </div>
                         </div>
                         {/* Password*/}
                         <div className='bg-transparent flex items-center justify-around'>
-                            <div className= "relative w-full sm:w-3/4 m-2 ">
+                            <div className= "relative w-full  my-1 ">
                                 <input {...register('password',{
                                     onChange: (e) => {setFormData({...formData, password: e.target.value})}
-                                    })}  name='password' className= "w-full bg-gray-200 border-b border-gray-200 px-4 py-2 rounded-full"
+                                    })}  name='password' className= "w-full bg-gray-200 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-4 py-2 rounded-full"
                                 type={visible ? "text" : "password"} placeholder= "Password"/>
                                 <p className='text-xs text-red-700 text-center font-light' >{errors.password?.message}</p>
                                     {formData.password.length >0 && <p className='absolute top-2.5 right-9 text-gray-400 text-xs text-center font-light'>Password:</p>}
@@ -501,7 +536,7 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                         {/* Forgot Password */}
                         
                         <Link to= '/forgotPassword' className= 'w-full flex justify-center'>
-                                <div className= 'bg-gray-100 flex w-1/2 justify-center text-xs font-light cursor-pointer rounded-full hover:bg-gray-200'>
+                                <div className= ' flex w-1/2 justify-center text-xs font-light cursor-pointer rounded-full hover:text-cyan-500'>
                                 <p>Forgot Password?</p>
                                 </div>
                         </Link>
@@ -510,19 +545,21 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                     <div className= "p-1 flex items-center justify-center space-x-1">
                         <MdSecurity size={18} className= "text-gray-500"/>
                         <p className="font-light text-xs">
-                            Keep Me Logged In?
+                            Stay Logged In?
                         </p>
                         <select 
                         name= "autologout"
                         onChange={(e)=>setFormData({...formData, autologout: e.target.value})}   
-                        className="m-2 flex text-center justify-center items-center font-bold text-xs  outline-none bg-gray-100 rounded-full p-1 border">
-                                <option value="300d"> Never </option>
-                                <option value="365d"> Always, Until I logout </option>
-                                <option value="1h"> For 1 Hour </option>
+                        className="m-2 w-40 flex text-center justify-center items-center font-bold text-xs  outline-none bg-gray-100 dark:bg-gray-800 rounded-full p-1 border border-gray-300">
+                                 <option value="300d"> Never </option>
+                                 <option value="365d"> Always </option>
+                                
+                               
+                                {/* <option value="1h"> For 1 Hour </option>
                                 <option value="6h"> For 6 Hours </option>
                                 <option value="12h"> For 12 Hours </option>
                                 <option value="24h">For 1 Day </option>
-                                <option value="7d">For 1 Week </option>
+                                <option value="7d">For 1 Week </option> */}
                                 
                         </select> 
                     </div>
@@ -535,12 +572,12 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                             setVisibleError(false);
                            
                            
-                        }}  type={loading === false ? 'submit' : 'button'} className="items-center  px-4 py-2 mx-auto bg-transparent border border-cyan-400 text-cyan-500
-                            hover:bg-white flex 
-                            mx-auto rounded-full w-1/2
-                                 justify-center 
-                                text-white text-sm cursor-pointer
-                                font-semibold p-1 mb-8">
+                        }}  type={loading === false ? 'submit' : 'button'} className="items-center  px-4 py-2 mx-auto bg-gradient-to-r  text-black
+                        from-teal-200 to-cyan-500 hover:from-pink-400 hover:to-yellow-500   flex 
+                        mx-auto rounded-full w-1/2 dark:text-black
+                             justify-center 
+                            text-white text-sm cursor-pointer
+                            font-semibold p-1 mb-4">
                                  
                             
                             {loading === false ? <p>Log In</p> : <BeatLoader size={10} color='cyan' loading/>}
@@ -550,6 +587,11 @@ export const LoginForm = ({setpopSignup, setpopLogin}) => {
                        
                         
                 </div>
+                
+                </animated.div>
+                      )}
+                    </Spring>
+
             </form>
             </div>
           
@@ -595,19 +637,19 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
             console.log(error);
         }
         
-    }
+    } 
 
     return (
-        <div className="fixed text-gray-600 font-bold top-10 bg-gray-300 pt-8 pb-48 left-0 w-full flex justify-center z-50 max-h-screen overflow-y-scroll">
+        <div className="fixed text-gray-600 dark:text-gray-200 font-bold top-0 left-0 bg-gray-300 dark:bg-black w-full flex justify-center items-center z-50 h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
 
              
-            <div className="w-full lg:w-2/5 h-1/2 bg-gray-100 rounded-md shadow-xl mt-10 mb-40 h-full">
+            <div className="w-full lg:w-2/5 border dark:border-gray-600  dark:bg-gray-900 bg-gray-100 rounded-md shadow-xl">
             
             <form onSubmit={handleSubmit(verify)}>
                         <div className= "pt-3 pb-1 flex items-center justify-around">
-                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-full h-8 w-8 sm:h-20 sm:w-20"/>
+                            <img src="./assets/images/whitelogo.png" alt="DP" className="rounded-full h-8 w-8 sm:h-20 sm:w-20  bg-gray-100 "/>
                         </div>  
                         <div className="p-1 text-center font-light bg-transparent">
                            
@@ -641,7 +683,7 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                                 <input 
                                  {...register('otp',{
                                     onChange: (e) => {setFormData({otp: e.target.value.trim(), userId:user.result._id, type:'typed'})}
-                                   })} name='otp' className= "text-center w-1/2 font-semibold text-lg bg-gray-100 border border-gray-300 m-1 p-2 rounded-md" type="text" placeholder= "Enter OTP"/>
+                                   })} name='otp' className= "text-center w-1/2 font-semibold text-lg bg-gray-100 dark:bg-gray-800 border border-gray-00 dark:border-gray-600 m-1 p-2 rounded-md" type="text" placeholder= "Enter OTP"/>
                                     
                             </div>
                             <p className='text-xs text-red-700 text-center font-light' >{errors.otp?.message}</p>
@@ -659,6 +701,7 @@ export const VerifyForm = ({setpopSignup, setpopLogin}) => {
                                 }} type={loading===false ? 'submit' : 'button'} className="items-center px-4 py-3 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                                     bg-gradient-to-r hover:from-pink-500
                                     hover:to-yellow-500 flex
+                                    dark:text-gray-900
                                     mx-auto rounded-md
                                         justify-center 
                                         text-white text-sm cursor-pointer

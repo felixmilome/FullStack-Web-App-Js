@@ -6,7 +6,8 @@ import {    SearchIcon,
             ShoppingCartIcon,
             HashtagIcon,
             UserAddIcon} from '@heroicons/react/outline'
-import {GiTakeMyMoney, GiMoneyStack} from 'react-icons/gi';
+import {GiTakeMyMoney, GiMoneyStack, GiPadlock} from 'react-icons/gi';
+
 import{RiVipCrownFill} from 'react-icons/ri';
 
 import HeaderRightIcon from './HeaderRightIcon.jsx'
@@ -35,7 +36,7 @@ import {getWalletAction} from '../Midwares/rdx/actions/walletAction.js'
 import {io} from 'socket.io-client'
 
 
-//Search Area.. Go Search im Arena img follows Search CLAIM
+//Search Area.. Go Search im Arena img follows Search CLAIM Log
 
 function Header() {
 
@@ -308,20 +309,20 @@ function Header() {
         
 
           
-// text
+// text Log
        
    
     
 
     return (
         
-        <div className= "sticky top-0 z-50 ">
+        <div className= "sticky top-0 z-50">
               {/*==============SIGN UP/ LOGIN =================*/}
             {user && !user.result.verified  ? <VerifyForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>} 
             { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
             {popLogin && !user ? <LoginForm  popLogin = {popLogin} popSignup ={popSignup}  setpopLogin ={setpopLogin} setpopSignup = {setpopSignup} />: <></>}
        
-        <div className= "sticky top-0 z-50 bg-gray-100 dark:bg-gray-900 border-b border-cyan-400 dark:border-gray-600 p-2 lg:px-6 lg:py-3 shadow-md ">
+        <div className= {`sticky top-0 z-50 bg-gray-100 ${(popSignup || popLogin) && !user && 'bg-gradient-to-r from-teal-300 to-cyan-500 rounded-r-full w-11/12 px-3' }  dark:bg-gray-900 border-b border-cyan-400 dark:border-gray-600 p-2 lg:px-3 lg:py-3 shadow-md `}>
         <div className= "flex items-center  p-0  space-x-2 justify-between">
             {/*Left*/}
             { user && user.result.verified ?
@@ -352,20 +353,17 @@ function Header() {
        
        :
        
-           <div onClick ={logout} className='bg-transparent'>
+           <div onClick ={logout} className='flex justify-end w-full'>
                 <Link to='/'>
-                    <div  className="cursor-pointer  rounded-full hover:bg-gray-200 bg-transparent flex items-center justify-between">
-                                
+                    <div  className="cursor-pointer rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 bg-transparent flex items-center justify-between">
+
+                                <> 
+                                    <h1 className= "m-1 inline-flex text-sm items-center font-light p-1"><GiPadlock/>{user && !user.result.verified && <>Go Back to  </>} User-Auth</h1> 
+                                    
+                                </>
                                 <div className= 'rounded-full items-center  bg-gray-100 object-cover'>
                                     <img src="./assets/images/whitelogo.png" alt="DP" className="p-0.5 rounded-full h-8 w-8 "/>
                                 </div>
-
-                            
-                            
-                                <> 
-                                    <h1 className= "m-1 inline-flex text-sm font-bold text-xl p-1">{user && !user.result.verified && <>Go Back to  </>} Sign Up-Log In</h1> 
-                                    
-                                </>
                                 
                     </div>
                 </Link>

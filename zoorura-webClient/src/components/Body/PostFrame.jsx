@@ -49,7 +49,7 @@ import {Link} from 'react-router-dom';
 import Picker from 'emoji-picker-react'
 import PostFrameIndi from "./PostFrameIndi.jsx";
 
-//Search Area Original Reviews
+//Search Area Original Reviews Newbie
 
 
 
@@ -371,7 +371,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
                         )
                     })}
                       {diary.newComer===true &&
-                                     <div className='items-center p-1 text-xs text-yellow-500 font-semibold bg-gray-100 rounded'>
+                                     <div className='items-center p-1 text-xs text-yellow-500 font-semibold '>
                                        🤩  : Newbie Post
                     </div>}
 

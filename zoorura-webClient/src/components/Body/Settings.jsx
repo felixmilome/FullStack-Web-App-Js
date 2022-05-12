@@ -203,13 +203,13 @@ export const Settings = () => {
         <SurePop action={'Permanently Delete'} token={'Your Zoorura Account'} loadingFunction={loadingDeleteAccount} loadingMessage= {'Verifying Delete Account'} yesFunction ={deleteAccount} noFunction= {()=>setSurePop(false)}/>
         }
         
-    <div className="fixed text-gray-600 font-bold top-24 xl:top-12 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-20 max-h-screen overflow-y-scroll">
+    <div className="fixed text-gray-600 dark:text-gray-300 font-bold top-24 xl:top-12 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-20 max-h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
  
         
 
-            <div className="w-11/12 lg:w-1/3 bg-gray-100 rounded-md shadow-xl m-2 h-full">
+            <div className="w-11/12 lg:w-1/3 bg-gray-100 dark:bg-gray-800 rounded-md shadow-xl m-2 h-full">
             
             <form onSubmit={handleSubmit(submitProfile)} className='border-b border-gray-300 m-1'>
   
@@ -255,7 +255,7 @@ export const Settings = () => {
                         }
                         
                         <div className='flex items-center justify-left'>
-                             <p className='text-sm font-semibold text-gray-600'>Profile Picture:</p>
+                             <p className='text-sm font-semibold '>Profile Picture:</p>
                             <div onClick={()=>{setdpCropper(true)}} className='flex sm:m-0 ml-3 w-full cursor-pointer hover:bg-gray-200  justify-center space-x-2 p-2 rounded-full items-center bg-gray-100 space-x-1'>                              
                                     <img src={user.result.dpUrl} alt="DP" className="rounded-full h-8 w-8 sm:h-10 sm:w-10"/>                   
                                     <p>Change Picture</p>                       
@@ -265,7 +265,7 @@ export const Settings = () => {
                             {/* UserName*/}
                             <div className= "flex justify-between relative w-full">
                                 <div className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold text-gray-600'>Username:</p>
+                                <p className='text-sm font-semibold '>Username:</p>
                                 <div onBlur= {checkUsername} onChange={(e)=>setUserNameCheck(null)}
                                     className="w-3/4 sm:w-5/6">
                                     <input  {...register('userName',{
@@ -292,7 +292,7 @@ export const Settings = () => {
                             {/*Bio*/}
                             <div className= "flex justify-between relative w-full pb-2">
                                 <div className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold text-gray-600'>Bio:</p>
+                                <p className='text-sm font-semibold '>Bio:</p>
                                 <div className='w-3/4 sm:w-5/6'>
                                         <textarea {...register('bio',{
                                         onChange: (e) => {setProfileFormData({...profileFormData, bio:e.target.value})}
@@ -307,7 +307,7 @@ export const Settings = () => {
                             <div className= "flex justify-between relative w-full pb-2">
                                 <div className='flex justify-left space-x-2 items-center w-full'> 
                                     <div>
-                                    <p className='text-sm font-semibold text-gray-600'>Convo Request Tip Charge</p>
+                                    <p className='text-sm font-semibold '>Convo Request Tip Charge</p>
                                     <p>(0-999):</p>
                                     </div>
                                     <div>
@@ -447,7 +447,7 @@ export const Settings = () => {
                             {/* Email*/}
                             <div className= "mb-5 flex justify-between relative w-full">
                                 <div onBlur= {checkEmail} onChange={(e)=>setEmailCheck(null)} className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold text-gray-600'>Email:</p>
+                                <p className='text-sm font-semibold '>Email:</p>
                                 <div className='relative w-3/4'>
                                     <input  {...register('email',{
                                     onChange:(e)=>{
@@ -473,7 +473,7 @@ export const Settings = () => {
 
                     <div className='flex items-center bg-transparent justify-between'>
 
-                    <p className='text-sm font-semibold text-gray-600'>Change Password?</p>
+                    <p className='text-sm font-semibold '>Change Password?</p>
                             <button onClick= {()=>setPasswordInput(!passwordInput)}
                             type= "button" className=" flex items-center px-4 py-2 mx-auto bg-transparent
                                 
@@ -496,7 +496,7 @@ export const Settings = () => {
                             {/* Password*/}
                             <div className= "flex justify-between relative w-full">
                                 <div className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold text-gray-600'>New Password:</p>
+                                <p className='text-sm font-semibold '>New Password:</p>
                                 <div className='items-center w-1/2 bg-transparent'>
                                     <input  {...register('password',{ 
                                         onChange: (e)=>{
@@ -515,7 +515,7 @@ export const Settings = () => {
                             {/* ConfirmPassword*/}
                              <div className= "flex justify-between relative w-full">
                                 <div className='flex justify-between items-center w-full'>
-                                    <p className='text-sm font-semibold text-gray-600'>Confirm New Password:</p>
+                                    <p className='text-sm font-semibold'>Confirm New Password:</p>
                                     <div className='items-center w-1/2 bg-transparent'>
                                         <input  {...register('confirmPassword',{ 
                                             onChange: (e)=> {
@@ -599,7 +599,7 @@ export const Settings = () => {
                          }
                  <div className=' flex items-center bg-transparent justify-between'>
 
-                        <p className='text-sm font-semibold text-gray-600'>Delete Account?</p>
+                        <p className='text-sm font-semibold '>Delete Account?</p>
                             <button onClick= {()=>{
                                 if(securityFormData.currentPassword.length > 0){
                                 setSurePop(true);

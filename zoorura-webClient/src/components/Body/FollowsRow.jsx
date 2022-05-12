@@ -98,7 +98,7 @@ export const FollowsRow = ({miniProfile, setpopContactsFalse}) => {
   return (
         <> 
           
-            <div className= 'z-30 m-auto my-2 flex justify-center items-center rounded-xl sm:h-80 h-64 p-2  text-xs w-5/6 p-1 bg-gray-100 shadow-xl'>
+            <div className= 'border dark:border-gray-700 z-30 m-auto my-2 flex justify-center items-center rounded-xl sm:h-80 h-64 p-2  text-xs w-5/6 p-1 bg-gray-100 dark:bg-gray-900 shadow-xl'>
                 <div className='m-auto'>
 
                     <img src={miniProfile.dpUrl} alt="DP" className="m-auto p-0.5 rounded-full h-32 w-32 sm:h-40 sm:w-40"/>
@@ -110,22 +110,22 @@ export const FollowsRow = ({miniProfile, setpopContactsFalse}) => {
 
                     <div className='space-y-2 my-2'>
                         {loadingFollow ===false &&  !follows.includes(miniProfile._id) &&  miniProfile._id !== user.result._id &&
-                        <div onClick={()=>followHandler(miniProfile._id)} className='flex justify-center mx-auto text-center font-normal bg-gray-200 hover:bg-cyan-300 rounded-full w-32 p-1 cursor-pointer'>
+                        <div onClick={()=>followHandler(miniProfile._id)} className='flex justify-center mx-auto text-center font-normal bg-gray-200 hover:bg-cyan-300 dark:hover:bg-gray-700 dark:bg-gray-800 rounded-full w-32 p-1 cursor-pointer'>
                             <p>Subscribe</p>
                         </div>}
                         {loadingFollow ===false &&  follows.includes(miniProfile._id) &&  miniProfile._id !== user.result._id &&
-                        <div onClick={()=>followHandler(miniProfile._id)} className='flex justify-center mx-auto text-center font-normal bg-gray-200 hover:bg-cyan-300 rounded-full w-32 p-1 cursor-pointer'>
-                            <p>unSubscribe</p>
+                        <div onClick={()=>followHandler(miniProfile._id)} className='flex text-gray-100 dark:text-gray-900 justify-center mx-auto text-center font-normal bg-cyan-500 hover:bg-cyan-400 rounded-full w-32 p-1 cursor-pointer'>
+                            <p>unsubscribe</p>
                         </div>}
                         {loadingFollow === true &&
                         <div className='flex justify-center mx-auto text-center font-bold bg-gray-200 hover:bg-cyan-400 rounded-full w-32 p-1'>
                            <BeatLoader size={5} color ='cyan'/>
                         </div>}
-                        {miniProfile._id !== user.result._id && <div onClick={convoHandler}  className={`flex justify-center mx-auto flex items-center text-center ${online ===true && `border border-gray-300` }  border border-gray-300 hover:bg-white rounded-full py-1 px-2 w-32 cursor-pointer`}>
-                            <HiOutlineChatAlt2 className=" h-4 w-4 text-gray-700"/> 
+                        {miniProfile._id !== user.result._id && <div onClick={convoHandler}  className={`flex justify-center mx-auto flex items-center text-center ${online ===true && `border border-gray-300` }  border border-gray-300 hover:bg-white dark:hover:bg-gray-800 rounded-full py-1 px-2 w-32 cursor-pointer`}>
+                            <HiOutlineChatAlt2 className=" h-4 w-4 text-gray-700 dark:text-gray-300"/> 
                             <p>Chat</p>
-                            {online ===true && <p className='text-cyan-500'>: online</p>}
-                            {online ===false && <p className='text-gray-400'>: offline</p>}
+                            {online ===true && <p className='text-cyan-500 '>: online</p>}
+                            {online ===false && <p className='text-gray-400 '>: offline</p>}
                         </div>}
 
             

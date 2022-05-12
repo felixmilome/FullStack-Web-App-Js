@@ -57,13 +57,13 @@ export const ForgotPassword = () => {
       
     
         
-    <div className="fixed text-gray-600 font-bold top-12 sm:top-16 bg-gray-300 pt-8 pb-48 left-0 w-full flex justify-center z-50 h-screen overflow-y-scroll">
+    <div className="fixed text-gray-600 font-bold top-16 sm:top-14 rounded-md left-0 bg-gray-300 dark:bg-gray-800  w-full flex justify-center items-center z-50 h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
 
         <div className='m-auto bg-transparent w-full'>
 
-            <div className="m-auto p-4 w-full lg:w-2/5 bg-gray-200 rounded-md shadow-xl m-2">
+            <div className="m-auto p-4 w-full lg:w-2/5 bg-gray-200 dark:bg-gray-900 rounded-md shadow-xl m-2">
             
             <form onSubmit={handleSubmit(forgotPassSubmit)}>
 
@@ -116,7 +116,7 @@ export const ForgotPassword = () => {
                                     }
                                     })}
                                  
-                                    name='email' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-md" type="text" placeholder= "Email"/>
+                                    name='email' className= "w-full bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-600 border border-gray-300 p-2 rounded-md" type="text" placeholder= "Email"/>
                                     <p className='text-xs text-red-700 font-light' >{errors.email?.message}</p>
                                     </div>
                                 </div>
@@ -138,7 +138,7 @@ export const ForgotPassword = () => {
                                         setVisibleError(false);
                                     }
                                     })}
-                                    name='password' className= "bg-gray-100 border border-gray-300 p-2 w-full rounded-md" type={visible ? "text" : "password"} placeholder= "Change Password"/>
+                                    name='password' className= "bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-600 p-2 w-full rounded-md" type={visible ? "text" : "password"} placeholder= "Change Password"/>
                                     <p className='text-xs text-red-700 font-light' >{errors.password?.message}</p>
                                     <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2.5 right-3 text-gray-400 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
                                 </div>
@@ -157,7 +157,7 @@ export const ForgotPassword = () => {
                                                 setForgotPassFormData({...forgotPassFormData, confirmPassword:e.target.value});          
                                         }
                                         })}
-                                        name='confirmPassword' className= "bg-gray-100 border border-gray-300 p-2 w-full rounded-md" type={visible ? "text" : "password"} placeholder= "Confirm Password"/>
+                                        name='confirmPassword' className= "bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-600 border border-gray-300 p-2 w-full rounded-md" type={visible ? "text" : "password"} placeholder= "Confirm Password"/>
                                     <p className='text-xs text-red-700 font-light' >{forgotPassFormData.password.trim() !== forgotPassFormData.confirmPassword.trim() && "Passwords Should Match"}</p>
                                     <div onClick = {(e)=>setVisible (!visible)} className='bg-transparent absolute top-2.5 right-3 text-gray-400 cursor-pointer hover:text-cyan-500 text-xs text-center font-light '>{visible ? <BsEyeSlashFill size={20}/> : <BsEyeFill size={20}/>}</div>
                                 </div>
@@ -183,9 +183,9 @@ export const ForgotPassword = () => {
                                 hover:to-yellow-500 flex
                                 mx-auto rounded-full
                                     justify-center 
-                                    text-white text-sm cursor-pointer
+                                    text-white dark:text-gray-900 text-sm cursor-pointer
                                     font-semibold p-1  space-x-1">
-                                     <MdSecurity size={20} className= "text-gray-100"/>
+                                     <MdSecurity size={20} className= ""/>
                                 
                                 {loading === false ? <p>change Password</p> : <BeatLoader size={10} color='white' loading/>}
 

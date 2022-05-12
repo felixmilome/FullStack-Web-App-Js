@@ -197,7 +197,7 @@ const handleConvo = async() =>{
                          
                   
                             <div className= 'flex m-auto bg-transparent'>
-                            <div className="bg-gray-100 w-full lg:w-2/5 rounded-lg  text-gray-700 m-auto justify-around text-center items-center p-2 ">
+                            <div className="bg-gray-100 dark:bg-gray-900 w-full lg:w-2/5 rounded-lg  text-gray-700 dark:text-gray-300 m-auto justify-around text-center items-center p-2 ">
                                 
                             { miniProfile == "NO_USER" ?
                                 //return value 'not found' to be read if no miniprofile doesnt exist, differ from null
@@ -217,12 +217,12 @@ const handleConvo = async() =>{
                                             <div className='rounded-md'>
                                                     <div className= "mx-3 space-y-2 rounded-xl text-xs  bg-transparent items-center mt-4 mb-3 group">
                                                         <img onClick={()=>{setdpCropper(true)}} src={miniProfile.dpUrl} alt="" className="mx-auto rounded-full group-hover:text-white h-32 w-32"/>
-                                                        <p className= "text-gray-600 leading-3 text-center text-base font-bold ">@{miniProfile.userName}</p>
-                                                    <div className="bg-gray-100 rounded-md items-center">
-                                                        <p className= "w-1/2 m-auto text-gray-600 leading-4 text-center font-light break-words ">{miniProfile.bio} </p> 
+                                                        <p className= "leading-3 text-center text-base font-bold ">@{miniProfile.userName}</p>
+                                                    <div className=" rounded-md items-center">
+                                                        <p className= "w-1/2 m-auto  leading-4 text-center font-light break-words ">{miniProfile.bio} </p> 
                                                         
                                                         {user && miniProfile.follows.includes(user.result._id) &&  
-                                                                <p className= "text-gray-600 leading-3 text-center font-semibold">I Subscribe to @{user.result.userName}</p>
+                                                                <p className= " leading-3 text-center font-semibold">I Subscribe to @{user.result.userName}</p>
                                                             }
 
                                                     </div>
@@ -239,21 +239,21 @@ const handleConvo = async() =>{
                                                     {loadingButtons===false && 
                                                         <>
                                                             {miniProfile.followers.includes(user.result._id) ?
-                                                            <div onClick= {handleFollow} className=" flex text-gray-100 m-1 bg-cyan-400 rounded-md items-center p-1 cursor-pointer hover:bg-cyan-600"> 
-                                                                <p className= "p-1 leading-4 text-center font-semibold">Unsubscribe</p> 
+                                                            <div onClick= {handleFollow} className=" flex text-gray-100 dark:text-gray-900 m-1 bg-cyan-400 rounded-md items-center p-1 cursor-pointer hover:bg-cyan-600"> 
+                                                                <p className= "p-1 leading-4  text-center font-semibold">Unsubscribe</p> 
                                                                 <RiUserUnfollowLine/>
                                                             </div>
                                                             :
-                                                            <div onClick= {handleFollow} className=" flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
-                                                                <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Subscribe</p> 
+                                                            <div onClick= {handleFollow} className=" flex m-1  border border-gray-300 rounded-md items-center p-1 cursor-pointer dark:hover:bg-gray-800  hover:bg-gray-200"> 
+                                                                <p className= "p-1 text-gray-500 dark:text-gray-300 leading-4 text-center font-semibold">Subscribe</p> 
                                                                 <RiUserAddLine/>
                                                             </div>
                                                             } 
                                                             {miniProfile._id != user.result._id &&
                                                                 <>
                                                             
-                                                                    <div onClick= {handleConvo} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
-                                                                        <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">
+                                                                    <div onClick= {handleConvo} className="flex m-1 border border-gray-300 rounded-md items-center p-1 cursor-pointer dark:hover:bg-gray-800 hover:bg-gray-200"> 
+                                                                        <p className= "p-1 text-gray-500 dark:text-gray-300 leading-4 text-center font-semibold">
                                                                             {miniProfile?.convoRequesters.includes(user.result._id) ? "Requested" : "Convo/Chat"}
                                                                             </p> 
                                                                         <HiOutlineChatAlt2 />  
@@ -264,8 +264,8 @@ const handleConvo = async() =>{
 
                                 
 
-                                                                <div onClick= {()=>setBlockSurePop(true)} className="flex m-1 bg-gray-100 border border-gray-300 rounded-md items-center p-1 cursor-pointer hover:bg-gray-200"> 
-                                                                        <p className= "p-1 text-gray-500 leading-4 text-center font-semibold">Block</p> 
+                                                                <div onClick= {()=>setBlockSurePop(true)} className="flex m-1 border border-gray-300 rounded-md items-center p-1 cursor-pointer dark:hover:bg-gray-800  hover:bg-gray-200"> 
+                                                                        <p className= "p-1 text-gray-500 dark:text-gray-300 leading-4 text-center font-semibold">Block</p> 
                                                                         <MdOutlineBlock />
                                                                     </div>
                                                                 </>
@@ -289,7 +289,7 @@ const handleConvo = async() =>{
                                             
                                             <div className='w-full'>
                                             
-                                                <div className='text-base flex justify-around items-center py-2'>
+                                                <div className='text-base flex justify-around items-center py-2'> 
                                                     <div className='leading-4'>
                                                         <p className= 'font-bold '>{miniProfile.convoTip}</p>
                                                         <p className= 'font-light text-sm'>Chat Tip</p>
@@ -299,13 +299,13 @@ const handleConvo = async() =>{
                                                         <p className= 'font-light text-sm'>Posts</p>
                                                     </div>
                                                     <Link to ={`/Portfolios/${miniProfile.userName}/Followers`}> 
-                                                        <div className='leading-4 hover:bg-gray-200 rounded-md border border-gray-200  cursor-pointer p-1'>
+                                                        <div className='leading-4 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md border border-gray-200  cursor-pointer p-1'>
                                                             <p className= 'font-bold '>{miniProfile.followers.length}</p>
                                                             <p className= 'font-light text-sm'>Subscribers</p>
                                                         </div>
                                                     </Link>
                                                     <Link to ={`/Portfolios/${miniProfile.userName}/Following`}> 
-                                                        <div className='leading-4 hover:bg-gray-200 rounded-md border border-gray-200 cursor-pointer p-1'>
+                                                        <div className='leading-4 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md border border-gray-200 cursor-pointer p-1'>
                                                             <p className= 'font-bold '>{miniProfile.follows.length}</p>
                                                             <p className= 'font-light text-sm'>Subscriptions</p>
                                                         </div>

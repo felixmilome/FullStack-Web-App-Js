@@ -89,7 +89,7 @@ export const ChatHuntRow = ({miniProfile, setpopContactsFalse}) => {
             }
 
         }) 
-    }, []);
+    }, []); 
 
   return (
         <> 

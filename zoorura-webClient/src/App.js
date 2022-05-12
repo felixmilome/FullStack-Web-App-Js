@@ -8,7 +8,7 @@ const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')))
   const dispatch = useDispatch();
   
   useEffect(() => {
-    if (user){
+    if (user && user?.result?.verified === true){
     dispatch(getDiariesAction());
     }
   }, [dispatch]);

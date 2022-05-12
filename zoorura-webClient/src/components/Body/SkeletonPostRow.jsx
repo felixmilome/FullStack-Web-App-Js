@@ -1,11 +1,16 @@
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import{useState} from 'react';
 
 export const SkeletonPostRow=()=> {
+
   return (
+     
+     
     <div className='w-full items-center'>
-         <SkeletonTheme baseColor="#dcdfe3" highlightColor="#ffffff">
-        <div className='mx-auto space-y-2 text-black px-8 sm:px-16 py-8 rounded-md sm:rounded-xl bg-gray-100 relative w-full sm:w-3/4 xl:w-2/5 mx-auto mb-6 bg-gray-100'>
+         
+         <SkeletonTheme baseColor= "#ffffff" highlightColor="#00ffff">
+        <div className='mx-auto space-y-2 text-black px-8 sm:px-16 py-8 rounded-md sm:rounded-xl bg-gray-100 dark:bg-gray-800 relative w-full sm:w-3/4 xl:w-2/5 mx-auto mb-6 bg-gray-100'>
            
             <div className ='flex  space-x-4 items-center'>
                 <div>
@@ -13,16 +18,16 @@ export const SkeletonPostRow=()=> {
                 </div>
 
                 <div className= 'items-center'>
-                    <Skeleton width={180} height={20}/>
-                    <Skeleton width={180} height={20}/>
+                    <Skeleton width={180} height={6}/>
+                    <Skeleton width={180} height={6}/>
                 </div>
             </div>
 
             <div>
-                <Skeleton height={120}/>
+                <Skeleton height={6}/>
             </div>
             <div className='pb-4'>
-                <Skeleton height={40}/>
+                <Skeleton height={6}/>
             </div>
 
         </div>

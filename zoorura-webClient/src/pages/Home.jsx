@@ -51,11 +51,11 @@ function Home({showProfile}) {
         //)
         ) {
             //document.documentElement.classList.add('dark') //work on it later
-            setMode('dark');
+            setMode('dark'); 
         } else {
             //document.documentElement.classList.remove('dark')
             setMode(null);
-        }
+        } 
     }
     console.log(localStorage.theme);
 
@@ -87,18 +87,23 @@ function Home({showProfile}) {
                             
                                 <Route exact path ="/ForgotPassword" element = {<ForgotPassword/>}/>                 
                                 <Route exact path ="*" element ={<NoPage/>}/>
-                                {user &&
+                                {user && 
                                 <>
                                 <Route exact path ="/" element ={<Feed diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
-                                <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} setpopContacts={setpopContacts} popContacts={popContacts} />}/>
-                                <Route exact path ="/Portfolios/:profileName/:getItem" element = {<Follows setpopContacts={setpopContacts} popContacts={popContacts} />}/>
-                                <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/> 
-                                <Route exact path ="/Portfolios/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/>
-                                <Route exact path ="/PostForm" element ={<PostForm />}/>
-                                <Route exact path ="/Settings" element = {<Settings/>}/>
-                                <Route exact path ="/ChatHunt" element = {<ChatHunt setpopContacts={setpopContacts} />}/>
-                                <Route exact path ="/Wallet" element = {<Wallet/>}/>
-                                <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                               { user.result.verified ===true &&
+                                    <>
+                                        <Route exact path ="/Portfolios/:profileName" element = {<Portfolios diaryId={diaryId} setDiaryId = {setDiaryId} setpopContacts={setpopContacts} popContacts={popContacts} />}/>
+                                        <Route exact path ="/Portfolios/:profileName/:getItem" element = {<Follows setpopContacts={setpopContacts} popContacts={popContacts} />}/>
+                                        <Route exact path ="/DiaryLink/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/> 
+                                        <Route exact path ="/Portfolios/:diaryId" element = {<DiaryLink setDiaryId = {setDiaryId}/>}/>
+                                        <Route exact path ="/PostForm" element ={<PostForm />}/>
+                                        <Route exact path ="/Settings" element = {<Settings/>}/>
+                                        <Route exact path ="/ChatHunt" element = {<ChatHunt setpopContacts={setpopContacts} />}/>
+                                        <Route exact path ="/Wallet" element = {<Wallet/>}/>
+                                        <Route exact path ="/PostEdit" element ={<PostEdit diaryId={diaryId} setDiaryId = {setDiaryId} />}/>
+                                    </>
+
+                                }
                                 </>
                                 }
                             
@@ -128,7 +133,7 @@ function Home({showProfile}) {
                             
                     </div>
                 
-
+ 
                 </div>
         </div>
     )

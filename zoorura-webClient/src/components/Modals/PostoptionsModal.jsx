@@ -131,7 +131,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
             <PostOptionsRow Icon = {BookmarkIcon} title ="Save"/>
             </div>}
             <div className='flex items-center' onClick = {tagHandler}>
-            <PostOptionsRow Icon = {TagIcon} title ="Tags" amount= {diary.tags} />
+            <PostOptionsRow Icon = {TagIcon} title ="Tags" amount= {diary.tags.length} />
                 
             
             </div>
@@ -183,22 +183,22 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
         </div> }
 
              {/* ====TAGGER ========*/}
-        { popTagger &&  <div className="fixed left-0 top-0 flex justify-center items-center  z-40 flex w-full h-screen  bg-transparent text-base font-light text-gray-700">
-               <div className= "h-96 z-40 bg-gray-100 rounded-xl p-8 text-center overflow-scroll">
+        { popTagger &&  <div className="fixed left-0 top-0 flex justify-center items-center  z-40 flex w-full h-screen  bg-transparent text-base font-light text-gray-700 dark:text-gray-300">
+               <div className= "h-96 z-40 sm:max-w-1/2 bg-gray-100 dark:bg-gray-900 rounded-xl p-8 text-center overflow-scroll">
               
-                    <p> <span className="font-bold">Tags on {diary.title}: {diary.tags.length} </span> </p>
+                    <p> <span className="font-bold">Tags on {diary.title}: {diary.tags.length} aegayeguygauyga hiauhiuyaehgiae whiauewiahew ihuawehiuaehw iuahewiuhaei huiaewhiaew aehiuwhiuhiuh hiuaehiuaeh hiuaewhiaeuw </span> </p>
                     <div className="flex justify-around items-center p-4 m-auto">
                         
-                        <div onClick = {()=>setPopTagger(false)} className= "bg-gray-200 w-full  py-1 px-2 rounded-full cursor-pointer hover:bg-gray-300">
+                        <div onClick = {()=>setPopTagger(false)} className= "bg-gray-200 dark:bg-gray-800 w-full  py-1 px-2 rounded-full cursor-pointer dark:hover:bg-gray-700 hover:bg-gray-300">
                             close
                         </div>
                        
                   
                     </div>
-                    <div onClick = {()=>setPopTagger(false)} className= "bg-gray-200 text-white p-2 rounded-md cursor-pointer hover:bg-white">
+                    <div onClick = {()=>setPopTagger(false)} className= "bg-gray-200 dark:bg-gray-800 text-white p-2 rounded-md cursor-pointer hover:bg-white">
                     
                     
-                        {tags.length > 0 && tags.length > 0 &&
+                        {tags.length >0 &&
                             tags.map((tag) =>(
                                 <PostTagRow key={tag._id} tag={tag}/>
                             ))
