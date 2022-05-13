@@ -13,12 +13,14 @@ import { DeliveryPop } from "./DeliveryPop.jsx";
 import { PostTagRow } from "./PostTagRow.jsx";
 import * as axs from '../Midwares/rdx/actions/axs';
 import { Spring, animated } from 'react-spring';
+import {BeatLoader} from "react-spinners";
 
-//search area: tags
+//search area: tags Delete
 
 function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
 
     const[popDeleted, setPopDeleted] = useState(false);
+    const[loadingDelete, setLoadingDelete] = useState(false);
     const[popSaved, setPopSaved] = useState(false);
     const[saver, setSaver] = useState(true);
     const[popEdit, setPopEdit] = useState(false);
@@ -48,10 +50,11 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
         try{
 
             console.log('del');
+            setLoadingDelete(true);
 
-            dispatch(deleteDiariesAction(diary._id));
+            dispatch(deleteDiariesAction(diary._id, setPopDeleted));
             
-            setPopDeleted(true);
+            
             setTimeout( function() {setpopOptions(false)}, 2000);
 
         }
@@ -123,7 +126,7 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
                 to={
                 { opacity: 1, x:0}
                 
-                }> 
+                }>  
                 {styles => (
                 <animated.div style={styles}>
           
@@ -162,19 +165,34 @@ function PostoptionsModal({diary, userId, diaryId, setpopOptions, setDiaryId}) {
 
         {/* ====DELETER ========*/}
 
-        { popDelete && user.result._id === diary.creator &&  <div className=" fixed left-0 top-0 flex justify-center items-center z-40 w-full h-screen  bg-transparent text-base font-light text-gray-700">
-               <div className= "z-40 bg-gray-100 rounded-xl p-8 text-center">
+        { popDelete && user.result._id === diary.creator &&  <div className=" fixed left-0 top-0 flex justify-center items-center z-40 w-full h-screen  bg-transparent text-base font-light ">
+               <div className= "z-40 bg-gray-100 dark:bg-gray-900 rounded-xl p-8 text-center">
               
                     <p> <span className="font-bold">Delete the post: {diary.title}?</span></p>
-                    <div className="flex justify-around items-center pt-4 m-auto">
+                    <div className="flex justify-around items-center pt-4 m-auto text-white dark:text-gray-900">
                         
-                        <div onClick = {deleter} className= "bg-red-400 text-white p-2 rounded-md cursor-pointer hover:bg-red-500">
-                            Delete
-                        </div>
-                       
-                        <div onClick = {()=> setpopOptions(false)} className= "bg-gray-400 text-white p-2 rounded-md cursor-pointer hover:bg-gray-500">
-                            Cancel
-                        </div>
+                        {loadingDelete === false &&
+                            <>
+                                <div onClick = {deleter} className= "bg-red-400 dark:bg-red-500 p-2 rounded-md cursor-pointer hover:bg-red-500 dark:hover:bg-red-600">
+                                    Delete
+                                </div>
+                            
+                                <div onClick = {()=> setpopOptions(false)} className= "bg-gray-400  p-2 rounded-md cursor-pointer hover:bg-gray-500 ">
+                                    Cancel
+                                </div>
+                            </>
+                        }
+                           {loadingDelete === true &&
+                            <>
+                            
+                                <div className= "bg-gray-400 space-x-1 flex items-center  p-2 rounded-md cursor-pointer hover:bg-gray-500 ">
+                                    Deleting 
+                                    <div className='px-1'>
+                                        <BeatLoader size={7} color='white' loading/>
+                                    </div>
+                                </div>
+                            </>
+                            }
                     </div>
                              
                     

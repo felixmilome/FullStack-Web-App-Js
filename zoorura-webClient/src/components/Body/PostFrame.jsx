@@ -49,7 +49,7 @@ import {Link} from 'react-router-dom';
 import Picker from 'emoji-picker-react'
 import PostFrameIndi from "./PostFrameIndi.jsx";
 
-//Search Area Original Reviews Newbie
+//Search Area Original Reviews Newbie Give Delete 
 
 
 
@@ -188,7 +188,7 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
     }
   
 
-    return (
+    return ( 
 
         <>
         {tipDelivery &&
@@ -701,28 +701,28 @@ function PostFrame({diary, diaryId, setDiaryId, params}) {
 
         {/* TIIIIPPPPZZZZZ=+===================== */}
                                     {/* are you sure */}
-        { popSure &&  <div className="flex justify-center  fixed left-0 z-40 flex w-full  bg-transparent text-base font-light text-gray-700">
-                    <div className= "fixed z-40 top-80 bg-gray-100 rounded-xl p-8 text-center">
+        { popSure &&  <div className="flex justify-center  fixed left-0 z-40 flex w-full  bg-transparent text-base font-light ">
+                    <div className= "fixed z-40 top-80 bg-gray-100 dark:bg-gray-900 rounded-xl p-8 text-center">
                     
                             <p> Give <span className="font-bold">{tipData.amount}</span> Honours to this post? No reversal</p>
-                            <div className="flex justify-around items-center pt-4 m-auto">
+                            <div className="flex text-white dark:text-gray-900 justify-around items-center pt-4 m-auto">
 
                                { tipLoading === true &&
                                
-                                    <div className= "flex items-center bg-green-300 text-white p-2 rounded-md cursor-pointer">
+                                    <div className= "flex items-center bg-green-300  p-2 rounded-md cursor-pointer">
                                         Verifying Tip
-                                        <BeatLoader size={7} color='white' loading/>
+                                        <BeatLoader size={7} color='gray' loading/>
                                     </div>
 
                                 }
 
                                 { tipLoading === false &&
                                     <>
-                                        <div onClick = {tipDiary} className= "bg-green-400 text-white p-2 rounded-md cursor-pointer hover:bg-green-500">
+                                        <div onClick = {tipDiary} className= "bg-green-400 p-2 rounded-md cursor-pointer hover:bg-green-500">
                                             Yes
                                         </div>
                                     
-                                        <div onClick = {()=> [setpopTip(false), setpopSure(false)]} className= "bg-gray-400 text-white p-2 rounded-md cursor-pointer hover:bg-gray-500">
+                                        <div onClick = {()=> [setpopTip(false), setpopSure(false)]} className= "bg-gray-400  p-2 rounded-md cursor-pointer hover:bg-gray-500">
                                             No
                                         </div> 
                                     </>

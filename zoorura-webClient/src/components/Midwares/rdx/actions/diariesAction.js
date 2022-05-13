@@ -134,10 +134,13 @@ export const patchDiariesAction = (id, diariesEditData, setpopPosted, setSpam) =
     }
 }
 
-export const deleteDiariesAction = (id) => async (dispatch) =>{
+export const deleteDiariesAction = (id, setPopDeleted) => async (dispatch) =>{
         try{
             await axs.deleteDiariesApi(id);
-            window.location = ('/') 
+            
+            setPopDeleted(true);
+
+            window.location = ('/')
             //dispatch({type: 'DELETE_DIARY', payload: id});
 
         } catch(error){

@@ -20,6 +20,8 @@ import {Link} from 'react-router-dom';
 import {deleteAccountAction} from "../Midwares/rdx/actions/deleteAccountAction.js"; 
 
 const profileSchema = yup.object().shape({
+
+  
    
     userName: yup.string().strict(false).trim().required('username required').matches(/^\d*[a-zA-Z][a-zA-Z\d]*$/, "letters or letters+number for username").min(2).max(30),
     bio: yup.string().strict(false).trim().required('Bio required').min(1).max(150),
@@ -57,12 +59,13 @@ function userNameIsValid (userName) {
     return (/^\d*[a-zA-Z][a-zA-Z\d]*$/.test(userName) && userName.length > 1 && userName.length <31 );
 }
 
-
+//border fill current
 
 export const Settings = () => {
     const[dpCropper, setdpCropper] = useState(false);
 
     const[visible, setVisible] = useState (false);
+    const[options, setOptions] = useState ('profile');
     const[visibleErrorProfile, setVisibleErrorProfile] = useState (false);
     const[passwordInput, setPasswordInput] = useState (false);
     const[visibleSuccessProfile, setVisibleSuccessProfile] = useState (false);
@@ -99,11 +102,27 @@ export const Settings = () => {
     const populatedBlocks = useSelector((state) => state.populateBlockReducer);
     const unblockFeedback = useSelector((state) => state.blockReducer);
 
+    const optionSelector = ()=> {
+        if(options ==='profile'){
+            return profileSchema
+        }else if(options === 'security'){
+            return securitySchema
+        }
+    }
+    
+        const {register, handleSubmit, formState: {errors}} = useForm({
+            
+            resolver: yupResolver(optionSelector()),
+            resolver: yupResolver(optionSelector())
+        
+        })
+ 
 
-    const {register, handleSubmit, formState: {errors}} = useForm({
-        resolver: yupResolver(profileSchema),
-        resolver: yupResolver(securitySchema),
-    });
+    // const {register, handleSubmit, formState: {errors}} = useForm({
+        
+    //     resolver: yupResolver(securitySchema)
+    // });
+
     //dispatch(populateBlockAction());
 
     useEffect(() => {
@@ -200,74 +219,101 @@ export const Settings = () => {
         <DpCropper dpCropper={dpCropper} setdpCropper ={setdpCropper}/>
         }
         { surePop &&
-        <SurePop action={'Permanently Delete'} token={'Your Zoorura Account'} loadingFunction={loadingDeleteAccount} loadingMessage= {'Verifying Delete Account'} yesFunction ={deleteAccount} noFunction= {()=>setSurePop(false)}/>
+        <SurePop action={'Permanently Delete'} token={'Your Zoorura Account?'} loadingFunction={loadingDeleteAccount} loadingMessage= {'Verifying Delete Account'} yesFunction ={deleteAccount} noFunction= {()=>setSurePop(false)}/>
         }
         
-    <div className="fixed text-gray-600 dark:text-gray-300 font-bold top-24 xl:top-12 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-20 max-h-screen overflow-y-scroll">
+    <div className="fixed z-30 text-xs text-gray-600 dark:text-gray-300 font-bold top-24 xl:top-12 bg-transparent pt-8 pb-48 left-0 w-full flex justify-center z-20 max-h-screen overflow-y-scroll">
                     
         {/* ============Floating Box======== */}
  
         
 
-            <div className="w-11/12 lg:w-1/3 bg-gray-100 dark:bg-gray-800 rounded-md shadow-xl m-2 h-full">
+            <div className="w-11/12 lg:w-1/3 bg-gray-100 dark:bg-gray-900 rounded-md shadow-xl m-2 h-full">
+                        
+                         {/*========= Profile & Security Settings Buttons=============== */} 
+
+                    <div className ='flex p-3 w-5/6 m-auto  border-b border-gray-300 justify-center items-center'>
+                                              
+                                             
+                                             <div className= "flex items-center space-x-2 justify-around">
+
+                                                {options === 'profile' && <button  className="flex delay-100 shadow-md justify-center bg-gray-700 dark:bg-cyan-500 text-gray-100 dark:text-gray-900 space-x-1 items-center px-2 py-1 border border-gray-400 rounded text-center ">
+                                                        <CgProfile size={20} className= ""/> 
+                                                        <p>Profile </p>                        
+                                                </button>}
+
+                                                {options === 'security' && <button onClick={()=>setOptions('profile')} className="flex delay-100 shadow-md justify-center hover:bg-gray-200 dark:hover:bg-gray-700  space-x-1 items-center px-2 py-1 border border-gray-400 rounded text-center bg-transparent">
+                                                        <CgProfile size={20} className= ""/> 
+                                                        <p>Profile </p>                        
+                                                </button>}
+
+                                                {options === 'profile' && <button onClick={()=>setOptions('security')} className="flex delay-100 shadow-md justify-center hover:bg-gray-200 dark:hover:bg-gray-700  space-x-1 items-center px-2 py-1 border border-gray-400 rounded text-center bg-transparent">
+                                                        <MdSecurity size={20} className= ""/> 
+                                                        <p>Security </p>                        
+                                                </button>}
+
+                                                {options === 'security' && <button className="flex delay-100 justify-center bg-gray-700 dark:bg-cyan-500 text-gray-100 dark:text-gray-900 shadow-md space-x-1 items-center px-2 py-1 border border-gray-400 rounded text-center bg-transparent">
+                                                        <MdSecurity size={20} className= ""/> 
+                                                        <p>Security</p>                        
+                                                </button>}
+                                             
+
+                                             </div> 
+                                           
+                                            
+                        </div>
+
+
+
+            {options === 'profile' &&
             
-            <form onSubmit={handleSubmit(submitProfile)} className='border-b border-gray-300 m-1'>
+            <form onSubmit={handleSubmit(submitProfile)} className='px-8 pb-8'>
   
                       
                     
                         {/* { loggedUser && visibleSuccessProfile &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-full bg-green-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-bold text-white'>
+                           <div className= 'flex p-2 m-2 rounded-full bg-green-400 ' > 
                                 <p>{loggedUser}</p>
                            </div>
                         </div>
                         } */}
-                        <div className ='flex p-3  rounded-md border border-teal-700 text-teal-700 justify-center items-center'>
-                                              
-                             {/*========= Profile & Security Settings=============== */}
-                            <div className= "flex items-center justify-around">
-                                {/* <CgProfile size={20} className= ""/> */}
-                            </div> 
-                            <div className="p-1 text-center bg-transparent">
-                                    <p>Profile Settings</p>                        
-                            </div>
-                           
-                        </div>
+                   
  
          
 
 
                         {/*========= Profile Settings=============== */}
-                    <div className="p-3 text-sm space-y-1"> 
+                    <div className="p-3  space-y-1"> 
                     { profileFeedback && visibleErrorProfile &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-full bg-red-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-bold text-white'>
+                           <div className= 'flex p-2 m-2 rounded-full bg-red-400 ' > 
                                 <p>{profileFeedback}</p>
                            </div>
                         </div>
                         }
                         { profileFeedback && visibleSuccessProfile &&
-                       <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                           <div className= 'flex p-2 m-2 rounded-full bg-green-400 text-xs' > 
+                       <div className= ' bg-transparent flex justify-center items-center font-bold text-white'>
+                           <div className= 'flex p-2 m-2 rounded-full bg-green-400 ' > 
                                 <p>{profileFeedback}</p>
                            </div>
                         </div>
                         }
                         
                         <div className='flex items-center justify-left'>
-                             <p className='text-sm font-semibold '>Profile Picture:</p>
-                            <div onClick={()=>{setdpCropper(true)}} className='flex sm:m-0 ml-3 w-full cursor-pointer hover:bg-gray-200  justify-center space-x-2 p-2 rounded-full items-center bg-gray-100 space-x-1'>                              
+                             <p className=' font-semibold '>Profile Picture:</p>
+                            <div onClick={()=>{setdpCropper(true)}} className='flex sm:m-0 ml-3 w-full cursor-pointer hover:text-cyan-500  justify-center space-x-2 p-2 rounded-full items-center space-x-1'>                              
                                     <img src={user.result.dpUrl} alt="DP" className="rounded-full h-8 w-8 sm:h-10 sm:w-10"/>                   
                                     <p>Change Picture</p>                       
                             </div>
                         </div>
 
                             {/* UserName*/}
-                            <div className= "flex justify-between relative w-full">
+                            <div className= "flex justify-between relative w-full ">
                                 <div className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold '>Username:</p>
+                                <p className=' font-semibold '>Username:</p>
                                 <div onBlur= {checkUsername} onChange={(e)=>setUserNameCheck(null)}
-                                    className="w-3/4 sm:w-5/6">
+                                    className="w-3/4 ">
                                     <input  {...register('userName',{
                                     onChange: (e) => {
                                         setProfileFormData({...profileFormData, userName:e.target.value.trim()});
@@ -275,10 +321,10 @@ export const Settings = () => {
                                     }
                                     })}
                                     value= {profileFormData.userName}
-                                    name='userName' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded" type="text" placeholder= "Change Username"/>
-                                    <p className='text-xs text-red-700 font-light' >{errors.userName?.message}</p>
+                                    name='userName' className= "w-full  bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-2 rounded" type="text" placeholder= "Change Username"/>
+                                    <p className='text-red-700 font-light' >{errors.userName?.message}</p>
 
-                                    <div className='bg-transparent absolute top-2.5 right-2 text-gray-500 text-xs text-center font-light '>
+                                    <div className='bg-transparent absolute top-2.5 right-2 text-gray-500  text-center font-light '>
                                         <div className ='flex text-red-500'>
                                             {userNameCheck === "usernameExists" && user.result.userName !== profileFormData.userName && <><MdOutlineCancel size ={16}/>: username taken</>} 
                                         </div>
@@ -290,33 +336,33 @@ export const Settings = () => {
 
                              
                             {/*Bio*/}
-                            <div className= "flex justify-between relative w-full pb-2">
-                                <div className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold '>Bio:</p>
-                                <div className='w-3/4 sm:w-5/6'>
-                                        <textarea {...register('bio',{
+                            <div className= "flex justify-between relative w-full ">
+                                <div className='flex justify-between items-center  w-full'>
+                                <p className=' font-semibold '>Bio:</p>
+                                <div className='w-3/4 '>
+                                        <input {...register('bio',{
                                         onChange: (e) => {setProfileFormData({...profileFormData, bio:e.target.value})}
                                         })}
                                         value= {profileFormData.bio}
-                                        name='bio' className= "w-full resize-none bg-gray-100 border border-gray-300 p-2 rounded" type="text" placeholder= "Change Bio"/>
-                                        <p className='text-xs text-red-700 font-light' >{errors.bio?.message}</p>
+                                        name='bio' className= "w-full  bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-2 rounded" type="text" placeholder= "Change Bio"/>
+                                        <p className=' text-red-700 font-light' >{errors.bio?.message}</p>
                                </div>
                                 </div>
                             </div>
                              {/*ConvoTip*/}
-                            <div className= "flex justify-between relative w-full pb-2">
-                                <div className='flex justify-left space-x-2 items-center w-full'> 
+                            <div className= "flex justify-between relative w-full  ">
+                                <div className='flex justify-between items-center w-full'> 
                                     <div>
-                                    <p className='text-sm font-semibold '>Convo Request Tip Charge</p>
-                                    <p>(0-999):</p>
+                                    <p className=' font-semibold '>Chat Tip</p>
+                                    <p>(0-99):</p>
                                     </div>
-                                    <div>
+                                    <div className='w-3/4 '>
                                         <input {...register('convoTip',{
                                         onChange: (e) => {setProfileFormData({...profileFormData, convoTip:e.target.value})}
                                         })}
                                         value= {profileFormData.convoTip}
-                                        name='convoTip' className= "w-1/3 bg-gray-100 border border-gray-300 p-2 rounded " type="number" placeholder= "Change Convo Request Tip Charge "/>
-                                         <p className='text-xs text-red-700 font-light' >{errors.convoTip?.message}</p>
+                                        name='convoTip' className= "w-full  bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-2 rounded" type="text" placeholder= "Change Convo Request Tip Charge "/>
+                                         <p className=' text-red-700 font-light' >{errors.convoTip?.message}</p>
                                     </div>
                                 </div>
                             </div>
@@ -328,88 +374,95 @@ export const Settings = () => {
                             type= {loadingProfile===false ? 'submit' : 'button'} className=" flex items-center px-4 py-2 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
                                 bg-gradient-to-r hover:from-pink-500
                                 hover:to-yellow-500 flex
-                                mx-auto rounded-full
+                                mx-auto rounded-full dark:text-gray-900
                                     justify-center 
-                                    text-white text-sm cursor-pointer
+                                    text-white cursor-pointer
                                     font-semibold p-1 mb-4 space-x-1">
-                                     <CgProfile size={20} className= "text-gray-100"/>
+                                     <CgProfile size={20} className= ""/>
                                 
                                      {loadingProfile === false ? <p>Submit Profile Changes</p> : <BeatLoader size={10} color='white' loading/>}
 
                             </button>}
 
 
-                            {profileChanged === false && <button 
+                            {profileChanged === false && 
+                            <></>
+                            
+                            // <button 
                             
                             
-                            type='button' className=" flex items-center px-4 py-2 mx-auto border border-gray-300 text-gray-400 
-                              flex
-                                mx-auto rounded-full
-                                    justify-center 
-                                    text-white text-sm cursor-pointer
-                                    font-semibold p-1 mb-4 space-x-1">
-                                     <CgProfile  size={20} className= ""/>
+                            // type='button' className=" flex items-center px-4 py-2 mx-auto border border-gray-400 text-gray-400 
+                            //   flex
+                            //     mx-auto rounded-full
+                            //         justify-center 
+                            //         text-white  cursor-pointer
+                            //         font-semibold p-1 mb-4 space-x-1">
+                            //          <CgProfile  size={20} className= ""/>
                                 
-                                <p>Submit Profile Changes</p> 
+                            //     <p>Submit Profile Changes</p> 
 
-                            </button>} 
-                            <p className='text-center text-xs text-red-700 font-light' >{errors.currentPassword?.message}</p>
+                            // </button>
+                            } 
+                            {/* <p className='text-center text-red-700 font-light' >{errors.currentPassword?.message}</p> */}
                         
                         
                             
                     </div>
                     
-            </form>
+            </form>}
 
-            <form onSubmit={handleSubmit(submitSecurity)} className='border-b border-gray-300 m-1'>
+           {options === 'security' && 
+          
+          <>
+           
+           <form onSubmit={handleSubmit(submitSecurity)} className='border-b border-gray-300 m-1 px-8 pb-8'>
 
 
 
                      {/*========= Security Settings=============== */}
-                       <div className ='p-3 bg-gray-200 justify-center items-center'>
+                   
                                               
-                             {/*========= Security Settings=============== */}
-                             <div className ='flex p-3  rounded-md border border-teal-700 text-teal-700 justify-center items-center'>
-                                              
-                                              {/*========= Profile & Security Settings=============== */}
-                                             <div className= "flex items-center justify-around">
-                                                 {/* <CgProfile size={20} className= ""/> */}
-                                             </div> 
-                                             <div className="p-1 text-center bg-transparent">
-                                                     <p>Security Settings</p>                        
-                                             </div>
-                                            
-                                         </div>
+                        
+                        
                          
 
                             { securityFeedback && visibleErrorSecurity && 
+
+                            <div className ='p-3  justify-center items-center'>
                         
-                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
-                            <div className= 'flex p-2 m-2 rounded-full bg-red-100 text-xs' > 
-                                 <p>{securityFeedback}</p>
+                                <div className= ' bg-transparent flex justify-center items-center font-semibold text-red-700'>
+                                    <div className= 'flex p-2 m-2 rounded-full bg-red-100 ' > 
+                                        <p>{securityFeedback}</p>
+                                    </div>
+                                </div>
+
                             </div>
-                         </div>
                          }
+
                          { securityFeedback && visibleSuccessSecurity &&
-                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-green-700'>
-                            <div className= 'flex p-2 m-2 rounded-full bg-green-100 text-xs' > 
-                                 <p>{securityFeedback}</p>
-                            </div>
-                         </div>
+                            <div className ='p-3  justify-center items-center'>
+
+                                <div className= ' bg-transparent flex justify-center items-center font-semibold text-green-700'>
+                                    <div className= 'flex p-2 m-2 rounded-full bg-green-100 ' > 
+                                        <p>{securityFeedback}</p>
+                                    </div>
+                                </div>
+
+                             </div>
                          }
                           
-                        </div>
+                      
 
 
 
                         
                            {/* CurrentPassword*/}
                            <div className= "flex mb-4 justify-between  w-full">
-                                <div className='m-auto bg-transparent items-center w-2/3 sm:w-1/2'>
+                                <div className='m-auto bg-transparent items-center w-5/6'>
 
                                 
                                   
-                                            {/* <p className='text-sm font-semibold text-red-400'>Current Password Required</p> */}
+                                            {/* <p className='font-semibold text-red-400'>Current Password Required</p> */}
                                             <input   {...register('currentPassword',{       
                                                 onChange: (e)=>{
                                                 setSecurityFormData({...securityFormData, currentPassword:e.target.value}); 
@@ -417,18 +470,18 @@ export const Settings = () => {
                                                 setDeleteError(false);
                                             }
                                             })}
-                                            name='currentPassword' className= "w-full  bg-gray-100 border border-gray-300 p-2 m-1 rounded"
-                                             type={visible ? "text" : "password"} placeholder= "Current Password First"/>
+                                            name='currentPassword' className= "w-full  bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-2 my-2 rounded"
+                                             type={visible ? "text" : "password"} placeholder= "Current Password Required First"/>
                                              
-                                             <p className='text-xs text-red-700 font-light' >{errors.currentPassword?.message}</p>
+                                             <p className='text-red-700 font-light' >{errors.currentPassword?.message}</p>
                                             <Link to= '/forgotPassword'>
-                                             <div className= 'bg-gray-100 flex justify-center text-xs font-light cursor-pointer hover:bg-gray-200'>
+                                             <div className= ' flex justify-center font-light cursor-pointer hover:text-cyan-500'>
                                             <p>Forgot Password?</p>
                                             </div>
                                             </Link>
 
-                                            <div onClick = {(e)=>setVisible (!visible)} className='flex items-center space-x-1 justify-center bg-transparent 
-                                            text-gray-400 cursor-pointer hover:text-cyan-500 text-xs
+                                            <div onClick = {(e)=>setVisible (!visible)} className=' border dark:border-gray-600 p-1 w-max mx-auto my-1 flex items-center space-x-1 justify-center bg-transparent 
+                                            text-gray-400 cursor-pointer hover:text-cyan-500 
                                             text-center font-light m-1 '>{visible ? 
                                             <> <BsEyeFill size={20}/><p>hide passwords</p> </>
                                             : <><BsEyeSlashFill size={20}/> <p>view passwords</p></>}
@@ -439,167 +492,179 @@ export const Settings = () => {
                             </div>
 
 
-                     {/*========= Security Settings Inputs=============== */}
-                    <div className="p-3 text-sm space-y-1">
-            
-                            
-
-                            {/* Email*/}
-                            <div className= "mb-5 flex justify-between relative w-full">
-                                <div onBlur= {checkEmail} onChange={(e)=>setEmailCheck(null)} className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold '>Email:</p>
-                                <div className='relative w-3/4'>
-                                    <input  {...register('email',{
-                                    onChange:(e)=>{
-                                        setSecurityFormData({...securityFormData, email:e.target.value.trim()});
-                                    setSecurityChanged(true);
-                                    setVisibleErrorSecurity(false);
-                                    }
-                                    })}
-                                    value= {securityFormData.email}
-                                    name='email' className= "w-full bg-gray-100 border border-gray-300 p-2 rounded-full" type="text" placeholder= "Email"/>
-                                    <p className='text-xs text-red-700 font-light' >{errors.email?.message}</p>
-                                    <div className='bg-transparent absolute top-2.5 right-1 text-gray-500 text-xs text-center font-light '>
-                                            <div className ='flex text-red-500'>
-                                                {emailCheck === "emailExists" && user.result.email !== securityFormData.email && <><MdOutlineCancel size ={16}/>: email taken</>} 
-                                            </div>
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                    <div className='flex items-center bg-transparent justify-between'>
-
-                    <p className='text-sm font-semibold '>Change Password?</p>
-                            <button onClick= {()=>setPasswordInput(!passwordInput)}
-                            type= "button" className=" flex items-center px-4 py-2 mx-auto bg-transparent
+                     {/*========= Security Settings Inputs && Button=============== */}
+                    {securityFormData.currentPassword.length > 0 &&<>
+                       
+                        <div className="p-3 space-y-1">
+                
                                 
-                                hover:bg-gray-200 flex
-                                mx-auto rounded-full
-                                    justify-center 
-                                    text-gray-500 text-xs border border-gray-300 cursor-pointer
-                                    font-semibold p-1 space-x-1">
-                                     <MdSecurity size={20} />
-                                
-                                     {passwordInput === false ? <p>Click for Yes </p> :<p> Click for No</p> }
 
-                            </button>
-                        
-                        
-                            
-                    </div>
-                    {passwordInput === true &&
-                    <>
-                            {/* Password*/}
-                            <div className= "flex justify-between relative w-full">
-                                <div className='flex justify-between items-center w-full'>
-                                <p className='text-sm font-semibold '>New Password:</p>
-                                <div className='items-center w-1/2 bg-transparent'>
-                                    <input  {...register('password',{ 
-                                        onChange: (e)=>{
-                                        setSecurityFormData({...securityFormData, password:e.target.value});
+                                {/* Email*/}
+                                <div className= " flex justify-between relative w-full">
+                                    <div onBlur= {checkEmail} onChange={(e)=>setEmailCheck(null)} className='flex justify-between items-center w-full'>
+                                    <p className='font-semibold '>Email:</p>
+                                    <div className='relative w-2/3'>
+                                        <input  {...register('email',{
+                                        onChange:(e)=>{
+                                            setSecurityFormData({...securityFormData, email:e.target.value.trim()});
                                         setSecurityChanged(true);
                                         setVisibleErrorSecurity(false);
-                                    }
-                                    })}
-                                    name='password' className= "bg-gray-100 border border-gray-300 p-2 rounded-full" type={visible ? "text" : "password"} placeholder= "Change Password"/>
-                                    <p className='text-xs text-red-700 font-light' >{errors.password?.message}</p>
+                                        }
+                                        })}
+                                        value= {securityFormData.email}
+                                        name='email' className= "w-full  bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-2 rounded" type="text" placeholder= "Email"/>
+                                        <p className=' text-red-700 font-light' >{errors.email?.message}</p>
+                                        <div className='bg-transparent absolute top-2.5 right-1 text-gray-500 text-center font-light '>
+                                                <div className ='flex text-red-500'>
+                                                    {emailCheck === "emailExists" && user.result.email !== securityFormData.email && <><MdOutlineCancel size ={16}/>: email taken</>} 
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
                                 </div>
-                                </div>
+
+
+
+                        <div className='flex justify-between w-full '>
+
+                            <div className='flex justify-between items-center w-full'>
+
+                            <p className='font-semibold '>Change Password?</p>
+                            <div className='relative w-2/3'>
+                                    <button onClick= {()=>setPasswordInput(!passwordInput)}
+                                    type= "button" className="flex justify-start w-full  bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-2 rounded">
+                                            <MdSecurity size={15} />
+                                        
+                                            {passwordInput === false ? <p>Click for Yes </p> :<p> Click for No</p> }
+
+                                    </button>
+                                    </div>
+                                
+                                
+                                    
                             </div>
-
-
-                            {/* ConfirmPassword*/}
-                             <div className= "flex justify-between relative w-full">
-                                <div className='flex justify-between items-center w-full'>
-                                    <p className='text-sm font-semibold'>Confirm New Password:</p>
+                        </div>
+                        {passwordInput === true &&
+                            <div className='bg-gray-200 dark:bg-gray-800 p-1 '>
+                                {/* Password*/}
+                                <div className= "flex justify-between relative w-full ">
+                                    <div className='flex justify-end items-center w-full'>
+                                    <p className=' font-semibold p-1 '>New Password:</p>
                                     <div className='items-center w-1/2 bg-transparent'>
-                                        <input  {...register('confirmPassword',{ 
-                                            onChange: (e)=> {
-                                            setSecurityFormData({...securityFormData, confirmPassword:e.target.value});
+                                        <input  {...register('password',{ 
+                                            onChange: (e)=>{
+                                            setSecurityFormData({...securityFormData, password:e.target.value});
                                             setSecurityChanged(true);
                                             setVisibleErrorSecurity(false);
                                         }
                                         })}
-                                        name='confirmPassword' className= "bg-gray-100 border border-gray-300 p-2 rounded-full" type={visible ? "text" : "password"} placeholder= "Confirm Password"/>
-                                    <p className='text-xs text-red-700 font-light' >{securityFormData.password.trim() !== securityFormData.confirmPassword.trim() && "Passwords Should Match"}</p>
-                                    
+                                        name='password' className= "w-full  bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-2 rounded" type={visible ? "text" : "password"} placeholder= "Enter New Password"/>
+                                        <p className=' text-red-700 font-light' >{errors.password?.message}</p>
+                                    </div>
+                                    </div>
                                 </div>
+
+
+                                {/* ConfirmPassword*/}
+                                <div className= "flex justify-between relative w-full">
+                                    <div className='flex justify-end items-center w-full'>
+                                        <p className='font-semibold p-1 '>Confirm New Password:</p>
+                                        <div className='items-center w-1/2 bg-transparent'>
+                                            <input  {...register('confirmPassword',{ 
+                                                onChange: (e)=> {
+                                                setSecurityFormData({...securityFormData, confirmPassword:e.target.value});
+                                                setSecurityChanged(true);
+                                                setVisibleErrorSecurity(false);
+                                            }
+                                            })}
+                                            name='confirmPassword' className= "w-full  bg-gray-100 border border-gray-300 dark:bg-gray-900 dark:border-gray-600 p-2 rounded" type={visible ? "text" : "password"} placeholder= "Confirm New Password"/>
+                                        <p className='text-red-700 font-light' >{securityFormData.password.trim() !== securityFormData.confirmPassword.trim() && "Passwords Should Match"}</p>
+                                        
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
-                            </>
-                    }
-                          
-
-                      
-
-                           
-        
-                    </div>
-                
-
-                    <div className='flex justify-between'>
-                           {securityChanged ===true && <button 
+                        }
                             
-                            
-                            type= {loadingSecurity === false ? 'submit' : 'button'} className=" flex items-center px-4 py-2 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
-                                bg-gradient-to-r hover:from-pink-500
-                                hover:to-yellow-500 flex
-                                mx-auto rounded-full
-                                    justify-center 
-                                    text-white text-sm cursor-pointer
-                                    font-semibold p-1 mb-4 space-x-1">
-                                     <MdSecurity size={20} className= "text-gray-100"/>
-                                
-                                {loadingSecurity === false ? <p>Submit Security Changes</p> : <BeatLoader size={10} color='white' loading/>}
 
-                            </button>}
-
-                            {securityChanged=== false && <button 
-                            
-                            
-                            type='button' className=" flex items-center px-4 py-2 mx-auto border border-gray-300 text-gray-400 
-                              flex
-                                mx-auto rounded-full
-                                    justify-center 
-                                    text-white text-sm cursor-pointer
-                                    font-semibold p-1 mb-4 space-x-1">
-                                     <MdSecurity size={20} className= ""/>
-                                
-                                <p>Submit Security Changes</p> 
-
-                            </button>}
                         
-                        
+
                             
-                    </div>
+            
+                        </div>
+                    
+
+                        <div className='flex justify-between'>
+                            {securityChanged ===true && <button 
+                                
+                                
+                                type= {loadingSecurity === false ? 'submit' : 'button'} className=" flex items-center px-4 py-2 mx-auto bg-gradient-to-r from-cyan-300 to-cyan-500 
+                                    bg-gradient-to-r hover:from-pink-500
+                                    hover:to-yellow-500 flex
+                                    mx-auto rounded-full
+                                        justify-center 
+                                        text-white cursor-pointer dark:text-gray-900
+                                        font-semibold p-1 mb-4 space-x-1">
+                                        <MdSecurity size={20} className= ""/>
+                                    
+                                    {loadingSecurity === false ? <p>Submit Security Changes</p> : <BeatLoader size={10} color='white' loading/>}
+
+                                </button>}
+
+                                {securityChanged=== false && 
+
+                                <></>
+                                
+                                // <button 
+                                
+                                
+                                // type='button' className=" flex items-center px-4 py-2 mx-auto border border-gray-400 text-gray-400 
+                                // flex
+                                //     mx-auto rounded-full
+                                //         justify-center 
+                                //         text-white cursor-pointer
+                                //         font-semibold p-1 mb-4 space-x-1">
+                                //         <MdSecurity size={20} className= ""/>
+                                    
+                                //     <p>Submit Security Changes</p> 
+
+                                // </button>
+                                }
+                            
+                            
+                                
+                        </div>
+
+                    </>}
                       
                
                     
             </form>
-                <div className='p-7' >
+
+                {securityFormData.currentPassword.length > 0 &&
+                <>
+                    <div className='p-7' >
 
                             { deleteFeedback !== 'Success' && deleteError && 
                         
-                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-red-700'>
-                            <div className= 'flex p-2 m-2 rounded-full bg-red-100 text-xs' > 
+                        <div className= ' bg-transparent flex justify-center items-center font-semibold  text-red-700'>
+                            <div className= 'flex p-2 m-2 rounded-full bg-red-100 ' > 
                                  <p>{deleteFeedback}</p>
                             </div>
                          </div>
                          }
                          { deleteFeedback ==='Success' && deleteError &&
-                        <div className= ' bg-transparent flex justify-center items-center font-semibold text-sm text-green-700'>
-                            <div className= 'flex p-2 m-2 rounded-full bg-green-100 text-xs' > 
+                        <div className= ' bg-transparent flex justify-center items-center font-semiboldtext-green-700'>
+                            <div className= 'flex p-2 m-2 rounded-full bg-green-100 ' > 
                                  <p>Delete Account Link Sent to your Email</p>
                             </div>
                          </div>
                          }
-                 <div className=' flex items-center bg-transparent justify-between'>
-
-                        <p className='text-sm font-semibold '>Delete Account?</p>
+                 <div className=' flex justify-center space-x-1 items-center bg-transparent '>
+                            <div className=''>
+                            <p className=' font-semibold '>Delete Account?</p>
+                            </div>
                             <button onClick= {()=>{
                                 if(securityFormData.currentPassword.length > 0){
                                 setSurePop(true);
@@ -608,29 +673,28 @@ export const Settings = () => {
                                 }
                             } 
                             }
-                            type= "button" className=" flex items-center px-4 py-2 mx-auto bg-transparent
+                            type= "button" className=" flex items-center px-4 py-2 bg-transparent
                                 
-                                hover:bg-gray-200 flex
-                                mx-auto rounded-full
+                                hover:bg-gray-200 dark:hover:bg-cyan-500 flex
+                                 rounded-full
                                     justify-center 
-                                    text-gray-500 text-xs border border-gray-300 cursor-pointer
+                                    text-gray-500 dark:hover:text-gray-900  border border-gray-300 cursor-pointer
                                     font-semibold p-1 space-x-1">
                                      <MdSecurity size={20} />
-                                
-                                     {passwordInput === false ? <p>Click for Yes </p> :<p> Click for No</p> }
+                                <p> Click for Yes</p> 
 
                             </button>
                     </div>
                         
-                            {deleteTinyError===true && securityFormData.currentPassword.length <1 && <p className='text-xs text-center text-red-700 font-light' >current password required above</p>}
+                            {deleteTinyError===true && securityFormData.currentPassword.length <1 && <p className=' text-center text-red-700 font-light' >current password required above</p>}
                             
                     </div>
-
+                    { populatedBlocks?.blocked && populatedBlocks?.blocked.length > 0 &&
                     <div>
-                            <div className ='flex p-3 bg-gray-200 justify-center items-center'>
+                            <div className ='flex p-3 justify-center items-center'>
                                               
                                      
-                                             <div className ='flex p-3  rounded-md border w-full border-teal-700 text-teal-700 justify-center items-center'>
+                                             <div className ='flex p-3  rounded-md border w-full border-gray-400 text-gray-500 justify-center items-center'>
                                               
                                               {/*========= Blocked=============== */}
                                        
@@ -644,15 +708,15 @@ export const Settings = () => {
                             <div className='p-2'>
 
                                     { unblockFeedback ==='error' && blockError &&
-                            <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                                <div className= 'flex p-2 m-2 rounded-full bg-red-400 text-xs' > 
+                            <div className= ' bg-transparent flex justify-center items-center font-bold  text-white'>
+                                <div className= 'flex p-2 m-2 rounded-full bg-red-400 ' > 
                                         <p>An Error Occured</p>
                                 </div>
                                 </div>
                                 }
                                 { unblockFeedback==='Success' && blockError &&
-                            <div className= ' bg-transparent flex justify-center items-center font-bold text-sm text-white'>
-                                <div className= 'flex p-2 m-2 rounded-full bg-green-400 text-xs' > 
+                            <div className= ' bg-transparent flex justify-center items-center font-bold text-white'>
+                                <div className= 'flex p-2 m-2 rounded-full bg-green-400 ' > 
                                         <p>Account Unblocked</p>
                                 </div>
                                 </div>
@@ -662,21 +726,29 @@ export const Settings = () => {
                                 populatedBlocks?.blocked.map((blocked) =>(
                                     
                                 <div  key={blocked._id} className='flex justify-center items-center space-x-2 bg-transparent'>
-                                    <div className="p-0.5 flex  rounded-full shadow-md justify-center text-gray-700 text-sm items-center">
+                                    <div className="p-0.5 flex  rounded-full shadow-md justify-center text-gray-700 items-center">
                                         <img src={blocked.dpUrl} alt="DP" className="m-1 rounded-full h-6 w-6 sm:h-10 sm:w-10"/>
                                         <p>{blocked.userName}</p>
                                     </div>
-                                    {loadingUnblock===false && <div  onClick={() => unblock(blocked._id)} className="h-6 p-1  items-center text-sm flex justify-center text-gray-400 hover:text-cyan-600 cursor-pointer items-center">
+                                    {loadingUnblock===false && <div  onClick={() => unblock(blocked._id)} className="h-6 p-1  items-center flex justify-center text-gray-400 hover:text-cyan-600 cursor-pointer items-center">
                                         <p>unblock</p>
                                     </div>}
-                                    {loadingUnblock===true && <div className="h-6 p-1  items-center text-sm flex justify-center text-gray-400 hover:text-cyan-600 cursor-pointer items-center">
+                                    {loadingUnblock===true && <div className="h-6 p-1  items-center flex justify-center text-gray-400 hover:text-cyan-600 cursor-pointer items-center">
                                         <p>...</p>
                                     </div>}
                                 </div>
                                  ))
                                 } 
                             </div>
-                    </div>
+                    </div>}
+                    </>
+                }
+
+                </>
+                    
+
+
+                    }
                   
             </div>
           

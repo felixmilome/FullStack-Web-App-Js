@@ -1,4 +1,5 @@
 import{GiMoneyStack} from 'react-icons/gi';
+
 function ProfilemodalRow ({Icon,title, walletAmount}) {
     return (
         <>
@@ -13,7 +14,7 @@ function ProfilemodalRow ({Icon,title, walletAmount}) {
               
                
         </div> 
-
+ 
         {walletAmount && 
         <div className=' text-gray-500'>
           <div className= "flex items-center  justify-center space-x-2 text-xs font-normal">
@@ -23,7 +24,7 @@ function ProfilemodalRow ({Icon,title, walletAmount}) {
                 <p>Balance</p>
         </div> 
         <div className='w-full flex justify-center'>
-        <div className= 'text-left border-l ml-10 w-30 text-xs space-y-1 border-gray-400 bg-transparent rounded-md pl-4'>
+        <div className= 'text-left  ml-10 w-30 text-xs space-y-1 border-gray-400 bg-transparent pl-4'>
 
           
 

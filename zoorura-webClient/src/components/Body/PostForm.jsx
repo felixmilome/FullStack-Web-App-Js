@@ -653,7 +653,7 @@ function readFile(file, type) {
                                             })}  
                                         
                             
-                                        placeholder="Paste Url Here (Optional)" className="rounded-full text-center w-full text-gray-700 dark:text-gray-200 font-light outline-none text-sm px-4 p-1 sm:py-2 border border-gray-300 bg-gray-100 dark:bg-gray-900"/>
+                                        placeholder="Paste Url Here (Optional)" className="rounded-full text-center w-full text-gray-700 dark:text-gray-200 font-light outline-none text-sm px-4 p-1 sm:py-2 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-900"/>
                                          <p className='mx-3 text-xs text-red-700 font-light' >{errors.url?.message}</p>
                                          </div>
                                     </div>
@@ -1081,7 +1081,7 @@ function readFile(file, type) {
                                         onChange: (e) => {setdiariesData({...diariesData, title: e.target.value})}
                                         })}  
                         
-                                        placeholder="Enter Title" className="text-gray-700 dark:text-gray-200 font-light outline-none my-1 w-full px-4 p-1 sm:py-2 border border-gray-300 rounded-md dark:bg-gray-900 bg-gray-100"/>
+                                        placeholder="Enter Title" className="text-gray-700 dark:text-gray-200 font-light outline-none my-1 w-full px-4 p-1 sm:py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 bg-gray-100"/>
                                         <p className='mx-3 text-xs text-red-700 font-light' >{errors.title?.message}</p>
                                         </div>
                                     </div>
@@ -1096,7 +1096,7 @@ function readFile(file, type) {
                                                 onChange: (e) => {setdiariesData({...diariesData, caption: e.target.value})}
                                                 })}   
                                 
-                                                placeholder="Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 dark:text-gray-200 font-light outline-none  mt-1 w-full  px-4 py-2 border border-gray-300 rounded-md dark:bg-gray-900 bg-gray-100"/>
+                                                placeholder="Enter Caption" className="resize-none h-28 sm:h-32 text-gray-700 dark:text-gray-200 font-light outline-none  mt-1 w-full  px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-900 bg-gray-100"/>
                                                 <p className='text-xs text-red-700 font-light' >{errors.caption?.message}</p>
                                                 <div onClick={()=>setEmojiBox(!emojiBox)} className='w-max mx-auto my-1 text-gray-100 bg-gray-400 dark:bg-gray-800 hover:bg-gray-500 dark:hover:bg-cyan-500 rounded-full cursor-pointer p-1'>
                                                     <BsFillEmojiLaughingFill/>
@@ -1118,7 +1118,7 @@ function readFile(file, type) {
                                             setSearchError(false);
                                             console.log(diariesData);
                                         }}
-                                        placeholder="Mentions(Optional): Enter a name, click Search" className="text-gray-700 dark:text-gray-200 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 rounded-md bg-gray-100 dark:bg-gray-900"/>
+                                        placeholder="Mentions(Optional): Enter a name, click Search" className="text-gray-700 dark:text-gray-200 text-xs font-light outline-none rounded-full w-full px-4 py-1 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-100 dark:bg-gray-900"/>
                                         {/* <p className='mx-3 text-xs text-red-700 font-light' >error</p> */}  
                                             {searchingName===false && 
                                                 <div onClick={searchedName.length > 0 ? searchName: ''} className="flex justify-center items-center p-1 m-1  bg-gray-400 dark:bg-gray-800 cursor-pointer text-gray-100 dark:hover:text-gray-900 rounded-full hover:bg-gray-600 dark:hover:bg-cyan-600 items-center">

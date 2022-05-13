@@ -11,7 +11,7 @@ import {GiTakeMyMoney, GiMoneyStack, GiPadlock} from 'react-icons/gi';
 import{RiVipCrownFill} from 'react-icons/ri';
 
 import HeaderRightIcon from './HeaderRightIcon.jsx'
-import { useState } from 'react';
+import { useState, useCallback} from 'react';
 import{Search} from './Search.jsx';
 import ProfileModal from '../Modals/ProfileModal.jsx';
 import OutsideClickHandler from 'react-outside-click-handler';
@@ -38,10 +38,10 @@ import {io} from 'socket.io-client'
 
 //Search Area.. Go Search im Arena img follows Search CLAIM Log
 
-function Header() {
+function Header({themer, setThemer}) {
 
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    //console.log(user);
+    console.log(user);
     const[popProfile, setpopProfile] = useState(false);
     const[loadingPointer, setLoadingPointer] = useState(false);
     const[popContacts, setpopContacts] = useState(false);
@@ -49,6 +49,8 @@ function Header() {
     const[popTipNotifications, setPopTipNotifications] = useState(false);
     const[popNotifications, setpopNotifications] = useState(false);
     const[popCart, setpopCart] = useState(false);
+    //const [themer, setThemer] = useLocalStorage('themer', localStorage.getItem("themer"));
+
     const[popRankings, setpopRankings] = useState(false);
    
     const[popDailyPoints, setpopDailyPoints] = useState(false);
@@ -63,6 +65,49 @@ function Header() {
    const socketRef = useRef();
 
     const dispatch= useDispatch();
+
+   
+
+    // function useLocalStorage(key, initialState) {
+    //     const [themer, setThemer] = useState(localStorage.getItem(key) ?? initialState);
+    //     const updatedSetValue = useCallback(
+    //       newValue => {
+    //         if (newValue === initialState || typeof newValue === 'undefined') {
+    //           localStorage.removeItem(key);
+    //         } else {
+    //           localStorage.setItem(key, newValue);
+    //         }
+    //         setThemer(newValue ?? initialState);
+    //       },
+    //       [initialState, key]
+    //     );
+    //     return [themer, updatedSetValue];
+    //   }
+
+    //   console.log(themer);
+
+    // const themeSetter =()=> {
+    //     if (
+    //         //localStorage.themer === 'dark' || (!('themer' in localStorage) &&       //localstorage.createItem use this 
+    //     window.matchMedia('(prefers-color-scheme: dark)').matches
+    //     //)
+    //     ) {
+    //         //document.documentElement.classList.add('dark') //work on it later
+    //         setMode(''); 
+    //     } else {
+    //         //document.documentElement.classList.remove('dark')
+    //         setMode(null);
+    //     } 
+    // }
+    // console.log(localStorage.themer);
+
+    useEffect(() => {
+        localStorage.setItem('themer', 'system');
+      }, [dispatch]);
+
+      
+
+  
      
 
     const parseJwt = (token) => {
@@ -73,6 +118,7 @@ function Header() {
         }
       };    
 
+      console.log()
            
                     
         //Logouter-------
@@ -491,7 +537,7 @@ function Header() {
                         </div>
 
                      {popProfile && 
-                     <ProfileModal setpopProfile= {setpopProfile} setPopSaved ={setPopSaved}/>}
+                     <ProfileModal setpopProfile= {setpopProfile} setPopSaved ={setPopSaved} themer={themer} setThemer={setThemer} />}
                     
                     </OutsideClickHandler>
                     

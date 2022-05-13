@@ -10,8 +10,8 @@ import Portfolios from "../components/Body/Portfolios.jsx";
 import {NoPage} from "../components/Body/NoPage.jsx";
 import {useState} from 'react'; 
 import {getHallFameAction} from '../components/Midwares/rdx/actions/hallFameAction.js'
-import { useEffect } from 'react';
-import {useDispatch} from 'react-redux';
+import { useEffect, useCallback } from 'react';
+import {useDispatch, useSelector,} from 'react-redux';
 import {DiaryLink} from '../components/Body/PostLinks/DiaryLink.jsx' 
 import {Settings} from '../components/Body/Settings.jsx'
 import {ChatHunt} from '../components/Body/ChatHunt.jsx'
@@ -26,15 +26,45 @@ import { Follows } from "../components/Body/Follows.jsx";
 
 function Home({showProfile}) {
 
-     const[popContacts, setpopContacts] = useState(false);
-     const[mode, setMode] = useState(null);
+    const[popContacts, setpopContacts] = useState(false);
+    const [themer, setThemer] = useLocalStorage('themer', localStorage.getItem("themer"));
+    const [theme, setTheme] = useState('dark');
+  
+    
+    // const themer = useSelector((state) => state.themerReducer);
+
+
+
+     //const[theme,setTheme] = useState('');
 
     const dispatch = useDispatch();
+
+    function useLocalStorage(key, initialState) {
+        const [themer, setThemer] = useState(localStorage.getItem(key) ?? initialState);
+        const updatedSetValue = useCallback(
+          newValue => {
+            if (newValue === initialState || typeof newValue === 'undefined') {
+              localStorage.removeItem(key);
+            } else {
+              localStorage.setItem(key, newValue);
+            }
+            setThemer(newValue ?? initialState);
+          },
+          [initialState, key]
+        );
+        return [themer, updatedSetValue];
+      }
+
+      console.log(themer);
+
+
+      console.log(themer);
+      console.log(theme);
 
 
     // const agent = navigator.userAgent;
 
-    // console.log(agent)
+    console.log(localStorage.themer);
  
 
     useEffect(() => {
@@ -43,31 +73,48 @@ function Home({showProfile}) {
 
     const [diaryId, setDiaryId]= useState(null);
     const[user,setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-  
-    const modeSetter =()=> {
-        if (
-            //localStorage.theme === 'dark' || (!('theme' in localStorage) &&       //localstorage.createItem use this 
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-        //)
-        ) {
-            //document.documentElement.classList.add('dark') //work on it later
-            setMode('dark'); 
-        } else {
-            //document.documentElement.classList.remove('dark')
-            setMode(null);
-        } 
+
+    const themeSetter =()=> {
+
+        //if ((!('themer' in localStorage))
+        if (themer === 'system'){
+
+            if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+                setTheme('dark')
+            }else{
+                setTheme ('')
+            }
+        }else if (themer==='dark'){
+            setTheme ('dark')
+        }else if (themer==='light'){
+            setTheme ('')
+        }
+
     }
-    console.log(localStorage.theme);
+
+  
+   
+            //   //localStorage.themer === 'dark' || (!('themer' in localStorage) &&       //localstorage.createItem use this 
+            //   window.matchMedia('(prefers-color-scheme: dark)').matches
+            //   //)
+            //   ) {
+            //       //document.documentElement.classList.add('dark') //work on it later
+            //       setMode(''); 
+            //   } else {
+            //       //document.documentElement.classList.remove('dark')
+            //       setMode(null);
+            //   } 
+  
 
     useEffect(() => {
-        modeSetter()
-      }, [dispatch]);
+        themeSetter()
+      }, [themer]);
 
     return (
-        // ${mode === 'dark' ? 'bg-gradient-to-r from-cyan-900 to-gray-900': 'bg-gray-300'}
+        // ${themer === 'dark' ? 'bg-gradient-to-r from-cyan-900 to-gray-900': 'bg-gray-300'}
         //<div className="m-0 text-gray-700 h-full min-h-screen pb-40 bg-gradient-to-r from-teal-900 to-gray-900">
-        <div className={`${mode}`}>
-                <div className={`text-gray-800 dark:text-gray-200 h-full min-h-screen pb-40  ${mode === 'dark' ? 'bg-black': 'bg-gray-300'} 
+        <div className={`${theme}`}>
+                <div className={`text-gray-800 dark:text-gray-200 h-full min-h-screen pb-40  ${theme === 'dark' ? 'bg-black': 'bg-gray-300'} 
 
                 
 
@@ -76,7 +123,7 @@ function Home({showProfile}) {
             
             
                     
-                        <Header setpopContacts= {setpopContacts} popContacts={popContacts}/>  
+                        <Header themer={themer} setThemer={setThemer}/>  
                         <Leftbar/>  
                     
                     

@@ -1,5 +1,5 @@
 import * as axs from './axs';
-//search FOLLOWS
+//search FOLLOWS localStorage
 
 // export const getUserDataAction = (id) => async (dispatch) => {
 //     try{
@@ -150,9 +150,11 @@ export const getUserProfileAction = () => async (dispatch) => {
         console.log(data);
         const follows = data.follows;
         const spam = data.postSpam;
+        const theme = data.theme;
         dispatch ({type: 'REGISTER_FOLLOWS', data:follows});
         console.log('user profile fetched');
-        dispatch ({type: 'REGISTER_POST_SPAM', data:spam});  
+        dispatch ({type: 'REGISTER_POST_SPAM', data:spam}); 
+        //dispatch ({type: 'REGISTER_THEME', data:theme});  
       
         
     
