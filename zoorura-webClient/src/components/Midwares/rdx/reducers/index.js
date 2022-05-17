@@ -16,6 +16,7 @@
  import {reviewsReducer} from './reviewsReducer';
  import {walletReducer} from './walletReducer';
  import {tipsReducer} from './tipsReducer';
+ import {callsReducer} from './callsReducer';
  import {deleteAccountReducer} from './deleteAccountReducer';
  import {headSearchReducer} from './searchReducer';
  import { messagesOpenedReducer,
@@ -24,7 +25,7 @@
  
     export default combineReducers({ 
 
-      diariesReducer, visitedDiariesReducer, savedDiariesReducer,
+      diariesReducer, callsReducer, visitedDiariesReducer, savedDiariesReducer,
        postSpamReducer, usersDiariesReducer,
       randomDiariesReducer, popularDiariesReducer, 
       convoStateReducer, googleauthReducer,

@@ -42,11 +42,59 @@ io.on("connection", (socket)=> {
     console.log(users);
         
     });
+
+    // CALLS SOCKETS============
+
+    //Call User
+    socket.on("callUser", ({socketCallerData})=>{
+            try{
+
+            console.log(users);
+            console.log(socketCallerData);
+            console.log(socketCallerData.receiverId);
+            const receiver = getUser(socketCallerData.receiverId);
+            console.log(receiver);
+
+                io.to(receiver.socketId).emit("incomingCall", { 
+                    
+                    ...socketCallerData
+
+                });
+            }catch(error){
+
+                console.log(error.message);
+
+            }
+    });
+
+      //Pick Call
+      socket.on("pickCall", ({socketPickerData})=>{
+        try{
+ 
+        console.log(users);
+        console.log(socketPickerData);
+        console.log(socketPickerData.receiverId); //Receiver of Socket not of call
+        const receiver = getUser(socketPickerData.receiverId);
+        console.log(receiver);
+        const signal = socketPickerData.signal;
+
+            io.to(receiver.socketId).emit("callPicked", (signal));
+        }catch(error){
+
+            console.log(error.message);
+
+        }
+});
+
+
+
+
+
     
     //Send and Get Message
     socket.on("sendMessage", ({socketMessageData})=>{
         try{
-
+                ///HAVE a function to verify things eg if senders socket is same as data socket maybe.
         console.log(users);
         console.log(socketMessageData);
         console.log(socketMessageData.receiverId);

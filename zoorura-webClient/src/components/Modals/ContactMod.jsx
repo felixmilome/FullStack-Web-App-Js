@@ -20,6 +20,8 @@ import{readConvoNotificationsAction} from "../Midwares/rdx/actions/notifications
 import Picker from 'emoji-picker-react';
 import {Link} from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
+import Peer from 'simple-peer';
+import {CallPair} from './CallPair'
 
 //Search Area: textarea delete
 
@@ -41,13 +43,27 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
      const[contactViewed, setContactViewed] = useState(false);
      const [chosenEmoji, setChosenEmoji] = useState(null);
     const [emojiBox, setEmojiBox] = useState(false);
-     
+    
+    const[callAccepted, setCallAccepted] = useState(false);
+   // const[socketCallerData, setsocketCallerData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiver:displayed._id, signal:'',postId:convoId, type: ''});
+    const [stream, setStream] = useState()
+    const [receivingCall, setReceivingCall] =useState (false);
+    const [caller, setCaller] = useState ('');
+    const [callerSignal, setCallerSignal] = useState ();
+    const [idToCall, setIdToCall] = useState ('');
+    const [callEnded, setCallEnded] = useState (false); 
+    const [name, setCaName] = useState ('');
+
+
+    const myVideo = useRef();
+     const userVideo = useRef();
+     const connectionRef = useRef();
 
 
     const dispatch = useDispatch(); 
 
     console.log(displayed);
-
+ 
    
 
     const socket = useSelector((state) => state.socketReducer);
@@ -73,7 +89,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
             const thisOpenedObj = {id:convoId, opened: true}
             dispatch ({type: 'MESSAGES_OPENED', payload: thisOpenedObj});  // for getting messages  
              
-        }
+        } 
 
     }, []);
 
@@ -124,7 +140,58 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
     //     })
     // }, []);
+    
 
+    //Calls
+
+   // const SocketObjConstructor 
+
+
+
+    // Use Header to call so that one can multitask. Eg let redux send an initiator
+
+    // const callUser =() => {
+    //     console.log('userCalled')
+    //     const peer = new Peer ({
+    //         initiator: true,
+    //         trickle: false,
+    //         stream: stream
+    //     }) 
+
+    //     peer.on("signal", (data) => {
+    //         const socketCallerData = {sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiverId:displayed._id, signal:data, postId:'', type: ''}
+    //         socket.current.emit ("callUser", {
+    //             socketCallerData
+    //         })
+    //     })
+    //     peer.on("stream", (stream) => {
+    //       userVideo.current.srcObject = stream
+    //     })
+    //     peer.on("callAccepted", (signal) => {
+    //        setCallAccepted(true)
+    //        peer.signal(signal)
+    //       }) 
+
+    //     connectionRef.current = peer
+    // }
+
+    const callUser =()=>{
+
+        const payloadObj =  {state:'calling', called:displayed}
+        dispatch({type: 'CALLING_SOMEONE', payload:payloadObj})
+
+    }
+
+    const leaveCall =() => {
+        setCallEnded (true)
+        connectionRef.current.destroy()
+    }
+
+   
+   
+
+    
+    //Check online Socket
      useEffect(() => {
           socket.current.emit("checkUserOnline", {
            checkData
@@ -285,6 +352,10 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
     }
 
     return (
+        <>
+   
+      
+      
         <Spring
         
         from={
@@ -295,7 +366,9 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
           {opacity:1}
         }>
         {styles => (
-          <animated.div style={styles}> 
+          <animated.div style={styles}>
+              
+
         <div  className="z-20 rounded-md  fixed z-50 top-0 xl:top-20 xl:bottom-0 right-0 xl:right-2 m-auto w-full xl:w-1/4  bg-gray-200 dark:bg-gray-900">
             {/* Top Part */}
             <div className="fixed z-20 
@@ -332,7 +405,7 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
                      p-1 rounded-full cursor-pointer group">
                         <VideoCameraIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
                     </div>
-                    <div className="hover:bg-cyan-400
+                    <div onClick= {callUser} className="hover:bg-cyan-400
                      p-1 rounded-full cursor-pointer group">
                         <PhoneIcon className= "h-6 w-6 group-hover:text-white text-gray-300"/>
                     </div>
@@ -667,9 +740,11 @@ function ContactMod({setpopChatBox, convoId, displayed, viewer}) {
 
             </div>
         </div>
+        
         </animated.div>
         )}
       </Spring>
+      </>
     )
 }
 

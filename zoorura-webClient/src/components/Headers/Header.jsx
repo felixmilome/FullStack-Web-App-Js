@@ -7,6 +7,8 @@ import {    SearchIcon,
             HashtagIcon,
             UserAddIcon} from '@heroicons/react/outline'
 import {GiTakeMyMoney, GiMoneyStack, GiPadlock} from 'react-icons/gi';
+import {BsCameraVideo, BsCameraVideoOff, BsMicMute} from 'react-icons/bs';
+import {MdOutlineCancel} from 'react-icons/md';
 
 import{RiVipCrownFill} from 'react-icons/ri';
 
@@ -33,7 +35,9 @@ import {dailyPointsAction, getUserProfileAction} from '../Midwares/rdx/actions/p
 import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {getWalletAction} from '../Midwares/rdx/actions/walletAction.js'
+import {CallPair} from '../Modals/CallPair';
 import {io} from 'socket.io-client'
+import Peer from 'simple-peer';
 
 
 //Search Area.. Go Search im Arena img follows Search CLAIM Log
@@ -58,11 +62,28 @@ function Header({themer, setThemer}) {
     const[popLogin, setpopLogin] = useState(false);
     const[popSignup, setpopSignup] = useState(true);
     const[popSaved, setPopSaved] = useState(false);
-    //const [socket, setSocket] = useState(null)
+    
+    const[callAccepted, setCallAccepted] = useState(false);
+    //const[socketCallerData, setsocketCallerData] = useState({sender:{_id:viewer._id, dpUrl:viewer.dpUrl, userName:viewer.userName}, receiver:displayed._id, signal:'',postId:convoId, type: ''});
+    const [stream, setStream] = useState()
+   
+    const [receivingCall, setReceivingCall] =useState (false);
+    const [sendingCall, setSendingCall] = useState(false);
+    const [callPicked, setCallPicked] = useState(false);
+
+    const [caller, setCaller] = useState ('');
+    const [callerSignal, setCallerSignal] = useState ();
+    const [callEnded, setCallEnded] = useState (false); 
+
+
   
  
     
    const socketRef = useRef();
+   const myVideo = useRef();
+   const myAudio = useRef();
+   const userVideo = useRef();
+   const connectionRef = useRef();
 
     const dispatch= useDispatch();
 
@@ -100,6 +121,8 @@ function Header({themer, setThemer}) {
     //     } 
     // }
     // console.log(localStorage.themer);
+
+   
 
     useEffect(() => {
         localStorage.setItem('themer', 'system');
@@ -150,6 +173,8 @@ function Header({themer, setThemer}) {
 
                       
       //Sockets++++++++++++++++
+           
+
 
             useEffect(() => {    
                     socketRef.current = io("ws://localhost:8900");
@@ -183,9 +208,134 @@ function Header({themer, setThemer}) {
 
             }, [user]); 
 
+
+        //Calls++++++++++++++++++++++++++++
+
+        // useEffect(() => { 
+
+        //      navigator.mediaDevices.getUserMedia({video:true, audio:true}).then((stream) => {
+        //             setStream(stream)
+        //             myVideo.current.srcObject = stream
+        //         })
+
+        // }, []); 
+
+            //CallSomeone
+
+            const callState = useSelector((state) => state.callsReducer);
+           
+           
+
+            const callUser =(receiverId) => {
+
+                setSendingCall(true);
+
+                navigator.mediaDevices.getUserMedia({video:true, audio:true}).then((stream) => {
+                    setStream(stream)
+                    myVideo.current.srcObject = stream
+                })
+    
+                console.log('Calling User')
+                const peer = new Peer ({
+                    initiator: true,
+                    trickle: false,
+                    stream: stream
+                }) 
+        
+                peer.on("signal", (data) => {
+                    const socketCallerData = {sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiverId:receiverId, signal:data, postId:'', type: ''}
+                    socket.current.emit ("callUser", {
+                        socketCallerData
+                    })
+                })
+                peer.on("stream", (stream) => { 
+                  userVideo.current.srcObject = stream
+                })
+
+                socketRef.current.on("callPicked", (signal) => {
+                    
+                    console.log('call Picked')
+                   setCallAccepted(true)
+                   peer.signal(signal)
+                  }) 
+        
+                connectionRef.current = peer
+            }
+
+            useEffect(() => { 
+
+                if(callState?.state==='calling'){
+                    console.log(callState)
+                    const receiverId = callState?.called?._id;
+                    callUser(receiverId);
+                }
+                
+            }, [callState]); 
+
+
+
+            //Receive Call
+            
+ 
+
+               useEffect (() => {
+
+          
+
+                    socketRef.current.on("incomingCall", (socketCallerData) =>{
+                        
+                        console.log('incomingCall');
+                        setReceivingCall(true);
+                        
+                        navigator.mediaDevices.getUserMedia({video:true, audio:true}).then((stream) => {
+                            setStream(stream)
+                            myVideo.current.srcObject = stream
+                        })
+        
+                    
+                        setCaller(socketCallerData.sender);
+                        setReceivingCall(true);
+                        setCallerSignal (socketCallerData.signal);
+
+
+            
+                    })
+               },[])
+
+               const pickCall = () => {
+                setCallAccepted(true)
+
+                const peer = new Peer ({
+                    initiator:false, 
+                    trickle:false,
+                    stream:stream
+                })
+
+                peer.on ("signal", (data) => {
+                    const socketPickerData = {sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiverId:caller._id, signal:data, postId:'', type: ''}
+                    socketRef.current.emit("pickCall", {socketPickerData})
+                }) 
+
+                peer.on ("stream", (stream) => {
+                    userVideo.current.srcObject = stream
+                })
+
+                peer.signal(callerSignal) //That was set when call arrived.
+                
+                connectionRef.current = peer
+            }
+
+            const leaveCall =() => {
+                setCallEnded (true)
+                connectionRef.current.destroy()
+            }
+
+            
+
+
    
            
-       
+       //others
            
             
             useEffect(() => { 
@@ -361,14 +511,148 @@ function Header({themer, setThemer}) {
     
 
     return (
-        
+        <>
+
+
+       
+
+          {/* <CallPair stream= {stream} myVideo={myVideo} userVideo={userVideo}/> */}
         <div className= "sticky top-0 z-50">
+          
               {/*==============SIGN UP/ LOGIN =================*/}
             {user && !user.result.verified  ? <VerifyForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>} 
             { popSignup && !user ? <SignupForm popSignup ={popSignup} popLogin = {popLogin} setpopSignup = {setpopSignup}  setpopLogin ={setpopLogin}/> : <></>}
             {popLogin && !user ? <LoginForm  popLogin = {popLogin} popSignup ={popSignup}  setpopLogin ={setpopLogin} setpopSignup = {setpopSignup} />: <></>}
        
         <div className= {`sticky top-0 z-50 bg-gray-100 ${(popSignup || popLogin) && !user && 'bg-gradient-to-r from-teal-300 to-cyan-500 rounded-r-full w-11/12 px-3' }  dark:bg-gray-900 border-b border-cyan-400 dark:border-gray-600 p-2 lg:px-3 lg:py-3 shadow-md `}>
+       
+                        {/* Calling Modal */}
+                    <>
+                
+                            {receivingCall && <div className='fixed flex items-center h-screen  w-screen top-0 left-0 z-50 bg-gray-300 dark:bg-gray-800 w-screen h-screen'>
+                                <div className="relative flex w-full items-center"> 
+
+                                            <div className= "flex justify-center items-center bg-gray-100 dark:bg-gray-900 items-center m-auto w-screen h-screen rounded-xl p-1 text-center border border-gray-300"> 
+                                                <div className="flex justify-center items-center text-white dark:text-gray-900 items-center pt-4 m-auto">
+                                                {stream && <video ref={userVideo} autoPlay/>}
+
+                                                   {caller && 
+                                                   <div className='space-y-4'>
+                                                        <div className='rounded-full flex justify-center items-center  bg-green-600 h-full w-64'>
+                                                            <img src={caller.dpUrl} alt="DP" className="p-0.5 object-fit rounded-full h-40 w-40 "/>
+                                                        </div>
+
+                                                        {
+                                                        <div className='text-gray-100 text-xl dark:text-gray-100'>
+                                                            <p>Incoming call from @{caller.userName} </p>
+                                                            
+                                                            <BeatLoader size={16} color='teal' />
+
+                                                            {stream && <div className= 'm-2 text-sm space-y-1'> 
+                                                                <div onClick={pickCall} className=' m-auto rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-16 w-16'>
+                                                                    <BsCameraVideo size={32}/>
+                                                                </div>
+                                                                <p>pick</p>
+                                                            </div>}
+                                                        </div>
+                                                        }
+                                                    
+                                                    </div>} 
+                                                
+                                                </div>
+                                                
+                                            </div> 
+
+                                            <div className= "absolute bottom-32 right-0 bg-gray-100 dark:bg-gray-900 items-center m-auto w-40 h-40  rounded-xl p-1 text-center border border-gray-300"> 
+                                                <div className="flex justify-around text-white dark:text-gray-900 items-center pt-4 m-auto">
+                                                {stream && <video ref={myVideo} autoPlay/>}
+                                                </div>
+                                            </div>  
+                                            <div className='absolute p-4 h-min  bottom-2 w-screen flex justify-center space-x-7'>
+
+                                                <div className='rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-12 w-12'>
+                                                    <BsCameraVideo size={28}/>
+                                                </div>
+                                                <div className='rounded-full flex justify-center items-center hover:bg-gray-500 bg-gray-600 h-12 w-12'>
+                                                    <BsCameraVideoOff size={28}/>
+                                                </div>
+                                                <div className='rounded-full flex justify-center items-center hover:bg-gray-500 bg-gray-600 h-12 w-12'>
+                                                    <BsMicMute size={28}/>
+                                                </div>
+                                                <div className='rounded-full flex justify-center items-center hover:bg-red-500 bg-red-600 h-12 w-12'>
+                                                    <MdOutlineCancel size={28}/>
+                                                </div>
+                                            
+
+                                            </div>        
+                                    
+                                    </div>  
+                            </div>}
+
+                            {sendingCall && <div className='fixed flex items-center h-screen  w-screen top-0 left-0 z-50 bg-gray-300 dark:bg-gray-800 w-screen h-screen'>
+                                <div className="relative flex w-full items-center"> 
+
+                                            <div className= "flex justify-center items-center bg-gray-100 dark:bg-gray-900 items-center m-auto w-screen h-screen rounded-xl p-1 text-center border border-gray-300"> 
+                                                <div className="flex justify-center items-center text-white dark:text-gray-900 items-center pt-4 m-auto">
+                                                {stream && <video ref={userVideo} autoPlay/>}
+
+                                                   {caller && 
+                                                   <div className='space-y-4'>
+                                                        <div className='rounded-full flex justify-center items-center  bg-green-600 h-full w-64'>
+                                                            <img src={caller.dpUrl} alt="DP" className="p-0.5 object-fit rounded-full h-40 w-40 "/>
+                                                        </div>
+
+                                                        {
+                                                        <div className='text-gray-100 text-xl dark:text-gray-100'>
+                                                            <p>Incoming call from @{caller.userName} </p>
+                                                            
+                                                            <BeatLoader size={16} color='teal' />
+
+                                                            {stream && <div className= 'm-2 text-sm space-y-1'> 
+                                                                <div className=' m-auto rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-16 w-16'>
+                                                                <BsCameraVideo size={32}/>
+                                                                </div>
+                                                                <p>pick</p>
+                                                            </div>}
+                                                        </div>
+                                                        }
+                                                    
+                                                    </div>} 
+                                                
+                                                </div>
+                                                
+                                            </div> 
+
+                                            <div className= "absolute bottom-32 right-0 bg-gray-100 dark:bg-gray-900 items-center m-auto w-40 h-40  rounded-xl p-1 text-center border border-gray-300"> 
+                                                <div className="flex justify-around text-white dark:text-gray-900 items-center pt-4 m-auto">
+                                                {stream && <video ref={myVideo} autoPlay/>}
+                                                </div>
+                                            </div>  
+                                            <div className='absolute p-4 h-min  bottom-2 w-screen flex justify-center space-x-7'>
+
+                                                <div className='rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-12 w-12'>
+                                                    <BsCameraVideo size={28}/>
+                                                </div>
+                                                <div className='rounded-full flex justify-center items-center hover:bg-gray-500 bg-gray-600 h-12 w-12'>
+                                                    <BsCameraVideoOff size={28}/>
+                                                </div>
+                                                <div className='rounded-full flex justify-center items-center hover:bg-gray-500 bg-gray-600 h-12 w-12'>
+                                                    <BsMicMute size={28}/>
+                                                </div>
+                                                <div className='rounded-full flex justify-center items-center hover:bg-red-500 bg-red-600 h-12 w-12'>
+                                                    <MdOutlineCancel size={28}/>
+                                                </div>
+                                            
+
+                                            </div>        
+                                    
+                                    </div>  
+                            </div>}
+
+                  
+                    </>
+
+       
         <div className= "flex items-center  p-0  space-x-2 justify-between">
             {/*Left*/}
             { user && user.result.verified ?
@@ -642,7 +926,7 @@ function Header({themer, setThemer}) {
                    
             </div>
        
-    
+                    </>
  
        
             

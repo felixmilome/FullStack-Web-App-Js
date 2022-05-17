@@ -28,7 +28,7 @@ function Home({showProfile}) {
 
     const[popContacts, setpopContacts] = useState(false);
     const [themer, setThemer] = useLocalStorage('themer', localStorage.getItem("themer"));
-    const [theme, setTheme] = useState('dark');
+    const [theme, setTheme] = useState('dark-webServer');
   
     
     // const themer = useSelector((state) => state.themerReducer);
