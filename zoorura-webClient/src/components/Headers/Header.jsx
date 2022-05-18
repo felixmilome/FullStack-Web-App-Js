@@ -71,9 +71,12 @@ function Header({themer, setThemer}) {
     const [sendingCall, setSendingCall] = useState(false);
     const [callPicked, setCallPicked] = useState(false);
 
-    const [caller, setCaller] = useState ('');
+    const [caller, setCaller] = useState ();
+    const [called, setCalled] = useState ();
+
     const [callerSignal, setCallerSignal] = useState ();
     const [callEnded, setCallEnded] = useState (false); 
+    const [peerState, setPeerState] = useState (false); 
 
 
   
@@ -211,29 +214,20 @@ function Header({themer, setThemer}) {
 
         //Calls++++++++++++++++++++++++++++
 
-        // useEffect(() => { 
-
-        //      navigator.mediaDevices.getUserMedia({video:true, audio:true}).then((stream) => {
-        //             setStream(stream)
-        //             myVideo.current.srcObject = stream
-        //         })
-
-        // }, []); 
-
             //CallSomeone
 
-            const callState = useSelector((state) => state.callsReducer);
+            
+
            
-           
 
-            const callUser =(receiverId) => {
 
-                setSendingCall(true);
 
-                navigator.mediaDevices.getUserMedia({video:true, audio:true}).then((stream) => {
-                    setStream(stream)
-                    myVideo.current.srcObject = stream
-                })
+
+
+            const callState = useSelector((state) => state.callsReducer); //Check Contact Mod Trigger
+            
+            const callUser =(receiverId) => { //Call Function Definition
+
     
                 console.log('Calling User')
                 const peer = new Peer ({
@@ -241,6 +235,8 @@ function Header({themer, setThemer}) {
                     trickle: false,
                     stream: stream
                 }) 
+ 
+               
         
                 peer.on("signal", (data) => {
                     const socketCallerData = {sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiverId:receiverId, signal:data, postId:'', type: ''}
@@ -252,57 +248,69 @@ function Header({themer, setThemer}) {
                   userVideo.current.srcObject = stream
                 })
 
+                connectionRef.current = peer
+
                 socketRef.current.on("callPicked", (signal) => {
-                    
+
                     console.log('call Picked')
-                   setCallAccepted(true)
-                   peer.signal(signal)
-                  }) 
+                    setPeerState (peer);
+                    setCallAccepted(true)
+                    peer.signal(signal) 
+                
+                }) 
         
                 connectionRef.current = peer
+
             }
 
-            useEffect(() => { 
+            useEffect(() => { //Trigger  Call Function Function 
 
-                if(callState?.state==='calling'){
-                    console.log(callState)
-                    const receiverId = callState?.called?._id;
-                    callUser(receiverId);
-                }
-                
-            }, [callState]); 
+               
 
+                    if(callState?.state==='calling'){
 
+                        setSendingCall(true);
+                        setCalled(callState.called)
 
-            //Receive Call
-            
- 
-
-               useEffect (() => {
-
-          
-
-                    socketRef.current.on("incomingCall", (socketCallerData) =>{
-                        
-                        console.log('incomingCall');
-                        setReceivingCall(true);
-                        
                         navigator.mediaDevices.getUserMedia({video:true, audio:true}).then((stream) => {
                             setStream(stream)
                             myVideo.current.srcObject = stream
                         })
-        
+
+                        console.log(callState)
+                        //const receiverId = callState?.called?._id;
+                        //callUser(receiverId); //Call Function
+                    }
                     
-                        setCaller(socketCallerData.sender);
-                        setReceivingCall(true);
-                        setCallerSignal (socketCallerData.signal);
+            },[callState]); 
 
+                   
+        
 
-            
+            useEffect (() => {
+
+                socketRef.current.on("incomingCall", (socketCallerData) =>{
+                    
+                    console.log('incomingCall');
+                    setReceivingCall(true);
+                    
+                    navigator.mediaDevices.getUserMedia({video:true, audio:true}).then((stream) => {
+                        setStream(stream)
+                        myVideo.current.srcObject = stream
                     })
-               },[])
+    
+                
+                    setCaller(socketCallerData.sender);
+                    setReceivingCall(true);
+                    setCallerSignal (socketCallerData.signal);
 
-               const pickCall = () => {
+                })
+           },[])
+
+
+
+            //Receive Call
+            const pickCall = () => {
                 setCallAccepted(true)
 
                 const peer = new Peer ({
@@ -310,18 +318,19 @@ function Header({themer, setThemer}) {
                     trickle:false,
                     stream:stream
                 })
-
+             
                 peer.on ("signal", (data) => {
                     const socketPickerData = {sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiverId:caller._id, signal:data, postId:'', type: ''}
+                    
                     socketRef.current.emit("pickCall", {socketPickerData})
+                    
                 }) 
 
                 peer.on ("stream", (stream) => {
                     userVideo.current.srcObject = stream
                 })
 
-                peer.signal(callerSignal) //That was set when call arrived.
-                
+                peer.signal(callerSignal) //That was set when call arrived. 
                 connectionRef.current = peer
             }
 
@@ -630,7 +639,7 @@ function Header({themer, setThemer}) {
                                             </div>  
                                             <div className='absolute p-4 h-min  bottom-2 w-screen flex justify-center space-x-7'>
 
-                                                <div className='rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-12 w-12'>
+                                                <div onClick ={()=>callUser(called._id)} className='rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-12 w-12'>
                                                     <BsCameraVideo size={28}/>
                                                 </div>
                                                 <div className='rounded-full flex justify-center items-center hover:bg-gray-500 bg-gray-600 h-12 w-12'>
