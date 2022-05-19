@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({baseURL: "http://localhost:5000"});
+const API = axios.create({baseURL: "https://www.zoorura.com/"});
 
 //export const diariesUrl = 'http://localhost:5000/diaries';
 

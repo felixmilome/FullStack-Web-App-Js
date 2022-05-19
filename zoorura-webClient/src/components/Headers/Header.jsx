@@ -36,8 +36,15 @@ import {getConvosAction} from '../Midwares/rdx/actions/convosAction.js'
 import {getNotificationsAction} from '../Midwares/rdx/actions/notificationsAction.js'
 import {getWalletAction} from '../Midwares/rdx/actions/walletAction.js'
 import {CallPair} from '../Modals/CallPair';
+
+import Ringtone from '../../sources/sounds/Bizphone.mp3';
+import WaitingTone from '../../sources/sounds/Facetime.mp3';
+
+
+
 import {io} from 'socket.io-client'
 import Peer from 'simple-peer';
+import {Howl, Howler} from 'howler';
 
 
 //Search Area.. Go Search im Arena img follows Search CLAIM Log
@@ -132,8 +139,7 @@ function Header({themer, setThemer}) {
       }, [dispatch]);
 
       
-
-  
+   
      
 
     const parseJwt = (token) => {
@@ -179,16 +185,11 @@ function Header({themer, setThemer}) {
            
 
 
-            useEffect(() => {    
+            useEffect(() => {
+
                     socketRef.current = io("ws://localhost:8900");
                     dispatch ({type: 'SOCKET_SETUP', payload:  socketRef}); 
 
-                    
-                    
-                    // socketRef.current.on("getMessage", messageData =>{
-                    //    if(pop) setpopContacts(true);
-                    //     console.log("matureConts");  ///Add to Notifications???????????????????
-                    // }) 
             }, []); 
 
            const socket = useSelector((state) => state.socketReducer);
@@ -202,11 +203,6 @@ function Header({themer, setThemer}) {
                 if(user){
 
                     socketRef.current.emit("addUser",  user.result._id);
-                    // socketRef.current.on("getUsers", users=>{
-                    //     console.log(users)
-                    //     console.log(user.result._id)
-                    // }); 
-
                 }
 
             }, [user]); 
@@ -216,56 +212,48 @@ function Header({themer, setThemer}) {
 
             //CallSomeone
 
-            
-
-           
-
-
-
-
-
             const callState = useSelector((state) => state.callsReducer); //Check Contact Mod Trigger
             
-            const callUser =(receiverId) => { //Call Function Definition
-
-    
-                console.log('Calling User')
-                const peer = new Peer ({
-                    initiator: true,
-                    trickle: false,
-                    stream: stream
-                }) 
- 
-               
-        
-                peer.on("signal", (data) => {
-                    const socketCallerData = {sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiverId:receiverId, signal:data, postId:'', type: ''}
-                    socket.current.emit ("callUser", {
-                        socketCallerData
-                    })
-                })
-                peer.on("stream", (stream) => { 
-                  userVideo.current.srcObject = stream
-                })
-
-                connectionRef.current = peer
-
-                socketRef.current.on("callPicked", (signal) => {
-
-                    console.log('call Picked')
-                    setPeerState (peer);
-                    setCallAccepted(true)
-                    peer.signal(signal) 
-                
-                }) 
-        
-                connectionRef.current = peer
-
-            }
+          
 
             useEffect(() => { //Trigger  Call Function Function 
 
-               
+                    const callUser =(receiverId) => { //Call Function Definition
+
+        
+                        console.log('Calling User')
+                        const peer = new Peer ({
+                            initiator: true,
+                            trickle: false,
+                            stream: stream
+                        }) 
+        
+                    
+                
+                        peer.on("signal", (data) => {
+                            const socketCallerData = {sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiverId:receiverId, signal:data, postId:'', type: ''}
+                            socket.current.emit ("callUser", {
+                                socketCallerData
+                            })
+                        })
+                        peer.on("stream", (stream) => { 
+
+                                userVideo.current.srcObject = stream
+
+                        })
+        
+        
+                        socketRef.current.on("callPicked", signal => {
+        
+                            console.log('call Picked')
+                            setCallAccepted(true)
+                            peer.signal(signal) 
+                        
+                        }) 
+                
+                        connectionRef.current = peer
+        
+                    }
 
                     if(callState?.state==='calling'){
 
@@ -278,8 +266,8 @@ function Header({themer, setThemer}) {
                         })
 
                         console.log(callState)
-                        //const receiverId = callState?.called?._id;
-                        //callUser(receiverId); //Call Function
+                        const receiverId = callState?.called?._id;
+                        callUser(receiverId); //Call Function
                     }
                     
             },[callState]); 
@@ -298,11 +286,24 @@ function Header({themer, setThemer}) {
                         setStream(stream)
                         myVideo.current.srcObject = stream
                     })
+
+                   
     
                 
                     setCaller(socketCallerData.sender);
                     setReceivingCall(true);
                     setCallerSignal (socketCallerData.signal);
+
+                    var sound = new Howl({
+
+                        src: [Ringtone],
+                        autoplay: true,
+                        loop: true,
+                        volume: 0.5,
+                      
+                      });
+
+                      sound.play();
 
                 })
            },[])
@@ -319,15 +320,13 @@ function Header({themer, setThemer}) {
                     stream:stream
                 })
              
-                peer.on ("signal", (data) => {
+                peer.on ("signal", data => {
                     const socketPickerData = {sender:{_id:user.result._id, dpUrl:user.result.dpUrl, userName:user.result.userName}, receiverId:caller._id, signal:data, postId:'', type: ''}
-                    
-                    socketRef.current.emit("pickCall", {socketPickerData})
-                    
+                    socketRef.current.emit("pickCall", {socketPickerData})    
                 }) 
 
-                peer.on ("stream", (stream) => {
-                    userVideo.current.srcObject = stream
+                peer.on ("stream", stream => {
+                    userVideo.current.srcObject = stream;
                 })
 
                 peer.signal(callerSignal) //That was set when call arrived. 
@@ -401,19 +400,7 @@ function Header({themer, setThemer}) {
                 }   
             }, []);
 
-            // useEffect(() => { 
-            //        //ReviewSocket
-            //        socketRef.current.on("getReview", reviewData =>{
-            //         console.log(reviewData);
-            //         console.log("review Gotten");
-
-            //             if(reviewData.reviewerId != user.result._id){  //prevent spam since already posted when posting  
-            //             dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData}); //double since hasnt been dismantled
-            //             console.log('now posting review');
-            //             }
-
-            //         })
-            //     }, []);
+         
 
             useEffect(() => { 
                 socketRef.current.on("getMessage", messageData =>{
@@ -432,23 +419,7 @@ function Header({themer, setThemer}) {
                     }
                 }, []); 
 
-            // useEffect(() => { 
-            //     if(user){
-            //      //ReviewReplySocket
-            //      socketRef.current.on("getReplyReview", reviewData =>{
-            //         console.log(reviewData);
-            //         console.log("review Reply Gotten");
-
-            //             if(reviewData.reviewerId !== user.result._id 
-            //               //prevent also double reply and org later
-            //                 ){  //prevent spam since already posted when posting  
-            //             dispatch ({type: 'SOCKET_GOT_REVIEW', payload: reviewData}); //double since hasnt been dismantled
-            //             console.log('now posting reviewreply');
-            //             }
-
-            //         }) 
-            //     } 
-            // }, []);
+        
 
             //follows
             useEffect(() => {
@@ -510,11 +481,6 @@ function Header({themer, setThemer}) {
             dispatch({type:"LOGOUT"});
             window.location.reload(true);
             }
-               
-        
-
-          
-// text Log
        
    
     
@@ -543,28 +509,30 @@ function Header({themer, setThemer}) {
 
                                             <div className= "flex justify-center items-center bg-gray-100 dark:bg-gray-900 items-center m-auto w-screen h-screen rounded-xl p-1 text-center border border-gray-300"> 
                                                 <div className="flex justify-center items-center text-white dark:text-gray-900 items-center pt-4 m-auto">
-                                                {stream && <video ref={userVideo} autoPlay/>}
+                                                
+                                                {stream && callAccepted && userVideo && <video playsInline ref={userVideo} autoPlay/>}
 
-                                                   {caller && 
-                                                   <div className='space-y-4'>
-                                                        <div className='rounded-full flex justify-center items-center  bg-green-600 h-full w-64'>
-                                                            <img src={caller.dpUrl} alt="DP" className="p-0.5 object-fit rounded-full h-40 w-40 "/>
-                                                        </div>
+                                                   {caller && !callAccepted &&
 
-                                                        {
-                                                        <div className='text-gray-100 text-xl dark:text-gray-100'>
-                                                            <p>Incoming call from @{caller.userName} </p>
-                                                            
-                                                            <BeatLoader size={16} color='teal' />
+                                                        <div className='space-y-4'>
+                                                            <div className='rounded-full flex justify-center items-center  bg-green-600 h-full w-64'>
+                                                                <img src={caller.dpUrl} alt="DP" className="p-0.5 object-fit rounded-full h-40 w-40 "/>
+                                                            </div>
 
-                                                            {stream && <div className= 'm-2 text-sm space-y-1'> 
-                                                                <div onClick={pickCall} className=' m-auto rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-16 w-16'>
-                                                                    <BsCameraVideo size={32}/>
-                                                                </div>
-                                                                <p>pick</p>
-                                                            </div>}
-                                                        </div>
-                                                        }
+                                                        
+                                                            <div className='text-gray-100 text-xl dark:text-gray-100'>
+                                                                <p>Incoming call from @{caller.userName} </p>
+                                                                
+                                                                <BeatLoader size={16} color='teal' />
+
+                                                                {stream && <div className= 'm-2 text-sm space-y-1'> 
+                                                                    <div onClick={pickCall} className=' m-auto rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-16 w-16'>
+                                                                        <BsCameraVideo size={32}/>
+                                                                    </div>
+                                                                    <p>pick</p>
+                                                                </div>}
+                                                            </div>
+                                                        
                                                     
                                                     </div>} 
                                                 
@@ -574,9 +542,10 @@ function Header({themer, setThemer}) {
 
                                             <div className= "absolute bottom-32 right-0 bg-gray-100 dark:bg-gray-900 items-center m-auto w-40 h-40  rounded-xl p-1 text-center border border-gray-300"> 
                                                 <div className="flex justify-around text-white dark:text-gray-900 items-center pt-4 m-auto">
-                                                {stream && <video ref={myVideo} autoPlay/>}
+                                                {stream && <video playsInline ref={myVideo} autoPlay/>}
                                                 </div>
                                             </div>  
+                                            {callAccepted && 
                                             <div className='absolute p-4 h-min  bottom-2 w-screen flex justify-center space-x-7'>
 
                                                 <div className='rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-12 w-12'>
@@ -593,7 +562,7 @@ function Header({themer, setThemer}) {
                                                 </div>
                                             
 
-                                            </div>        
+                                            </div> }       
                                     
                                     </div>  
                             </div>}
@@ -639,7 +608,7 @@ function Header({themer, setThemer}) {
                                             </div>  
                                             <div className='absolute p-4 h-min  bottom-2 w-screen flex justify-center space-x-7'>
 
-                                                <div onClick ={()=>callUser(called._id)} className='rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-12 w-12'>
+                                                <div className='rounded-full flex justify-center items-center hover:bg-green-500 bg-green-600 h-12 w-12'>
                                                     <BsCameraVideo size={28}/>
                                                 </div>
                                                 <div className='rounded-full flex justify-center items-center hover:bg-gray-500 bg-gray-600 h-12 w-12'>
